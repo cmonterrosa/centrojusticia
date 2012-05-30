@@ -1,0 +1,9 @@
+<h2>Perfiles de Usuario</h2><br />
+<%@roles.each do |role|%>
+<p>
+  <%=link_to "#{role.name}", :action => "members_by_role", :controller => "admin", :id => role%>
+</p>
+<%end%>
+
+
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />

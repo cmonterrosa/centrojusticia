@@ -1,0 +1,24 @@
+<h2>Menú de Administración</h2>
+
+<table>
+  <!--
+  <tr>
+    <th><=link_to "Campos Personalizados", :action => "fields", :controller => "administracions"%></th>
+  </tr>
+  -->
+  <tr>
+    <th><%=link_to "Control de Usuarios", :action => "show_roles", :controller => "administracions"%></th>
+  </tr>
+
+   <tr>
+    <th><%=link_to "Informe de captura", :action => "dashboard", :controller => "administracions"%></th>
+  </tr>
+
+   <tr>
+    <th><%=link_to "Exportación a EXCEL de integrantes de familia", :action => "export_integrantes", :controller => "administracions"%></th>
+  </tr>
+
+</table>
+
+
+<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
