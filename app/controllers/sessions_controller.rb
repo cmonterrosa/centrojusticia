@@ -2,6 +2,7 @@
 class SessionsController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem
+  layout 'autenticacion'
 
   # render new.erb.html
   def new
@@ -15,6 +16,7 @@ class SessionsController < ApplicationController
       # protection if user resubmits an earlier form using back
       # button. Uncomment if you understand the tradeoffs.
       # reset_session
+      session["nombre_completo"] = user.nombre_completo
       self.current_user = user
       new_cookie_flag = (params[:remember_me] == "1")
       handle_remember_cookie! new_cookie_flag
