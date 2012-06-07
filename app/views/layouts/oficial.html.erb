@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <%= javascript_include_tag 'prototype' %>
+    <%= javascript_include_tag :defaults %>
+    <%= javascript_include_tag 'BubbleTooltips' %>
+    <%= stylesheet_link_tag "login-box"%>
+    <%= stylesheet_link_tag "oficial"%>
+    <%= stylesheet_link_tag "bt"%>
+    <title>Centro Estatal de Justicia Alternativa</title>
+
+    <script type="text/javascript">
+      window.onload=function(){enableTooltips()};
+    </script>
+</head>
+
+<body>
+<table width="90%" border="0" align="center" cellspacing="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; text-align: center;" bgcolor="#FFFFFF">
+  <tr>
+    <td colspan="2">
+      <table width="100%" border="0" cellspacing="1">
+        <tr>
+          <td width="9%" rowspan="2"><img src="/images/logo_gobierno.png" alt="" width="108" height="70" /></td>
+        </tr>
+        <tr>
+          <td width="11%" align="center" class="Estilo1"><img src="/images/CHIA.jpg" alt="" width="112" height="70" /></td>
+          <td width="62%" align="center" class="Estilo1"><img src="/images/TEXTO-TODOS A LA ESCUELA.png" alt="" width="225" height="70" /></td>
+          <td width="18%" align="center" class="Estilo1"><img src="/images/UNICEF-logo.png" alt="" width="208" height="45" /></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr>
+
+    <td align="left" bgcolor="#F8A74B" class="Estilo3">
+      <%if session["nombre_completo"]%>
+        <a href="/home/index" title="Inicio del sistema"><img src="/images/iconos/home.png" width="20" height="20" alt="inicio "/></a>
+        Usuario: <%= session["nombre_completo"]%>
+      <%end%>
+    </td>
+    <td height="20" valign="top" bgcolor="#F8A74B" align="right">
+      <%if logged_in?%>
+          <%=link_to 'Cerrar sesión', :action => "destroy", :controller=>"sessions"%>
+      <%end%>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" valign="top" align="center">
+      <p  class="menu" style="color: orange"><%= flash[:notice] %></p>
+    <%=yield%>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td  colspan="2" bgcolor="#FFCC99">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="center" bgcolor="#F8A849"><img src="/images/tapete.png" width="797" height="51" /></td>
+       </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+  <script>
+    Form.focusFirstElement(document.forms[0]);
+  </script>
+</body>
+</html>

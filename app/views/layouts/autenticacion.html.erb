@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Centro Estatal de Justicia Alternativa - Chiapas</title>
+</head>
+
+<body onload="document.getElementById('login').focus()">
+      <% form_tag session_path do -%>
+        <table width="800" border="0" align="center" cellpadding="0" cellspacing="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; text-align: center; color: #FFF; font-family: Calibri; font-size: 14px;">
+          <tr bgcolor="#8B1C2B">
+            <td height="0">
+              <table width="440" border="0" align="right" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td width="37%" style="text-align: left">Usuario: </td>
+                  <td width="37%" style="text-align: left">Contraseña: </td>
+                  <td width="26%" rowspan="2" valign="bottom"><input title="inicio de sesión" alt="inicio de sesión" type="image"  src="/images/logintest/btn_entrar.png"/></td>
+                </tr>
+                <tr align="left">
+                  <td> <%= text_field_tag 'login', @login %></td>
+                  <td><%= password_field_tag 'password', nil%></td>
+                </tr>
+                <tr align="center">
+                  <td>&nbsp;</td>
+                  <td>&nbsp;</td>
+                  <td><%=link_to 'Regístrate', :action => "new", :controller => "users"%></td>
+                </tr>
+              </table>
+            </td>
+        </tr>
+        <tr>
+          <td><hr/></td>
+        </tr>
+        <tr>
+          <td>
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                  <td width="54%"><img src="/images/logos/ceja1.jpg" alt="CEJA" width="400" height="413" align="right" /></td>
+
+                  <td width="46%">
+
+                <table width="270" border="0" align="center" cellpadding="0" cellspacing="5">
+                <tr>
+                  <td width="46%"><img src="/images/logintest/logo_gobierno.png" width="113" height="76" alt="gobierno de chiapas"/></td>
+                  <td width="54%"><img src="/images/logintest/CHIA.jpg" width="120" height="83" alt="sistema dif chiapas"/></td>
+                </tr>
+                <tr>
+                  <td height="100" colspan="2"><img src="/images/logintest/UNICEF-logo.png" width="165" height="43" alt="UNICEF" /></td>
+                </tr>
+
+                </table>
+                </td>
+                </tr>
+            </table>
+          </td>
+
+        </tr>
+    </table>
+<%end%>
+  </body>
+</html>
+
+
