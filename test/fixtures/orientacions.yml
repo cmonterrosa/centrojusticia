@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  fechahora: 2012-05-31
+  observaciones: MyString
+  user_id: 1
+  sala_id: 1
+  paterno: MyString
+  materno: MyString
+  nombre: MyString
+  sexo: MyString
+  municipio_id: 1
+
+two:
+  fechahora: 2012-05-31
+  observaciones: MyString
+  user_id: 1
+  sala_id: 1
+  paterno: MyString
+  materno: MyString
+  nombre: MyString
+  sexo: MyString
+  municipio_id: 1
