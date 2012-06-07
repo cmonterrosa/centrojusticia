@@ -1,0 +1,102 @@
+
+#login-box {
+	width:333px;
+	height: 352px;
+	padding: 58px 76px 0 76px;
+	color: #ebebeb;
+	font: 12px Arial, Helvetica, sans-serif;
+	background: url(/images/login/login-box-backg.png) no-repeat left top;
+}
+
+#login-box img {
+	border:none;
+}
+
+#login-box h2 {
+	padding:0;
+	margin:0;
+	color: #ebebeb;
+	font: bold 44px "Calibri", Arial;
+}
+
+
+#login-box-name {
+	float: left;
+	display:inline;
+	width:80px;
+	text-align: right;
+	padding: 14px 10px 0 0;
+	margin:0 0 7px 0;
+}
+
+#login-box-field {
+	float: left;
+	display:inline;
+	width:230px;
+	margin:0;
+	margin:0 0 7px 0;
+}
+
+
+.form-login  {
+	width: 205px;
+	padding: 10px 4px 6px 3px;
+	border: 1px solid #0d2c52;
+	/*background-color:#1e4f8a;*/
+        background-color:#F87000;
+
+	font-size: 16px;
+	color: #ebebeb;
+}
+
+
+.login-box-options  {
+	clear:both;
+	padding-left:87px;
+	font-size: 11px;
+}
+
+.login-box-options a {
+	color: #ebebeb;
+	font-size: 11px;
+}
+
+
+/* Estilo para las tablas */
+table.sample {
+	border: 6px inset #8B8378;
+	-moz-border-radius: 6px;
+        FONT-FAMILY: Verdana;
+        font-size: 12px;
+        margin-left:auto;
+        margin-right:auto;
+}
+table.sample td {
+	border: 0px solid black;
+	padding: 0.2em 2ex 0.2em 2ex;
+	color: black;
+}
+table.sample tr.d0 td {
+	background-color: #FCF6CF;
+}
+table.sample tr.d1 td {
+	background-color: #FEFEF2;
+}
+table.sample td.d0 {
+	background-color: #FCF6CF;
+}
+table.sample td.d2 {
+	background-color: #FF8C00;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas */
+
+table.sample td.d0 {
+	background-color: #FFE4C4;
+}
