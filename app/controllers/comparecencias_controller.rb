@@ -2,7 +2,7 @@ class ComparecenciasController < ApplicationController
 
   def new_or_edit
     @comparecencia = Comparecencia.find(:first, :conditions => ["orientacion_id = ?", params[:id]])
-    @comparecencia ||= Comparecencia.create
+    @comparecencia ||= Comparecencia.new
     @comparecencia.orientacion ||= Orientacion.find(params[:id])
     @dias = {'Lunes' => 1, 'Martes' => 2, 'Miercoles' => 3, 'Jueves' => 4, 'Viernes' => 5, 'Sábados' => 6}
   end

@@ -31,7 +31,7 @@ class OrientacionsController < ApplicationController
     @orientacion = Orientacion.new(params[:orientacion])
     if @orientacion.save
       flash[:notice] = "Guardado correctamente"
-      redirect_to :controller => "home"
+      redirect_to :action => "menu"
     else
       flash[:notice] = "No se pudo guardar, verifique"
       render :action => "new_or_edit"
