@@ -13,18 +13,12 @@ class CreateParticipantes < ActiveRecord::Migration
       # relacion con otras tablas
       t.integer :municipio_id
       t.integer :user_id
+      t.integer :comparecencia_id
       t.timestamps
     end
-
-   create_table :comparecencias_participantes, :id => false do |t|
-      t.integer :participante_id
-      t.integer :comparecencia_id
-    end
-
   end
 
   def self.down
     drop_table :participantes
-    drop_table :comparecencias_participantes
   end
 end
