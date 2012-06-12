@@ -1,3 +1,10 @@
 class Participante < ActiveRecord::Base
-  has_and_belongs_to_many :comparecencias
+  belongs_to :comparecencia
+  belongs_to :municipio
+  belongs_to :user
+
+  def nombre_completo
+    "#{self.paterno} #{self.materno} #{self.nombre}"
+  end
+
 end

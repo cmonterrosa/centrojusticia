@@ -1,5 +1,6 @@
 class Comparecencia < ActiveRecord::Base
   belongs_to :orientacion
   belongs_to :user
-  has_and_belongs_to_many :participantes
+  has_many :participantes
+  has_one :expediente
 end
