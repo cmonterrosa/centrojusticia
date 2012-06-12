@@ -60,23 +60,7 @@
       </table></td>
      </tr>
 
-     <!-- participantes -->
-      <!-- barra inferior -->
-       <tr align="center">
-      <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4" >Participantes</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">---</td>
-       </tr>
-         <!-- añadir integrante -->
-        <tr>
-            <td align="center"><%= link_to image_tag("botones/anadir_integrante.png", :width => 170, :height=>"40", :border =>0 ) , :action => "new_or_edit", :controller => "participantes", :id => @comparecencia-%></td>
-        </tr>
-      </table></td>
-     </tr>
+
 
     <!-- espacio -->
     <tr>
@@ -97,25 +81,66 @@
         </table>
       </td>
     </tr>
-  </table>
+
 <% end %>
 
-<!--
-<script>
-  enable_disable_others("motivo_inasistencias", "escolaridad_motivos_inasistencias_otros","");
-</script>
--->
+<!-- participantes -->
+     <!-- participantes -->
+      <!-- barra inferior -->
+      <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5" >PARTICIPANTES</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center"> </td>
+       </tr>
+
+         <!-- Si existen participantes -->
+        <%if Comparecencia.exists?(@comparecencia.id)%>
+          <tr>
+             <td align="center"><%= link_to image_tag("botones/anadir_integrante.png", :width => 170, :height=>"40", :border =>0 ) , :action => "new_or_edit", :controller => "participantes", :id => @comparecencia, :token => @comparecencia-%></td>
+          </tr>
 
 
-<!--
-<=observe_field :escolaridad_clave_escuela,
-              :url => { :controller => 'escolaridad', :action => 'get_nombre_escuela' },
-              :update => 'show_clave',
-              :with => :escolaridad_clave_escuela,
-              :frequency => 0.5 %>
+          <!-- Listado de participantes -->
+          <table class="sample" width="90%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+                <tr align="center" class="d0">
+                  <td width="8%" bgcolor="#E8E8E8">&nbsp;</td>
+                  <td width="58%" bgcolor="#E8E8E8">NOMBRE</td>
+                  <td width="8%" bgcolor="#E8E8E8" colspan="2">ACCIONES</td>
+                </tr>
+            <!-- Registros -->
+            <%contador=1%>
+            <%@comparecencia.participantes.each do |participante|%>
+               <tr align="center" class="d1">
+                  <td bgcolor="#f3f3f3">
+                      <%=contador%>
+                  </td>
+                  <td bgcolor="#f3f3f3">
+                      <%=participante.nombre_completo%>
+                  </td>
 
-<=observe_field :_nivel,
-              :url => { :controller => 'escolaridad', :action => 'get_grados' },
-              :update => :escolaridad_grado_id,
-              :with => :_nivel %>
--->
+                  <td bgcolor="#f3f3f3">
+                      <%=button_to 'Ver información', :action => "new_or_edit", :controller => "participantes", :id => @comparecencia, :participante => participante%>
+                   </td>
+                    <td>
+                      <%=button_to 'Eliminar', {:action => "delete", :controller => "participantes", :id => participante}, :confirm => '¿Seguro que desea eliminarlo?'%>
+                    </td>
+                </tr>
+                <%contador+=1%>
+              <%end%>
+       </table>
+
+
+        <%else%>
+          <tr>
+            <td align="center">Haga click en el botón guardar para agregar participantes</td>
+          </tr>
+        <%end%>
+
+        </table></td>
+     </tr>
+
+  </table> <!-- tabla final -->

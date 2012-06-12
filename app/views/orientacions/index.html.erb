@@ -1,0 +1,36 @@
+<h1>Listing orientacions</h1>
+
+<table>
+  <tr>
+    <th>Fechahora</th>
+    <th>Observaciones</th>
+    <th>User</th>
+    <th>Sala</th>
+    <th>Paterno</th>
+    <th>Materno</th>
+    <th>Nombre</th>
+    <th>Sexo</th>
+    <th>Municipio</th>
+  </tr>
+
+<% @orientacions.each do |orientacion| %>
+  <tr>
+    <td><%=h orientacion.fechahora %></td>
+    <td><%=h orientacion.observaciones %></td>
+    <td><%=h orientacion.user_id %></td>
+    <td><%=h orientacion.sala_id %></td>
+    <td><%=h orientacion.paterno %></td>
+    <td><%=h orientacion.materno %></td>
+    <td><%=h orientacion.nombre %></td>
+    <td><%=h orientacion.sexo %></td>
+    <td><%=h orientacion.municipio_id %></td>
+    <td><%= link_to 'Show', orientacion %></td>
+    <td><%= link_to 'Edit', edit_orientacion_path(orientacion) %></td>
+    <td><%= link_to 'Destroy', orientacion, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New orientacion', new_orientacion_path %>

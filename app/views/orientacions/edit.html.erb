@@ -1,0 +1,48 @@
+<h1>Editing orientacion</h1>
+
+<% form_for(@orientacion) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :fechahora %><br />
+    <%= f.datetime_select :fechahora %>
+  </p>
+  <p>
+    <%= f.label :observaciones %><br />
+    <%= f.text_field :observaciones %>
+  </p>
+  <p>
+    <%= f.label :user_id %><br />
+    <%= f.text_field :user_id %>
+  </p>
+  <p>
+    <%= f.label :sala_id %><br />
+    <%= f.text_field :sala_id %>
+  </p>
+  <p>
+    <%= f.label :paterno %><br />
+    <%= f.text_field :paterno %>
+  </p>
+  <p>
+    <%= f.label :materno %><br />
+    <%= f.text_field :materno %>
+  </p>
+  <p>
+    <%= f.label :nombre %><br />
+    <%= f.text_field :nombre %>
+  </p>
+  <p>
+    <%= f.label :sexo %><br />
+    <%= f.text_field :sexo %>
+  </p>
+  <p>
+    <%= f.label :municipio_id %><br />
+    <%= f.text_field :municipio_id %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @orientacion %> |
+<%= link_to 'Back', orientacions_path %>

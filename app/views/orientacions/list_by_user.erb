@@ -23,7 +23,11 @@
        <!-- filtro de estatus -->
        <%if ["En espera", "Activa"].include?(orientacion.estatu.descripcion)%>
           <td style="vertical-align: middle;"><%=button_to "Finalizar", :action => "change_estatus", :id => orientacion, :token => "Finalizado", :confirm => '¿Esta seguro que desea finalizar?', :method => :delete%></td>
-          <td style="vertical-align: middle;"><%=button_to "Comparecencia", :action => "new_or_edit", :controller => "comparecencias", :id => orientacion%></td>
+           <td style="vertical-align: middle;"><%=button_to "Comparecencia", :action => "new_or_edit", :controller => "comparecencias", :id => orientacion%></td>
+           <!-- mostramos asignar materia si tenemos registro de comparecencia --->
+           <%if @comṕarecencia = Comparecencia.find(:first, :conditions => ["orientacion_id = ?", orientacion])%>
+               <td style="vertical-align: middle;"><%=button_to "Asignar materia", :action => "asignar_materia", :controller => "expedientes", :id => @comṕarecencia.id%></td>
+           <%end%>
        <%else%>
           <td style="vertical-align: middle;"><%=button_to "Reactivar", :action => "change_estatus", :id => orientacion, :token => "En espera", :confirm => '¿Esta seguro que desea reactivarlo?', :method => :delete%></td>
           <td style="vertical-align: middle;"></td>
