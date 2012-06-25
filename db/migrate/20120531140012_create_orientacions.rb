@@ -13,7 +13,7 @@ class CreateOrientacions < ActiveRecord::Migration
       t.string :telefono, :limit => 10
       t.string :correo, :limit => 40
       t.integer :municipio_id
-      t.integer :estatu_id
+      t.integer :tramite_id
       t.timestamps
     end
   end

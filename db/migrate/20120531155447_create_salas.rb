@@ -3,6 +3,7 @@ class CreateSalas < ActiveRecord::Migration
     create_table :salas do |t|
       t.string :descripcion, :limit => 40
       t.integer :capacidad
+      t.boolean :activo, :default => true
     end
 
     Sala.create(:descripcion => "Primera Sala", :capacidad => 4)

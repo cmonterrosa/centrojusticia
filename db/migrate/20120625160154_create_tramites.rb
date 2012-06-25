@@ -4,18 +4,15 @@ class CreateTramites < ActiveRecord::Migration
       t.string :anio, :limit => 4
       t.string :folio, :limit => 6
       t.integer :delegacion_id
-      t.timestamps
-    end
-
-    create_table :tramites_historia, :id => false do |t|
-      t.integer :tramite_id
+      #-- relacion con otras tablas ---
       t.integer :estatus_id
+      t.integer :materia_id
       t.integer :user_id
       t.timestamps
     end
 
-
-  end
+    add_index :tramites, [:anio, :folio], :name => "busqueda"
+   end
 
   def self.down
     drop_table :tramites

@@ -16,7 +16,8 @@ class CreateUsers < ActiveRecord::Migration
       t.string :paterno, :limit => 40
       t.string :materno, :limit => 40
       t.string :direccion, :limit => 120
-      t.integer :user_estatus_id
+      t.integer :subdireccion_id, :default => 1
+      t.boolean :activo, :default => true
     end
     add_index :users, :login, :unique => true
   end

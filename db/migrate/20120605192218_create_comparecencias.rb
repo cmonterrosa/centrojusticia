@@ -12,7 +12,7 @@ class CreateComparecencias < ActiveRecord::Migration
       t.string :observaciones
       #--relaciones con otras tablas
       t.integer :user_id
-      t.integer :orientacion_id
+      t.integer :tramite_id
       t.timestamps
     end
     
