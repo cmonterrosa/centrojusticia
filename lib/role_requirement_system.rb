@@ -109,7 +109,8 @@ module RoleRequirementSystem
     end
     
     def render_optional_error_file(status)
-      render :text => "You don't have access here.", :status => status
+      flash[:notice] = "Acceso no autorizado"
+      redirect_to :controller => params[:controller], :action => "index"
     end
     
     def access_denied
