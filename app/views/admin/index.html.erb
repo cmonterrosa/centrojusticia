@@ -1,23 +1,28 @@
-<h2>Menú de Administración</h2>
+<h3 style="color:#104E8B; font-family: Helvetica;">Menú de administración</h3>
 
-<table>
-  <!--
-  <tr>
-    <th><=link_to "Campos Personalizados", :action => "fields", :controller => "administracions"%></th>
+<table width="70%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+   <td>
+     <a href="/admin/show_usuarios" title="Control de usuarios">
+        <img src="/images/iconos/control_usuarios.png" width="128" height="128" alt="nueva orientación" />
+     </a>
+       </td>
+        <td>
+         <a href="/admin/show_roles" title="Perfiles de usuario">
+           <img src="/images/iconos/perfiles.png" width="128" height="128" alt="proceso inclusión" />
+         </a>
+        </td>
+        <td>
+         <a href="/admin/dias_festivos" title="Sistematización de datos obtenidos en los apoyos otorgados por el DIF y Registro Civil."target="_blank">
+           <img src="/images/iconos/agenda.png" width="128" height="128" alt="apoyos" />
+         </a>
+        </td>
   </tr>
-  -->
-  <tr>
-    <th><%=link_to "Control de Usuarios", :action => "show_roles", :controller => "admin"%></th>
+  <tr align="center">
+    <td class="menu">Control de usuarios</td>
+    <td class="menu">Perfiles</td>
+    <td class="menu">Días festivos</td>
   </tr>
-
-   <tr>
-    <th><%=link_to "Informe de captura", :action => "dashboard", :controller => "admin"%></th>
-  </tr>
-
-   <tr>
-    <th><%=link_to "Exportación a EXCEL de integrantes de familia", :action => "export_integrantes", :controller => "administracions"%></th>
-  </tr>
-
 </table>
 
 

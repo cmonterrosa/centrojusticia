@@ -1,36 +1,40 @@
-<h1>Listing orientacions</h1>
+<h3 style="color:#104E8B; font-family: Helvetica;">Orientaciones y Comparecencias</h3>
 
-<table>
-  <tr>
-    <th>Fechahora</th>
-    <th>Observaciones</th>
-    <th>User</th>
-    <th>Sala</th>
-    <th>Paterno</th>
-    <th>Materno</th>
-    <th>Nombre</th>
-    <th>Sexo</th>
-    <th>Municipio</th>
-  </tr>
+<table width="70%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
 
-<% @orientacions.each do |orientacion| %>
-  <tr>
-    <td><%=h orientacion.fechahora %></td>
-    <td><%=h orientacion.observaciones %></td>
-    <td><%=h orientacion.user_id %></td>
-    <td><%=h orientacion.sala_id %></td>
-    <td><%=h orientacion.paterno %></td>
-    <td><%=h orientacion.materno %></td>
-    <td><%=h orientacion.nombre %></td>
-    <td><%=h orientacion.sexo %></td>
-    <td><%=h orientacion.municipio_id %></td>
-    <td><%= link_to 'Show', orientacion %></td>
-    <td><%= link_to 'Edit', edit_orientacion_path(orientacion) %></td>
-    <td><%= link_to 'Destroy', orientacion, :confirm => 'Are you sure?', :method => :delete %></td>
+       <td>
+        <a href="/orientacions/new_or_edit" title="Captura de orientaciones">
+          <img src="/images/iconos/orientaciones2.png" width="128" height="128" alt="orientaciones" />
+        </a>
+       </td>
+
+       <td>
+        <a href="/orientacions/new_or_edit" title="Captura de comparecencia">
+          <img src="/images/iconos/new_comparecencia.png" width="128" height="128" alt="comparecencias" />
+        </a>
+       </td>
+
+
+       <td>
+        <a href="/orientacions/list_all" title="Todas las orientaciones">
+          <img src="/images/iconos/folder_documents.png" width="128" height="128" alt="nueva orientación" />
+        </a>
+       </td>
+
+        <td>
+         <a href="/orientacions/list_by_user" title="Orientaciones por usuario">
+           <img src="/images/iconos/orientaciones_usuario.png" width="128" height="128" alt="orientaciones por usuario"/>
+         </a>
+        </td>
   </tr>
-<% end %>
+  <tr align="center">
+    <td class="menu">Orientación</td>
+    <td class="menu">Comparecencia</td>
+    <td class="menu">Todas las orientaciones</td>
+    <td class="menu">Orientaciones por usuario</td>
+  </tr>
 </table>
+<br/>
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
 
-<br />
-
-<%= link_to 'New orientacion', new_orientacion_path %>

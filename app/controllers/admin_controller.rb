@@ -2,7 +2,7 @@ class AdminController < ApplicationController
   before_filter :login_required
   
   def index
-    redirect_to :action => "show_roles"
+ #   redirect_to :action => "show_roles"
   end
 
 

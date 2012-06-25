@@ -37,4 +37,10 @@ class UsersController < ApplicationController
       redirect_back_or_default('/')
     end
   end
+
+  def page
+    @user = current_user
+    @orientaciones = Orientacion.find(:all, :conditions => ["user_id = ?", @user.id], :order => "fechahora")
+  end
+
 end

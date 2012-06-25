@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :password, :password_confirmation, :paterno, :materno, :nombre, :direccion, :user_estatus_id
+  attr_accessible :login, :email, :password, :password_confirmation, :paterno, :materno, :nombre, :direccion, :activo
 
 
   # Activates the user in the database.
@@ -78,7 +78,7 @@ class User < ActiveRecord::Base
   #
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
-    u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL', login] # need to get the salt
+    u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL and activo=1', login] # need to get the salt
     u && u.authenticated?(password) ? u : nil
   end
 

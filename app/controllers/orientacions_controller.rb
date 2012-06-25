@@ -5,8 +5,8 @@ class OrientacionsController < ApplicationController
   require_role "subdireccion", :for => [:list_all, :filtro_specialista] 
 
 
-  def menu
-    
+  def index
+   
   end
 
   def list_by_user
@@ -56,13 +56,7 @@ class OrientacionsController < ApplicationController
    end
 
 
-  def index
-      redirect_to :action => "menu"
-  end
-
-  # GET /orientacions/1
-  # GET /orientacions/1.xml
-  def show
+ def show
     @orientacion = Orientacion.find(params[:id])
 
     respond_to do |format|

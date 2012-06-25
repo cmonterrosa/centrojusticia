@@ -44,6 +44,7 @@
     </td>
     <td height="20" valign="top" bgcolor="#F8A74B" align="right">
       <%if logged_in?%>
+          <%=link_to 'Mi página', :action => "page", :controller => "users"%> |
           <%=link_to 'Cerrar sesión', :action => "destroy", :controller=>"sessions"%>
       <%end%>
     </td>
