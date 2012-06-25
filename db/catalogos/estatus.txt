@@ -3,7 +3,7 @@ Trámite iniciado                        | tram-inic| 1
 Comparecencia concluida                 | comp-conc| 2
 Materia asignada                        | mate-asig| 3
 Solicitantes capturados                 | soli-capt| 4
-Especialista asignado                   | espe-asig| 5
+Especialista y Comediador asignados     | espe-asig| 5
 Asignación de especialista validada     | vali-espe| 6
 Fecha de sesión asignada                | fech-asig| 7
 Invitaciones en proceso de entrega      | invi-proc| 8
