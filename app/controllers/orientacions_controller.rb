@@ -1,6 +1,9 @@
 class OrientacionsController < ApplicationController
   # GET /orientacions
   # GET /orientacions.xml
+  require_role "especialistas"
+  require_role "subdireccion", :for => [:list_all, :filtro_specialista] 
+
 
   def menu
     
@@ -8,7 +11,21 @@ class OrientacionsController < ApplicationController
 
   def list_by_user
     @user = current_user
-    @orientaciones = Orientacion.find(:all, :conditions => ["user_id = ?", @user.id])
+    @orientaciones = Orientacion.find(:all, :conditions => ["user_id = ?", @user.id], :order => "fechahora")
+  end
+
+  def list_all
+    @orientaciones = Orientacion.find(:all, :order => "fechahora")
+    @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+  end
+
+  def filtro_especialista
+    if params[:user_id].size > 0
+      @user = User.find(params[:user_id])
+      @orientaciones = Orientacion.find(:all, :conditions => ["user_id = ?", @user.id], :order => "fechahora") if @user
+    end
+    @orientaciones ||= Orientacion.find(:all, :order => "fechahora")
+    return render(:partial => 'list_by_user', :layout => false) if request.xhr?
   end
 
   def change_estatus
@@ -40,12 +57,7 @@ class OrientacionsController < ApplicationController
 
 
   def index
-    @orientacions = Orientacion.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.xml  { render :xml => @orientacions }
-    end
+      redirect_to :action => "menu"
   end
 
   # GET /orientacions/1
