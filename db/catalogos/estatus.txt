@@ -1,0 +1,18 @@
+Trámite no iniciado por tipo de asunto  | no-tramit| 1
+Trámite iniciado                        | tram-inic| 1
+Comparecencia concluida                 | comp-conc| 2
+Materia asignada                        | mate-asig| 3
+Solicitantes capturados                 | soli-capt| 4
+Especialista asignado                   | espe-asig| 5
+Asignación de especialista validada     | vali-espe| 6
+Fecha de sesión asignada                | fech-asig| 7
+Invitaciones en proceso de entrega      | invi-proc| 8
+Invitaciones razonadas                  | invi-razo|9
+Cambio de fecha de sesión               | camb-sesi| 7
+En sesión                               | en-sesion|10
+Acuerdo finalizado                      | acue-fina|11
+Sin acuerdo logrado                     | sin-acuer|11
+En proceso de elaboración de convenio   | proc-conv|12
+Convenio validado                       | conv-vali|13
+Convenio Ratificado                     | conv-rati|14
+Trámite finalizado                      | tram-fina|15
