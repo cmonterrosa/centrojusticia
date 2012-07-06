@@ -1,0 +1,123 @@
+<h4 style=" font-family:  Helvetica;">Resumen General del Trámite: <%=@tramite.id%></h4>
+<h4 style=" font-family:  Helvetica;">Folio: <%=@tramite.anio%>-<%=@tramite.folio%></h4>
+
+
+
+<div id="divlista">
+  <%= link_to image_tag("iconos/descargar_pdf.png", :size => "96x96", :border =>0) , :action => "tramite_pdf", :controller => "tramites", :id => @tramite%><br />
+  <%=link_to "Descargar en PDF", :action => "tramite_pdf", :controller => "tramites", :id => @tramite%><br/><br/>
+
+  <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="2">
+        Datos generales
+      </th>
+     </tr>
+
+   
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Especialista para orientación:</b></td>
+       <td style="vertical-align: middle;"><%=@tramite.user.nombre_completo%></td>
+    </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Sala:</b></td>
+      <td style="vertical-align: middle;"><%=@tramite.orientacion.sala.descripcion%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Solicitante:</b></td>
+       <td style="vertical-align: middle;"><%=@tramite.orientacion.solicitante%></td>
+    </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Observaciones:</b></td>
+      <td style="vertical-align: middle;"><%=@tramite.orientacion.observaciones%></td>
+    </tr>
+
+    
+    <!-- Datos de ubicacion -->
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Correo electrónico:</b></td>
+       <td style="vertical-align: middle;"><%=@tramite.orientacion.correo%></td>
+
+    </tr>
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Dirección:</b></td>
+      <td style="vertical-align: middle;"><%=@tramite.orientacion.direccion%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Municipio:</b></td>
+       <td style="vertical-align: middle;"><%=@tramite.orientacion.municipio.descripcion%></td>
+    </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b>Teléfono:</b></td>
+       <td style="vertical-align: middle;"><%=@tramite.orientacion.telefono%></td>
+    </tr>
+  </table>
+  <br /><br />
+
+  <%if @comparecencia = @tramite.comparecencia%>
+    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th colspan="2">
+          Datos de la comparecencia
+        </th>
+      </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Procedencia:</b></td>
+        <td style="vertical-align: middle;"><%=@comparecencia.procedencia%></td>
+      </tr>
+
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b>Carácter con el que compadece:</b></td>
+        <td style="vertical-align: middle;"><%=@comparecencia.caracter%></td>
+      </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Día/hora de preferencia:</b></td>
+        <td style="vertical-align: middle;"><%=day_of_the_week(@comparecencia.dia_preferencia)%> / <%=@comparecencia.hora_preferencia%>:00 hrs.</td>
+      </tr>
+    </table>
+
+    <!-- detalle del asunto -->
+    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+       <th colspan="2">
+           Detalle del asunto
+       </th>
+     </tr>
+
+      <tr class="d0">
+        <th colspan="2"><%=text_area(:comparecencia, :asunto, :size => "100x10", :disabled => 'disabled')%></th>
+      </tr>
+     </table>
+     <br /><br />
+  <%end%>
+  
+  <!-- Historial de estados-->
+  <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="2">
+        Historial
+      </th>
+     </tr>
+     <tr class="d0">
+        <td style="vertical-align: middle;"><b>Descripción</b></td>
+         <td style="vertical-align: middle;"<b>Fecha hora</b></td>
+     </tr>
+     <%Historia.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "created_at").each do |row|%>
+       <tr class="d1">
+         <td style="vertical-align: middle;"><%=row.estatu.descripcion%></td>
+         <td style="vertical-align: middle;"><%=row.created_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
+     </tr>
+     <%end%>
+  </table>
+
+</div>
+
+<br />
+  <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />

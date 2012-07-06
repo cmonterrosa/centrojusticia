@@ -1,8 +1,5 @@
-Aqui vamos a desplegar la información de cada usuario
-
-
+<h3>Trámites donde estoy involucrado</h3>
 <h3>Orientaciones</h3>
-<h3>Sesiones</h3>
 
 <div id="divlista">
   <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
@@ -18,16 +15,15 @@ Aqui vamos a desplegar la información de cada usuario
     <%@orientaciones.each do |orientacion|%>
     <tr>
        <!-- icono de estado -->
-       <td style="vertical-align: middle;"><%= image_tag("estatus/#{get_icon_name(orientacion.estatu.descripcion)}", :border =>0, :size => "22x22", :alt => "#{orientacion.estatu.descripcion}", :title=> "#{orientacion.estatu.descripcion}") %></td>
+       <td style="vertical-align: middle;"><%= image_tag("estatus/activa.png}", :border =>0, :size => "22x22", :alt => "", :title=> "") %></td>
        <td style="vertical-align: middle;"><%=orientacion.fechahora%></td>
        <td style="vertical-align: middle;"><%=orientacion.fechahora%></td>
        <td style="vertical-align: middle;"><%=orientacion.solicitante%></td>
        <td style="vertical-align: middle;"><%=orientacion.sala.descripcion%></td>
-       <td style="vertical-align: middle;"><%=orientacion.estatu.descripcion%>
-       </td>
+    
 
        <!-- filtro de estatus -->
-       <%if ["En espera", "Activa"].include?(orientacion.estatu.descripcion)%>
+      
           <td style="vertical-align: middle;"><%=button_to "Finalizar", :action => "change_estatus", :id => orientacion, :token => "Finalizado", :confirm => '¿Esta seguro que desea finalizar?', :method => :delete%></td>
            <td style="vertical-align: middle;">
           <%= link_to image_tag("iconos/cancel.png", :border =>0) , :action => "change_estatus", :id => orientacion, :token => "Finalizado", :confirm => '¿Esta seguro que desea finalizar?', :method => :delete%><br />
@@ -41,10 +37,8 @@ Aqui vamos a desplegar la información de cada usuario
                   <td style="vertical-align: middle;">Validar</td>
                <%end%>
            <%end%>
-       <%else%>
-          <td style="vertical-align: middle;"><%=button_to "Reactivar", :action => "change_estatus", :id => orientacion, :token => "En espera", :confirm => '¿Esta seguro que desea reactivarlo?', :method => :delete%></td>
-          <td style="vertical-align: middle;"></td>
-       <%end%>
+   
+     
     </tr>
     <%end%>
   </table>

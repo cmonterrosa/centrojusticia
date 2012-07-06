@@ -1,0 +1,70 @@
+<table border="1" width="70%" style="background-color:white; text-align: center;">
+
+   <tr style="background-color:gray; color:white">
+    <th colspan="2">
+      Datos del trámite
+    </th>
+   </tr>
+
+    <tr>
+    <th>Identificador:</th>
+    <td><%=@tramite.id%></td>
+  </tr>
+
+   <tr>
+     <th>Especialista:</th>
+    <td><%=@tramite.user.nombre_completo%></td>
+   </tr>
+
+   <tr>
+    <th><%=h "Estatus:"%></th>
+    <td><%=@tramite.estatus%></td>
+  </tr>
+
+  <tr>
+    <th>Folio:</th>
+    <td><%=@tramite.folio%></td>
+  </tr>
+  <tr>
+    <th>Año:</th>
+    <td><%=@tramite.anio%></td>
+  </tr>
+
+   <tr>
+    <th>Fecha-hora de creación:</th>
+    <td><%=@tramite.created_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
+  </tr>
+
+  <tr style="background-color:gray; color:white">
+    <th colspan="2">
+      Datos de la orientación
+    </th>
+  </tr>
+
+  <tr>
+    <th>Sala:</th>
+    <td><%=@tramite.orientacion.sala.descripcion%></td>
+  </tr>
+
+  <tr>
+    <th>Procedencia:</th>
+    <td><%=@tramite.orientacion.municipio.descripcion%></td>
+  </tr>
+
+  <tr>
+    <th>Solicitante:</th>
+    <td> <%=@tramite.orientacion.solicitante%></td>
+  </tr>
+</table>
+
+
+<p>
+<h4>Para mayor información consulte:
+  <%= url_for(:host => "#{SITE_URL}", :controller => "tramites", :action => "show", :id => @tramite) %>
+</h4>
+</p>
+
+
+
+------------------------------------------------------------------------------------------------------
+<p>Poder Judicial del Estado de Chiapas, todos los derechos reservados</p>

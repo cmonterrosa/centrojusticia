@@ -1,0 +1,28 @@
+<div id="divlista">
+  <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <tr class="d0">
+       <td style="vertical-align: middle;">Trámite</td>
+        <td style="vertical-align: middle;">Folio</td>
+        <td style="vertical-align: middle;">Solicitante</td>
+        <td style="vertical-align: middle;"><%=h "Estatus"%></td>
+        <td style="vertical-align: middle;" colspan="5">Acciones</td>
+    </tr>
+    <%@tramites.each do |tramite|%>
+    <tr>
+       <td style="vertical-align: middle;"><%=tramite.id%></td>
+       <td style="vertical-align: middle;"><%=tramite.folio_integrado%></td>
+       <%if tramite.orientacion%>
+           <td style="vertical-align: middle;"><%=tramite.orientacion.solicitante%></td>
+       <%else%>
+           <td style="vertical-align: middle;">---</td>
+       <%end%>
+       <td style="vertical-align: middle;"><%=tramite.estatus%></td>
+       <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :id => tramite}, :class => 'boton'  -%></td>
+       <td style="vertical-align: middle;"><%=link_to "Validación", {:action => "validate", :id => tramite}, :class => 'boton'  -%></td>
+       <td style="vertical-align: middle;"><%=link_to "Comparecencia",{:action => "new_or_edit", :controller => "comparecencias", :id => tramite}, :class => 'boton'  -%></td>
+       <td style="vertical-align: middle;"><%=link_to "Documentos", {:action => "documents", :controller => "comparecencias", :id => tramite}, :class => 'boton'  -%></td>
+       <td style="vertical-align: middle;"><%=link_to "Sesiones", {:action => "show", :controller => "sesiones", :id => tramite}, :class => 'boton'  -%></td>
+    </tr>
+    <%end%>
+  </table>
+</div>
