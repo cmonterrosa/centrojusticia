@@ -12,7 +12,7 @@ ActionController::Routing::Routes.draw do |map|
 
   #---- rutas globales ---
   map.admin "/admin/index", :controller=>'admin',:action=>'index'
-  map.page '/page',:controller=>'users',:action=>'page'
+  #map.page '/page',:controller=>'customs',:action=>'page'
 
 
   # The priority is based upon order of creation: first created -> highest priority.
