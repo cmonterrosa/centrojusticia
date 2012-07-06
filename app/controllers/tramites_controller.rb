@@ -1,10 +1,21 @@
-class ExpedientesController < ApplicationController
+class TramitesController < ApplicationController
   def index
+  end
+
+  def list
+    @tramites = Tramite.find(:all)
+  end
+
+  def show
+    unless @tramite=Tramite.find(params[:id])
+      flash[:notice] = "No se encontro trámite, verifique"
+      redirect_back_or_default('/')
+    end
   end
 
   def asignar_materia
     @expediente = Comparecencia.find(params[:id]).expediente
-    @expediente ||= Expediente.new
+    @expediente ||= Tramite.new
     @comparecencia = Comparecencia.find(params[:id])
   end
 
@@ -14,7 +25,7 @@ class ExpedientesController < ApplicationController
       @expediente = @comparecencia.expediente
       @expediente.update_attributes(params[:expediente]) if @expediente
       #--- creamos nuevo objeto -----
-      @expediente ||= Expediente.new(params[:expediente])
+      @expediente ||= Tramite.new(params[:expediente])
       #----- establecemos parametros de control ---
       @expediente.user = current_user
       @expediente.anio = params[:expediente]["fechahora(1i)"].to_i
@@ -33,10 +44,23 @@ class ExpedientesController < ApplicationController
     render :text => "Validando"
   end
 
+  def search
+    if params[:q] && params[:q] =~ /\d+/
+      if @tramite = Tramite.find(:first, :conditions => ["id = ? or folio = ?", params[:q], params[:q]])
+         redirect_to :action => "show", :id => @tramite
+      else
+         flash[:notice] = "No se encontraron resultados, verifique"
+         redirect_back_or_default('/')
+      end
+    else
+      flash[:notice] = "No se pudo realizar la búsqueda, verifique"
+      redirect_back_or_default('/')
+    end
+  end
 
 protected
   def generar_folio(anio)
-    maximo=  Expediente.maximum(:folio, :conditions => ["anio = ?", anio])
+    maximo=  Tramite.maximum(:folio, :conditions => ["anio = ?", anio])
     folio = 1 unless maximo
     folio ||= maximo+1
   end

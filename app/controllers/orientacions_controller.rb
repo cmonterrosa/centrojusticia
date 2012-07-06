@@ -45,10 +45,19 @@ class OrientacionsController < ApplicationController
   end
 
    def save
+    #--- Iniciamos trámite --
+    @tramite = Tramite.new
+    @tramite.anio = params[:orientacion]["fechahora(1i)"].to_i
+    @tramite.generar_folio unless @tramite.folio
+    @tramite.subdireccion_id = current_user.subdireccion_id unless @tramite.subdireccion
+    @tramite.user= current_user
     @orientacion = Orientacion.new(params[:orientacion])
-    if @orientacion.save
+    @orientacion.tramite = @tramite
+    if @orientacion.save && @tramite.save
+      @tramite.update_estatus!("tram-inic", current_user) # update estatus of tramite
+      NotificationsMailer.deliver_tramite_created(@tramite, @tramite.user) # sends the email
       flash[:notice] = "Guardado correctamente"
-      redirect_to :action => "menu"
+      redirect_to :controller => "home"
     else
       flash[:notice] = "No se pudo guardar, verifique"
       render :action => "new_or_edit"

@@ -1,20 +1,22 @@
 class ComparecenciasController < ApplicationController
 
   def new_or_edit
-    @comparecencia = Comparecencia.find(:first, :conditions => ["orientacion_id = ?", params[:id]])
+    @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]])
     @comparecencia ||= Comparecencia.new
-    @comparecencia.orientacion ||= Orientacion.find(params[:id])
+    @comparecencia.tramite ||= Tramite.find(params[:id])
     @dias = {'Lunes' => 1, 'Martes' => 2, 'Miercoles' => 3, 'Jueves' => 4, 'Viernes' => 5, 'Sábados' => 6}
   end
 
   def save
-    @orientacion = Orientacion.find(params[:orientacion])
-    if @orientacion.comparecencia
-       @comparecencia= @orientacion.comparecencia
+    @tramite = Tramite.find(params[:tramite])
+    if @tramite.comparecencia
+       @comparecencia= @tramite.comparecencia
        @comparecencia.update_attributes(params[:comparecencia])
     else
+      @tramite.update_estatus!("comp-conc", current_user) # update estatus of tramite
+      #NotificationsMailer.deliver_tramite_created(@tramite, @tramite.user) # sends the email
       @comparecencia = Comparecencia.new(params[:comparecencia])
-      @comparecencia.orientacion = @orientacion
+      @comparecencia.tramite = @tramite
     end
     @comparecencia.user = current_user
     if @comparecencia.save

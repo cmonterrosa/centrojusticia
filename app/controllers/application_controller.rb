@@ -11,8 +11,6 @@ class ApplicationController < ActionController::Base
   layout 'oficial', :except => :autenticacion
  
 
-
-
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 end
