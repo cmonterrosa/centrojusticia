@@ -1,4 +1,6 @@
 class Orientacion < ActiveRecord::Base
+  belongs_to :user
+  belongs_to :tramite
   belongs_to :municipio
   belongs_to :estatu
   belongs_to :sala
@@ -8,11 +10,13 @@ class Orientacion < ActiveRecord::Base
     "#{self.paterno} #{self.materno} #{self.nombre}"
   end
 
-  before_save :init
+  before_save :mayusculas
 
-  def init
-      estatus = Estatu.find_by_descripcion("Activa")
-      self.estatu_id ||= estatus.id
+  def mayusculas
+    self.paterno.upcase! unless self.paterno.nil?
+    self.materno.upcase! unless self.materno.nil?
+    self.nombre.upcase! unless self.nombre.nil?
   end
 
+ 
 end
