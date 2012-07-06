@@ -14,7 +14,7 @@ class CreateEstatus < ActiveRecord::Migration
           Estatu.create(:descripcion => descripcion.strip, :clave=>clave.strip, :secuencia => secuencia.strip)
         end
     end
-
+    add_index :estatus, [:clave], :name => "clave_estatus"
   end
 
   def self.down

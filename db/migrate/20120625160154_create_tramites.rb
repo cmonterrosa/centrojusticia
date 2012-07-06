@@ -3,7 +3,7 @@ class CreateTramites < ActiveRecord::Migration
     create_table :tramites do |t|
       t.string :anio, :limit => 4
       t.string :folio, :limit => 6
-      t.integer :delegacion_id
+      t.integer :subdireccion_id
       #-- relacion con otras tablas ---
       t.integer :estatus_id
       t.integer :materia_id
