@@ -1,0 +1,27 @@
+/* 
+    Document   : envio-correo
+    Created on : 2/07/2012, 02:44:33 PM
+    Author     : cmonterrosa
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+#table-design thead {
+	width: 100%;
+}
+#table-design td {
+	padding: 5px 5px 5px 0;
+	vertical-align: top;
+}
+#table-design thead th {
+	padding-right: 10px;
+	text-align: left;
+}
+
+
+

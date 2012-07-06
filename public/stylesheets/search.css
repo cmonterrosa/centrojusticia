@@ -1,0 +1,15 @@
+
+#searchField{
+    width: 240px;
+    height: 20px;
+}
+
+
+#searchSubmit{
+    background: transparent url("/images/iconos/search.png") no-repeat;
+    width: 20px;
+    height: 20px;
+    border: none; /* removes default button borders */
+    cursor:pointer; /* when your mouse is over the button, cursor changes into a pointer*/
+}
+
