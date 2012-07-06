@@ -1,17 +1,9 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
-def get_icon_name(estatus)
-  case estatus
-  when "Activa"
-    return "activa.png"
-  when "En espera"
-    return "en_espera.png"
-  when "Finalizado"
-    return "finalizado.png"
-  else
-    return "atender.png"
+  def day_of_the_week(day)
+      @dias = {1 => "Lunes", 2 => "Martes", 3 => "Miércoles", 4 => "Jueves",  5 => "Viernes", 6 => "Sábado"}
+      return @dias[day]
   end
-end
 
 end
