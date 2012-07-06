@@ -1,18 +1,22 @@
-Trámite no iniciado por tipo de asunto  | no-tramit| 1
+Trámite iniciado vía internet           | tram-inte| 1
 Trámite iniciado                        | tram-inic| 1
+Comparecencia no levantada              | no-compar| 2
 Comparecencia concluida                 | comp-conc| 2
-Materia asignada                        | mate-asig| 3
-Solicitantes capturados                 | soli-capt| 4
-Especialista y Comediador asignados     | espe-asig| 5
-Asignación de especialista validada     | vali-espe| 6
+Tramite admitido                        | tram-admi| 3
+Tramite no admitido                     | tram-noad| 3
+Materia asignada                        | mate-asig| 4
+Especialista y comediador asignados     | espe-asig| 5
+Especialista y comediador validados     | vali-espe| 6
 Fecha de sesión asignada                | fech-asig| 7
-Invitaciones en proceso de entrega      | invi-proc| 8
-Invitaciones razonadas                  | invi-razo|9
-Cambio de fecha de sesión               | camb-sesi| 7
-En sesión                               | en-sesion|10
-Acuerdo finalizado                      | acue-fina|11
-Sin acuerdo logrado                     | sin-acuer|11
-En proceso de elaboración de convenio   | proc-conv|12
-Convenio validado                       | conv-vali|13
-Convenio Ratificado                     | conv-rati|14
-Trámite finalizado                      | tram-fina|15
+Invitaciones firmadas por subdirector   | invi-firm| 8
+Invitaciones en proceso de entrega      | invi-proc| 9
+Invitaciones razonadas                  | invi-razo| 10
+Cambio de fecha de sesión               | camb-sesi| 11
+Se firmo compromiso de participación    | comp-firm| 11
+En sesión                               | en-sesion| 12
+Acuerdo finalizado                      | acue-fina|13
+Sin acuerdo logrado                     | sin-acuer|13
+En proceso de elaboración de convenio   | proc-conv|14
+Convenio validado                       | conv-vali|15
+Convenio Ratificado                     | conv-rati|16
+Trámite finalizado                      | tram-fina|17
