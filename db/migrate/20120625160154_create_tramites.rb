@@ -5,13 +5,14 @@ class CreateTramites < ActiveRecord::Migration
       t.string :folio, :limit => 6
       t.integer :subdireccion_id
       #-- relacion con otras tablas ---
-      t.integer :estatus_id
+      t.integer :estatu_id
       t.integer :materia_id
       t.integer :user_id
       t.timestamps
     end
 
     add_index :tramites, [:anio, :folio], :name => "busqueda"
+    add_index :tramites, [:estatu_id], :name => "estatus"
    end
 
   def self.down

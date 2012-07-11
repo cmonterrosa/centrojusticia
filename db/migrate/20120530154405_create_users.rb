@@ -19,6 +19,7 @@ class CreateUsers < ActiveRecord::Migration
       t.integer :subdireccion_id, :default => 1
       t.boolean :activo, :default => true
     end
+
     add_index :users, :login, :unique => true
   end
 
