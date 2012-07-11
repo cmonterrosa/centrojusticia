@@ -5,7 +5,9 @@ class Tramite < ActiveRecord::Base
   belongs_to :estatu
   has_one :orientacion
   has_one :comparecencia
+  has_one :post
   has_many :historias
+  has_many :adjuntos
 
   def folio_integrado
     "#{self.anio}/#{self.folio}"
@@ -25,11 +27,12 @@ class Tramite < ActiveRecord::Base
     @estatus = Estatu.find_by_clave(clave) if (!clave.nil? && !usuario.nil?)
     @history = Historia.new(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id ) if @estatus
     if @history.save
+      #---- actualizacion del registro principal --
+      self.update_attributes!(:estatu_id => @estatus.id)
       return true
     end
   end
  
-
 
    def generar_folio
       anio = self.anio

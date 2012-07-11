@@ -1,8 +1,26 @@
-Your account has been created.
+<table border="1" width="50%" style="background-color:white; text-align: center;">
 
-  Username: <%=h @user.login %>
-  Password: <%=h @user.password %>
+   <tr style="background-color:gray; color:white">
+    <th colspan="2">
+      Tu cuenta ha sido creada
+    </th>
+   </tr>
 
-Visit this url to activate your account:
+   <tr>
+      <th>Usuario:</th>
+      <td><%=h @user.login %></td>
+   </tr>
 
-  <%=h @url %>
+   <tr>
+     <th>Contraseña:</th>
+      <td><%=h @user.password %></td>
+   </tr>
+
+</table>
+
+<p>
+  <%= url_for(@url) %>
+</p>
+
+------------------------------------------------------------------------------------------------------
+<p>Poder Judicial del Estado de Chiapas, todos los derechos reservados.</p>

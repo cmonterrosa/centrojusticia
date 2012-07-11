@@ -6,4 +6,12 @@ module ApplicationHelper
       return @dias[day]
   end
 
+  def invert_class(clase)
+    if clase == 1
+      return 0
+    else
+      return 1
+    end
+  end
+
 end

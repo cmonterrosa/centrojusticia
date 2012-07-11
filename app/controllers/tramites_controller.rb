@@ -3,7 +3,7 @@ class TramitesController < ApplicationController
   end
 
   def list
-    @tramites = Tramite.find(:all)
+    @tramites = Tramite.find(:all, :order => "created_at DESC")
   end
 
   def show
@@ -56,6 +56,16 @@ class TramitesController < ApplicationController
       flash[:notice] = "No se pudo realizar la búsqueda, verifique"
       redirect_back_or_default('/')
     end
+  end
+
+   #----- filtros ajax --------
+  def filtro_estatus
+    if params[:estatu_id].size > 0
+      @estatu = Estatu.find(params[:estatu_id])
+      @tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "created_at DESC") if @estatu
+    end
+    @tramites ||= Tramite.find(:all, :order => "created_at DESC")
+    return render(:partial => 'listajax', :layout => false) if request.xhr?
   end
 
 protected

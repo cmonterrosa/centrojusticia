@@ -1,0 +1,29 @@
+<h1>Documentación anexa</h1>
+<h2>Tramite No. <%=@tramite.folio_integrado%> </h2>
+
+<div id="divlista">
+  <table width="85%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <tr class="d0">
+       <td style="vertical-align: middle;">Descripción</td>
+        <td style="vertical-align: middle;">Tamaño</td>
+        <td style="vertical-align: middle;">Tipo</td>
+         <td style="vertical-align: middle;">Fecha/hora carga</td>
+        <td style="vertical-align: middle;" colspan="2" align="center">Acciones</td>
+    </tr>
+    <% @uploaded_files.each do |uploaded_file| %>
+    <tr>
+       <td style="vertical-align: middle;"><%=h uploaded_file.tipodoc.descripcion%></td>
+       <td style="vertical-align: middle;"><%=h uploaded_file.file_size %> Kb</td>
+       <td style="vertical-align: middle;"><%=h uploaded_file.file_type %></td>
+       <td style="vertical-align: middle;"><%=h uploaded_file.created_at.strftime("%Y-%m-%d / %H:%M:%S")%></td>
+       <td style="vertical-align: middle;"><%= link_to 'Descargar', {:action => "download", :id => uploaded_file}, :method => :delete, :class => 'boton'%></td>
+       <td style="vertical-align: middle;"><%= link_to 'Eliminar', {:action => "destroy", :id => uploaded_file, :tramite => @tramite}, :confirm => '¿Esta seguro?', :method => :post, :class => 'boton' %></td>
+    </tr>
+    <%end%>
+  </table>
+</div>
+
+<br />
+<%= link_to 'Nuevo documento', {:action => "new", :id => @tramite}, :class=> 'boton' %><br /><br />
+
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  :controller => "tramites", :action => "list"%><br />

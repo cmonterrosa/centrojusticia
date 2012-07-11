@@ -1,3 +1,18 @@
-<%=h @user.login %>, your account has been activated.  Welcome aboard!
+<table border="1" width="50%" style="background-color:white; text-align: center;">
 
-  <%=h @url %>
+   <tr style="background-color:gray; color:white">
+    <th colspan="2">
+      <%=h @user.login %>, tu cuenta ha sido activada.  ¡Bienvenido!
+    </th>
+   </tr>
+</table>
+
+<p>
+  Visita esta dirección acceder al sistema:
+  <%= url_for(@url)%>
+</p>
+
+
+
+------------------------------------------------------------------------------------------------------
+<p>Poder Judicial del Estado de Chiapas, todos los derechos reservados.</p>

@@ -31,7 +31,7 @@ class NotificationsMailer < ActionMailer::Base
  
   def setup_email(user)
       @recipients = "#{user.email}"
-      @from = "Centro Estatal de Justicia Alternativa Chiapas <elreyazucar@gmail.com>"
+      @from = "#{NOMBRE_OFICIAL} <elreyazucar@gmail.com>"
       @sent_on  = Time.now
       @body[:user] = user
       @subject   = " "

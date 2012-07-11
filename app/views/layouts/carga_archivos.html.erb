@@ -1,0 +1,34 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-type" content="text/html; charset=utf-8" />
+<title>Centro Estatal de Justicia Alternativa Chiapas</title>
+<style type="text/css">
+<!--
+body { text-align:center;margin:0;padding:0;background:#fdfdfd;font:13px/1.5 "Lucida Grande", Arial, Helvetica, sans-serif;color:#000; }
+#container { width:450px;background:#fff;border:5px solid #aaa;margin:3em auto 0;text-align:left;padding:0 2em; }
+#container form { margin:0 0 2em;background:#fafafa;padding:0.5em 1em;border:1px solid #aaa; }
+#container form label { display:block; }
+#container form input.text,
+#container form textarea.text { border:1px solid #aaa;padding:3px;font:14px/1.5 "Lucida Grande", Arial, Helvetica, sans-serif;color:#000; }
+#pending_files { list-style:none;padding:0;border-bottom:1px solid #aaa; }
+#pending_files li { padding:0 0 0.5em 21px;background:url('/images/folder.png') no-repeat 0 2px; }
+#pending_files li a { color:red;text-decoration:none;font-size:11px;margin-left:1em; }
+#pending_files li a:hover { background:red;color:#fff; }
+#post_submit { font-size:2em; }
+-->
+</style>
+<%= javascript_include_tag :defaults %>
+</head>
+<body>
+<div id="container">
+<h1>Carga de documentos</h1>
+<%= yield %>
+</div>
+<!-- boton -->
+<div align="center">
+  <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  url_for(:back)%><br />
+</div>
+
+</body>
+</html>
