@@ -1,22 +1,22 @@
 Trámite iniciado vía internet           | tram-inte| 1
 Trámite iniciado                        | tram-inic| 1
 Comparecencia no levantada              | no-compar| 2
-Comparecencia concluida                 | comp-conc| 2
-Tramite admitido                        | tram-admi| 3
-Tramite no admitido                     | tram-noad| 3
-Materia asignada                        | mate-asig| 4
-Especialista y comediador asignados     | espe-asig| 5
-Especialista y comediador validados     | vali-espe| 6
-Fecha de sesión asignada                | fech-asig| 7
-Invitaciones firmadas por subdirector   | invi-firm| 8
-Invitaciones en proceso de entrega      | invi-proc| 9
-Invitaciones razonadas                  | invi-razo| 10
-Cambio de fecha de sesión               | camb-sesi| 11
-Se firmo compromiso de participación    | comp-firm| 11
-En sesión                               | en-sesion| 12
-Acuerdo finalizado                      | acue-fina|13
-Sin acuerdo logrado                     | sin-acuer|13
-En proceso de elaboración de convenio   | proc-conv|14
-Convenio validado                       | conv-vali|15
-Convenio Ratificado                     | conv-rati|16
-Trámite finalizado                      | tram-fina|17
+Comparecencia concluida                 | comp-conc| 3
+Tramite admitido                        | tram-admi| 4
+Tramite no admitido                     | tram-noad| 5
+Materia asignada                        | mate-asig| 6
+Especialista y comediador asignados     | espe-asig| 7
+Especialista y comediador validados     | vali-espe| 8
+Fecha de sesión asignada                | fech-asig| 9
+Invitaciones firmadas por subdirector   | invi-firm| 10
+Invitaciones en proceso de entrega      | invi-proc| 11
+Invitaciones razonadas                  | invi-razo| 12
+Cambio de fecha de sesión               | camb-sesi| 13
+Se firmo compromiso de participación    | comp-firm| 14
+En sesión                               | en-sesion| 15
+Acuerdo finalizado                      | acue-fina|16
+Sin acuerdo logrado                     | sin-acuer|17
+En proceso de elaboración de convenio   | proc-conv|18
+Convenio validado                       | conv-vali|19
+Convenio Ratificado                     | conv-rati|20
+Trámite finalizado                      | tram-fina|21
