@@ -28,3 +28,4 @@ config.action_view.cache_template_loading            = true
 # config.threadsafe!
 
 SITE_URL = "localhost:3000"
+NOMBRE_OFICIAL="Centro Estatal de Justicia Alternativa Chiapas"
