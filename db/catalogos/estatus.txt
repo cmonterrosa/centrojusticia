@@ -1,22 +1,22 @@
-Trámite iniciado vía internet           | tram-inte| 1
-Trámite iniciado                        | tram-inic| 1
-Comparecencia no levantada              | no-compar| 2
-Comparecencia concluida                 | comp-conc| 3
-Tramite admitido                        | tram-admi| 4
-Tramite no admitido                     | tram-noad| 5
-Materia asignada                        | mate-asig| 6
-Especialista y comediador asignados     | espe-asig| 7
-Especialista y comediador validados     | vali-espe| 8
-Fecha de sesión asignada                | fech-asig| 9
-Invitaciones firmadas por subdirector   | invi-firm| 10
-Invitaciones en proceso de entrega      | invi-proc| 11
-Invitaciones razonadas                  | invi-razo| 12
-Cambio de fecha de sesión               | camb-sesi| 13
-Se firmo compromiso de participación    | comp-firm| 14
-En sesión                               | en-sesion| 15
-Acuerdo finalizado                      | acue-fina|16
-Sin acuerdo logrado                     | sin-acuer|17
-En proceso de elaboración de convenio   | proc-conv|18
-Convenio validado                       | conv-vali|19
-Convenio Ratificado                     | conv-rati|20
-Trámite finalizado                      | tram-fina|21
+Trámite iniciado vía internet           | tram-inte|0|0
+Trámite iniciado                        | tram-inic|1|0
+Comparecencia no levantada              | no-compar|0|0
+Comparecencia concluida                 | comp-conc|0|0
+Tramite admitido                        | tram-admi|0|0
+Tramite no admitido                     | tram-noad|0|0
+Materia asignada                        | mate-asig|0|0
+Especialista y comediador asignados     | espe-asig|0|0
+Especialista y comediador validados     | vali-espe|0|0
+Fecha de sesión asignada                | fech-asig|0|0
+Invitaciones firmadas por subdirector   | invi-firm|0|0
+Invitaciones en proceso de entrega      | invi-proc|0|0
+Invitaciones razonadas                  | invi-razo|0|0
+Cambio de fecha de sesión               | camb-sesi|0|0
+Se firmo compromiso de participación    | comp-firm|0|0
+En sesión                               | en-sesion|0|0
+Acuerdo finalizado                      | acue-fina|0|0
+Sin acuerdo logrado                     | sin-acuer|0|0
+En proceso de elaboración de convenio   | proc-conv|0|0
+Convenio validado                       | conv-vali|0|0
+Convenio Ratificado                     | conv-rati|0|0
+Trámite finalizado                      | tram-fina|0|1
