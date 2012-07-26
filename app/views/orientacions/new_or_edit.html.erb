@@ -19,7 +19,7 @@
           <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
           <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>
-          <td align="center"><%= f.select :sala_id, Sala.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+          <td align="center"><%= f.select :sala_id, Sala.find(:all, :conditions => ["is_active = ?", true]).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
         </tr>
       </table></td>
     </tr>
@@ -38,7 +38,7 @@
         </tr>
         <tr>
           <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :class => "text", :required => true%></td>
-          <td align="center"><%= f.text_field :materno, :class => "text"%></td>
+          <td align="center"><%= f.text_field :materno, :class => "text", :required => true%></td>
           <td align="center"><%= f.text_field :nombre, :class => "text", :required => true%></td>
           <td align="center"><%= f.select(:sexo, ["Masculino", "Femenino"], :prompt => 'Seleccione una opción')%></td>
         </tr>

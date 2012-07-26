@@ -1,0 +1,36 @@
+<h3 style="color:#104E8B; font-family: Helvetica;">Trámites donde estoy involucrado: <%=@usuario.nombre_completo%></h3>
+
+
+<table width="70%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+
+       <td>
+        <a href="/orientacions/list_by_user" title="Orientaciones">
+          <img src="/images/iconos/orientaciones2.png" width="128" height="128" alt="orientaciones" />
+        </a>
+       </td>
+
+       <td>
+        <a href="/comparecencias/list_by_user" title="Comparecencias">
+          <img src="/images/iconos/comparecencias.png" width="128" height="128" alt="comparecencias" />
+        </a>
+       </td>
+
+
+       <td>
+        <a href="/sesiones/list_by_user" title="Sesiones">
+          <img src="/images/iconos/sesiones_personales.png" width="128" height="128" alt="nueva orientación" />
+        </a>
+       </td>
+
+
+  </tr>
+  <tr align="center">
+    <td class="menu">Orientaciones</td>
+    <td class="menu">Comparecencias</td>
+    <td class="menu">Sesiones</td>
+  </tr>
+</table>
+<br/>
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
+

@@ -17,51 +17,60 @@
     </script>
 </head>
 
-<body background="/images/logos/bg.jpg">
-<table width="90%" border="0" align="center" cellspacing="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; text-align: center;" bgcolor="#FFFFFF">
+<!--<body background="/images/logos/bg.jpg">-->
+<body>
+  <table width="90%" border="0" align="center" cellspacing="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; text-align: center;" bgcolor="#FFFFFF">
+    <!-- header -->
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="1">
+          <tr>
+            <td width="9%" rowspan="2"><img src="/images/logo_gobierno.png" alt="" width="108" height="70" /></td>
+          </tr>
+          <tr>
+            <td width="11%" align="center" class="Estilo1"><img src="/images/CHIA.jpg" alt="" width="112" height="70" /></td>
+            <td width="62%" align="center" class="Estilo1"><img src="/images/TEXTO-TODOS A LA ESCUELA.png" alt="" width="225" height="70" /></td>
+            <td width="18%" align="center" class="Estilo1"><img src="/images/UNICEF-logo.png" alt="" width="208" height="45" /></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+         </table>
+      </td>
+    </tr>
+   <!-- termina header -->
   <tr>
-    <td colspan="2">
-      <table width="100%" border="0" cellspacing="1">
-        <tr>
-          <td width="9%" rowspan="2"><img src="/images/logo_gobierno.png" alt="" width="108" height="70" /></td>
-        </tr>
-        <tr>
-          <td width="11%" align="center" class="Estilo1"><img src="/images/CHIA.jpg" alt="" width="112" height="70" /></td>
-          <td width="62%" align="center" class="Estilo1"><img src="/images/TEXTO-TODOS A LA ESCUELA.png" alt="" width="225" height="70" /></td>
-          <td width="18%" align="center" class="Estilo1"><img src="/images/UNICEF-logo.png" alt="" width="208" height="45" /></td>
-        </tr>
-        <tr>
-          <td>&nbsp;</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <tr>
-
-    <td align="left" bgcolor="#F8A74B" class="Estilo3">
-      <%if session["nombre_completo"]%>
-        <a href="/home/index" title="Inicio del sistema"><img src="/images/iconos/home.png" width="20" height="20" alt="inicio "/></a>
-        Usuario: <%= session["nombre_completo"]%>
-      <%end%>
-    </td>
-    <td height="20" valign="top" bgcolor="#F8A74B" align="right">
-      <%if logged_in?%>
-          <!-- barra de busqueda-->
-          <form action ="/tramites/search" id="search">
-            <input id="searchField" type="text" name="q" />
-            <input id="searchSubmit" type="submit" value="" />
-          </form>
-          <%=link_to 'Mi página',  :controller => "customs"%> |
-          <%=link_to 'Cerrar sesión', :action => "destroy", :controller=>"sessions"%>
-      <%end%>
-    </td>
+      <td align="left" bgcolor="#F8A74B" class="Estilo3">
+        <%if session["nombre_completo"]%>
+          <a href="/home/index" title="Inicio del sistema"><img src="/images/iconos/house_2.png" width="42" height="42" alt="inicio "/></a>
+          Usuario: <%= session["nombre_completo"]%>
+        <%end%>
+      </td>
+      <td height="20" valign="top" bgcolor="#F8A74B" align="right">
+        <%if logged_in?%>
+            <!-- barra de busqueda-->
+            <form action ="/tramites/search" id="search">
+              <input id="searchField" type="text" name="q" />
+              <input id="searchSubmit" type="submit" value="" />
+            </form>
+            <%=link_to 'Mi perfil',  :controller => "customs", :action => "profile"%> |
+            <%=link_to 'Mi página',  :controller => "customs"%> |
+            <%=link_to 'Cerrar sesión', :action => "destroy", :controller=>"sessions"%>
+        <%end%>
+      </td>
   </tr>
 
   <!-- contenido principal -->
   <tr>
     <td colspan="2" valign="top" align="center">
-      <p  class="menu" style="color: orange"><%= flash[:notice] %></p>
-    <%=yield%>
+      <%if flash[:notice]%>
+        <div class="notice">
+            <%= flash[:notice] %>
+        </div>
+      <%else%>
+        <p></p>
+      <%end%>
+      <%=yield%>
     </td>
   </tr>
   <tr>

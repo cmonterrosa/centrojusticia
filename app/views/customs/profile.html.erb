@@ -1,0 +1,50 @@
+<h4 style=" font-family:  Helvetica;">Usuario: <%=@usuario.nombre_completo%></h4>
+
+<div id="divlista">
+  <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="2">
+        Datos generales
+      </th>
+     </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Correo electrónico:</b></td>
+       <td style="vertical-align: middle;"><%=@usuario.email%></td>
+    </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Domicilio:</b></td>
+      <td style="vertical-align: middle;"><%=@usuario.direccion%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Adscripción:</b></td>
+       <td style="vertical-align: middle;"><%=@usuario.subdireccion.descripcion%></td>
+    </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Fecha de registro:</b></td>
+      <td style="vertical-align: middle;"><%=@usuario.created_at.strftime("%d-%m-%Y")%></td>
+    </tr>
+  </table>
+  <br /><br />
+
+  <!-- Roles that belongs-->
+  <table width="40%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th>
+        Perfiles
+      </th>
+     </tr>
+     
+     <%@usuario.roles.each do |role|%>
+       <tr class="d0" align="center">
+         <td style="vertical-align: middle;"><%=role.descripcion%></td>
+       </tr>
+     <%end%>
+  </table><br /><br />
+</div>
+
+
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />

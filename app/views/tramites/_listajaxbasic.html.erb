@@ -1,0 +1,47 @@
+<!-- contenido -->
+<div id="divlista">
+    <table width="75%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <tr class="d0">
+       
+        <td style="vertical-align: middle;">Folio</td>
+        <td style="vertical-align: middle;">Solicitante</td>
+         <td style="vertical-align: middle;">Ultima actualización</td>
+        <td style="vertical-align: middle;"><%=h "Estatus"%></td>
+        <td style="vertical-align: middle;" colspan="3">Acciones</td>
+    </tr>
+    <%@tramites.each do |tramite|%>
+    <tr>
+        <td style="vertical-align: middle;"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
+       <%if tramite.orientacion%>
+           <td style="vertical-align: middle;"><%=tramite.orientacion.solicitante%></td>
+       <%else%>
+           <td style="vertical-align: middle;">---</td>
+       <%end%>
+
+       <td style="vertical-align: middle;"><%=tramite.updated_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
+       <td style="vertical-align: middle;"><%=tramite.estatus%></td>
+       <!-- siguiente estatus -->
+       <%ids = []%>
+       <%current_user.roles.each do |role| ids << role.id end%>
+       <%flujos = Flujo.find(:all, :conditions => ["old_status_id = ? and role_id in (?)", tramite.estatu_id, ids])%>
+       <%if flujos.size > 0%>
+            <%flujos.each do |flujo|%>
+                 <td style="vertical-align: middle;"><%=link_to "#{flujo.descripcion}", {:action => "update_estatus", :id => tramite, :new_st => flujo.new_status_id}, :confirm => "¿Esta seguro que desea cambiar el estatus?", :method => :delete, :class => 'boton' -%></td>
+            <%end%>
+         <%end%>
+       <!-- resumen general -->
+       <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :id => tramite}, :class => 'boton'  -%></td>
+    </tr>
+    <%end%>
+  </table>
+</div>
+
+<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
+  <%= observe_field :estatu_id,
+        :on => "change",
+        :before => "Element.show('spinner')",
+        :success => "Element.hide('spinner')",
+        :url => {:controller => 'tramites',
+        :action => 'filtro_estatus'},
+        :update => 'divlista',
+        :with => :estatu_id %>
