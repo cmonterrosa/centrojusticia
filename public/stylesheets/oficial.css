@@ -98,3 +98,16 @@ a.boton {
 	position:relative;
 	top:1px;
 }
+
+
+/* notificaciones */
+
+.notice {
+	background: #FFF6BF;
+	border-top: 2px solid #FFD324;
+	border-bottom: 2px solid #FFD324;
+	text-align: center;
+	margin: 10px auto;
+	padding: 5px 20px;
+	}
+
