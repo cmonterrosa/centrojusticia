@@ -29,3 +29,4 @@ config.action_view.cache_template_loading            = true
 
 SITE_URL = "localhost:3000"
 NOMBRE_OFICIAL="Centro Estatal de Justicia Alternativa Chiapas"
+HORAS_ATENCION=["8", "9", "10", "11", "14", "15", "16", "17", "18", "19", "20"]
