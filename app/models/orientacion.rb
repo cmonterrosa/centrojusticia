@@ -6,6 +6,10 @@ class Orientacion < ActiveRecord::Base
   belongs_to :sala
   has_one :comparecencia
 
+  #---- validaciones ---
+  validates_presence_of :sala_id, :message => "Seleccione una sala"
+  validates_presence_of :municipio_id, :message => "Seleccione una municipio"
+
   def solicitante
     "#{self.paterno} #{self.materno} #{self.nombre}"
   end
