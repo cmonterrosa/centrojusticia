@@ -18,6 +18,7 @@ class CreateUsers < ActiveRecord::Migration
       t.string :direccion, :limit => 120
       t.integer :subdireccion_id, :default => 1
       t.boolean :activo, :default => true
+      t.boolean :admin, :default => false
     end
 
     add_index :users, :login, :unique => true

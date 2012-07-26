@@ -8,6 +8,8 @@ class CreateTramites < ActiveRecord::Migration
       t.integer :estatu_id
       t.integer :materia_id
       t.integer :user_id
+      # --- estampas de tiempo
+      t.datetime :fecha_fin
       t.timestamps
     end
 
