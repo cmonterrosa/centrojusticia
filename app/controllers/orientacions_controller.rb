@@ -1,6 +1,6 @@
 class OrientacionsController < ApplicationController
-  require_role "especialistas"
-  require_role "subdireccion", :for => [:list_all, :filtro_specialista] 
+  require_role "atencionpublico", :for => [:new_or_edit, :save]
+ # require_role "subdireccion", :for => [:list_all, :filtro_specialista]
 
   def index
    
@@ -37,6 +37,7 @@ class OrientacionsController < ApplicationController
   end
 
   def new_or_edit
+    @orientacion = Orientacion.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
     @orientacion ||= Orientacion.new
     @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
   end

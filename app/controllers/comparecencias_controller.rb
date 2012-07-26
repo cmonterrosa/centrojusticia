@@ -1,7 +1,7 @@
 class ComparecenciasController < ApplicationController
 
   def new_or_edit
-    @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]])
+    @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
     @comparecencia ||= Comparecencia.new
     @comparecencia.tramite ||= Tramite.find(params[:id])
     @dias = {'Lunes' => 1, 'Martes' => 2, 'Miercoles' => 3, 'Jueves' => 4, 'Viernes' => 5, 'Sábados' => 6}
@@ -21,7 +21,7 @@ class ComparecenciasController < ApplicationController
     @comparecencia.user = current_user
     if @comparecencia.save
       flash[:notice] = "Guardado correctamente"
-      redirect_to :controller => "orientacions", :action => "list_by_user"
+      redirect_to :controller => "tramites", :action => "menu", :id => @tramite
     else
       flash[:notice] = "No se pudo guardar, verifique"
       render :action => "new_or_edit"
