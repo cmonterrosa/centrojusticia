@@ -10,6 +10,12 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
   map.resource :admins
 
+
+  #-- Rutas para archivos adjuntos ---
+  map.resources :attachments
+  map.resources :posts
+
+
   #---- rutas globales ---
   map.admin "/admin/index", :controller=>'admin',:action=>'index'
   #map.page '/page',:controller=>'customs',:action=>'page'
