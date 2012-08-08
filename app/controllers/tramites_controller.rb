@@ -1,4 +1,8 @@
 class TramitesController < ApplicationController
+  before_filter :login_required
+  require_role "especialistas", :for => [:menu]
+
+
   def index
   end
 
@@ -58,7 +62,6 @@ class TramitesController < ApplicationController
                 @users = @tramite.materia.users
                 return render(:partial => 'asignacion_especialista', :layout => "oficial")
             when "fech-asig" #---- asignacion de fecha y hora de sesión ----
-                @fechahora = Sesion.new
                 return render(:partial => 'asignacion_fecha_hora_sesion', :layout => "oficial")
             else
               update_tramite_model
@@ -74,6 +77,7 @@ class TramitesController < ApplicationController
             @sesion.save
             update_tramite_model
           end
+          
       end
   end
 

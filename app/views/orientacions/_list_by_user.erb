@@ -9,14 +9,14 @@
     </tr>
     <%@orientaciones.each do |orientacion|%>
       <tr>
-        <td style="vertical-align: middle;"><%=orientacion.fechahora.strftime("%Y-%m-%d %H:%M:%S")%></td>
+        <td style="vertical-align: middle;"><%=orientacion.fechahora.strftime("%Y-%m-%d %H:%M")%></td>
         <td style="vertical-align: middle;"><%=orientacion.solicitante%></td>
         <% if orientacion.sala %>
           <td style="vertical-align: middle;"><%=orientacion.sala.descripcion%></td>
         <%end%>
         <td style="vertical-align: middle;"><%=orientacion.tramite.estatu.descripcion%></td>
-        <td style="vertical-align: middle;"><%=link_to "Comparecencia",{:controller => "comparecencias", :action => "new_or_edit", :id => orientacion.tramite}, :class => "boton"%></td>
-        <td style="vertical-align: middle;"><%=button_to "Cambiar estatus", :action => "change_estatus", :id => orientacion, :token => "En espera", :confirm => '¿Esta seguro que desea reactivarlo?', :method => :delete%></td>
+        <td style="vertical-align: middle;"><%=link_to "Comparecencia",{:controller => "comparecencias", :action => "new_or_edit", :id => orientacion.tramite},  :confirm => '¿Esta seguro que desea capturar la comparecencia?', :class => 'boton'%></td>
+        <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :controller => "tramites", :id => orientacion.tramite}, :class => 'boton'%></td>
         <td style="vertical-align: middle;"></td>
       </tr>
     <%end%>

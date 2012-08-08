@@ -41,7 +41,7 @@
               Fecha/Hora de inicio de sesión
           </th>
           <td>
-            <%= collection_select("fechahora", "mediador_id", @users, :id, :nombre_completo, :prompt => '>> Seleccione una opción')%>
+            <%= text_field :sesion, :start_at %>
           </td>
       </tr>
 
@@ -55,17 +55,6 @@
 <% end %>
 </div>
 
-
-
-<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
-<%= observe_field 'sesion_mediador_id',
-    :on => "change",
-    :before => "Element.show('spinner')",
-    :success => "Element.hide('spinner')",
-    :url => {:controller => 'tramites',
-    :action => 'get_comediador'},
-    :update => 'sesion_comediador_id',
-    :with => "sesion_mediador_id"%>
 
 
 

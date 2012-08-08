@@ -1,6 +1,6 @@
 class OrientacionsController < ApplicationController
   require_role "atencionpublico", :for => [:new_or_edit, :save]
- # require_role "subdireccion", :for => [:list_all, :filtro_specialista]
+  require_role "especialistas", :for => [:list_by_user]
 
   def index
    
@@ -8,7 +8,13 @@ class OrientacionsController < ApplicationController
 
   def list_by_user
     @user = current_user
-    @orientaciones = Orientacion.find(:all, :conditions => ["user_id = ?", @user.id], :order => "fechahora")
+    @estatus = Estatu.find_by_clave("tram-inic")
+    @orientaciones = Orientacion.find(:all,
+                                       :select => "o.*",
+                                       :joins => "o, tramites t",
+                                       :conditions => ["o.tramite_id = t.id AND o.user_id = ? AND t.estatu_id = ?", @user.id, @estatus.id],
+                                       :order => "o.fechahora")
+
   end
 
   def list_all

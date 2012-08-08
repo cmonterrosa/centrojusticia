@@ -1,4 +1,5 @@
 class ComparecenciasController < ApplicationController
+  require_role "especialistas"
 
   def new_or_edit
     @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
@@ -26,6 +27,17 @@ class ComparecenciasController < ApplicationController
       flash[:notice] = "No se pudo guardar, verifique"
       render :action => "new_or_edit"
     end
+  end
+
+
+  def list_by_user
+    @user = current_user
+    @estatus = Estatu.find_by_clave("comp-conc")
+    @comparecencias = Comparecencia.find(:all,
+                                       :select => ["c.*"],
+                                       :joins => ["c, tramites t"],
+                                       :conditions => ["c.tramite_id = t.id AND c.user_id = ? AND t.estatu_id = ?", @user.id, @estatus.id],
+                                       :order => "c.fechahora")
   end
 
 end

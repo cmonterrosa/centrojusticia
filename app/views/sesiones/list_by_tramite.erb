@@ -1,10 +1,10 @@
-<h4 style=" font-family:  Helvetica;">Sesiones del trámite 73673673673</h4>
+<h4 style=" font-family:  Helvetica;">Sesiones del trámite <%=@tramite.folio_integrado%></h4>
 
 <!-- contenido -->
 <%= render :partial => "list"%>
 
-
-<%=link_to "Nueva sesión", {:action => "new", :id => 1}, :class => 'boton'%><br />
+<br />
+<%=link_to "Nueva sesión", {:action => "new", :id => @tramite}, :class => 'boton'%><br />
 
 <br />
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "customs"%><br />

@@ -1,0 +1,28 @@
+<div id="calendar">
+  <h2>
+    <p><%=h(@title)%></p>
+  </h2>
+  
+  <h2 id="month">
+    <%= link_to "<", :month => (@date.beginning_of_month-1).strftime("%Y-%m") %>
+    <%=h @date.strftime("%B %Y") %>
+    <%= link_to ">", :month => (@date.end_of_month+1).strftime("%Y-%m") %>
+  </h2>
+  <% calendar_for @sesiones, :year => @date.year, :month => @date.month do |calendar| %>
+    <%= calendar.head('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado') %>
+    <% calendar.day(:day_method => :start_at) do |date, sesiones| %>
+      <%= date.day %>
+      <ul>
+        <% for sesion in sesiones %>
+          <li><%= link_to "#{sesion.start_at.strftime("%H:%M")}", {:controller => "sesiones", :action => "show", :id => sesion}, {:title => "#{sesion.title}", :class => "sesionesdiarias"} %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  <% end %>
+</div><br/>
+
+<!-- back -->
+<div align="center">
+  <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  url_for(:back)%><br />
+</div>
+

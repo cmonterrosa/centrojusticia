@@ -16,14 +16,20 @@
         </a>
        </td>
 
+        <td>
+         <a href="/upload/index/<%=@tramite.id%>" title="Archivos adjuntos">
+          <img src="/images/iconos/descarga.png" width="128" height="128" alt="comparecencias" />
+         </a>
+        </td>
+
        <td>
-        <a href="/invitaciones/list_by_tramite" title="Invitaciones">
+        <a href="/invitaciones/list_by_tramite/<%=@tramite.id%>" title="Invitaciones">
           <img src="/images/iconos/invitaciones.png" width="128" height="128" alt="invitaciones" />
         </a>
        </td>
 
        <td>
-        <a href="/sesiones/list_by_tramite" title="Sesiones">
+        <a href="/sesiones/list_by_tramite/<%=@tramite.id%>" title="Sesiones">
           <img src="/images/iconos/sesiones_personales.png" width="128" height="128" alt="nueva orientación" />
         </a>
        </td>
@@ -33,6 +39,7 @@
   <tr align="center">
     <td class="menu">Orientación</td>
     <td class="menu">Comparecencia</td>
+    <td class="menu">Documentación</td>
     <td class="menu">Invitaciones</td>
     <td class="menu">Sesiones</td>
   </tr>

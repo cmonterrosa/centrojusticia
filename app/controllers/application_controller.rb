@@ -9,8 +9,9 @@ class ApplicationController < ActionController::Base
   include RoleRequirementSystem
 
   layout 'oficial', :except => :autenticacion
- 
 
+  Date::MONTHNAMES = [nil, "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+ 
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 end
