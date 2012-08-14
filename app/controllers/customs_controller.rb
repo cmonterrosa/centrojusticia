@@ -21,7 +21,7 @@ class CustomsController < ApplicationController
 
 
   def calendario
-     @sesiones = Sesion.find(:all, :order => "start_at")
+     @sesiones = Sesion.find(:all, :conditions => ["start_at is not NULL"], :order => "start_at")
      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
      @title = "Calendario personalizado para #{current_user.nombre_completo}"
      return render(:partial => 'agenda/calendario', :layout => "oficial")

@@ -1,4 +1,4 @@
-<h3 style="color:#104E8B; font-family: Helvetica;">Trámites donde estoy involucrado: <%=@usuario.nombre_completo%></h3>
+<h3 style="color:#104E8B; font-family: Helvetica;">Especialista: <%=@usuario.nombre_completo%></h3>
 
 
 <table width="70%" border="0" cellspacing="0" cellpadding="0">
@@ -16,19 +16,24 @@
         </a>
        </td>
 
-
        <td>
         <a href="/sesiones/list_by_user" title="Sesiones">
           <img src="/images/iconos/sesiones_personales.png" width="128" height="128" alt="nueva orientación" />
         </a>
        </td>
 
-
+       <td>
+        <a href="/customs/calendario" title="Calendario">
+          <img src="/images/iconos/agenda3.png" width="128" height="128" alt="calendario" />
+        </a>
+       </td>
   </tr>
+
   <tr align="center">
     <td class="menu">Orientaciones</td>
     <td class="menu">Comparecencias</td>
     <td class="menu">Sesiones</td>
+    <td class="menu">Calendario</td>
   </tr>
 </table>
 <br/>

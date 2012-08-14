@@ -1,0 +1,30 @@
+<!-- contenido -->
+  <%= render :partial => "show"%>
+<br />
+
+<% form_for :sesion, @sesion, :url => { :action => "save", :id => @sesion.tramite, :sesion_id => @sesion.id } do |f| -%>
+<table>
+  <tr class="d0">
+     <td align="center"><b>Observaciones:</b></td>
+  </tr>
+  <tr class="d1">
+     <td align="center"><%= f.text_area :observaciones, :class => "text", :required => true%></td>
+  </tr>
+  <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :action => "list_by_user"-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+</table>
+<%end%>
+

@@ -1,10 +1,10 @@
 class AdminController < ApplicationController
-  before_filter :login_required
+  #before_filter :login_required
+  require_role [:admin], :except => [:index]
   
   def index
 
   end
-
 
   #--- administracion de roles y estatus por visualizar
   def roles_estatus

@@ -1,0 +1,60 @@
+<table border="1" width="70%" style="background-color:white; text-align: center;">
+
+   <tr style="background-color:gray; color:white">
+    <th colspan="2">
+      Datos del trámite
+    </th>
+   </tr>
+
+    <tr>
+    <th>Folio del trámite:</th>
+    <td><%=@tramite.folio_integrado%></td>
+    </tr>
+
+   
+   <tr>
+    <th><%=h "Estatus:"%></th>
+    <td><%=@tramite.estatus%></td>
+  </tr>
+
+
+  
+
+  <tr style="background-color:gray; color:white">
+    <th colspan="2">
+      Datos de la sesión
+    </th>
+  </tr>
+
+  <tr>
+    <th>Fecha-hora:</th>
+    <td><%=@sesion.start_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
+  </tr>
+
+  <tr>
+    <th>Sala:</th>
+    <td>----</td>
+  </tr>
+
+  <tr>
+    <th>Mediador:</th>
+    <td><%=@sesion.mediador.nombre_completo%></td>
+  </tr>
+
+  <tr>
+    <th>Comediador:</th>
+    <td> <%=@sesion.comediador.nombre_completo%></td>
+  </tr>
+</table>
+
+
+<p>
+<h4>Para mayor información consulte:
+  <%= url_for(:host => "#{SITE_URL}", :controller => "sesiones", :action => "show", :id => @sesion) %>
+</h4>
+</p>
+
+
+
+------------------------------------------------------------------------------------------------------
+<p>Poder Judicial del Estado de Chiapas, todos los derechos reservados</p>

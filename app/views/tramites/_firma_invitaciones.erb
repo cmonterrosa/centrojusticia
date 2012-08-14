@@ -1,0 +1,24 @@
+<!-- ficha -->
+<%= render :partial => "ficha"%>
+
+<!-- firma -->
+<table class="ficha" width="30%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+<% form_tag :action => 'update_estatus', :id =>@tramite do -%>
+   <tr align="center" class="d1">
+       <td>FIRMAR:</td>
+       <td bgcolor="#f3f3f3" align="left">
+           <%=check_box_tag 'infosesion', 'firma'%>
+       </td>
+   </tr>
+
+      <tr>
+        <th>
+          <th class="boton"><%= submit_tag "Guardar", :onclick => "return comprobar();" %></th>
+        </th>
+      </tr>
+
+<%end%>
+</table>
+
+<br />
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "customs"%><br />

@@ -11,6 +11,10 @@ class UsersController < ApplicationController
   def create
     logout_keeping_session!
     @user = User.new(params[:user])
+    if params[:codigo][:numero].strip != CODIGO_SEGURIDAD
+      flash[:error] = "Es necesario el codigo de seguridad,  contacte al administrador"
+      render :action => 'new'
+    end
     success = @user && @user.save
     if success && @user.errors.empty?
       flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."

@@ -7,10 +7,20 @@ class NotificationsMailer < ActionMailer::Base
     @subject    += "Tramite: #{tramite.id} ha sido creado"
     @body[:url]  = "http://#{SITE_URL}/tramites/show/#{@tramite.id}"
   end
-    def tramite_updated(tramite, user)
+  def tramite_updated(tramite, user)
      setup_email(user)
     @subject    +=  "tramite: #{tramite.id} ha sido modificado"
     @body[:url]  = "http://#{SITE_URL}/tramites/show/#{tramite.id}"
+  end
+
+  #---- sesiones ----
+  def sesion_created(tipo, sesion)
+      user = (tipo=="mediador" ? sesion.mediador : sesion.comediador)
+      setup_email(user)
+      @sesion = Sesion.find(sesion)
+      @tramite = @sesion.tramite
+      @subject    += "Se te ha programado una sesión como #{tipo}"
+      @body[:url]  = "http://#{SITE_URL}/sesiones/show/#{@sesion.id}"
   end
 
    #--- orientaciones ---

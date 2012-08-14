@@ -59,26 +59,69 @@ class TramitesController < ApplicationController
               return render(:partial => 'asignacion_materia', :layout => "oficial")
             when "espe-asig" #--- asignacion de especialista --
                session["tramite_id"] = @tramite.id
-                @users = @tramite.materia.users
-                return render(:partial => 'asignacion_especialista', :layout => "oficial")
-            when "fech-asig" #---- asignacion de fecha y hora de sesión ----
+                if !(@users = @tramite.materia.users).empty?
+                    return render(:partial => 'asignacion_especialista', :layout => "oficial")
+                else
+                    return render(:partial => 'no_asignacion_especialista', :layout => "oficial")
+                end
+            when "fech-asig" #---- asignación de fecha y hora de sesión ----
                 return render(:partial => 'asignacion_fecha_hora_sesion', :layout => "oficial")
+            when "invi-firm"
+                return  render(:partial => 'firma_invitaciones', :layout => "oficial")
+            when "invi-proc"
+                redirect_to :action => "show", :controller => "invitaciones", :id=> @tramite
             else
               update_tramite_model
          end
       else
-          if params[:tramite]
-            @tramite.update_attributes(params[:tramite])
-            update_tramite_model
-          end
-          if params[:sesion]
-            @sesion = Sesion.new(params[:sesion])
-            @sesion.tramite = Tramite.find(params[:id])
-            @sesion.save
-            update_tramite_model
-          end
+          case params
+              when params.has_key?(:tramite)
+                  @tramite.update_attributes(params[:tramite])
+                  update_tramite_model
+              when params.has_key?(:sesion)
+                  @sesion = Sesion.new(params[:sesion])
+                  @sesion.tramite = Tramite.find(params[:id])
+                  @sesion.save
+                  #--- Notificamos a especialistas --
+                  NotificationsMailer.deliver_sesion_created("mediador", @sesion)
+                  NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+                  update_tramite_model
+              when params.has_key?(:infosesion)
+                  @tramite = Tramite.find(params[:id])
+                  update_tramite_model
+              else
+                  flash[:notice] = "No se pudo cambiar el estatus, verifique"
+           end
+          redirect_to :action => "list"
+
+
+
+
+          # inicia comentarios
+#          if params[:tramite]
+#            @tramite.update_attributes(params[:tramite])
+#            update_tramite_model
+#          end
+#          if params[:sesion]
+#            @sesion = Sesion.new(params[:sesion])
+#            @sesion.tramite = Tramite.find(params[:id])
+#            @sesion.save
+#            #--- Notificamos a especialistas --
+#            NotificationsMailer.deliver_sesion_created("mediador", @sesion)
+#            NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+#            update_tramite_model
+#          end
+#          if params[:infosesion] #--- si firma
+#             @tramite = Tramite.find(params[:id])
+#             update_tramite_model
+#          else
+#            flash[:notice] = "No se firmaron invitaciones"
+#            #redirect_to :action => "list"
+#          end
+          #-- termina comentarios
           
       end
+      #redirect_to :action => "list"
   end
 
   def search
@@ -127,7 +170,6 @@ protected
      else
         flash[:notice] = "No se pudo guardar, verifique"
      end
-     redirect_to :action => "list"
   end
 
 end

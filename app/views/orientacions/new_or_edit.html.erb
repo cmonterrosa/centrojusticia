@@ -38,8 +38,8 @@
         </tr>
         <tr>
           <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :class => "text", :required => true%></td>
-          <td align="center"><%= f.text_field :materno, :class => "text", :required => true%></td>
-          <td align="center"><%= f.text_field :nombre, :class => "text", :required => true%></td>
+          <td align="center"><%= f.text_field :materno,  :onKeyPress => "return CharNum(event, 'letra');", :class => "text"%></td>
+          <td align="center"><%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :class => "text", :required => true%></td>
           <td align="center"><%= f.select(:sexo, ["Masculino", "Femenino"], :prompt => 'Seleccione una opción')%></td>
         </tr>
       </table></td>
