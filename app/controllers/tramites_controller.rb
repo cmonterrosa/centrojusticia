@@ -53,11 +53,14 @@ class TramitesController < ApplicationController
     #---- excepciones -----
       if params[:new_st]
         case Estatu.find(params[:new_st]).clave
-            when "comp-conc" #--- levantar comparecencia --
+            when "comp-conc" 
+              ##--- levantar comparecencia --
               redirect_to :action => "new_or_edit", :controller => "comparecencias", :id => @tramite
-            when "mate-asig" #--- asignacion de materia --
+            when "mate-asig" 
+              ##--- asignacion de materia --
               return render(:partial => 'asignacion_materia', :layout => "oficial")
-            when "espe-asig" #--- asignacion de especialista --
+            when "espe-asig" 
+               ##--- asignacion de especialista --
                session["tramite_id"] = @tramite.id
                 if !(@users = @tramite.materia.users).empty?
                     return render(:partial => 'asignacion_especialista', :layout => "oficial")
@@ -74,55 +77,29 @@ class TramitesController < ApplicationController
               update_tramite_model
          end
       else
-          case params
-              when params.has_key?(:tramite)
-                  @tramite.update_attributes(params[:tramite])
-                  update_tramite_model
-              when params.has_key?(:sesion)
-                  @sesion = Sesion.new(params[:sesion])
-                  @sesion.tramite = Tramite.find(params[:id])
-                  @sesion.save
-                  #--- Notificamos a especialistas --
-                  NotificationsMailer.deliver_sesion_created("mediador", @sesion)
-                  NotificationsMailer.deliver_sesion_created("comediador", @sesion)
-                  update_tramite_model
-              when params.has_key?(:infosesion)
-                  @tramite = Tramite.find(params[:id])
-                  update_tramite_model
-              else
-                  flash[:notice] = "No se pudo cambiar el estatus, verifique"
-           end
-          redirect_to :action => "list"
 
-
-
-
-          # inicia comentarios
-#          if params[:tramite]
-#            @tramite.update_attributes(params[:tramite])
-#            update_tramite_model
-#          end
-#          if params[:sesion]
-#            @sesion = Sesion.new(params[:sesion])
-#            @sesion.tramite = Tramite.find(params[:id])
-#            @sesion.save
-#            #--- Notificamos a especialistas --
-#            NotificationsMailer.deliver_sesion_created("mediador", @sesion)
-#            NotificationsMailer.deliver_sesion_created("comediador", @sesion)
-#            update_tramite_model
-#          end
-#          if params[:infosesion] #--- si firma
-#             @tramite = Tramite.find(params[:id])
-#             update_tramite_model
-#          else
-#            flash[:notice] = "No se firmaron invitaciones"
-#            #redirect_to :action => "list"
-#          end
-          #-- termina comentarios
-          
+      if params.has_key?(:tramite)
+         @tramite.update_attributes(params[:tramite])
+         update_tramite_model if @tramite.save
+      elsif params.has_key?(:sesion)
+         @sesion = Sesion.find(:first, :conditions => ["tramite_id = ? and start_at is NULL", params[:id]])
+         @sesion ||= Sesion.new(params[:sesion])
+         @tramite = @sesion.tramite = Tramite.find(params[:id])
+         update_tramite_model if @sesion.save
+         #--- Notificamos a especialistas si ya tienen fecha --
+         if @sesion.start_at && @sesion.comediador_id && @sesion.mediador_id
+            NotificationsMailer.deliver_sesion_created("mediador", @sesion)
+            NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+         end
+      elsif params.has_key?(:infosesion)
+        @tramite = Tramite.find(params[:id])
+        update_tramite_model
+      else
+        flash[:notice] = "No se pudo cambiar el estatus, verifique"
+         redirect_to :action => "list"
       end
-      #redirect_to :action => "list"
-  end
+   end
+ end
 
   def search
     if params[:q] && params[:q] =~ /\d+/
@@ -165,11 +142,8 @@ protected
   end
 
   def update_tramite_model
-     if @tramite.update_flujo_estatus!(current_user)
-        flash[:notice] = "Registro actualizado correctamente"
-     else
-        flash[:notice] = "No se pudo guardar, verifique"
-     end
+    flash[:notice] = (@tramite.update_flujo_estatus!(current_user)) ? "Registro actualizado correctamente" :  "No se pudo guardar, verifique"
+    redirect_to :action => "list"
   end
 
 end

@@ -18,8 +18,6 @@
   </tr>
 
 
-  
-
   <tr style="background-color:gray; color:white">
     <th colspan="2">
       Datos de la sesión
@@ -28,7 +26,7 @@
 
   <tr>
     <th>Fecha-hora:</th>
-    <td><%=@sesion.start_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
+    <td><%=h((@sesion.start_at)? @sesion.start_at.strftime("%Y-%m-%d %H:%M:%S") : "Sin asignar")%></td>
   </tr>
 
   <tr>

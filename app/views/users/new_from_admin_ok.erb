@@ -1,0 +1,69 @@
+
+
+
+
+
+
+
+
+
+
+
+<h1>Registro de usuarios</h1>
+<% @user.password = @user.password_confirmation = nil %>
+
+<%= error_messages_for :user %>
+
+
+
+
+<% form_tag :action => 'save', :id =>@token do -%>
+<table  class="botones">
+  <tr class="botones">
+    <th class="botones">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+     <th><%= collection_select("user", "subdireccion_id", Subdireccion.all, :id, :descripcion, :prompt => '>> Seleccione una opción')    %></th>
+     <th><%= text_field "user", "login"%></th>
+     <th><%= text_field "user", "paterno"%></th>
+     <th class="botones"><%= submit_tag "Agregar", :onclick => "return comprobar();" %></th>
+  </tr>
+</table>
+<% end %>
+
+
+
+
+---------------------------------------
+<% form_for :user, :url => url_for(:controller => "users", :action => "save") do |f| -%>
+<p><%= f.label "Subdirección Regional" %><br />
+  <%= f.select :subdireccion_id, Subdireccion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%>
+</p>
+
+<p><%= f.label :login %><br/>
+<%= f.text_field :login %></p>
+
+<p><%= f.label "Nombre" %><br/>
+<%= f.text_field :nombre %></p>
+
+<p><%= f.label "Apellido Paterno" %><br/>
+<%= f.text_field :paterno %></p>
+
+<p><%= f.label "Apellido Materno" %><br/>
+<%= f.text_field :materno %></p>
+
+<p><%= f.label "Direccion particular" %><br/>
+<%= f.text_field :direccion %></p>
+
+<p><%= f.label "Correo electrónico" %><br/>
+<%= f.text_field :email %></p>
+
+<p><%= f.label "Contraseña" %><br/>
+<%= f.password_field :password %></p>
+
+<p><%= f.label :password_confirmation, "Confirmación de la contraseña" %><br/>
+<%= f.password_field :password_confirmation %></p>
+
+
+<%= hidden_field 'codigo', 'numero', :value => CODIGO_SEGURIDAD%>
+
+<p><%= submit_tag 'Registrar' %></p>
+<% end -%>

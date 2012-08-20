@@ -16,8 +16,5 @@
 </div>
 
 
-
-
-
-
-<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />
+<br /><%=link_to "Crear usuario", {:action => "new_from_admin", :controller => "users", :id => @token}, :class => 'boton'  -%>
+<br /><br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />

@@ -7,6 +7,16 @@ class UsersController < ApplicationController
   def new
     @user = User.new
   end
+
+  def new_from_admin
+    @token = params[:id]
+    if validate_token(@token)
+       @user = User.new
+    else
+      redirect_to :controller=> "admin"
+    end
+   
+  end
  
   def create
     logout_keeping_session!
@@ -17,7 +27,7 @@ class UsersController < ApplicationController
     end
     success = @user && @user.save
     if success && @user.errors.empty?
-      flash[:notice] = "Thanks for signing up!  We're sending you an email with your activation code."
+      flash[:notice] = "Gracias por registrarte."
       redirect_back_or_default('/')
     else
       flash[:error]  = "We couldn't set up that account, sorry.  Please try again, or contact an admin (link is above)."
@@ -42,9 +52,18 @@ class UsersController < ApplicationController
     end
   end
 
-  def page
-    @user = current_user
-    @orientaciones = Orientacion.find(:all, :conditions => ["user_id = ?", @user.id], :order => "fechahora")
+  # create user from admin role not need activation
+  def save
+    @user = User.new(params[:user])
+    @user.activated_at = Time.now
+    success = @user && @user.save
+    if success && @user.errors.empty?
+      flash[:notice] = "Usuario creado correctamente"
+      redirect_to :action => "show_roles", :controller => "admin"
+    else
+      flash[:notice]  = "No se puedo crear usuario, verifique los datos"
+      render :action => 'new_from_admin'
+    end
   end
 
 end

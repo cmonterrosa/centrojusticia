@@ -1,33 +1,8 @@
 <h3>Asignación de materia</h3>
 
-<div id="scroll">
-      <table class="sample" width="70%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-                <tr align="center" class="d0">
-                  <td width="30%" bgcolor="#E8E8E8">Folio</td>
-                  <td width="50%" bgcolor="#E8E8E8">Solicitante</td>
-                  <td width="20%" bgcolor="#E8E8E8">Subdirección</td>
-                </tr>
-            <!-- Registros -->
-              
-               <tr align="center" class="d1">
-                  <td  bgcolor="#f3f3f3">
-                      <%=@tramite.folio_integrado%>
-                  </td>
-                  <td  bgcolor="#f3f3f3">
-                    <%if @tramite.orientacion%>
-                      <%=@tramite.orientacion.solicitante%>
-                    <%else%>
-                      ------
-                    <%end%>
-                  </td>
-
-                  <td  bgcolor="#f3f3f3">
-                      <%=@tramite.subdireccion.descripcion%>
-                  </td>
-                </tr>
-              
-       </table>
-</div><br /><br /><br />
+<!-- ficha -->
+<%= render :partial => "ficha"%>
+<br /><br />
 
 
 <div id="scroll">

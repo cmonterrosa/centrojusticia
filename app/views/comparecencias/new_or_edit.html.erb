@@ -28,7 +28,7 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4" >...</td>
+          <td align="center" colspan="4" ></td>
         </tr>
         <tr align=" justify" class="pregunta">
            <td align="center">Día de preferencia</td>
@@ -37,7 +37,10 @@
           <td align="center">Observaciones</td>
         </tr>
         <tr>
-          <td align="center"><%= f.select(:dia_preferencia, @dias.sort, :prompt => 'Seleccione una opción')%></td>
+          <!--
+          <td align="center"><= f.select(:dia_preferencia, %w[LUNES MARTES MIERCOLES JUEVES VIERNES SABADO], :prompt => 'Seleccione una opción')%></td>
+          -->
+          <td align="center"><%= f.select :dia_preferencia, DIAS_ATENCION.map{|dia| [dia[1], dia[0]]}, :prompt => 'Seleccione una opción' %> </td>
           <td align="center"><%=f.check_box :conocimiento%></td>
           <td align="center"><%= f.text_field :datos, :class => "text"%></td>
           <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>
@@ -75,7 +78,7 @@
               <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
             </td>
             <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "orientacions", :action => "list_by_user"-%>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "tramites", :action => "menu", :id => @comparecencia.tramite -%>
             </td>
           </tr>
         </table>

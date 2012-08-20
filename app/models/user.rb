@@ -43,12 +43,13 @@ class User < ActiveRecord::Base
   validates_uniqueness_of   :email
   validates_format_of       :email,    :with => Authentication.email_regex, :message => Authentication.bad_email_message
 
+  before_save :default_subdireccion
   before_create :make_activation_code 
 
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :password, :password_confirmation, :paterno, :materno, :nombre, :direccion, :activo
+  attr_accessible :login, :email, :password, :password_confirmation, :paterno, :materno, :nombre, :direccion, :activo, :tel_celular
 
 
   # Activates the user in the database.
@@ -100,6 +101,10 @@ class User < ActiveRecord::Base
     protected
       def make_activation_code
             self.activation_code = self.class.make_token
+      end
+
+      def default_subdireccion
+        self.subdireccion_id = (self.subdireccion_id) ? self.subdireccion_id : 1
       end
   
 end

@@ -1,6 +1,15 @@
 <!-- ficha -->
 <%= render :partial => "ficha"%>
 
+<!-- vistazo de la invitacion -->
+<div id="invitacion_pdf">
+  <object data="/invitaciones/generar" type="application/pdf" width="700" height="600">
+    <p>Si no aparece el plugin para visualizar el pdf. 
+      <a href="/invitaciones/generar" target="_blank">Haga click aquí para descargarlo en una nueva ventana.</a>
+    </p>
+  </object>
+</div>
+
 <!-- firma -->
 <table class="ficha" width="30%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
 <% form_tag :action => 'update_estatus', :id =>@tramite do -%>
@@ -11,14 +20,14 @@
        </td>
    </tr>
 
-      <tr>
-        <th>
+   <tr>
+       <td>
           <th class="boton"><%= submit_tag "Guardar", :onclick => "return comprobar();" %></th>
-        </th>
-      </tr>
-
+       </td>
+   </tr>
 <%end%>
 </table>
+
 
 <br />
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "customs"%><br />

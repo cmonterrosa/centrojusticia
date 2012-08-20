@@ -10,14 +10,12 @@
                 <!-- Registros -->
                 <tr align="center" class="d1">
                   <td>
-                      <%=link_to "#{@tramite.folio_integrado}", {:action => "show", :id => @tramite}%>
+                      <%=link_to "#{@tramite.folio_integrado}", {:action => "show", :id => @tramite}, :target => "_blank"%>
                   </td>
                   <td bgcolor="#f3f3f3"><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
                   <td bgcolor="#f3f3f3"><%=@tramite.subdireccion.descripcion%></td>
                   <td bgcolor="#f3f3f3">
-                    <div id="materia">
-                      <%=@tramite.materia.descripcion%>
-                    </div>
+                    <div id="materia"><%=h(@tramite.materia ? @tramite.materia.descripcion : "No asignada")%></div>
                   </td>
                 </tr>
         </table>

@@ -26,4 +26,4 @@
 <br />
 <%= link_to 'Nuevo documento', {:action => "new", :id => @tramite}, :class=> 'boton' %><br /><br />
 
-<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  :controller => "tramites", :action => "list"%><br />
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  :controller => "tramites", :action => "menu", :id => @tramite%><br />

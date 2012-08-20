@@ -8,6 +8,9 @@ class ApplicationController < ActionController::Base
   # You can move this into a different controller, if you wish.  This module gives you the require_role helpers, and others.
   include RoleRequirementSystem
 
+  # Security functions
+  include Security
+
   layout 'oficial', :except => :autenticacion
 
   Date::MONTHNAMES = [nil, "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]

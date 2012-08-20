@@ -43,7 +43,7 @@
           <td align="center"><%= f.select(:sexo, ["Masculino", "Femenino"], :prompt => 'Seleccione una opción')%></td>
         </tr>
       </table></td>
-    </tr>
+      </tr>
 
     <!-- barra media -->
     <tr class="Estilo3">
@@ -69,7 +69,7 @@
           </td>
           <td><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td><%= f.text_field :telefono, :onKeyPress => "return CharNum(event, 'numero');", :class => "text"%></td>
-          <td><%= f.text_field :correo, :class => "text"%></td>
+          <td><%= f.text_field :correo%></td>
         </tr>
         </table>
       </td>

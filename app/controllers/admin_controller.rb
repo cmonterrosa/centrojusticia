@@ -152,7 +152,14 @@ class AdminController < ApplicationController
 
   def show_roles
     @roles = Role.find(:all)
+    @token = generate_token
   end
+
+  def show_users
+    @usuarios = User.find(:all, :order => "login, paterno, materno, nombre")
+    @token = generate_token
+  end
+
 # -- termina modulo de administracion de usuarios ----
 
 end

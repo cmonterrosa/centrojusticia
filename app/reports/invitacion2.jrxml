@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion2" language="groovy" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d30651b7-0056-4921-b5e2-0af58c45ff53">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="43"/>
+	<queryString>
+		<![CDATA[select * from users
+]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="login" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="crypted_password" class="java.lang.String"/>
+	<field name="salt" class="java.lang.String"/>
+	<field name="created_at" class="java.sql.Timestamp"/>
+	<field name="updated_at" class="java.sql.Timestamp"/>
+	<field name="remember_token" class="java.lang.String"/>
+	<field name="remember_token_expires_at" class="java.sql.Timestamp"/>
+	<field name="activation_code" class="java.lang.String"/>
+	<field name="activated_at" class="java.sql.Timestamp"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="paterno" class="java.lang.String"/>
+	<field name="materno" class="java.lang.String"/>
+	<field name="direccion" class="java.lang.String"/>
+	<field name="subdireccion_id" class="java.lang.Integer"/>
+	<field name="activo" class="java.lang.Boolean"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b0e9cffa-86ee-499c-afbb-e6be22c5fa76" x="57" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[login]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="eb740a63-711d-436c-bc36-1118459f26ef" x="204" y="2" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[email]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement uuid="efcc9c4f-4078-43b3-ba76-d67c1a472c65" x="57" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{login}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7b7c6b5e-b349-445e-8b03-7cf648879239" x="204" y="0" width="165" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
