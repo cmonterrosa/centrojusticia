@@ -17,3 +17,5 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = false
 SITE_URL = "localhost:3000"
 NOMBRE_OFICIAL="Centro Estatal de Justicia Alternativa Chiapas"
+CODIGO_SEGURIDAD="x1234567890"
+REPORTS_DIR = "#{RAILS_ROOT}/app/reports"
