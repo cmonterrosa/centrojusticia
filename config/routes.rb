@@ -1,6 +1,4 @@
 ActionController::Routing::Routes.draw do |map|
-  #map.resources :orientacions
-
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.register '/register', :controller => 'users', :action => 'create'
@@ -10,17 +8,13 @@ ActionController::Routing::Routes.draw do |map|
   map.resource :session
   map.resource :admins
 
-
-  #-- Rutas para archivos adjuntos ---
-  map.resources :attachments
-  map.resources :posts
-
+  #--- new users only from admin --
+  map.connect 'users/:new_from_admin', :controller => 'users', :action => 'new_from_admin'
+  map.connect 'users/:save', :controller => 'users', :action => 'save'
 
   #---- rutas globales ---
   map.admin "/admin/index", :controller=>'admin',:action=>'index'
-  #map.page '/page',:controller=>'customs',:action=>'page'
-
-
+  
   # The priority is based upon order of creation: first created -> highest priority.
 
   # Sample of regular route:
