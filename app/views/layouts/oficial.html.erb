@@ -22,9 +22,6 @@
 
     <script type="text/javascript">
       window.onload=function(){enableTooltips()};
-    </script>
-
-    <script>
       // this allows jquery to be called along with scriptaculous and YUI without any conflicts
       // the only difference is all jquery functions should be called with $j instead of $
       // e.g. $j('#div_id').stuff instead of $('#div_id').stuff
@@ -57,20 +54,22 @@
   <tr>
       <td align="left" bgcolor="#F8A74B" class="Estilo3">
         <%if session["nombre_completo"]%>
+        <div class ="loginlayout">
           <a href="/home/index" title="Inicio del sistema"><img src="/images/iconos/house_2.png" width="42" height="42" alt="inicio "/></a>
-          Usuario: <%= session["nombre_completo"]%>
+          Usuario:  <%=current_user.login%> / <%=current_user.subdireccion.descripcion%>
+        </div>
         <%end%>
       </td>
       <td height="20" valign="top" bgcolor="#F8A74B" align="right">
         <%if logged_in?%>
             <!-- barra de busqueda-->
             <form action ="/tramites/search" id="search">
-              <input id="searchField" type="text" name="q" />
+              <input id="searchField" type="text" name="q" placeholder="Folio o nombre completo" />
               <input id="searchSubmit" type="submit" value="" />
             </form>
-            <%=link_to 'Mi perfil',  :controller => "customs", :action => "profile"%> |
-            <%=link_to 'Mi página',  :controller => "customs"%> |
-            <%=link_to 'Cerrar sesión', :action => "destroy", :controller=>"sessions"%>
+            <%=link_to 'Mi perfil',  {:controller => "customs", :action => "profile"}, :title => "Datos personales y perfiles a los que perteneces"%> |
+            <%=link_to 'Mi página',  {:controller => "customs"}, :title => "Menú personalizado"%> |
+            <%=link_to 'Cerrar sesión', {:action => "destroy", :controller=>"sessions"}, :title => "¿Desea salir del sistema?"%>
         <%end%>
       </td>
   </tr>

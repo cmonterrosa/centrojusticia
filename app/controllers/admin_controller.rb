@@ -162,4 +162,26 @@ class AdminController < ApplicationController
 
 # -- termina modulo de administracion de usuarios ----
 
+#--- listado de usuarios por area ---
+
+ def show_users_by_area
+    @areas = Subdireccion.find(:all, :order => "municipio_id")
+ end
+
+ def  update_list_usuarios
+     @users = User.find(:all, :conditions => ["subdireccion_id = ?", params[:id]], :order => "paterno, materno, nombre")
+      @token = generate_token
+     render :layout => false
+ end
+
+ def block_user
+   if validate_token(params[:t]) && @user = User.find(params[:id])
+     @user.update_attributes!(:activo => false)
+     flash[:notice] = "Usuario bloqueado"
+   else
+     flash[:notice] = "No se pudo bloquear usuario, verifique"
+   end
+   redirect_to :action => "show_users_by_area"
+ end
+
 end

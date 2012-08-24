@@ -14,6 +14,7 @@ class CreateSesions < ActiveRecord::Migration
     add_index :sesions, [:tramite_id], :name => "tramite"
     add_index :sesions, [:mediador_id], :name => "mediador"
     add_index :sesions, [:comediador_id], :name => "comediador"
+    add_index :sesions, [:start_at], :name => "start_at_index"
   end
 
   def self.down

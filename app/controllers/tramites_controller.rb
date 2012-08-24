@@ -102,17 +102,31 @@ class TramitesController < ApplicationController
  end
 
   def search
-    if params[:q] && params[:q] =~ /\d+/
-      if @tramite = Tramite.find(:first, :conditions => ["id = ? or folio = ?", params[:q], params[:q]])
-         redirect_to :action => "show", :id => @tramite
-      else
-         flash[:notice] = "No se encontraron resultados, verifique"
-         redirect_back_or_default('/')
+    #-- inicia búsqueda --
+    if params[:q]
+      case params[:q]
+        when /\d{1,4}/
+          @tramite = Tramite.find(:first, :conditions => ["id = ? or folio = ?", params[:q], params[:q]])
+        when /\d{1,4}\/\d{4}/
+          folio,anio = params[:q].split("/")
+          @tramite = Tramite.find(:first, :conditions => ["folio = ? and anio = ?", folio, anio])
+        when /[a-zA-Z]{1,}/
+          nombre, paterno, materno = params[:q].split(" ")
+          solicitante = Orientacion.find(:first, :conditions => ["nombre = ? AND paterno = ? and materno = ?", nombre.upcase, paterno.upcase, materno.upcase])
+          participante = Participante.find(:first, :conditions => ["nombre = ? AND paterno = ? and materno = ?", nombre.upcase, paterno.upcase, materno.upcase])
+          @tramite = solicitante.tramite if solicitante
+          @tramite ||= participante.comparecencia.tramite if (participante && participante.comparecencia)
+        else
+          flash[:notice] = "No se pudo realizar la búsqueda, verifique"
+          redirect_back_or_default('/')
       end
-    else
-      flash[:notice] = "No se pudo realizar la búsqueda, verifique"
-      redirect_back_or_default('/')
-     end
+      unless @tramite
+        flash[:notice] = "No se encontraron resultados, verifique"
+        redirect_back_or_default('/')
+      else
+        redirect_to :action => "show", :id => @tramite
+      end
+    end
   end
 
    #----- filtros ajax --------

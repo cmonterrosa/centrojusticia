@@ -49,5 +49,14 @@ class SesionesController < ApplicationController
     end
   end
 
+  def change_schedule
+    if (@sesion = Sesion.find(params[:id]))
+        @tramite = @sesion.tramite
+        @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    else
+      flash[:notice] = "No se pudo encontrar sesion, verifique"
+      redirect_to :controller => "home"
+    end
+  end
 
 end

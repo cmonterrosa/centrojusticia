@@ -74,6 +74,7 @@ class User < ActiveRecord::Base
     @activated
   end
 
+  
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.
   #
   # uff.  this is really an authorization, not authentication routine.  
@@ -82,7 +83,7 @@ class User < ActiveRecord::Base
   #
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
-    u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL and activo=1', login] # need to get the salt
+    u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL and activo=true', login] # need to get the salt
     u && u.authenticated?(password) ? u : nil
   end
 

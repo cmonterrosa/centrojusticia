@@ -21,6 +21,7 @@ class UsersController < ApplicationController
   def create
     logout_keeping_session!
     @user = User.new(params[:user])
+    @user.activo=true
     if params[:codigo][:numero].strip != CODIGO_SEGURIDAD
       flash[:error] = "Es necesario el codigo de seguridad,  contacte al administrador"
       render :action => 'new'

@@ -204,6 +204,7 @@ function MultiSelector(list_target, max) {
 }
 
 
+//---------------  FUNCIONES JQUERY -----------
 
 
 // Datepicker

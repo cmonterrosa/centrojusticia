@@ -18,4 +18,10 @@ class ApplicationController < ActionController::Base
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
+  # General method to render a 404
+  def render_missing_page
+    render :template => "layouts/404", :layout => "oficial", :status => 404
+  end
+
+
 end

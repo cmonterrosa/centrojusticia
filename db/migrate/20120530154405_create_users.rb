@@ -16,8 +16,9 @@ class CreateUsers < ActiveRecord::Migration
       t.string :paterno, :limit => 40
       t.string :materno, :limit => 40
       t.string :direccion, :limit => 120
-      t.integer :subdireccion_id, :default => 1
-      t.boolean :activo, :default => true
+      t.integer :tel_celular
+      t.integer :subdireccion_id
+      t.boolean :activo
       t.boolean :admin, :default => false
     end
 

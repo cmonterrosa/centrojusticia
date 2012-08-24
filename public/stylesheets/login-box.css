@@ -96,7 +96,56 @@ table.sample td.d3 {
 }
 
 /* para las columnas */
-
 table.sample td.d0 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas de error */
+table.sample td.d99 {
+	background-color: #FF9900;
+}
+
+
+/* Estilo para la ficha */
+table.ficha {
+	border: 6px inset #8B8378;
+	-moz-border-radius: 6px;
+        FONT-FAMILY: Verdana;
+        font-size: 12px;
+        margin-left:auto;
+        margin-right:auto;
+        /* style */
+        border: 1px solid #D4E0EE;
+	border-collapse: collapse;
+	font-family: "Trebuchet MS", Arial, sans-serif;
+	color: #555;
+        background: #FCFDFE;
+}
+table.ficha td {
+	border: 0px solid black;
+	padding: 0.2em 2ex 0.2em 2ex;
+	color: black;
+}
+table.ficha tr.d0 td {
+	background-color: #FCF6CF;
+}
+table.ficha tr.d1 td {
+	background-color: #FEFEF2;
+}
+table.ficha td.d0 {
+	background-color: #FCF6CF;
+}
+table.ficha td.d2 {
+	background-color: #FF8C00;
+}
+table.ficha td.d3 {
+	background-color: #FFE4C4;
+}
+table.ficha td.d3 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas */
+table.ficha td.d0 {
 	background-color: #FFE4C4;
 }
