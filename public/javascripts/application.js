@@ -206,10 +206,18 @@ function MultiSelector(list_target, max) {
 
 //---------------  FUNCIONES JQUERY -----------
 
-
-// Datepicker
+// Datetimepicker
 $(function() {
 $j('#sesion_start_at').datetimepicker({
 	timeFormat: 'h:m'
 });
 });
+
+
+$(function() {
+$j('#sesion_end_at').datepicker({
+	timeFormat: 'h:m'
+});
+});
+
+
