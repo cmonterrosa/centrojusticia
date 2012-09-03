@@ -1,3 +1,21 @@
+<!-- Acciones -->
+<table width="30%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+      <td>
+        <a href="/sesiones/change_schedule/<%=@sesion.id%>" title="Reprogramar sesiones">
+         <img src="/images/iconos/edit.png" width="64" height="64" alt="tramites" />
+        </a>
+      </td>
+      <td>
+        <a href="/sesiones/cancel<%=@sesion.id%>" title="Cancelar sesión">
+          <img src="/images/iconos/cancel.png" width="64" height="64" alt="tramites" />
+        </a>
+      </td>
+  </tr>
+</table>
+
+
+
 <!-- contenido -->
 <%= render :partial => "show"%>
 

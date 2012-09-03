@@ -1,58 +1,25 @@
-
-
-
-
-
-
+<% form_for :sesion, @sesion, :url => { :action => "save_sesion", :fecha => @fecha, :horario => @horario } do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" >EDITAR SESIÓN</td>
+      <td colspan="3" align="center" >NUEVA SESIÓN PARA EL DIA <%=@fecha%> (<%=@horario.hora_completa%>)</td>
     </tr>
-
-    <!-- Horario -->
     <tr align="center">
       <td align="center">
-          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-            <tr bgcolor="#E8E8E8" class="subtitulo">
-              <td align="center" colspan="2">FECHA y HORA</td>
-            </tr>
-            <tr align=" justify" class="pregunta">
-                 <td align="center" colspan="2">Seleccione fecha</td>
-            </tr>
-
-            <% form_remote_tag :url => { :action => "filtro_fecha"}, :update => "resultados" do %>
-            <tr>
-                <td align="center" colspan="2"><%= text_field_tag 'sesion_fecha' %></td>
-            </tr>
-                <td align="center" colspan="2"><%= submit_tag "Buscar horarios"%></td>
-            <% end %>
-
-            <tr>
-                 <td align="center" colspan="2"><div id="resultados"></div></td>
-            </tr>
-        </table>
-      </td>
-    </tr>
-
-
-
-
-    <tr align="center">
-      <td align="center">
-        <% form_for :sesion, @sesion, :url => { :action => "save", :id => @tramite, :sesion_id => @sesion } do |f| -%>
           <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
             <tr bgcolor="#E8E8E8" class="subtitulo">
               <td align="center" colspan="4">DATOS GENERALES</td>
             </tr>
             <tr align=" justify" class="pregunta">
+               <td align="center">Número de expediente</td>
               <td align="center">Mediador</td>
               <td align="center">Comediador</td>
-              <td align="center">Tipo de sesión</td>
+              <td align="center">Tipo</td>
             </tr>
             <tr>
+               <td align="center"><%= f.text_field :num_tramite, :class => "text", :required => true%></td>
               <td align="center"><%= f.select :mediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
               <td align="center"><%= f.select :comediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
-              <td align="center"><%= f.select :tiposesion, Tiposesion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+              <td align="center"><%= f.select :tiposesion_id, Tiposesion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
             </tr>
           </table>
        </td>
@@ -88,7 +55,7 @@
               <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
             </td>
             <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "sesiones", :action => "list_by_tramite", :id => @tramite-%>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :action => "management"-%>
             </td>
           </tr>
         </table>
@@ -96,15 +63,3 @@
     </tr>
   </table>
 <% end %>
-
-Mensaje desde el controller =>
-
-<div id="divlista">
-  
-</div>
-
-<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
-
-
-
-

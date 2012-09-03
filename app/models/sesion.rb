@@ -1,6 +1,16 @@
 class Sesion < ActiveRecord::Base
   belongs_to :tramite
+  belongs_to :horario
   belongs_to :estatus_sesion
+  belongs_to :user
+  belongs_to :tiposesion
+  belongs_to :sala
+
+  def start_at
+    horario = Horario.find(self.horario_id) if self.horario_id
+    fecha = DateTime.civil(self.fecha.year, self.fecha.month, self.fecha.day, horario.hora, horario.minutos)
+    return (fecha) if fecha
+  end
 
   def mediador
     return (User.find(self.mediador_id)) if self.mediador_id
@@ -12,9 +22,19 @@ class Sesion < ActiveRecord::Base
 
   def title
     string=""
-    string << "M: #{self.mediador.nombre_completo}" if self.mediador
-    string << " CM: #{self.comediador.nombre_completo}" if self.comediador
+    string << "Especialista: #{self.mediador.nombre_completo}       " if self.mediador
+    string << " tipo:#{self.tiposesion.descripcion}     " if self.tiposesion
+    string << "Sala: #{self.horario.sala.descripcion}" if self.horario.sala
     return string
+  end
+
+  def generate_clave
+    clave = (rand(10)).to_s + Array.new(2) { (rand(122-97) + 97).chr }.join + (rand(1000)).to_s.rjust(2, "0")
+    while not (Sesion.find_by_clave(clave)).nil?
+      clave = (rand(10)).to_s + Array.new(2) { (rand(122-97) + 97).chr }.join + (rand(1000)).to_s.rjust(2, "0")
+    end
+    self.clave = clave
+    self.save!
   end
 
 

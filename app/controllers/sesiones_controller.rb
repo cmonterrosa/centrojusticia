@@ -14,6 +14,11 @@ class SesionesController < ApplicationController
     end
   end
 
+  def list_by_fecha
+    @fecha = Date.parse(params[:fecha])
+    
+  end
+
    def calendario
      @sesiones = Sesion.find(:all, :conditions => ["mediador_id = ? OR comediador_id = ?", current_user.id, current_user.id])
      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
@@ -58,5 +63,10 @@ class SesionesController < ApplicationController
       redirect_to :controller => "home"
     end
   end
+
+  def filtro_fecha
+    redirect_to :action => "search_sesiones", :controller => "agenda", :fecha => params[:sesion_fecha]
+  end
+
 
 end

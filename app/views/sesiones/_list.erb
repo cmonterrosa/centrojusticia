@@ -11,11 +11,12 @@
     <%@sesiones.each do |sesion|%>
     <tr>
        <td style="vertical-align: middle;"> <%=h(sesion.start_at ? sesion.start_at.strftime("%Y-%m-%d %H:%M") : "---")%></td>
-       <td style="vertical-align: middle;"> <%=h(sesion.descripcion ? sesion.descripcion : "---")%></td>
+       <td style="vertical-align: middle;"> <%=h(sesion.tiposesion ? sesion.tiposesion.descripcion : "---")%></td>
        <td style="vertical-align: middle;"> <%=h(sesion.mediador ? sesion.mediador.nombre_completo : "---")%></td>
        <td style="vertical-align: middle;"> <%=h(sesion.comediador ? sesion.comediador.nombre_completo : "---")%></td>
        <td style="vertical-align: middle;"> <%=h(sesion.estatus_sesion ? sesion.estatus_sesion.descripcion : "---")%></td>
        <td style="vertical-align: middle;"><%=link_to "Cambiar fecha", {:action => "change_schedule", :id => sesion}, :class => 'boton', :title => "Reprogramar horario de sesión"%></td>
+       <td style="vertical-align: middle;"><%=link_to "Cancelar sesión", {:action => "cancel", :id => sesion}, :class => 'boton', :title => "Cancelar sesión"%></td>
     </tr>
     <%end%>
   </table>

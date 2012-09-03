@@ -10,6 +10,7 @@ class CreateEstatusSesions < ActiveRecord::Migration
     EstatusSesion.create(:descripcion => "Solo se presento solicitante")
     EstatusSesion.create(:descripcion => "Por mal comportamiento se suspendio sesíón")
     EstatusSesion.create(:descripcion => "Se reprogramo sesión")
+    EstatusSesion.create(:descripcion => "Otro")
 
   end
 

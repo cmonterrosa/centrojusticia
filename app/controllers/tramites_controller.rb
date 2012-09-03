@@ -102,30 +102,33 @@ class TramitesController < ApplicationController
  end
 
   def search
+    #--- default parameters --
+    @controller, @id, @action = "home", nil, "index"
     #-- inicia búsqueda --
     if params[:q]
       case params[:q]
-        when /\d{1,4}/
+        when /^\d{1,4}$/
           @tramite = Tramite.find(:first, :conditions => ["id = ? or folio = ?", params[:q], params[:q]])
-        when /\d{1,4}\/\d{4}/
+           @controller, @id, @action = "tramites", @tramite, "show" if @tramite
+        when /^\d{1,4}\/\d{4}$/
           folio,anio = params[:q].split("/")
           @tramite = Tramite.find(:first, :conditions => ["folio = ? and anio = ?", folio, anio])
-        when /[a-zA-Z]{1,}/
+            @controller, @id, @action = "tramites", @tramite, "show" if @tramite
+        when /^[a-zA-Z|\s]+$/
           nombre, paterno, materno = params[:q].split(" ")
           solicitante = Orientacion.find(:first, :conditions => ["nombre = ? AND paterno = ? and materno = ?", nombre.upcase, paterno.upcase, materno.upcase])
           participante = Participante.find(:first, :conditions => ["nombre = ? AND paterno = ? and materno = ?", nombre.upcase, paterno.upcase, materno.upcase])
           @tramite = solicitante.tramite if solicitante
           @tramite ||= participante.comparecencia.tramite if (participante && participante.comparecencia)
+           @controller, @id, @action = "tramites", @tramite, "show" if @tramite
+        when /^\d{1}[a-zA-Z]{2}\d{2,3}$/ #sesion
+          @sesion = Sesion.find_by_clave(params[:q].strip)
+          @controller, @id, @action = "sesiones", @sesion, "show" if @sesion
         else
-          flash[:notice] = "No se pudo realizar la búsqueda, verifique"
-          redirect_back_or_default('/')
-      end
-      unless @tramite
-        flash[:notice] = "No se encontraron resultados, verifique"
-        redirect_back_or_default('/')
-      else
-        redirect_to :action => "show", :id => @tramite
-      end
+           flash[:notice] = "No se pudo realizar la búsqueda, verifique"
+           redirect_back_or_default('/')
+       end
+        redirect_to :action => @action, :controller => @controller, :id => @id
     end
   end
 
