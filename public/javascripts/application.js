@@ -215,9 +215,21 @@ $j('#sesion_start_at').datetimepicker({
 
 
 $(function() {
-$j('#sesion_end_at').datepicker({
+$j('#sesion_fecha').datepicker({
 	timeFormat: 'h:m'
 });
 });
 
 
+//$(function() {
+//$j("#sesion_fecha").datepicker({
+//   showOn: 'both',
+//   buttonImage: 'calendar.png',
+//   buttonImageOnly: true,
+//   changeYear: true,
+//   numberOfMonths: 2,
+//   onSelect: function(textoFecha, objDatepicker){
+//      $j("#mensaje").html("<p>Has seleccionado: " + textoFecha + "</p>");
+//   }
+//});
+//});

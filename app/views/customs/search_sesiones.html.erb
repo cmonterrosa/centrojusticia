@@ -1,0 +1,51 @@
+<%= render :partial => "agenda/calendario"%>
+<br />
+
+<div id="divlista">
+  <table class="sample" width="85%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+         <tr align="center" class="d1">
+            <td bgcolor="#E8E8E8" colspan="6">SALAS</td>
+         </tr>
+
+         <!-- Nombre de las salas -->
+         <tr align="center" class="d0">
+            <%@salas.each do |sala|%>
+                <td bgcolor="#f3f3f3" align="center"><%=sala.descripcion%></td>
+            <%end%>
+         </tr>
+
+
+          <!-- Recorremos los horarios -->
+          <% form_tag :action => 'new_sesion', :controller => 'agenda', :fecha => @fecha do -%>
+
+                <% @horarios_disponibles.each do |horario| %>
+                              <tr align="center" class="d1">
+
+                                <%@salas.each do |sala|%>
+                                    <%if h = Horario.find(:first, :conditions => ["sala_id = ? and hora=? and minutos=? and activo=1", sala.id, horario.hora, horario.minutos])%>
+                                      <td bgcolor="#f3f3f3" align="center">
+                                        <%=  radio_button_tag("horario", h.id)%><%= h.hora_completa %>
+                                      </td>
+                                    <%else%>
+                                      <td bgcolor="#f3f3f3" align="center">--</td>
+                                    <%end%>
+                                <%end%>
+                              </tr>
+                <%end%>
+
+           <!-- boton final -->
+           <tr align="center" class="d0">
+               <th class="boton" colspan="6" align="center"><%= submit_tag "Seleccionar"%></th>
+           </tr>
+
+          <%end%>
+
+   </table>
+</div>
+
+
+
+
+
+<!-- finaliza form-->
+<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "customs"%><br />

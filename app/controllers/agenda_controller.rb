@@ -1,5 +1,5 @@
 class AgendaController < ApplicationController
-  require_role "controlagenda", :for => [:management]
+  require_role [:controlagenda, :especialistas], :for => [:management, :search_sesiones]
  
   def calendario
 #     @sesiones = Sesion.find(:all, :conditions => ["start_at is not NULL"], :order => "start_at")

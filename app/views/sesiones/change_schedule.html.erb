@@ -1,5 +1,8 @@
 
-
+     <%# form_remote_tag :url => { :action => "filtro_fecha"}, :update => "resultados" do %>
+     <%# text_field_tag 'sesion_fecha' %><br />
+     <%# submit_tag "Buscar horarios"%>
+     <%# end %>
 
 
 
@@ -22,10 +25,12 @@
 
             <% form_remote_tag :url => { :action => "filtro_fecha"}, :update => "resultados" do %>
             <tr>
-                <td align="center" colspan="2"><%= text_field_tag 'sesion_fecha' %></td>
+                <td align="center" colspan="2"><%= text_field_tag "sesion_fecha" %></td>
             </tr>
+            <tr>
                 <td align="center" colspan="2"><%= submit_tag "Buscar horarios"%></td>
             <% end %>
+            </tr>
 
             <tr>
                  <td align="center" colspan="2"><div id="resultados"></div></td>

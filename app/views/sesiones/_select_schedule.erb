@@ -1,0 +1,7 @@
+<h2>Cambio de horario de sesión</h2><br />
+<% form_remote_tag :url => { :action => "filtro_fecha"}, :update => "resultados" do %>
+  <%= text_field_tag "sesion_fecha" %>
+  <%= submit_tag "Buscar horarios"%><br />
+<% end %>
+
+<div id="resultados"></div>

@@ -5,28 +5,45 @@
         Detalle de sesión
       </th>
      </tr>
+
+     <%if @sesion.tramite%>
      <tr class="d0">
-        <td style="vertical-align: middle;"><b>Descripción</b></td>
+        <td style="vertical-align: middle;"><b>Número de expediente:</b></td>
+        <td style="vertical-align: middle;"><%=@sesion.tramite.folio_integrado%></td>
+     </tr>
+     <%end%>
+
+
+     <%if @sesion.clave%>
+     <tr class="d1">
+        <td style="vertical-align: middle;"><b>Identificador de sesión:</b></td>
+        <td style="vertical-align: middle;"><%=@sesion.clave%></td>
+     </tr>
+     <%end%>
+
+
+     <tr class="d0">
+        <td style="vertical-align: middle;"><b>Descripción:</b></td>
         <td style="vertical-align: middle;"><%=@sesion.tiposesion.descripcion%></td>
      </tr>
 
      <%if @sesion.start_at%>
      <tr class="d1">
-        <td style="vertical-align: middle;"><b>Hora de inicio</b></td>
+        <td style="vertical-align: middle;"><b>Hora de inicio:</b></td>
         <td style="vertical-align: middle;"><%=@sesion.start_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
      </tr>
      <%end%>
 
      <%if @sesion.mediador%>
      <tr class="d0">
-        <td style="vertical-align: middle;"><b>Mediador</b></td>
+        <td style="vertical-align: middle;"><b>Mediador:</b></td>
         <td style="vertical-align: middle;"><%=@sesion.mediador.nombre_completo%></td>
      </tr>
      <%end%>
 
      <%if @sesion.comediador%>
      <tr class="d1">
-        <td style="vertical-align: middle;"><b>Comediador</b></td>
+        <td style="vertical-align: middle;"><b>Comediador:</b></td>
         <td style="vertical-align: middle;"><%=@sesion.comediador.nombre_completo%></td>
      </tr>
      <%end%>
