@@ -1,15 +1,17 @@
-<h4><%=link_to_remote " Calendario general ", :update => "divcalendario",
-          :url => { :action => "calendario", :id => "all" },
-          :before => "Element.show('spinner')",
-          :complete => "Element.hide('spinner')"%> |<%=link_to_remote " Calendario personalizado ", :update => "divcalendario",
-          :url => { :action => "calendario", :id => "custom"},
-          :before => "Element.show('spinner')",
-          :complete => "Element.hide('spinner')"%>
+
+<h4>
+  <%=link_to "Calendario general ", :action => "show_calendario", :id => "all"%> | <%=link_to "Calendario personalizado", :action => "show_calendario", :id => "custom"%>
 </h4>
 
 
+<h4 style=" font-family:  Helvetica;">Control de agenda</h4>
+
+<%= render :partial => "calendario"%>
+<br />
+
+
 <!-- inicia form -->
-<% form_for :sesion, @sesion, :url => { :action => "search_sesiones"} do |f| -%>
+<% form_for :sesion, @sesion, :url => { :action => "search_sesiones" } do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="3" align="center" >NUEVA SESIÓN</td>
@@ -44,21 +46,9 @@
     </tr>
   </table>
 <% end %>
-<!-- fin del form -->
-
-
-
-<!-- spinner -->
-<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" /><br />
-<div id="divcalendario"
-
-
-</div>
 
 
 
 
-<br/>
-<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
-
-
+<!-- finaliza form-->
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "customs"%><br />
