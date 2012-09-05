@@ -2,11 +2,7 @@ class AgendaController < ApplicationController
   require_role [:controlagenda, :especialistas], :for => [:management, :search_sesiones]
  
   def calendario
-#     @sesiones = Sesion.find(:all, :conditions => ["start_at is not NULL"], :order => "start_at")
-#     @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
-#     @title = "Calendario General del Centro Estatal de Justicia Alternativa"
-#     return render(:partial => 'calendario', :layout => "oficial")
-redirect_to :action => "management"
+      redirect_to :action => "management"
   end
 
   def management
@@ -32,6 +28,7 @@ redirect_to :action => "management"
 
   def new_sesion
     @horario = Horario.find(params[:horario])
+    @controlador = (params[:origin] == 'customs') ? 'customs' : 'agenda'
     @fecha = params[:fecha]
     @sesion = Sesion.new
     @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
@@ -39,6 +36,7 @@ redirect_to :action => "management"
 
   def save_sesion
     @sesion = Sesion.new(params[:sesion])
+    @controlador = (params[:origin] == 'customs') ? 'customs' : 'agenda'
     # --- if tramite exists ---
     folio, anio = params[:sesion][:num_tramite].split("/") if params[:sesion][:num_tramite]
     @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio, folio])
@@ -49,7 +47,7 @@ redirect_to :action => "management"
     if @sesion.save
        @sesion.generate_clave
        flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
-       redirect_to :action => "management"
+       redirect_to :action => "management", :controller => @controlador
     else
        flash[:notice] = "no se puedo guardar, verifique"
        render :action => "new_sesion"

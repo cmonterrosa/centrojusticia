@@ -23,41 +23,15 @@ class CustomsController < ApplicationController
     @usuario = current_user
   end
 
+  def management
+    redirect_to :action => "show_calendario"
+  end
+
   def show_calendario
      @sesion = Sesion.new
-     @sesiones = (params[:id] == "all") ? Sesion.find(:all, :conditions => ["fecha is not NULL"], :order => "fecha") :  Sesion.find(:all, :conditions => ["fecha is not NULL and (mediador_id = ? OR comediador_id = ?)", current_user.id, current_user.id], :order => "fecha")
+     @sesiones = (params[:id] == "all") ? Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos") :  Sesion.find(:all, :conditions => ["fecha is not NULL and (mediador_id = ? OR comediador_id = ?)", current_user.id, current_user.id], :order => "fecha")
      @title = (params[:id] == "all") ? "Calendario general": "Calendario personalizado para #{current_user.nombre_completo}"
      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
-  end
-
-#  def calendario
-#     @sesiones = (params[:id] == "all") ? Sesion.find(:all, :conditions => ["fecha is not NULL"], :order => "fecha") :  Sesion.find(:all, :conditions => ["fecha is not NULL and (mediador_id = ? OR comediador_id = ?)", current_user.id, current_user.id], :order => "fecha")
-#     #@sesiones = Sesion.find(:all, :conditions => ["fecha is not NULL and (mediador_id = ? OR comediador_id = ?)", current_user.id, current_user.id], :order => "fecha")
-#     @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
-#     @title = (params[:id] == "all") ? "Calendario general": "Calendario personalizado para #{current_user.nombre_completo}"
-#     if params[:month]
-#        return render(:partial => 'calendario', :layout => "oficial")
-#     else
-#       return render(:partial => 'calendario', :layout => "only_jquery")
-#     end
-#
-#  end
-
-
-
-  #---- Actualizaciones AJAX-----
-  def update_calendario_general
-    @sesiones = Sesion.find(:all, :conditions => ["fecha is not NULL"], :order => "fecha")
-    @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
-    @title = "Calendario general"
-    return render(:partial => 'agenda/calendario', :layout => false)
-  end
-
-  def update_calendario_personalizado
-    @sesiones = Sesion.find(:all, :conditions => ["fecha is not NULL and (mediador_id = ? OR comediador_id = ?)", current_user.id, current_user.id], :order => "fecha")
-    @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
-    @title = "Calendario personalizado para #{current_user.nombre_completo}"
-    return render(:partial => 'agenda/calendario', :layout => false)
   end
 
 
@@ -72,7 +46,7 @@ class CustomsController < ApplicationController
       @horarios_disponibles = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", DateTime.parse(@fecha)])
       @salas = Sala.find(:all, :order => "descripcion")
     else
-      redirect_to :action => "management"
+      redirect_to :action => "show_calendario"
     end
   end
   

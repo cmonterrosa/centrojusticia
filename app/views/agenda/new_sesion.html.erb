@@ -1,4 +1,4 @@
-<% form_for :sesion, @sesion, :url => { :action => "save_sesion", :fecha => @fecha, :horario => @horario } do |f| -%>
+<% form_for :sesion, @sesion, :url => { :action => "save_sesion", :fecha => @fecha, :horario => @horario, :origin => @controlador } do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="3" align="center" >NUEVA SESIÓN PARA EL DIA <%=@fecha%> (<%=@horario.hora_completa%>)</td>
@@ -55,7 +55,7 @@
               <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
             </td>
             <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :action => "management"-%>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :action => 'search_sesiones', :controller => @controlador-%>
             </td>
           </tr>
         </table>

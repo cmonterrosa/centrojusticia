@@ -174,14 +174,19 @@ class AdminController < ApplicationController
      render :layout => false
  end
 
- def block_user
+ def change_user_estatus
    if validate_token(params[:t]) && @user = User.find(params[:id])
-     @user.update_attributes!(:activo => false)
-     flash[:notice] = "Usuario bloqueado"
+     @mensaje = @user.activo ? "Usuario bloqueado" : "Usuario reactivado"
+     (@user.activo) ? @user.update_attributes!(:activo => false) : @user.update_attributes!(:activo => true)
+     flash[:notice] = @mensaje
    else
      flash[:notice] = "No se pudo bloquear usuario, verifique"
    end
    redirect_to :action => "show_users_by_area"
+ end
+
+ def change_user_area
+   @user = User.find(params[:id])
  end
 
 end

@@ -37,11 +37,11 @@ class SesionesController < ApplicationController
   end
 
   def save
-    @sesion = params[:sesion_id] ? Sesion.find(params[:sesion_id])  :  Sesion.new(params[:sesion])
+    @sesion = (params[:sesion_id]) ? Sesion.find(params[:sesion_id])  :  Sesion.new(params[:sesion])
     @redireccion = params[:sesion_id] ? "list_by_user"  :  "list_by_tramite"
     @sesion.update_attributes(params[:sesion])
-    @tramite = Tramite.find(params[:id])
-    @sesion.tramite = @tramite
+    @tramite = Tramite.find(params[:id]) if params[:tramite]
+    @sesion.tramite = @tramite unless @sesion.tramite
     if @sesion.save
        flash[:notice] = "Sesión guardada correctamente"
        redirect_to :action => @redireccion, :id => @tramite
@@ -81,18 +81,34 @@ class SesionesController < ApplicationController
     end
   end
 
+  def update_schedule
+   @sesion= Sesion.find(params[:sesion]) if params[:sesion]
+   @horario = Horario.find(params[:horario]) if params[:horario]
+   @fecha = Date.parse(params[:fecha]) if params[:fecha]
+   flash[:notice] = "No se pudo actualizar correctamente, verifique"
+     if @sesion && @horario && @fecha
+        if @sesion.update_attributes!(:horario_id => @horario.id, :fecha => @fecha)
+           flash[:notice] = "Hora de sesión actualizada correctamente"
+        end
+    end
+     redirect_to :action => "show", :id => @sesion, :token => generate_token
+  end
+
+  def save_schedule
+
+  end
+
 
 
   def filtro_fecha
     if params[:sesion_fecha]
       @fecha = params[:sesion_fecha]
+      @sesion = Sesion.find(params[:sesion]) if params[:sesion]
       @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?)",  DateTime.parse(@fecha)])
-      #@sesiones = Sesion.find(:all)
-      #@date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
       @title = "Resultados encontrados"
       @horarios_disponibles = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", DateTime.parse(@fecha)])
       @salas = Sala.find(:all, :order => "descripcion")
-      return render(:partial => 'agenda/horarios_disponibles', :layout => false)
+      return render(:partial => 'horarios_disponibles', :layout => false)
     else
       redirect_to :controller => "agenda", :action => "management"
     end
@@ -100,13 +116,9 @@ class SesionesController < ApplicationController
 
   def cancel
     if ((@sesion = Sesion.find(params[:id])) && validate_token(params[:t]))
-        if current_user.has_role?("controlagenda") || @sesion.user == current_user
-
-
-          if @sesion.destroy
+        if @sesion.has_permission?(current_user)
+            if @sesion.destroy
               flash[:notice] = "Sesión cancelada correctamente, enviando notificación a especialistas.."
-
-
               redirect_to :controller => "home"
           else
               flash[:notice] = "No se pudo cancelar, verifique sesión"

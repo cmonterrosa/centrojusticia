@@ -1,3 +1,5 @@
+
+<% if @sesion.has_permission?(current_user) %>
 <!-- Acciones -->
 <table width="30%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
@@ -14,12 +16,11 @@
       </td>
 
       <td>
-        <a href="/sesiones/cancel/<%=h @sesion.id%>/?t=<%=h @token%>" title="Cancelar sesión">
-          <img src="/images/iconos/cancel.png" width="64" height="64" alt="tramites" />
-        </a>
+          <%= link_to image_tag("iconos/cancel.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post %><br />
       </td>
   </tr>
 </table>
+<%end%>
 
 
 

@@ -28,11 +28,11 @@
                       </td>
 
                       <td align="center">
-                        <%= (usuario.activo) ?  (link_to 'Bloquear usuario', { :action => "block_user", :controller => "admin", :id => usuario}, {:title => "Eliminar de la subdireccion", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post)  : (link_to 'Reactivar usuario', { :action => "block_user", :controller => "admin", :id => usuario}, {:title => "Eliminar de la subdireccion", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post) %>
+                        <%= (usuario.activo) ?  (link_to 'Bloquear usuario', { :action => "change_user_estatus", :controller => "admin", :id => usuario, :t => @token}, {:title => "Bloquear usuario", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post)  : (link_to 'Reactivar usuario', { :action => "change_user_estatus", :controller => "admin", :id => usuario, :t => @token}, {:title => "Reactivar usuario", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post) %>
                       </td>
 
                       <td align="center">
-                        <%= link_to 'Cambiar de área', { :action => "change_user", :controller => "admin", :id => usuario}, {:title => "Eliminar de la subdireccion", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post %>
+                         <%= link_to 'Cambiar de Adscripción', { :action => "change_user_area", :controller => "admin", :id => usuario}, {:title => "Cambiar de adscripción", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post %>
                       </td>
 
                        <%clase = invert_class(clase)%>

@@ -16,7 +16,7 @@
 
 
           <!-- Recorremos los horarios -->
-          <% form_tag :action => 'new_sesion', :controller => 'agenda', :fecha => @fecha do -%>
+          <% form_tag :action => 'new_sesion', :controller => 'agenda', :fecha => @fecha, :origin => 'customs' do -%>
 
                 <% @horarios_disponibles.each do |horario| %>
                               <tr align="center" class="d1">

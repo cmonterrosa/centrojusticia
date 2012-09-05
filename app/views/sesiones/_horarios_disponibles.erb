@@ -13,7 +13,7 @@
 
 
           <!-- Recorremos los horarios -->
-          <% form_tag :action => 'new_sesion', :fecha => @fecha do -%>
+          <% form_tag :action => 'update_schedule', :fecha => @fecha, :sesion => @sesion do -%>
 
                 <% @horarios_disponibles.each do |horario| %>
                               <tr align="center" class="d1">

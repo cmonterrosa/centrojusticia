@@ -1,7 +1,16 @@
 <h2>Cambio de horario de sesión</h2><br />
-<% form_remote_tag :url => { :action => "filtro_fecha"}, :update => "resultados" do %>
+<% form_remote_tag :url => { :action => "filtro_fecha", :sesion => @sesion}, :update => "resultados" do %>
   <%= text_field_tag "sesion_fecha" %>
   <%= submit_tag "Buscar horarios"%><br />
 <% end %>
 
+<br />
+
 <div id="resultados"></div>
+
+
+<!-- back -->
+<div align="center">
+   <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  url_for(:back), {:title => "Regresar al menú anterior"}%><br />
+</div>
+
