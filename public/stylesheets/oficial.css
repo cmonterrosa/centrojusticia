@@ -50,7 +50,19 @@ a:link {
 
 .sesionesdiarias {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12px; color: #A80000;}
 
-.loginlayout {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 13px; color: #FFFFFF;}
+.loginlayout {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 14px; color: #FFFFFF;
+    font-weight: bold;
+}
+
+.titulocalendario {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 18px; color: #791E16;
+    font-weight: bold;
+    text-decoration:none;
+    text-shadow:1px 1px 0px #ffffff;
+}
 
 #scroll{
     /*
@@ -122,3 +134,66 @@ a.boton {
 .ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
 .ui-timepicker-div td { font-size: 80%; }
 .ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+/* agregado */
+.ui-widget { font-family: Trebuchet MS, Tahoma, Verdana, Arial, sans-serif; font-size: .9em; }
+
+
+/* Estilo para tabla con gradiente */
+
+table.table1{
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.4em;
+    font-style: normal;
+    border-collapse:separate;
+}
+.table1 thead th{
+    padding:15px;
+    color:#fff;
+    text-shadow:1px 1px 1px #568F23;
+    border:1px solid #510C0C;
+    border-bottom:3px solid #510C0C;
+    background-image: linear-gradient(bottom, rgb(133,29,10) 41%, rgb(112,51,10) 71%);
+    background-image: -o-linear-gradient(bottom, rgb(133,29,10) 41%, rgb(112,51,10) 71%);
+    background-image: -moz-linear-gradient(bottom, rgb(133,29,10) 41%, rgb(112,51,10) 71%);
+    background-image: -webkit-linear-gradient(bottom, rgb(133,29,10) 41%, rgb(112,51,10) 71%);
+    background-image: -ms-linear-gradient(bottom, rgb(133,29,10) 41%, rgb(112,51,10) 71%);
+    background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.41, rgb(133,29,10)),
+	color-stop(0.71, rgb(112,51,10))
+);
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+}
+
+.table1 thead th:empty{
+    background:transparent;
+    border:none;
+}
+
+.table1 tfoot td{
+    color: #4A0E08;
+    font-size:32px;
+    text-align:center;
+    padding:10px 0px;
+    text-shadow:1px 1px 1px #444;
+}
+.table1 tfoot th{
+    color:#666;
+}
+
+.table1 tbody td{
+    padding:10px;
+    text-align:center;
+    background-color:#EBEAD8;
+    border: 2px solid #E7EFE0;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:2px;
+    color:#666;
+    text-shadow:1px 1px 1px #fff;
+}

@@ -216,9 +216,29 @@ $j('#sesion_start_at').datetimepicker({
 
 $(function() {
 $j('#sesion_fecha').datepicker({
-	timeFormat: 'h:m'
+        showMonthAfterYear: false,
+	numberOfMonths: 2
+
+},
+ $.datepicker.regional['es']
+);
 });
-});
+
+
+//$(function() {
+//  $('#Date').datepicker({
+//      showMonthAfterYear: false,
+//      showOn: 'both',
+//      buttonImage: 'media/img/calendar.png',
+//      buttonImageOnly: true,
+//      dateFormat:'d MM, y'
+//    },
+//    $.datepicker.regional['fr']
+//  );
+//});
+
+
+
 
 
 //$(function() {

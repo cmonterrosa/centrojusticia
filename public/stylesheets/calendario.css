@@ -13,13 +13,14 @@
 
 #calendar table {
   border-collapse: collapse;
-  width: 100%;
+  width: 90%;
 }
 
 #calendar td,
 #calendar th {
-  font-family: "Lucida Grande",arial,helvetica,sans-serif;
-  font-size: 10px;
+  /* font-family: "Lucida Grande",arial,helvetica,sans-serif; esta tenia*/
+   font-family: "Trebuchet MS", sans-serif;
+  font-size: 12px; /* tenia 10*/
   padding: 6px;
   border: 1px solid #999;
 }
