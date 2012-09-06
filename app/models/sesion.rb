@@ -6,6 +6,11 @@ class Sesion < ActiveRecord::Base
   belongs_to :tiposesion
   belongs_to :sala
 
+    #--- Validaciones --
+    validates_uniqueness_of :clave
+    validates_presence_of :mediador_id
+    validates_presence_of :comediador_id
+
   def start_at
     horario = Horario.find(self.horario_id) if self.horario_id
     fecha = DateTime.civil(self.fecha.year, self.fecha.month, self.fecha.day, horario.hora, horario.minutos)

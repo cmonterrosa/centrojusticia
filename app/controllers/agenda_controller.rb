@@ -13,7 +13,7 @@ class AgendaController < ApplicationController
   end
 
   def search_sesiones
-    if params[:sesion]
+    if params[:sesion]  && params[:sesion][:fecha] =~ /^\d{1,2}\/\d{1,2}\/\d{4}$/
       @fecha = params[:sesion][:fecha] if params[:sesion][:fecha]
       @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?)",  DateTime.parse(@fecha)])
       @sesiones = Sesion.find(:all)
@@ -40,7 +40,7 @@ class AgendaController < ApplicationController
     # --- if tramite exists ---
     folio, anio = params[:sesion][:num_tramite].split("/") if params[:sesion][:num_tramite]
     @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio, folio])
-    @sesion.tramite = (@tramite) ? @ŧramite : Tramite.create(:folio => folio, :anio => anio)
+    @sesion.tramite = (@tramite) ? @ŧramite : Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
     @sesion.horario = Horario.find(params[:horario]) if params[:horario]
     @sesion.fecha = params[:fecha] if params[:fecha]
     @sesion.user = current_user

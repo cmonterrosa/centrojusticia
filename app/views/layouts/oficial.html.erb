@@ -10,8 +10,11 @@
     <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/redmond/jquery-ui.css", "application" %>
     <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js", "application" %>
     <%=javascript_include_tag "datetimepicker"%>
-    <%=javascript_include_tag "datetimepicker_es"%>
-
+    <%=javascript_include_tag "datepicker_es"%>
+    <!--
+    <=javascript_include_tag "datetimepicker"%>
+    <=javascript_include_tag "datetimepicker_es"%>
+    -->
     <%= stylesheet_link_tag "login-box"%>
     <%= stylesheet_link_tag "oficial"%>
     <%= stylesheet_link_tag "bt"%>
@@ -50,9 +53,9 @@
          </table>
       </td>
     </tr>
-   <!-- termina header -->
+   <!-- termina header #F8A74B -->
   <tr>
-      <td align="left" bgcolor="#F8A74B" class="Estilo3">
+      <td align="left" bgcolor="#791E16" class="Estilo3">
         <%if session["nombre_completo"]%>
         <div class ="loginlayout">
           <a href="/home/index" title="Inicio del sistema"><img src="/images/iconos/house_2.png" width="42" height="42" alt="inicio "/></a>
@@ -60,16 +63,18 @@
         </div>
         <%end%>
       </td>
-      <td height="20" valign="top" bgcolor="#F8A74B" align="right">
+      <td height="20" valign="top" bgcolor="#791E16" align="right">
         <%if logged_in?%>
             <!-- barra de busqueda-->
             <form action ="/tramites/search" id="search">
               <input id="searchField" type="text" name="q" placeholder="Folio o nombre completo" />
               <input id="searchSubmit" type="submit" value="" />
             </form>
-            <%=link_to 'Mi perfil',  {:controller => "customs", :action => "profile"}, :title => "Datos personales y perfiles a los que perteneces"%> |
-            <%=link_to 'Mi página',  {:controller => "customs"}, :title => "Menú personalizado"%> |
-            <%=link_to 'Cerrar sesión', {:action => "destroy", :controller=>"sessions"}, :title => "¿Desea salir del sistema?"%>
+            <div class ="loginlayout">
+              <%=link_to 'Mi perfil',  {:controller => "customs", :action => "profile"}, :title => "Datos personales y perfiles a los que perteneces", :style => "font-size: 12px; color: #FFFFFF;"%> |
+              <%=link_to 'Mi página',  {:controller => "customs"}, :title => "Menú personalizado", :style => "font-size: 12px; color: #FFFFFF;"%> |
+              <%=link_to 'Cerrar sesión', {:action => "destroy", :controller=>"sessions"}, :title => "¿Desea salir del sistema?", :style => "font-size: 12px; color: #FFFFFF;"%>
+            </div>
         <%end%>
       </td>
   </tr>

@@ -37,7 +37,7 @@ class CustomsController < ApplicationController
 
   #----- Manejo de sesiones ---
   def search_sesiones
-    if params[:sesion]
+    if params[:sesion] && params[:sesion][:fecha] =~ /^\d{1,2}\/\d{1,2}\/\d{4}$/
       @fecha = params[:sesion][:fecha] if params[:sesion][:fecha]
       @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?)",  DateTime.parse(@fecha)])
       @sesiones = Sesion.find(:all, :conditions => ["fecha is not NULL and (mediador_id = ? OR comediador_id = ?)", current_user.id, current_user.id], :order => "fecha")

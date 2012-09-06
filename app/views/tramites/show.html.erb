@@ -3,7 +3,9 @@
 
 
 <div id="divlista">
-  <%= link_to image_tag("iconos/descargar_pdf.png", :size => "96x96", :border =>0) , :action => "tramite_pdf", :controller => "tramites", :id => @tramite%><br />
+  <!--
+  <= link_to image_tag("iconos/descargar_pdf.png", :size => "96x96", :border =>0) , :action => "tramite_pdf", :controller => "tramites", :id => @tramite%><br />
+  -->
   <%=link_to "Descargar en PDF", :action => "tramite_pdf", :controller => "tramites", :id => @tramite%><br/><br/>
 
   <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
@@ -15,44 +17,44 @@
 
     <tr class="d1">
        <td style="vertical-align: middle;"><b>Especialista para orientación:</b></td>
-       <td style="vertical-align: middle;"><%=@tramite.user.nombre_completo%></td>
+       <td style="vertical-align: middle;"> <%=h(@tramite.user ? @tramite.user.nombre_completo : "---")%></td>
     </tr>
 
     <tr class="d0">
       <td style="vertical-align: middle;"><b>Sala:</b></td>
-      <td style="vertical-align: middle;"><%=@tramite.orientacion.sala.descripcion%></td>
+      <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.sala.descripcion : "---")%></td>
     </tr>
 
     <tr class="d1">
        <td style="vertical-align: middle;"><b>Solicitante:</b></td>
-       <td style="vertical-align: middle;"><%=@tramite.orientacion.solicitante%></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
     </tr>
 
     <tr class="d0">
       <td style="vertical-align: middle;"><b>Observaciones:</b></td>
-      <td style="vertical-align: middle;"><%=@tramite.orientacion.observaciones%></td>
+      <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.observaciones : "---")%></td>
     </tr>
 
     
     <!-- Datos de ubicacion -->
     <tr class="d1">
        <td style="vertical-align: middle;"><b>Correo electrónico:</b></td>
-       <td style="vertical-align: middle;"><%=@tramite.orientacion.correo%></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.correo : "---")%></td>
 
     </tr>
     <tr class="d0">
       <td style="vertical-align: middle;"><b>Dirección:</b></td>
-      <td style="vertical-align: middle;"><%=@tramite.orientacion.direccion%></td>
+      <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.direccion : "---")%></td>
     </tr>
 
     <tr class="d1">
        <td style="vertical-align: middle;"><b>Municipio:</b></td>
-       <td style="vertical-align: middle;"><%=@tramite.orientacion.municipio.descripcion%></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.municipio.descripcion : "---")%></td>
     </tr>
 
     <tr class="d0">
        <td style="vertical-align: middle;"><b>Teléfono:</b></td>
-       <td style="vertical-align: middle;"><%=@tramite.orientacion.telefono%></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.telefono : "---")%></td>
     </tr>
 
     <!--- datos especificos -->
@@ -107,22 +109,24 @@
   <%end%>
 
   <!-- Participantes del trámite -->
-  <%unless @tramite.comparecencia.participantes.empty?%>
-   <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-     <tr style="background-color:gray; color:white">
-       <th colspan="2">
-           Participantes
-       </th>
-     </tr>
-
-      <%clase=0%>
-      <% @tramite.comparecencia.participantes.each do |participante|%>
-        <tr class="d<%=invert_class(clase)%>">
-          <td align="center"><%=link_to "#{participante.nombre_completo}", :action => "show", :controller => "participantes", :id => participante%></td>
+  <% if @tramite.comparecencia %>
+    <%unless @tramite.comparecencia.participantes.empty?%>
+      <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+        <tr style="background-color:gray; color:white">
+          <th colspan="2">
+            Participantes
+          </th>
         </tr>
-        <%clase = invert_class(clase)%>
-      <%end%>
-    </table><br /><br />
+
+        <%clase=0%>
+        <% @tramite.comparecencia.participantes.each do |participante|%>
+          <tr class="d<%=invert_class(clase)%>">
+            <td align="center"><%=link_to "#{participante.nombre_completo}", :action => "show", :controller => "participantes", :id => participante%></td>
+          </tr>
+          <%clase = invert_class(clase)%>
+        <%end%>
+      </table><br /><br />
+    <%end%>
   <%end%>
   
   <!-- Historial de estados-->

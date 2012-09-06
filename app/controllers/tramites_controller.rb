@@ -103,32 +103,32 @@ class TramitesController < ApplicationController
 
   def search
     #--- default parameters --
-    @controller, @id, @action = "home", nil, "index"
+    @controlador, @id, @accion = "home", nil, "index"
     #-- inicia búsqueda --
     if params[:q]
       case params[:q]
         when /^\d{1,4}$/
           @tramite = Tramite.find(:first, :conditions => ["id = ? or folio = ?", params[:q], params[:q]])
-           @controller, @id, @action = "tramites", @tramite, "show" if @tramite
+           @controlador, @id, @accion = "tramites", @tramite, "show" if @tramite
         when /^\d{1,4}\/\d{4}$/
           folio,anio = params[:q].split("/")
           @tramite = Tramite.find(:first, :conditions => ["folio = ? and anio = ?", folio, anio])
-            @controller, @id, @action = "tramites", @tramite, "show" if @tramite
+            @controlador, @id, @accion = "tramites", @tramite, "show" if @tramite
         when /^[a-zA-Z|\s]+$/
           nombre, paterno, materno = params[:q].split(" ")
           solicitante = Orientacion.find(:first, :conditions => ["nombre = ? AND paterno = ? and materno = ?", nombre.upcase, paterno.upcase, materno.upcase])
           participante = Participante.find(:first, :conditions => ["nombre = ? AND paterno = ? and materno = ?", nombre.upcase, paterno.upcase, materno.upcase])
           @tramite = solicitante.tramite if solicitante
           @tramite ||= participante.comparecencia.tramite if (participante && participante.comparecencia)
-           @controller, @id, @action = "tramites", @tramite, "show" if @tramite
+           @controlador, @id, @accion = "tramites", @tramite, "show" if @tramite
         when /^\d{1}[a-zA-Z]{2}\d{2,3}$/ #sesion
           @sesion = Sesion.find_by_clave(params[:q].strip)
-          @controller, @id, @action = "sesiones", @sesion, "show" if @sesion
+          @controlador, @id, @accion = "sesiones", @sesion, "show" if @sesion
         else
            flash[:notice] = "No se pudo realizar la búsqueda, verifique"
-           redirect_back_or_default('/')
+           #redirect_back_or_default('/')
        end
-        redirect_to :action => @action, :controller => @controller, :id => @id
+        redirect_to :action => @accion, :controller => @controlador, :id => @id
     end
   end
 

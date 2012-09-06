@@ -189,4 +189,8 @@ class AdminController < ApplicationController
    @user = User.find(params[:id])
  end
 
+ def show_horarios_sesiones
+   @horarios = Horario.find(:all, :order => "hora,minutos")
+ end
+
 end
