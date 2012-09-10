@@ -13,7 +13,7 @@ class AgendaController < ApplicationController
   end
 
   def search_sesiones
-    if params[:sesion]  && params[:sesion][:fecha] =~ /^\d{1,2}\/\d{1,2}\/\d{4}$/
+    if params[:sesion]  && params[:sesion][:fecha] =~ /^\d{4}\/\d{1,2}\/\d{1,2}$/
       @fecha = params[:sesion][:fecha] if params[:sesion][:fecha]
       @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?)",  DateTime.parse(@fecha)])
       @sesiones = Sesion.find(:all)
@@ -27,11 +27,16 @@ class AgendaController < ApplicationController
   end
 
   def new_sesion
-    @horario = Horario.find(params[:horario])
-    @controlador = (params[:origin] == 'customs') ? 'customs' : 'agenda'
-    @fecha = params[:fecha]
-    @sesion = Sesion.new
-    @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    unless params[:horario] =~ /^\d{1,2}$/
+      @horario = Horario.find(params[:horario])
+      @controlador = (params[:origin] == 'customs') ? 'customs' : 'agenda'
+      @fecha = params[:fecha]
+      @sesion = Sesion.new
+      @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    else
+      flash[:notice] = "Seleccione un horario, verifique los datos"
+      redirect_to :controller => @controlador, :action => "search_sesiones"
+    end
   end
 
   def save_sesion

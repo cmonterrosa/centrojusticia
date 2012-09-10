@@ -1,64 +1,31 @@
+<div class="titulocalendario">
+  <p>
+    Horario de sesiones
+  </p>
+</div>
+
 <table class="table1">
     <thead>
-        <tr>
+      <tr>
+            <th scope="col" abbr="Starter">Sala</th>
+            <th scope="col" abbr="Medium">Horario</th>
             <th></th>
-            <th scope="col" abbr="Starter">Smart Starter</th>
-            <th scope="col" abbr="Medium">Smart Medium</th>
-            <th scope="col" abbr="Business">Smart Business</th>
-            <th scope="col" abbr="Deluxe">Smart Deluxe</th>
-        </tr>
+      </tr>
     </thead>
-    <tfoot>
-        <tr>
-            <th scope="row">Price per month</th>
-            <td>$ 2.90</td>
-            <td>$ 5.90</td>
-            <td>$ 9.90</td>
-            <td>$ 14.90</td>
-        </tr>
-    </tfoot>
+    
     <tbody>
+      <%@horarios.each do |horario|%>
         <tr>
-            <th scope="row">Storage Space</th>
-            <td>512 MB</td>
-            <td>1 GB</td>
-            <td>2 GB</td>
-            <td>4 GB</td>
+            <td><%=horario.sala.descripcion%></td>
+            <td><%=horario.hora_completa%></td>
+            <th scope="row">
+              <%= (horario.activo) ?  (link_to 'Bloquear horario', { :action => "change_horario_estatus", :controller => "admin", :id => horario, :t => @token}, {:title => "Bloquear horario", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post)  : (link_to 'Desbloquear horario', { :action => "change_horario_estatus", :controller => "admin", :id => horario, :t => @token}, {:title => "Desbloquear horario", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post) %>
+            </th>
         </tr>
-        <tr>
-            <th scope="row">Bandwidth</th>
-            <td>50 GB</td>
-            <td>100 GB</td>
-            <td>150 GB</td>
-            <td>Unlimited</td>
-        </tr>
-        <tr>
-            <th scope="row">MySQL Databases</th>
-            <td>Unlimited</td>
-            <td>Unlimited</td>
-            <td>Unlimited</td>
-            <td>Unlimited</td>
-        </tr>
-        <tr>
-            <th scope="row">Setup</th>
-            <td>19.90 $</td>
-            <td>12.90 $</td>
-            <td>free</td>
-            <td>free</td>
-        </tr>
-        <tr>
-            <th scope="row">PHP 5</th>
-            <td><span class="check"></span></td>
-            <td><span class="check"></span></td>
-            <td><span class="check"></span></td>
-            <td><span class="check"></span></td>
-        </tr>
-        <tr>
-            <th scope="row">Ruby on Rails</th>
-            <td><span class="check"></span></td>
-            <td><span class="check"></span></td>
-            <td><span class="check"></span></td>
-            <td><span class="check"></span></td>
-        </tr>
+      <%end%>
     </tbody>
-</table
+</table>
+
+
+
+<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />

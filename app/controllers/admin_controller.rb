@@ -170,8 +170,19 @@ class AdminController < ApplicationController
 
  def  update_list_usuarios
      @users = User.find(:all, :conditions => ["subdireccion_id = ?", params[:id]], :order => "paterno, materno, nombre")
-      @token = generate_token
+     @token = generate_token
      render :layout => false
+ end
+
+ def change_horario_estatus
+   if validate_token(params[:t]) && @horario= Horario.find(params[:id])
+     @mensaje = @horario.activo ? "Horario bloqueado" : "Horario desbloqueado"
+     (@horario.activo) ? @horario.update_attributes!(:activo => false) : @horario.update_attributes!(:activo => true)
+     flash[:notice] = @mensaje
+   else
+     flash[:notice] = "No se pudo bloquear horario, verifique"
+   end
+   redirect_to :action => "show_horarios_sesiones"
  end
 
  def change_user_estatus
@@ -185,12 +196,22 @@ class AdminController < ApplicationController
    redirect_to :action => "show_users_by_area"
  end
 
+
  def change_user_area
-   @user = User.find(params[:id])
+   if validate_token(params[:t]) && @user = User.find(params[:id])
+     @mensaje = @user.activo ? "Usuario bloqueado" : "Usuario reactivado"
+     (@user.activo) ? @user.update_attributes!(:activo => false) : @user.update_attributes!(:activo => true)
+     flash[:notice] = @mensaje
+   else
+     flash[:notice] = "No se pudo bloquear usuario, verifique"
+   end
+   redirect_to :action => "show_users_by_area"
  end
 
  def show_horarios_sesiones
+   @salas = Sala.find(:all, :order=> "descripcion")
    @horarios = Horario.find(:all, :order => "hora,minutos")
+   @token= generate_token
  end
 
 end

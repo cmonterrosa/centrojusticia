@@ -101,7 +101,7 @@ class SesionesController < ApplicationController
 
 
   def filtro_fecha
-    if params[:sesion_fecha]
+    if params[:sesion_fecha]  && params[:sesion_fecha] =~ /^\d{4}\/\d{1,2}\/\d{1,2}$/
       @fecha = params[:sesion_fecha]
       @sesion = Sesion.find(params[:sesion]) if params[:sesion]
       @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?)",  DateTime.parse(@fecha)])
