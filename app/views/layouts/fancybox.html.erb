@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <%= javascript_include_tag 'prototype'%>
+    <%= javascript_include_tag 'BubbleTooltips' %>
+
+   <!-- Add jQuery library -->
+         <%=javascript_include_tag "fancybox/jquery-1.8.0.min.js"%>
+
+
+    <!-- agregadas -->
+    <%=javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js"%>
+    <%=javascript_include_tag 'application.js'%>
+
+    <!-- apis para datepicker de calendario -->
+
+
+
+
+    <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/redmond/jquery-ui.css"%>
+    <!--
+    <= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js", "application" %>
+    -->
+
+   
+    <!-- Add mousewheel plugin (this is optional) -->
+	<%=javascript_include_tag "fancybox/jquery.mousewheel-3.0.6.pack.js"%>
+
+    <!-- Add fancyBox main JS and CSS files -->
+	<%=javascript_include_tag "fancybox/jquery.fancybox.js?v=2.1.0"%>
+        <%= stylesheet_link_tag "fancybox/jquery.fancybox.css?v=2.1.0"%>
+
+    <!-- Add Button helper (this is optional) -->
+	<%= stylesheet_link_tag "fancybox/jquery.fancybox-buttons.css?v=1.0.3"%>
+        <%=javascript_include_tag "fancybox/jquery.fancybox-buttons.js?v=1.0.3"%>
+	
+    <!-- Add Thumbnail helper (this is optional) -->
+	<%= stylesheet_link_tag "fancybox/jquery.fancybox-thumbs.css?v=1.0.6"%>
+        <%=javascript_include_tag "fancybox/jquery.fancybox-thumbs.js?v=1.0.6"%>
+
+    <!-- Add Media helper (this is optional) -->
+	<%=javascript_include_tag "fancybox/jquery.fancybox-media.js?v=1.0.3"%>
+
+
+    <%=javascript_include_tag "datetimepicker"%>
+    <%=javascript_include_tag "datepicker_es"%>
+    <%= stylesheet_link_tag "login-box"%>
+    <%= stylesheet_link_tag "oficial"%>
+    <%= stylesheet_link_tag "bt"%>
+    <%= stylesheet_link_tag "search"%>
+    <%= stylesheet_link_tag "calendario"%>
+
+    <title>Centro Estatal de Justicia Alternativa</title>
+
+    <script type="text/javascript">
+      window.onload=function(){enableTooltips()};
+      // this allows jquery to be called along with scriptaculous and YUI without any conflicts
+      // the only difference is all jquery functions should be called with $j instead of $
+      // e.g. $j('#div_id').stuff instead of $('#div_id').stuff
+      var $j = jQuery.noConflict();
+    </script>
+</head>
+
+<!--<body background="/images/logos/bg.jpg">-->
+<body>
+  <table width="90%" border="0" align="center" cellspacing="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; text-align: center;" bgcolor="#FFFFFF">
+    <!-- header -->
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0" cellspacing="1">
+          <tr>
+            <td width="9%" rowspan="2"><img src="/images/logo_gobierno.png" alt="" width="108" height="70" /></td>
+          </tr>
+          <tr>
+            <td width="11%" align="center" class="Estilo1"><img src="/images/CHIA.jpg" alt="" width="112" height="70" /></td>
+            <td width="62%" align="center" class="Estilo1"><img src="/images/TEXTO-TODOS A LA ESCUELA.png" alt="" width="225" height="70" /></td>
+            <td width="18%" align="center" class="Estilo1"><img src="/images/UNICEF-logo.png" alt="" width="208" height="45" /></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+          </tr>
+         </table>
+      </td>
+    </tr>
+   <!-- termina header #F8A74B -->
+  <tr>
+      <td align="left" bgcolor="#791E16" class="Estilo3">
+        <%if session["nombre_completo"]%>
+        <div class ="loginlayout">
+          <a href="/home/index" title="Inicio del sistema"><img src="/images/iconos/house_2.png" width="42" height="42" alt="inicio "/></a>
+          Usuario:  <%=current_user.login%> / <%=current_user.subdireccion.descripcion%>
+        </div>
+        <%end%>
+      </td>
+      <td height="20" valign="top" bgcolor="#791E16" align="right">
+        <%if logged_in?%>
+            <!-- barra de busqueda-->
+            <form action ="/tramites/search" id="search">
+              <input id="searchField" type="text" name="q" placeholder="Folio o nombre completo" />
+              <input id="searchSubmit" type="submit" value="" />
+            </form>
+            <div class ="loginlayout">
+              <%=link_to 'Mi perfil',  {:controller => "customs", :action => "profile"}, :title => "Datos personales y perfiles a los que perteneces", :style => "font-size: 12px; color: #FFFFFF;"%> |
+              <%=link_to 'Mi página',  {:controller => "customs"}, :title => "Menú personalizado", :style => "font-size: 12px; color: #FFFFFF;"%> |
+              <%=link_to 'Cerrar sesión', {:action => "destroy", :controller=>"sessions"}, :title => "¿Desea salir del sistema?", :style => "font-size: 12px; color: #FFFFFF;"%>
+            </div>
+        <%end%>
+      </td>
+  </tr>
+
+  <!-- contenido principal -->
+  <tr>
+    <td colspan="2" valign="top" align="center">
+      <%if flash[:notice]%>
+        <div class="notice">
+            <%= flash[:notice] %>
+        </div>
+      <%else%>
+        <p></p>
+      <%end%>
+      <%=yield%>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td  colspan="2" bgcolor="#FFCC99">
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <!--
+          <td align="center" bgcolor="#F8A849"><img src="/images/logos/footer.png" width="797" height="51" /></td>
+          -->
+         </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+  <script>
+    Form.focusFirstElement(document.forms[0]);
+  </script>
+</body>
+</html>
