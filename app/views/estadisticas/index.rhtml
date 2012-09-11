@@ -1,0 +1,52 @@
+<h1>Reportes</h1>
+
+<%=link_to 'Estadísticas', :action => "index"%><br /><br />
+
+<form id="datos">
+<table class="sample" width="95%" border="0" cellspacing="2" cellpadding=0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <tr align="center" class="d0">
+    <td width="100%" colspan="3">Reportes Estadísticos: &nbsp; <%= select "", :reporte,
+                                                                         {"Gráfica general de trámites por subdirección" => "GGG",
+                                                                          "Gráfica histórica de niños y niñas identificados por años" => "GHNA",
+                                                                          "Reporte de identificados por género, intervalo de edad por municipio" => "EGEM",
+                                                                          "Reporte de identificados por género, intervalo de edad por municipio y localidad" => "EGEML",
+                                                                          "Reporte de identificados por género, último nivel, grado y habla español por municipio" => "EGNGrHM",
+                                                                          "Reporte de identificados por género, último nivel, grado y habla español por municipio y localidad" => "EGNGrHML",
+                                                                          "Reporte de identificados por género, intervalo de edad y con CURP por municipio" => "EGEcCM",
+                                                                          "Reporte de identificados por género, intervalo de edad y sin CURP por municipio" => "EGEsCM",
+                                                                          "Reporte de identificados por género, intervalo de edad y con CURP por municipio y localidad" => "EGEcCML",
+                                                                          "Reporte de identificados por género, intervalo de edad y sin CURP por municipio y localidad" => "EGEsCML",
+                                                                          "Reporte de identificados por género, intervalo de edad y con acta de nacimiento por municipio" => "EGEcAM",
+                                                                          "Reporte de identificados por género, intervalo de edad y sin acta de nacimiento por municipio" => "EGEsAM",
+                                                                          "Reporte de identificados por género, intervalo de edad y con acta de nacimiento por municipio y localidad" => "EGEcAML",
+                                                                          "Reporte de identificados por género, intervalo de edad y sin acta de nacimiento por municipio y localidad" => "EGEsAML",
+                                                                          "Reporte de identificados por género, intervalo de edad, último nivel y grado de escolar por municipio" => "EGENyGM",
+                                                                          "Reporte de identificados por género, intervalo de edad, último nivel y grado de escolar por municipio y localidad" => "EGENyGML"},
+                                                                          {:prompt => 'Selecciona una opción'}, :onchange => "enable_disable_mpio();" %></td>
+  </tr>
+  <tr align="center" class="d0">
+    <td>Ciclo:<%= select "", :ciclo, ["2007-2008", "2008-2009", "2009-2010", "2010-2011", "Todos los ciclos"], {:prompt => 'Selecciona un opción'}%></td>
+    <td>Nivel: &nbsp; <%= select "", :nivel, ["PREESCOLAR", "PRIMARIA", "SECUNDARIA", "TELESECUNDARIA"], {:prompt => 'Selecciona un opción'}, :disabled => true %></td>
+    <!--
+    <td>Municipio:&nbsp; <= select "", :municipio, @municipios.collect{|m| [m.municipio, m.municipio]}, {:prompt => 'Selecciona un opción'}, :disabled => true %></td>
+    -->
+    </tr>
+</table>
+</form>
+<br></br>
+
+<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
+
+<div id ="contenido">  
+</div>
+
+<%= observe_form('datos', :update => "contenido",
+                          :loading => "Element.show('spinner')",
+                          :complete => "Element.hide('spinner')",
+                          :url => {:action => :get_contenido})%>
+
+
+<br></br>
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
+
+

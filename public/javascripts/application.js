@@ -220,7 +220,7 @@ $j('#sesion_fecha').datepicker({
 	numberOfMonths: 2
 
 },
- $.datepicker.regional['es']
+ $j.datepicker.regional['es']
 );
 });
 
