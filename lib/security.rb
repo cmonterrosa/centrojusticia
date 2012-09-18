@@ -1,13 +1,14 @@
-# Carlos Monterrosa cmonterrosa@gmail.com.
+# Carlos Monterrosa (cmonterrosa@gmail.com.)
+require 'base64'
 
 module Security
 
   def generate_token
-    return (rand(10)).to_s + Array.new(4) { (rand(122-97) + 97).chr }.join + (rand(10000)).to_s.rjust(4, "0")
+    Base64::encode64(rand(10).to_s)
   end
   
   def validate_token(token)
-    (token =~ /\d{1}[a-z]{4}\d{4}/) ? true : false
+    (Base64::decode64(token.to_s) =~ /^\d{1}$/) ? true : false
   end
 
 end
