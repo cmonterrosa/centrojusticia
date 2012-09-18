@@ -1,5 +1,6 @@
 class AgendaController < ApplicationController
   require_role [:controlagenda, :especialistas], :for => [:management, :search_sesiones]
+
  
   def calendario
       redirect_to :action => "management"
@@ -7,7 +8,7 @@ class AgendaController < ApplicationController
 
   def management
      @sesion = Sesion.new
-     @sesiones = Sesion.find(:all)
+     @sesiones = Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos")
      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
      @title = "Control de agenda"
   end
@@ -27,7 +28,7 @@ class AgendaController < ApplicationController
   end
 
   def new_sesion
-    unless params[:horario] =~ /^\d{1,2}$/
+    if params[:horario] =~ /^\d{1,3}$/
       @horario = Horario.find(params[:horario])
       @controlador = (params[:origin] == 'customs') ? 'customs' : 'agenda'
       @fecha = params[:fecha]
@@ -49,6 +50,11 @@ class AgendaController < ApplicationController
     @sesion.horario = Horario.find(params[:horario]) if params[:horario]
     @sesion.fecha = params[:fecha] if params[:fecha]
     @sesion.user = current_user
+    #--- guardamos historia de hora y minutos ---
+    @sesion.hora = @sesion.horario.hora
+    @sesion.minutos = @sesion.horario.minutos
+    @sesion.sala_id = @sesion.horario.sala_id
+    @sesion.activa = true
     if @sesion.save
        @sesion.generate_clave
        flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
@@ -56,6 +62,21 @@ class AgendaController < ApplicationController
     else
        flash[:notice] = "no se puedo guardar, verifique"
        render :action => "new_sesion"
+    end
+  end
+
+  def daily_select
+    
+  end
+
+  def daily_show
+    @origin=params[:origin] if params[:origin]
+    if params[:year] =~ /^\d{4}$/ && params[:month] =~ /^\d{1,2}$/ && params[:day] =~ /^\d{1,2}$/
+       @fecha = DateTime.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
+       @salas = Sala.find(:all, :order => "descripcion")
+       @horarios = Horario.find(:all, :group => "hora,minutos")
+    else
+      redirect_to :action => @accion
     end
   end
 

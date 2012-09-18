@@ -10,4 +10,8 @@ class Horario < ActiveRecord::Base
       return "#{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} pm"
     end
   end
+
+  def descripcion_completa
+    hora_completa + " (#{self.sala.descripcion.upcase})"
+  end
 end

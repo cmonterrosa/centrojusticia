@@ -33,6 +33,14 @@ class Sesion < ActiveRecord::Base
     return string
   end
 
+  def resume
+    string = ""
+    string << "[#{self.num_tramite}]    #{self.mediador.nombre.upcase}  " if self.mediador && self.num_tramite
+    string << " Y  #{self.comediador.nombre.upcase}  " if self.comediador
+    string << "  (#{self.tiposesion.descripcion}) " if self.tiposesion
+    return string
+  end
+
   def generate_clave
     clave = (rand(10)).to_s + Array.new(2) { (rand(122-97) + 97).chr }.join + (rand(1000)).to_s.rjust(2, "0")
     while not (Sesion.find_by_clave(clave)).nil?

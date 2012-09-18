@@ -32,8 +32,46 @@ class SesionesController < ApplicationController
   end
 
   def new
-    @tramite = Tramite.find(params[:id])
+    @tramite = (params[:id]) ? Tramite.find(params[:id]) : Tramite.new
     @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+  end
+
+  #---- new and save from a day calendar ---
+  def new_with_date
+    @fecha = Date.parse(params[:date])
+    @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
+    @horario = Horario.find(params[:horario]) if params[:horario]
+    @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
+    @tramite = (params[:id]) ? Tramite.find(params[:id]) : Tramite.new
+    @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+  end
+
+  def save_with_date
+    @sesion = Sesion.new(params[:sesion])
+    @horario = Horario.find(params[:horario]) if params[:horario]
+    @sesion.horario = @horario if @horario
+    @sesion.horario ||= Horario.find(params[:sesion][:horario_id])
+    # --- if tramite exists ---
+    folio, anio = params[:sesion][:num_tramite].split("/") if params[:sesion][:num_tramite]
+    @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio, folio])
+    @sesion.tramite = (@tramite) ? @ŧramite : Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
+    #@sesion.horario = Horario.find(params[:horario]) if params[:horario]
+    @sesion.fecha = Date.parse(params[:date]) if params[:date]
+    @sesion.user = current_user
+    #--- guardamos historia de hora y minutos ---
+    @sesion.hora = @sesion.horario.hora
+    @sesion.minutos = @sesion.horario.minutos
+    @sesion.sala_id = @sesion.horario.sala_id
+    @sesion.activa = true
+    if @sesion.save
+       @sesion.generate_clave
+       flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
+       redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year
+    else
+       flash[:notice] = "no se puedo guardar, verifique"
+       render :action => "new_sesion_with_date"
+    end
+
   end
 
   def save

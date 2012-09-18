@@ -16,7 +16,7 @@
               <td align="center">Tipo</td>
             </tr>
             <tr>
-              <td align="center"><%= f.text_field :num_tramite, :class => "text", :required => true%></td>
+               <td align="center"><%= f.text_field :num_tramite, :class => "text", :required => true%></td>
               <td align="center"><%= f.select :mediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
               <td align="center"><%= f.select :comediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
               <td align="center"><%= f.select :tiposesion_id, Tiposesion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
