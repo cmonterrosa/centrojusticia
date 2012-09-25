@@ -1,10 +1,26 @@
-<h2>Cambio de horario de sesión</h2><br />
-<% form_remote_tag :url => { :action => "filtro_fecha", :sesion => @sesion}, :update => "resultados" do %>
-  <%= text_field_tag "sesion_fecha" %>
-  <%= submit_tag "Buscar horarios"%><br />
-<% end %>
+<h1>Reprogramar sesion: <%=@sesion.clave%></h1>
 
+
+<% form_remote_tag :url => { :action => "filtro_fecha", :sesion => @sesion}, :update => "resultados" do %>
+  <table class="table1">
+  <tr>
+    <th>Fecha</th>
+    <th>Hora actual</th>
+    <th>Especialista</th>
+    <th>Comediador</th>
+    <th></th>
+  </tr>
+ <tr>
+    <td><%= text_field_tag "sesion_fecha", "#{@sesion.fecha.strftime('%Y/%m/%d')}" %></td>
+    <td><%= text_field_tag 'sesion_hora', nil, :placeholder => @sesion.hora_completa%></td>
+    <td><%= select_tag 'sesion_mediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @sesion.mediador.id)%></td>
+    <td><%= select_tag 'sesion_comediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @sesion.comediador.id)%></td>
+    <td><%= submit_tag "Buscar horarios"%></td>
+ </tr>
+  </table>
+<% end %>
 <br />
+
 
 <div id="resultados"></div>
 

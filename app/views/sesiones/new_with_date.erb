@@ -1,4 +1,4 @@
-<% form_for :sesion, @sesion, :url => { :action => "save_with_date", :date => @fecha, :horario => @horario } do |f| -%>
+<% form_for :sesion, @sesion, :url => { :action => "save_with_date", :date => @fecha, :horario => @horario, :origin => params[:origin] } do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="3" align="center" >NUEVA SESIÓN</td>
@@ -13,11 +13,13 @@
               <td align="center">Número de expediente</td>
               <td align="center">Especialista</td>
               <td align="center">Comediador</td>
+              <td align="center">¿Notificar vía correo electrónico?</td>
             </tr>
             <tr>
               <td align="center"><%= f.text_field :num_tramite, :class => "text", :required => true%></td>
               <td align="center"><%= f.select :mediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
               <td align="center"><%= f.select :comediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
+              <td align="center"><%=  f.check_box :notificacion%></td>
             </tr>
           </table>
        </td>
@@ -41,7 +43,7 @@
               <%unless @horario%>
                 <td align="center"><%= f.select :horario_id, @horarios.collect{|a| [a.hora_completa, a.id]}, :prompt => 'Seleccione una opción'%></td>
               <%else%>
-                <td align="center"><%=f.label "#{@horario.descripcion_completa}"%></td>
+                <td align="center"><%=@horario.descripcion_completa%></td>
               <%end%>
               <td align="center"><%= f.select :tiposesion_id, @tipos_sesiones.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
             </tr>

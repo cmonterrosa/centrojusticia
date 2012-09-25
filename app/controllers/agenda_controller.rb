@@ -33,7 +33,14 @@ class AgendaController < ApplicationController
       @controlador = (params[:origin] == 'customs') ? 'customs' : 'agenda'
       @fecha = params[:fecha]
       @sesion = Sesion.new
-      @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+      #@especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+      @especialistas = User.find_by_sql(["SELECT u.* FROM users u
+    inner join roles_users ru on u.id=ru.user_id
+    inner join roles r on ru.role_id=r.id
+    where r.name='ESPECIALISTAS' and
+    u.id not in (select mediador_id from sesions WHERE fecha = ? and hora= ? and minutos= ?)", @fecha, @horario.hora, @horario.minutos ])
+    
+
     else
       flash[:notice] = "Seleccione un horario, verifique los datos"
       redirect_to :controller => @controlador, :action => "search_sesiones"

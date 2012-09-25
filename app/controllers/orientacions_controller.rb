@@ -59,9 +59,13 @@ class OrientacionsController < ApplicationController
     @orientacion.tramite = @tramite
     if @orientacion.save && @tramite.save
       @tramite.update_estatus!("tram-inic", current_user) # update estatus of tramite
-      NotificationsMailer.deliver_tramite_created(@tramite, @tramite.user) # sends the email
-      flash[:notice] = "Guardado correctamente"
-      redirect_to :controller => "home"
+        if @orientacion.notificacion
+           NotificationsMailer.deliver_tramite_created(@tramite, @tramite.user) #sends the email
+           flash[:notice] = "Guardado correctamente y envío de notificación por email" 
+        else
+          flash[:notice] = "Guardado correctamente, sin envío de notificación por email"
+        end
+        redirect_to :controller => "home"
     else
       flash[:notice] = "No se pudo guardar, verifique"
       render :action => "new_or_edit"

@@ -57,6 +57,7 @@ class UsersController < ApplicationController
   def save
     @user = User.new(params[:user])
     @user.activated_at = Time.now
+    @user.activo=true
     success = @user && @user.save
     if success && @user.errors.empty?
       flash[:notice] = "Usuario creado correctamente"

@@ -1,7 +1,7 @@
 
-<% if @sesion.has_permission?(current_user) %>
+<% if @sesion.has_permission?(@user) %>
 <!-- Acciones -->
-<table width="30%" border="0" cellspacing="0" cellpadding="0">
+<table width="40%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
       <td>
         <a href="/sesiones/select_schedule/<%=h @sesion.id%>/?t=<%=h @token%>" title="Reprogramar horario de sesión">
@@ -23,19 +23,24 @@
 <%end%>
 
 
+<!-- Mostramos icono de bitácora si es mediador o comediador -->
 
+
+<% if @sesion.mediador_id == current_user.id || @sesion.comediador_id == current_user.id %>
+<!-- Acciones -->
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+      <td>
+        <a href="/sesiones/bitacora/<%=h @sesion.id%>/?t=<%=h @token%>" title=Bitácora">
+         <img src="/images/iconos/bitacora.png" width="64" height="64" alt="bitácora" />
+        </a>
+      </td>
+  </tr>
+</table><br />
+<%end%>
 
 <!-- contenido -->
 <br /><%= render :partial => "show"%>
-
-<table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-<tr class="d0">
-    <td style="vertical-align: middle;"><b>Observaciones</b></td>
-    <td style="vertical-align: middle;"><%=@sesion.observaciones%></td>
-</tr>
-</table>
-
-
 
 <!-- back -->
 <div align="center">

@@ -7,17 +7,19 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4">DATOS GENERALES</td>
+          <td align="center" colspan="5">DATOS GENERALES</td>
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center">Fecha/hora</td>
           <td align="center">Especialista</td>
+           <td align="center">¿Notificar especialista vía correo?</td>
           <td align="center">Observaciones</td>
           <td align="center">Sala</td>
         </tr>
         <tr>
           <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
           <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
+          <td align="center"><%=f.check_box :notificacion%> </td>
           <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>
           <td align="center"><%= f.select :sala_id, Sala.find(:all, :conditions => ["is_active = ?", true]).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
         </tr>
@@ -96,22 +98,3 @@
   </table>
 <% end %>
 
-<!--
-<script>
-  enable_disable_others("motivo_inasistencias", "escolaridad_motivos_inasistencias_otros","");
-</script>
--->
-
-
-<!--
-<=observe_field :escolaridad_clave_escuela,
-              :url => { :controller => 'escolaridad', :action => 'get_nombre_escuela' },
-              :update => 'show_clave',
-              :with => :escolaridad_clave_escuela,
-              :frequency => 0.5 %>
-
-<=observe_field :_nivel,
-              :url => { :controller => 'escolaridad', :action => 'get_grados' },
-              :update => :escolaridad_grado_id,
-              :with => :_nivel %>
--->

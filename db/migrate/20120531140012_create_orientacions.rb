@@ -14,6 +14,7 @@ class CreateOrientacions < ActiveRecord::Migration
       t.string :correo, :limit => 40
       t.integer :municipio_id
       t.integer :tramite_id
+      t.boolean :notificacion
       t.timestamps
     end
   end

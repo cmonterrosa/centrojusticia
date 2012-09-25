@@ -6,6 +6,7 @@ class CreateInvitacions < ActiveRecord::Migration
       t.boolean :entregada
       t.string  :justificacion
       t.timestamps
+      t.datetime :fecha_hora_entrega
     end
     add_index :invitacions, [:sesion_id], :name => "sesion"
   end

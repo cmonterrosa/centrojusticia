@@ -1,31 +1,35 @@
-<h3 style="color:#104E8B; font-family: Helvetica;">Trámites</h3>
+<h3 style="color:#104E8B; font-family: Helvetica;">Bienvenido subdirector (<%=current_user.subdireccion.descripcion%>)</h3>
+
 
 <table width="70%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
-    <td>
-        <a href="/orientacions/new_or_edit" title="Iniciar trámite">
-          <img src="/images/iconos/new_orientacion.png" width="128" height="128" alt="nueva orientación" />
+      <td>
+        <a href="/tramites" title="Trámites">
+          <img src="/images/iconos/tramites.png" width="128" height="128" alt="tramites" />
         </a>
-    </td>
-    <td>
-        <a href="/tramites/list" title="Trámites">
-          <img src="/images/iconos/seguimiento.png" width="128" height="128" alt="Trámites" />
-        </a>
-    </td>
+      </td>
 
-    <td>
-        <a href="/agenda/list" title="Agenda general de la Subdirección">
-          <img src="/images/iconos/seguimiento.png" width="128" height="128" alt="Trámites" />
-        </a>
-    </td>
-
+      <td>
+         <a href="/agenda/calendario" title="Control de la agenda">
+           <img src="/images/iconos/calendario.png" width="128" height="128" alt="apoyos" />
+         </a>
+       </td>
+        <td>
+         <a href="/estadisticas" title="Seguimiento de información estadística del CEJA">
+           <img src="/images/iconos/estadisticas.png" width="128" height="128" alt="estadisticas" />
+         </a>
+        </td>
+        <td>
+          <a href="/admin/index" title="Módulo de administración del sistema">
+            <img src="/images/iconos/Crystal_Clear_action_configure.png" width="128" height="128" alt="administracion"/>
+          </a>
+        </td>
   </tr>
   <tr align="center">
-    <td class="menu">Iniciar trámite</td>
-    <td class="menu">Listado de trámites</td>
-     <td class="menu">Consultar agenda</td>
+    <td class="menu">Trámites</td>
+    <td class="menu">Agenda</td>
+    <td class="menu">Estadísticas</td>
+    <td class="menu">Administración</td>
   </tr>
 </table>
-<br/>
-<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
 

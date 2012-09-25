@@ -31,7 +31,7 @@
                  <td>
                     <%=link_to sesion.resume, :action => 'show', :controller => 'sesiones', :id => sesion%>
                  </td>
-                 <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? and sala_id = ?", horario.hora, horario.minutos, sala.id])%>
+                 <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
                     <td style="background-color: #D7F2FF;">
                         <%=  link_to "Disponible", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
                     </td>

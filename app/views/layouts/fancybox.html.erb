@@ -69,17 +69,14 @@
     <tr>
       <td colspan="2">
         <table width="100%" border="0" cellspacing="1">
-          <tr>
-            <td width="9%" rowspan="2"><img src="/images/logo_gobierno.png" alt="" width="108" height="70" /></td>
+            <tr>
+            <td width="100%" align="center" class="Estilo1"><img src="/images/logos/pjech.jpg" alt="logo" width="1024" height="140" /></td>
           </tr>
-          <tr>
-            <td width="11%" align="center" class="Estilo1"><img src="/images/CHIA.jpg" alt="" width="112" height="70" /></td>
-            <td width="62%" align="center" class="Estilo1"><img src="/images/TEXTO-TODOS A LA ESCUELA.png" alt="" width="225" height="70" /></td>
-            <td width="18%" align="center" class="Estilo1"><img src="/images/UNICEF-logo.png" alt="" width="208" height="45" /></td>
-          </tr>
+          <!--
           <tr>
             <td>&nbsp;</td>
           </tr>
+          -->
          </table>
       </td>
     </tr>
@@ -87,7 +84,7 @@
   <tr>
       <td align="left" bgcolor="#791E16" class="Estilo3">
         <%if session["nombre_completo"]%>
-        <div class ="loginlayout">
+        <div class ="loginlabels">
           <a href="/home/index" title="Inicio del sistema"><img src="/images/iconos/house_2.png" width="42" height="42" alt="inicio "/></a>
           Usuario:  <%=current_user.login%> / <%=current_user.subdireccion.descripcion%>
         </div>

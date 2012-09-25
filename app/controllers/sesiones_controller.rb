@@ -1,5 +1,7 @@
 class SesionesController < ApplicationController
-   require_role [:especialistas, :controlagenda]
+   #before_filter :login_required
+   #layout 'oficial', :except => "select_schedule"
+    require_role "controlagenda", :for_all_except => [:list_by_user, :calendario, :new_with_date, :select_schedule, :update_schedule, :show]
 
   def list_by_tramite
     @tramite = Tramite.find(params[:id])
@@ -8,8 +10,8 @@ class SesionesController < ApplicationController
 
   def list_by_user
     if params[:limit] =~ /\d/
-      @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ?", current_user.id], :order => "fecha DESC", :limit => params[:limit])
-      @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ?",current_user.id], :order => "fecha DESC", :limit => params[:limit])
+      @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND activa=true", current_user.id], :order => "fecha DESC", :limit => params[:limit])
+      @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND activa=true",current_user.id], :order => "fecha DESC", :limit => params[:limit])
     else
       @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ?", current_user.id], :order => "fecha DESC")
       @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ?",current_user.id], :order => "fecha DESC")
@@ -29,6 +31,9 @@ class SesionesController < ApplicationController
   def show
     @sesion = Sesion.find(params[:id])
     @token = generate_token
+    @user = (params[:user])? User.find(params[:user]) : current_user
+    current_user ||= User.find(params[:user]) if params[:user]
+    
   end
 
   def new
@@ -43,10 +48,16 @@ class SesionesController < ApplicationController
     @horario = Horario.find(params[:horario]) if params[:horario]
     @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
     @tramite = (params[:id]) ? Tramite.find(params[:id]) : Tramite.new
-    @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    @especialistas = User.find_by_sql(["SELECT u.* FROM users u
+    inner join roles_users ru on u.id=ru.user_id
+    inner join roles r on ru.role_id=r.id
+    where r.name='ESPECIALISTAS' and
+    u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?)", @fecha, @horario.hora, @horario.minutos ])
+    #@especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
   end
 
   def save_with_date
+    @origin = params[:origin]
     @sesion = Sesion.new(params[:sesion])
     @horario = Horario.find(params[:horario]) if params[:horario]
     @sesion.horario = @horario if @horario
@@ -65,8 +76,13 @@ class SesionesController < ApplicationController
     @sesion.activa = true
     if @sesion.save
        @sesion.generate_clave
+         #--- Notificaciones ---
+         if @sesion.notificacion && @sesion.comediador_id && @sesion.mediador_id
+            NotificationsMailer.deliver_sesion_created("mediador", @sesion)
+            NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+         end
        flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
-       redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year
+       redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
     else
        flash[:notice] = "no se puedo guardar, verifique"
        render :action => "new_sesion_with_date"
@@ -104,6 +120,7 @@ class SesionesController < ApplicationController
       flash[:notice] = "No se pudo encontrar sesion, verifique"
       redirect_to :controller => "home"
     else
+      @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
       render :partial => 'select_schedule', :layout => 'oficial'
     end
   end
@@ -121,19 +138,17 @@ class SesionesController < ApplicationController
 
   def update_schedule
    @sesion= Sesion.find(params[:sesion]) if params[:sesion]
+   @mediador = User.find(params[:mediador]) if params[:mediador]
+   @comediador = User.find(params[:comediador]) if params[:comediador]
    @horario = Horario.find(params[:horario]) if params[:horario]
    @fecha = Date.parse(params[:fecha]) if params[:fecha]
    flash[:notice] = "No se pudo actualizar correctamente, verifique"
-     if @sesion && @horario && @fecha
-        if @sesion.update_attributes!(:horario_id => @horario.id, :fecha => @fecha)
+     if @sesion && @horario && @fecha && @mediador && @comediador
+        if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id)
            flash[:notice] = "Hora de sesión actualizada correctamente"
         end
     end
-     redirect_to :action => "show", :id => @sesion, :token => generate_token
-  end
-
-  def save_schedule
-
+     redirect_to :action => "show", :id => @sesion, :user => current_user.id
   end
 
 
@@ -142,13 +157,18 @@ class SesionesController < ApplicationController
     if params[:sesion_fecha]  && params[:sesion_fecha] =~ /^\d{4}\/\d{1,2}\/\d{1,2}$/
       @fecha = params[:sesion_fecha]
       @sesion = Sesion.find(params[:sesion]) if params[:sesion]
-      @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?)",  DateTime.parse(@fecha)])
+      #--- mediador y comediador---
+      @mediador = User.find(params[:sesion_mediador_id]) if params[:sesion_mediador_id]
+      @comediador = User.find(params[:sesion_comediador_id]) if params[:sesion_comediador_id]
+      #---- Seleccion de horarios ---
+      @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id as id from sesions where fecha = ?)",  DateTime.parse(@fecha)])
       @title = "Resultados encontrados"
       @horarios_disponibles = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", DateTime.parse(@fecha)])
       @salas = Sala.find(:all, :order => "descripcion")
-      return render(:partial => 'horarios_disponibles', :layout => false)
+      return render(:partial => 'horarios_disponibles', :layout => "only_jquery")
     else
-      redirect_to :controller => "agenda", :action => "management"
+       return render(:partial => 'no_results', :layout => false)
+       #redirect_to :controller => "agenda", :action => "management"
     end
   end
 

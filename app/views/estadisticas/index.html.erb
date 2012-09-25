@@ -1,0 +1,18 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+<h2>Gráficas</h2><br />
+
+
+<%=link_to "Gráfica de sesiones por especialistas", {:action => "grafica_sesiones_especialistas"}, :title => "gráfica de sesiones detallada por especilista", :class => "fancybox fancybox.iframe"%>
+
+
+<br/><br />
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />

@@ -25,7 +25,10 @@ class InvitacionesController < ApplicationController
   end
 
   def list_by_tramite
-
+    @tramite = Tramite.find(params[:id])
+    @sesiones = Sesion.find(:all, :conditions => ["tramite_id = ?", @tramite.id])
+    @invitaciones= (@sesiones.empty?)? nil :  Invitacion.find(:all, :conditions => ["sesion_id in ?", @sesiones.collect{|s| s.id}])
+    #@invitaciones = Invitacion.find(:all, :conditions => ["sesion_id in ?", @sesiones.collect{|s| s.id}])
   end
 
   def list_by_person

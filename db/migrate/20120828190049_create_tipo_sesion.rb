@@ -1,13 +1,13 @@
 class CreateTipoSesion < ActiveRecord::Migration
   def self.up
     create_table :tiposesions do |t|
-      t.string :descripcion, :limit => 100
+      t.string :descripcion, :limit => 40
     end
 
-    Tiposesion.create(:descripcion => "FIRMA DE CONVENIO")
-    Tiposesion.create(:descripcion => "PRIMERA SESION CONJUNTA")
-    Tiposesion.create(:descripcion => "SEGUNDA SESION CONJUNTA")
-    Tiposesion.create(:descripcion => "TERCERA SESION CONJUNTA")
+    Tiposesion.create(:descripcion => "ORIENTACION CONJUNTA")
+    Tiposesion.create(:descripcion => "SESION CONSECUTIVA")
+    Tiposesion.create(:descripcion => "FORMA DE CONVENIO")
+    Tiposesion.create(:descripcion => "MODIFICACION DE CONVENIO")
   end
 
   def self.down

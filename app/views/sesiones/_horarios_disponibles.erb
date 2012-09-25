@@ -1,41 +1,53 @@
-<div id="divlista">
-  <table class="sample" width="85%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-         <tr align="center" class="d1">
-            <td bgcolor="#E8E8E8" colspan="6">SALAS</td>
-         </tr>
+<div class="titulocalendario">
+  <p>
+    Seleccione un horario
+  </p>
+</div>
 
+<table class="table1">
+    <thead>
          <!-- Nombre de las salas -->
-         <tr align="center" class="d0">
+         <tr>
             <%@salas.each do |sala|%>
-                <td bgcolor="#f3f3f3" align="center"><%=sala.descripcion%></td>
+                <th scope="col" abbr="Starter"><%=sala.descripcion%></th>
             <%end%>
          </tr>
-
-
-          <!-- Recorremos los horarios -->
-          <% form_tag :action => 'update_schedule', :fecha => @fecha, :sesion => @sesion do -%>
-
-                <% @horarios_disponibles.each do |horario| %>
-                              <tr align="center" class="d1">
+    </thead>
+      <!-- Recorremos los horarios -->
+    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador}, :multipart => true, :remote => true ) do -%>
+    <tbody>
+              <% @horarios_disponibles.each do |horario| %>
+                            <tr>
 
                                 <%@salas.each do |sala|%>
                                     <%if h = Horario.find(:first, :conditions => ["sala_id = ? and hora=? and minutos=? and activo=1", sala.id, horario.hora, horario.minutos])%>
-                                      <td bgcolor="#f3f3f3" align="center">
-                                        <%=  radio_button_tag("horario", h.id)%><%= h.hora_completa %>
-                                      </td>
+                                        <%sesion = Sesion.find(:first, :conditions => ["activa = 1 AND fecha = ? AND hora = ? AND minutos = ? AND ((mediador_id = ? OR comediador_id = ?) OR (mediador_id = ? OR comediador_id = ?))", @fecha, horario.hora, horario.minutos, @mediador.id, @mediador.id, @comediador.id, @comediador.id])%>
+                                        <%if sesion.nil?%>
+                                           <td align="center">
+                                              <%=  radio_button_tag("horario", h.id)%><%= h.hora_completa %>
+                                           </td>
+                                        <%else%>
+                                           <td align="center" style="background-color: #FEFEF2;">
+                                              <%=  radio_button_tag "horario", h.id, false, :disabled => true%><%= h.hora_completa %>
+                                           </td>
+                                        <%end%>
                                     <%else%>
-                                      <td bgcolor="#f3f3f3" align="center">--</td>
+                                      <th scope="row"> </th>
                                     <%end%>
                                 <%end%>
                               </tr>
                 <%end%>
 
-           <!-- boton final -->
-           <tr align="center" class="d0">
-               <th class="boton" colspan="6" align="center"><%= submit_tag "Seleccionar"%></th>
+          
+   </tbody>
+
+   <tfoot>
+           <tr align="center">
+             <th><%= submit_tag "Seleccionar"%></th>
            </tr>
+           <%end%>
+   </tfoot>
 
-          <%end%>
+</table>
 
-   </table>
-</div>
+

@@ -1,0 +1,27 @@
+<%if @invitaciones%>
+<table class="table1">
+    <thead>
+         <!-- Titulos -->
+         <tr>
+            <th scope="col" abbr="Starter">Fecha de sesión</th>
+            <th scope="col" abbr="Starter">Fecha de entrega</th>
+            <th scope="col" abbr="Starter" colspan="2">Acciones</th>
+         </tr>
+    </thead>
+
+    <tbody>
+      
+        <%@invitaciones.each do |invitacion|%>
+          <tr>
+            <td><%=invitacion.sesion.start_at.strftime("%Y-%m-%d %H:%M")%></td>
+            <td><%=invitacion.fecha_hora_entrega.strftime("%Y-%m-%d %H:%M")%></td>
+            <td><%=link_to 'Imprimir', {:action => "print", :id => invitacion}, :title => "Imprimir invitacion de trámite #{invitacion.tramite.folio_integrado}", :class => 'boton'%></td>
+            <td><%=link_to 'Enviar por correo', {:action => "send_email", :id => invitacion}, :title => "Enviar invitacion de trámite #{invitacion.tramite.folio_integrado}", :class => 'boton'%></td>
+          </tr>
+        <%end%>
+    </tbody>
+</table>
+
+<%else%>
+  <h3> No existe información</h3><br />
+<%end%>

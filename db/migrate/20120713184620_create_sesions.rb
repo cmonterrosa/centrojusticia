@@ -17,6 +17,7 @@ class CreateSesions < ActiveRecord::Migration
         t.integer :user_id
         t.integer :tiposesion_id
         t.boolean :activa
+        t.boolean :notificacion
         t.timestamps
     end
 

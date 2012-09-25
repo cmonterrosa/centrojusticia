@@ -1,30 +1,79 @@
-<!-- contenido -->
-  <%= render :partial => "show"%>
-<br />
+<!DOCTYPE html>
+<html>
+<head>
+   <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+
+
+  <script>
+  $(document).ready(function() {
+    $j("#accordion").accordion();
+  });
+  </script>
+</head>
+<body style="font-size:72.5%;">
 
 <% form_for :sesion, @sesion, :url => { :action => "save", :id => @sesion.tramite, :sesion_id => @sesion.id } do |f| -%>
-<table>
-  <tr class="d0">
-     <td align="center"><b>Observaciones:</b></td>
-  </tr>
-  <tr class="d1">
-     <td align="center"><%= f.text_area :observaciones, :class => "text", :required => true%></td>
-  </tr>
-  <!-- FOOTER -->
-    <tr>
-      <td align="right">
-        <table>
-          <tr>
-            <td>
-              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
-            </td>
-            <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :action => "list_by_user"-%>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-</table>
+<div id="accordion">
+	<h2><a href="#">DATOS GENERALES</a></h2>
+	<div>
+          <%= render :partial => "show"%>
+        </div>
+	<h2><a href="#">OBSERVACIONES</a></h2>
+	<div>
+		<table class="table1">
+                  <tr>
+                    <td><%= f.text_area :observaciones, :class => "text"%></td>
+                  </tr>
+                </table>
+
+	</div>
+	<h2><a href="#">RESULTADO DE LA SESIÓN</a></h2>
+	<div>
+                <table class="table1">
+                  <tr>
+                    <td><%= f.text_area :resultado, :class => "text", :required => true%></td>
+                  </tr>
+                  <tr>
+                    <th>¿ESTA ACTIVA?</th>
+                  </tr>
+                  <tr>
+                    <th>
+                      <%=f.check_box :activa%>
+                    </th>
+                  </tr>
+                </table>
+		
+	</div>
+        <h2><a href="#">GUARDAR O REGRESAR</a></h2>
+        <div>
+          <table>
+            <tr>
+              <td>
+                <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+              </td>
+              <td>
+                <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :action => "list_by_user"-%>
+              </td>
+            </tr>
+          </table>
+        </div>
+</div>
 <%end%>
+
+
+
+
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
 
