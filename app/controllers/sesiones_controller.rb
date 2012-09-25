@@ -1,7 +1,7 @@
 class SesionesController < ApplicationController
    #before_filter :login_required
    #layout 'oficial', :except => "select_schedule"
-    require_role "controlagenda", :for_all_except => [:list_by_user, :calendario, :new_with_date, :select_schedule, :update_schedule, :show]
+    require_role "controlagenda", :for_all_except => [:list_by_user, :calendario, :new_with_date, :select_schedule, :update_schedule, :update_schedule2, :show]
 
   def list_by_tramite
     @tramite = Tramite.find(params[:id])
@@ -151,6 +151,9 @@ class SesionesController < ApplicationController
      redirect_to :action => "show", :id => @sesion, :user => current_user.id
   end
 
+ def update_schedule2
+   render :text => "Seleccionaste #{params[:mediador]}"
+ end
 
 
   def filtro_fecha

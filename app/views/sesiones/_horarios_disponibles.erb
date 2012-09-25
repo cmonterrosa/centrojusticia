@@ -14,8 +14,25 @@
          </tr>
     </thead>
       <!-- Recorremos los horarios -->
-    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador}, :multipart => true, :remote => true ) do -%>
-    <tbody>
+
+
+
+
+
+
+
+
+
+   <!--
+   < form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador}, :multipart => true, :remote => true ) do -%>
+   -->
+
+    <% form_remote_tag :url => {:action => 'update_schedule2', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador}, :update => "sesion" do %>
+
+
+
+
+   <tbody>
               <% @horarios_disponibles.each do |horario| %>
                             <tr>
 
@@ -51,3 +68,7 @@
 </table>
 
 
+
+<div id="sesion">
+
+</div>
