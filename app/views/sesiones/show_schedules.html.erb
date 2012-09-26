@@ -1,0 +1,97 @@
+<h1>Reprogramar sesion: <%=@sesion.clave%></h1>
+
+<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
+ <table class="table1">
+  <tr>
+    <th>Fecha</th>
+    <th>Hora actual</th>
+    <th>Especialista</th>
+    <th>Comediador</th>
+    <th></th>
+  </tr>
+ <tr>
+    <td><%= text_field_tag "sesion_fecha", "#{@sesion.fecha.strftime('%Y/%m/%d')}" %></td>
+    <td><%= text_field_tag 'sesion_hora', nil, :placeholder => @sesion.hora_completa%></td>
+    <td><%= select_tag 'sesion_mediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @sesion.mediador.id)%></td>
+    <td><%= select_tag 'sesion_comediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @sesion.comediador.id)%></td>
+    <td><%= submit_tag "Buscar horarios"%></td>
+ </tr>
+  </table>
+<% end %>
+<br />
+
+
+
+<% if @noweekend %>
+
+<div class="titulocalendario">
+  <p>
+    Seleccione un horario
+  </p>
+  <p>
+    <%=(@fecha.strftime("%d de %B de %Y")).upcase%>
+  </p>
+</div>
+
+
+<table class="table1">
+    <thead>
+         <!-- Nombre de las salas -->
+         <tr>
+            <%@salas.each do |sala|%>
+                <th scope="col" abbr="Starter"><%=sala.descripcion%></th>
+            <%end%>
+         </tr>
+    </thead>
+    <!-- Recorremos los horarios -->
+    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador}, :multipart => true, :remote => true ) do -%>
+          <tbody>
+              <% @horarios_disponibles.each do |horario| %>
+                            <tr>
+
+                                <%@salas.each do |sala|%>
+                                    <%if h = Horario.find(:first, :conditions => ["sala_id = ? and hora=? and minutos=? and activo=1", sala.id, horario.hora, horario.minutos])%>
+                                        <%sesion = Sesion.find(:first, :conditions => ["activa = 1 AND fecha = ? AND hora = ? AND minutos = ? AND ((mediador_id = ? OR comediador_id = ?) OR (mediador_id = ? OR comediador_id = ?))", @fecha, horario.hora, horario.minutos, @mediador.id, @mediador.id, @comediador.id, @comediador.id])%>
+                                        <%if sesion.nil?%>
+                                           <td align="center">
+                                              <%=  radio_button_tag("horario", h.id)%><%= h.hora_completa %>
+                                           </td>
+                                        <%else%>
+                                           <td align="center" style="background-color: #FEFEF2;">
+                                              <%=  radio_button_tag "horario", h.id, false, :disabled => true%><%= h.hora_completa %>
+                                           </td>
+                                        <%end%>
+                                    <%else%>
+                                      <th scope="row"> </th>
+                                    <%end%>
+                                <%end%>
+                              </tr>
+                <%end%>
+
+
+
+              <tr align="center">
+                <th colspan="<%@salas.size%>"><%= submit_tag "Actualizar"%></th>
+              </tr>
+            </tbody>
+         <%end%>
+</table>
+
+<%else%>
+
+<div class="titulocalendario">
+  <p>
+    <%=(@fecha.strftime("%d de %B de %Y")).upcase%> no es una fecha válida
+  </p>
+</div>
+
+<%end%>
+
+
+
+<br />
+<!-- back -->
+<div align="center">
+   <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  {:action => "show", :user => current_user.id, :id => @sesion}, {:title => "Regresar al menú anterior"}%><br />
+</div>
+

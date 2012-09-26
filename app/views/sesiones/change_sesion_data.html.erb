@@ -1,8 +1,7 @@
 <h1>Reprogramar sesion: <%=@sesion.clave%></h1>
 
-
-<% form_remote_tag :url => { :action => "filtro_fecha", :sesion => @sesion}, :update => "resultados" do %>
-  <table class="table1">
+<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
+ <table class="table1">
   <tr>
     <th>Fecha</th>
     <th>Hora actual</th>
@@ -20,9 +19,6 @@
   </table>
 <% end %>
 <br />
-
-
-<div id="resultados"></div>
 
 
 <!-- back -->

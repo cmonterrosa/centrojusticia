@@ -8,13 +8,13 @@
 
     <tr>
     <th>Folio del trámite:</th>
-    <td><%=@tramite.folio_integrado%></td>
+    <td><%=h (@tramite.folio_integrado) ? @tramite.folio_integrado : "---"%></td>
     </tr>
 
    
    <tr>
     <th><%=h "Estatus:"%></th>
-    <td><%=@tramite.estatus%></td>
+    <td><%=h (@tramite.estatus) ? @tramite.estatus : "---"%></td>
   </tr>
 
 
@@ -31,7 +31,7 @@
 
   <tr>
     <th>Sala:</th>
-    <td>----</td>
+    <td><%=h (@sesion.horario) ? @sesion.horario.sala.descripcion : "---"%></td>
   </tr>
 
   <tr>

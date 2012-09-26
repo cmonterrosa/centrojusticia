@@ -32,7 +32,8 @@ class Tramite < ActiveRecord::Base
 #  end
 
   def estatus
-    self.estatu.descripcion
+    result = (self.estatu ) ? self.estatu.descripcion : nil
+    return result
   end
 
   def update_estatus!(clave,usuario)

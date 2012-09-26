@@ -22,6 +22,16 @@ class NotificationsMailer < ActionMailer::Base
       @subject    += "Se te ha programado una sesión como #{tipo}"
       @body[:url]  = "http://#{SITE_URL}/sesiones/show/#{@sesion.id}"
   end
+  
+  def sesion_canceled(tipo, sesion)
+      user = (tipo=="mediador" ? sesion.mediador : sesion.comediador)
+      setup_email(user)
+      @sesion = Sesion.find(sesion)
+      @tramite = @sesion.tramite
+      @subject    += "Se ha cancelado sesion programada para el día #{@fecha.strftime("%d de %B de %Y").upcase} / #{@sesion.hora_completa}"
+      @body[:url]  = "http://#{SITE_URL}/"
+  end
+
 
    #--- orientaciones ---
    def orientacion_created(orientacion, user)
