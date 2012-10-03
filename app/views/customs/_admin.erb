@@ -1,6 +1,19 @@
-<h3 style="color:#104E8B; font-family: Helvetica;">Bienvenido administrador</h3>
 
-<table width="70%" border="0" cellspacing="0" cellpadding="0">
+<table width="65%" border="0" cellspacing="0">
+  <tr align="center">
+    <td align="right" width="35%"><%=image_tag("pjech/logo_rojo.png", :border => 0, :size => "118×154", :alt => "PJECH")%></td>
+    <td align="left" width="65%"><%=image_tag("pjech/barra_menu.png", :border => 0, :alt => "PJECH")%></td>
+  </tr>
+</table>
+<br />
+
+
+<!--
+<h3 style="color:#104E8B; font-family: Helvetica;">Bienvenido administrador</h3>
+-->
+
+
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
       <td>
         <a href="/tramites" title="Trámites">
@@ -13,22 +26,31 @@
            <img src="/images/iconos/calendario.png" width="128" height="128" alt="apoyos" />
          </a>
        </td>
-        <td>
+  </tr>
+  <tr align="center">
+    <td class="menu">Trámites</td>
+    <td class="menu">Agenda</td>
+  </tr>
+  <tr>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+  <tr align="center">
+        <td align="center">
          <a href="/estadisticas" title="Seguimiento de información estadística del CEJA">
            <img src="/images/iconos/estadisticas.png" width="128" height="128" alt="estadisticas" />
          </a>
         </td>
-        <td>
+        <td align="center">
           <a href="/admin/index" title="Módulo de administración del sistema">
             <img src="/images/iconos/Crystal_Clear_action_configure.png" width="128" height="128" alt="administracion"/>
           </a>
         </td>
   </tr>
-  <tr align="center">
-    <td class="menu">Trámites</td>
-    <td class="menu">Agenda</td>
-    <td class="menu">Estadísticas</td>
-    <td class="menu">Administración</td>
+  
+  <tr>
+    <td class="menu" align="center">Estadísticas</td>
+    <td class="menu" align="center">Administración</td>
   </tr>
 </table>
 
