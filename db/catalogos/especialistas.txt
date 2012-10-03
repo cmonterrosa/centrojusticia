@@ -1,14 +1,14 @@
-Néstor Elí | Hernández Gálvez | nhernandez
-Cyntia Carolina | Licea Bonilla | clicea
-Legna Patricia | Córdova Solís | lcordova
-María Lourdes | López Sánchez | mlopez
-Maricela | Torres Dávila | mtorres
-Lucia Guadalupe | Alfonso Ontiveros | lalfonso
+Néstor Elí | Hernández Gálvez |nhernandez
+Cyntia Carolina | Licea Bonilla |clicea
+Legna Patricia | Córdova Solís |lcordova
+María Lourdes | López Sánchez |mlopez
+Maricela | Torres Dávila |mtorres
+Lucia Guadalupe | Alfonso Ontiveros |lalfonso
 Laura Guadalupe | Domínguez Rodríguez |ldominguez
-Elisheba | Goldhaber Pasillas | egoldhaber
-Laura Sabrina | Pérez Muñoz | lperez
-Amauri | Palacios Aquino | apalacios
-Roxana | Robles Dávila | rrobles
+Elisheba | Goldhaber Pasillas |egoldhaber
+Laura Sabrina | Pérez Muñoz |lperez
+Amauri | Palacios Aquino |apalacios
+Roxana | Robles Dávila |rrobles
 María Aurora | Ruiz Ovalle |mruiz
 Alexandra | Ruvalcaba Aguilar |aruvalcaba
 Nancy Alejandra | León Zenteno |nleon
