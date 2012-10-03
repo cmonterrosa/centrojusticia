@@ -16,7 +16,7 @@
               <td align="center">¿Notificar vía correo electrónico?</td>
             </tr>
             <tr>
-              <td align="center"><%= f.text_field :num_tramite, :class => "text", :required => true%></td>
+              <td align="center"><%= f.text_field :num_tramite, :class => "text", :onchange => "validar_expediente();"%></td>
               <td align="center"><%= f.select :mediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
               <td align="center"><%= f.select :comediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
               <td align="center"><%=  f.check_box :notificacion%></td>
@@ -81,7 +81,7 @@
         <table>
           <tr>
             <td>
-              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+              <input id ="submit" title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
             </td>
             <td>
               <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "agenda", :action => "daily_show", :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => params[:origin]-%>
