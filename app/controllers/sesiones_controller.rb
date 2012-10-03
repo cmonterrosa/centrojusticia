@@ -53,7 +53,7 @@ class SesionesController < ApplicationController
     inner join roles r on ru.role_id=r.id
     where r.name='ESPECIALISTAS' and
     u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?)", @fecha, @horario.hora, @horario.minutos ])
-    #@especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    #@especialistas ||=  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
   end
 
   def save_with_date
@@ -85,7 +85,7 @@ class SesionesController < ApplicationController
        redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
     else
        flash[:notice] = "no se puedo guardar, verifique"
-       render :action => "new_sesion_with_date"
+       render :action => "new_with_date"
     end
 
   end
@@ -145,6 +145,7 @@ class SesionesController < ApplicationController
       redirect_to :controller => "home"
     else
       @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+      @notificacion = (params[:sesion_notificacion]) ? true : false 
     end
   end
 
@@ -157,6 +158,7 @@ class SesionesController < ApplicationController
    @horario = Horario.find(params[:horario]) if params[:horario]
    @fecha = Date.parse(params[:sesion_fecha]) if params[:sesion_fecha]
    @noweekend = (1..5).include?(@fecha.wday)
+   @notificacion = (params[:sesion_notificacion]) ? true : false 
    @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id as id from sesions where fecha = ?)",  @fecha])
    @title = "Resultados encontrados"
    @horarios_disponibles = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
@@ -172,29 +174,34 @@ class SesionesController < ApplicationController
    flash[:notice] = "No se pudo actualizar correctamente, verifique"
      if @sesion && @horario && @fecha && @mediador && @comediador
         if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id)
+           #---- Notificamos a especialistas ---
+           if params[:notificacion] == "true"
+             NotificationsMailer.deliver_sesion_updated("mediador", @sesion)
+             NotificationsMailer.deliver_sesion_updated("comediador", @sesion)
+           end
            flash[:notice] = "Hora de sesión actualizada correctamente"
         end
     end
      redirect_to :action => "show", :id => @sesion, :user => current_user.id
   end
 
- def update_schedule2
-   #render :text => "Seleccionaste #{params[:mediador]}"
- 
-    @sesion= Sesion.find(params[:sesion]) if params[:sesion]
-   @mediador = User.find(params[:mediador]) if params[:mediador]
-   @comediador = User.find(params[:comediador]) if params[:comediador]
-   @horario = Horario.find(params[:horario]) if params[:horario]
-   @fecha = Date.parse(params[:fecha]) if params[:fecha]
-   flash[:notice] = "No se pudo actualizar correctamente, verifique"
-     if @sesion && @horario && @fecha && @mediador && @comediador
-        if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id)
-           flash[:notice] = "Hora de sesión actualizada correctamente"
-        end
-    end
-     #redirect_to :action => "show", :id => @sesion, :user => current_user.id
-     render :text => "Sesion: #{@sesion.clave} actualizada correctamente"
- end
+# def update_schedule2
+#   #render :text => "Seleccionaste #{params[:mediador]}"
+#
+#    @sesion= Sesion.find(params[:sesion]) if params[:sesion]
+#   @mediador = User.find(params[:mediador]) if params[:mediador]
+#   @comediador = User.find(params[:comediador]) if params[:comediador]
+#   @horario = Horario.find(params[:horario]) if params[:horario]
+#   @fecha = Date.parse(params[:fecha]) if params[:fecha]
+#   flash[:notice] = "No se pudo actualizar correctamente, verifique"
+#     if @sesion && @horario && @fecha && @mediador && @comediador
+#        if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id)
+#           flash[:notice] = "Hora de sesión actualizada correctamente"
+#        end
+#    end
+#     #redirect_to :action => "show", :id => @sesion, :user => current_user.id
+#     render :text => "Sesion: #{@sesion.clave} actualizada correctamente"
+# end
 
 
   def filtro_fecha
