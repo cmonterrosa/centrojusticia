@@ -8,10 +8,10 @@
 
     <tr>
     <th>Folio del trámite:</th>
-    <td><%=h (@tramite) ? @tramite.folio_integrado : "---"%></td>
+    <td><%=h (@tramite.folio_integrado) ? @tramite.folio_integrado : "---"%></td>
     </tr>
 
-   
+
    <tr>
     <th><%=h "Estatus:"%></th>
     <td><%=h (@tramite.estatus) ? @tramite.estatus : "---"%></td>
@@ -25,18 +25,13 @@
   </tr>
 
   <tr>
-    <th><%=h "Tipo de sesión:"%></th>
-    <td><%=h (@tramite.tiposesion) ? @tramite.tiposesion.descripcion : "---"%></td>
-  </tr>
-
-  <tr>
     <th>Fecha-hora:</th>
     <td><%=h((@sesion.start_at)? @sesion.start_at.strftime("%Y-%m-%d %H:%M:%S") : "Sin asignar")%></td>
   </tr>
 
   <tr>
     <th>Sala:</th>
-    <td><%=h (@sesion.horario) ? @sesion.horario.sala.descripcion : "---"%></td>
+    <td><%h (@sesion.sala)? @sesion.sala.descripcion : "---"%></td>
   </tr>
 
   <tr>
