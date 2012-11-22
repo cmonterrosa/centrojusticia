@@ -9,6 +9,10 @@ class Tramite < ActiveRecord::Base
   has_many :adjuntos
   has_many :sesions
 
+  #---- Validaciones ----
+  validates_uniqueness_of :folio, :scope => :anio
+  validates_presence_of :subdireccion_id, :message => "Seleccione una subdireccion"
+  
   def undo_status
     #--- ultimo estatus ---
     @historia = Historia.find(:first, :conditions => ["tramite_id = ?", self.id], :order => "created_at DESC")
@@ -20,16 +24,6 @@ class Tramite < ActiveRecord::Base
   def folio_integrado
     "#{self.anio}/#{self.folio}"
   end
-
-#  def estatus
-#    @descripcion = "No existe información"
-#    @historia = Historia.find(:first, :conditions => ["tramite_id = ?", self.id], :order => "created_at DESC")
-#    return @descripcion unless @historia
-#    if @historia.estatu
-#      @descripcion = @historia.estatu.descripcion
-#    end
-#    return @descripcion
-#  end
 
   def estatus
     result = (self.estatu ) ? self.estatu.descripcion : nil

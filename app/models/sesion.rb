@@ -10,7 +10,7 @@ class Sesion < ActiveRecord::Base
     validates_uniqueness_of :clave
     validates_presence_of :mediador_id
     validates_presence_of :comediador_id
-    validates_format_of :num_tramite, :with => /^\d{1,4}\/20\d{2}$/, :message => "El formato debe de ser num/anio"
+    validates_format_of :num_tramite, :with => /^\d{1,4}\/20\d{2}$/, :message => " El formato debe de ser num/anio"
 
 
 

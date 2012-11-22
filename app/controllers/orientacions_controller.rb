@@ -1,5 +1,5 @@
 class OrientacionsController < ApplicationController
-  require_role "atencionpublico", :for => [:new_or_edit, :save]
+  require_role [:atencionpublico, :subdireccion], :for => [:new_or_edit, :save]
   require_role "especialistas", :for => [:list_by_user]
 
   def index
@@ -51,7 +51,9 @@ class OrientacionsController < ApplicationController
    def save
     #--- Iniciamos trámite --
     @tramite = Tramite.new
-    @tramite.anio = params[:orientacion]["fechahora(1i)"].to_i
+    @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    #@tramite.anio = params[:orientacion]["fechahora(1i)"].to_i
+    @tramite.anio = params[:orientacion][:fechahora].split("/")[0]
     @tramite.generar_folio unless @tramite.folio
     @tramite.subdireccion_id = current_user.subdireccion_id unless @tramite.subdireccion
     @tramite.user= current_user

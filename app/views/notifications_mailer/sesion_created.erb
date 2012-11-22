@@ -14,7 +14,7 @@
    
    <tr>
     <th><%=h "Estatus:"%></th>
-    <td><%=h (@tramite.estatus) ? @tramite.estatus : "---"%></td>
+    <td><%=h (@tramite) ? @tramite.estatus : "---"%></td>
   </tr>
 
 
@@ -23,10 +23,10 @@
       Datos de la sesión
     </th>
   </tr>
-
+ 
   <tr>
     <th><%=h "Tipo de sesión:"%></th>
-    <td><%=h (@tramite.tiposesion) ? @tramite.tiposesion.descripcion : "---"%></td>
+    <td><%=h (@sesion.tiposesion) ? @sesion.tiposesion.descripcion : "---"%></td>
   </tr>
 
   <tr>

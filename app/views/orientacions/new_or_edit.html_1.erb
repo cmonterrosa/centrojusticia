@@ -1,5 +1,39 @@
-<!-- Validate Plugin -->
-<%=javascript_include_tag "validations/jquery_validate.js"%>
+<!-- jquery validation -->
+
+<script type="text/javascript">
+  $j(document).ready(function () {
+	var emailreg = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
+	$j(".boton").click(function (){
+		$j(".error").remove();
+		if( $j(".nombre").val() == "" ){
+			$j(".nombre").focus().after("<span class='error'>Ingrese su nombre</span>");
+			return false;
+		}else if( $j(".email").val() == "" || !emailreg.test($j(".email").val()) ){
+			$j(".email").focus().after("<span class='error'>Ingrese un email correcto</span>");
+			return false;
+		}else if( $j(".asunto").val() == ""){
+			$j(".asunto").focus().after("<span class='error'>Ingrese un asunto</span>");
+			return false;
+		}else if( $j(".mensaje").val() == "" ){
+			$j(".mensaje").focus().after("<span class='error'>Ingrese un mensaje</span>");
+			return false;
+		}
+	});
+	$j(".nombre, .asunto, .mensaje").keyup(function(){
+		if( $j(this).val() != "" ){
+			$j(".error").fadeOut();
+			return false;
+		}
+	});
+	$j(".email").keyup(function(){
+		if( $j(this).val() != "" && emailreg.test($j(this).val())){
+			$j(".error").fadeOut();
+			return false;
+		}
+	});
+});
+</script>
+
 
 <% form_for :orientacion, @orientacion, :url => { :action => "save" }, :html => {:id => "new_orientacion"} do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
@@ -20,10 +54,7 @@
           <td align="center">Sala</td>
         </tr>
         <tr>
-          <!--
-          <td align="center"><=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
-          -->
-          <td align="center"><%=f.text_field :fechahora%></td>
+          <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
           <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td align="center"><%=f.check_box :notificacion%> </td>
           <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>

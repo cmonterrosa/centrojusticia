@@ -1,6 +1,6 @@
 class TramitesController < ApplicationController
   before_filter :login_required
-  require_role "especialistas", :for => [:menu]
+  require_role [:especialistas, :subdireccion], :for => [:menu]
 
 
   def index
@@ -116,8 +116,11 @@ class TramitesController < ApplicationController
             @controlador, @id, @accion = "tramites", @tramite, "show" if @tramite
         when /^[a-zA-Z|\s]+$/
           nombre, paterno, materno = params[:q].split(" ")
-          solicitante = Orientacion.find(:first, :conditions => ["nombre = ? AND paterno = ? and materno = ?", nombre.upcase, paterno.upcase, materno.upcase])
-          participante = Participante.find(:first, :conditions => ["nombre = ? AND paterno = ? and materno = ?", nombre.upcase, paterno.upcase, materno.upcase])
+          nombre.upcase! if nombre
+          paterno.upcase! if paterno
+          materno.upcase! if materno
+          solicitante = Orientacion.find(:first, :conditions => ["nombre = ? AND paterno = ? and materno = ?", nombre, paterno, materno])
+          participante = Participante.find(:first, :conditions => ["nombre = ? AND paterno = ? and materno = ?", nombre, paterno, materno])
           @tramite = solicitante.tramite if solicitante
           @tramite ||= participante.comparecencia.tramite if (participante && participante.comparecencia)
            @controlador, @id, @accion = "tramites", @tramite, "show" if @tramite

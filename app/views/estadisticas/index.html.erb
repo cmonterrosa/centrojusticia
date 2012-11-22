@@ -8,11 +8,61 @@
                });
 </script>
 
-<h2>Gráficas</h2><br />
+
+<table width="65%" border="0" cellspacing="0">
+  <tr align="center">
+    <td align="right" width="35%"><%=image_tag("pjech/logo_rojo.png", :border => 0, :size => "118×154", :alt => "PJECH")%></td>
+    <td align="left" width="65%"><%=image_tag("pjech/barra_estadistica.png", :border => 0, :alt => "PJECH")%></td>
+  </tr>
+</table>
+<br />
+
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+        <td>
+           <%=link_to image_tag('iconos/estadisticas/especialistas.png', :size => "128x128") , {:action => "grafica_sesiones_especialistas"}, :title => "gráfica de sesiones detallada por especilista", :class => "fancybox fancybox.iframe"%>
+        </td>
+       <td>
+         <a href="#" title="Gráfica por materia">
+          <img src="/images/iconos/estadisticas/materia.png" width="128" height="128" alt="administración de usuarios" />
+         </a>
+       </td>
+  </tr>
+  <tr align="center">
+    <td class="menu">Gráfica por especialistas</td>
+    <td class="menu">Gráfica por materia</td>
+  </tr>
+  <tr>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+  <tr align="center">
+        <td>
+         <a href="#" title="Gráfica por meses">
+           <img src="/images/iconos/estadisticas/meses.png" width="128" height="128" alt="Asignación de especialistas y Materias" />
+         </a>
+        </td>
+
+         <td>
+         <a href="#" title="Gráfica por municipios">
+           <img src="/images/iconos/estadisticas/municipios.png" width="128" height="128" alt="Administración de horarios" />
+         </a>
+        </td>
+  </tr>
+
+  <tr>
+    <td class="menu" align="center">Gráfica por meses</td>
+    <td class="menu" align="center">Gráfica por municipios</td>
+  </tr>
+</table>
 
 
-<%=link_to "Gráfica de sesiones por especialistas", {:action => "grafica_sesiones_especialistas"}, :title => "gráfica de sesiones detallada por especilista", :class => "fancybox fancybox.iframe"%>
 
+
+
+<!--
+<=link_to "Gráfica de sesiones por especialistas", {:action => "grafica_sesiones_especialistas"}, :title => "gráfica de sesiones detallada por especilista", :class => "fancybox fancybox.iframe"%>
+-->
 
 <br/><br />
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />

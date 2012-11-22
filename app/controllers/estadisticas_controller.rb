@@ -1,8 +1,7 @@
 require 'rubygems'
 require 'gruff'
 class EstadisticasController < ApplicationController
-  
-  layout 'fancybox'
+  layout 'oficial_fancy'
 
   def index
 

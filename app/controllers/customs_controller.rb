@@ -1,4 +1,6 @@
 class CustomsController < ApplicationController
+  before_filter :login_required
+
 
   def index
     @usuario=current_user
@@ -14,6 +16,8 @@ class CustomsController < ApplicationController
         return render(:partial => 'controlagenda', :layout => 'oficial')
     elsif @usuario.has_role?(:invitadores)
         return render(:partial => 'invitadores', :layout => "oficial")
+    elsif @usuario.has_role?(:atencionpublico)
+        return render(:partial => 'atencionpublico', :layout => "oficial")
     else
         return render(:partial => 'publico_general', :layout => "oficial")
     end
@@ -21,6 +25,25 @@ class CustomsController < ApplicationController
 
   def profile
     @usuario = current_user
+  end
+
+  def edit
+    @user = current_user
+  end
+
+  def save
+    @user = current_user
+    @user.update_attributes(params[:user])
+    @user.activated_at ||= Time.now
+    @user.activo=true
+    success = @user && @user.save
+    if success && @user.errors.empty?
+      flash[:notice] = "Tus datos se actualizaron correctamente"
+      redirect_to :controller => "customs"
+    else
+      flash[:notice]  = "No se pudieron modificar tus datos, verifica"
+      render :action => 'edit'
+    end
   end
 
   def management

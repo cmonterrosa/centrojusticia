@@ -2,7 +2,7 @@
 class SessionsController < ApplicationController
   # Be sure to include AuthenticationSystem in Application Controller instead
   include AuthenticatedSystem
-  layout 'autenticacion'
+  layout 'pjech_login'
 
   # render new.erb.html
   def new

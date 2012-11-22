@@ -1,35 +1,47 @@
-<h3 style="color:#104E8B; font-family: Helvetica;">Bienvenido subdirector (<%=current_user.subdireccion.descripcion%>)</h3>
+<%= render :partial => "barra_superior"%>
 
-
-<table width="70%" border="0" cellspacing="0" cellpadding="0">
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
-      <td>
-        <a href="/tramites" title="Trámites">
-          <img src="/images/iconos/tramites.png" width="128" height="128" alt="tramites" />
-        </a>
-      </td>
+       <td>
+         <a href="/tramites" title="Trámites">
+           <img src="/images/iconos/tramites.png" width="128" height="128" alt="tramites" />
+         </a>
+       </td>
 
-      <td>
+       <td>
          <a href="/agenda/calendario" title="Control de la agenda">
            <img src="/images/iconos/calendario.png" width="128" height="128" alt="apoyos" />
          </a>
        </td>
-        <td>
-         <a href="/estadisticas" title="Seguimiento de información estadística del CEJA">
-           <img src="/images/iconos/estadisticas.png" width="128" height="128" alt="estadisticas" />
-         </a>
-        </td>
-        <td>
-          <a href="/admin/index" title="Módulo de administración del sistema">
-            <img src="/images/iconos/Crystal_Clear_action_configure.png" width="128" height="128" alt="administracion"/>
-          </a>
-        </td>
   </tr>
   <tr align="center">
-    <td class="menu">Trámites</td>
-    <td class="menu">Agenda</td>
+   <td class="menu" align="center">Trámites</td>
+    <td class="menu" align="center">Agenda</td>
+  </tr>
+  
+  <!-- espacio -->
+  <tr align="center">
+    <th colspan="3">&nbsp;</th>
+  </tr>
+
+  <tr align="center">
+      <td>
+         <a href="/estadisticas" title="Seguimiento de información estadística del CEJA">
+           <img src="/images/iconos/estadisticas2.png" width="128" height="128" alt="estadisticas" />
+         </a>
+       </td>
+
+      <td>
+         <a href="/admin/index" title="Módulo de administración del sistema">
+           <img src="/images/iconos/Crystal_Clear_action_configure.png" width="128" height="128" alt="administracion"/>
+         </a>
+      </td>
+
+  </tr>
+  <tr align="center">
     <td class="menu">Estadísticas</td>
     <td class="menu">Administración</td>
   </tr>
+
 </table>
 

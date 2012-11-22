@@ -2,6 +2,11 @@ class AdminController < ApplicationController
   #before_filter :login_required
   require_role [:admin], :except => [:index]
   
+  def new_area
+    
+  end
+
+
   def index
 
   end

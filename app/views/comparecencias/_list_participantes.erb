@@ -1,0 +1,39 @@
+<div class="titulocalendario">
+  <p>
+    Seleccione un horario
+  </p>
+</div>
+
+<table class="table1">
+    <thead>
+         <!-- Nombre de los integrantes -->
+         <tr>
+             <th scope="col" abbr="Starter">NP</th>
+             <th scope="col" abbr="Starter">Nombre completo</th>
+             <th scope="col" abbr="Starter" colspan="2">Acciones</th>
+         </tr>
+    </thead>
+    <tbody>
+          <% @comparecencia.participantes.each do |participante| %>
+                              <tr>
+                                <td>1</td>
+                                <td> <%=participante.nombre_completo%></td>
+                                <td> <%=button_to 'Ver información', :action => "new_or_edit", :controller => "participantes", :id => @comparecencia, :participante => participante%></td>
+                                <td> <%=button_to 'Eliminar', {:action => "delete", :controller => "participantes", :id => participante}, :confirm => '¿Seguro que desea eliminarlo?'%></td>
+                              </tr>
+            <%end%>
+     </tbody>
+</table>
+
+
+
+<%if Comparecencia.exists?(@comparecencia.id)%>
+<table class="table1">
+  <thead>
+    <tr>
+       <td align="center"><%= link_to image_tag("botones/anadir_integrante.png", :width => 170, :height=>"40", :border =>0 ) , :action => "new_or_edit", :controller => "participantes", :id => @comparecencia, :token => @comparecencia-%></td>
+    </tr>
+  </thead>
+</table>
+          
+<%end%>

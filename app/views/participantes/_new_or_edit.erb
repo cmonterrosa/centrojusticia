@@ -1,0 +1,92 @@
+<% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id } do |f| -%>
+  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr bgcolor="#CCCCCC" class="titulo">
+      <td colspan="3" align="center" >PARTICIPANTES</td>
+    </tr>
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5">DATOS PERSONALES</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Paterno</td>
+          <td align="center">Materno</td>
+          <td align="center">Nombre(s)</td>
+          <td align="center">Sexo</td>
+          <td align="center">Fecha de Nacimiento</td>
+        </tr>
+        <tr>
+          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :class => "text"%></td>
+          <td align="center"><%= f.text_field :materno, :onKeyPress => "return CharNum(event, 'letra');", :class => "text"%></td>
+          <td align="center"><%= f.text_field :nombre, :onKeyPress => "return CharNum(event, 'letra');", :class => "text"%></td>
+          <td align="center"><%= f.select(:sexo, ["Masculino", "Femenino"], :prompt => 'Seleccione una opción')%></td>
+          <td align="center"><%=f.date_select :fecha_nac, :start_year => 1930 %></td>
+        </tr>
+      </table></td>
+    </tr>
+    <!-- segunda barra inferior -->
+      <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5" >DATOS DE UBICACIÓN</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Municipio</td>
+          <td align="center">Domicilio</td>
+          <td align="center">Teléfono Particular</td>
+          <td align="center">Teléfono Celular</td>
+          <td align="center">Correo</td>
+        </tr>
+        <tr>
+          <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+          <td align="center"><%= f.text_field :domicilio, :class => "text"%></td>
+          <td align="center"><%= f.text_field :telefono_particular, :class => "text", :onKeyPress => "return CharNum(event, 'numero');", :size => 10%></td>
+          <td align="center"><%= f.text_field :telefono_celular, :class => "text", :onKeyPress => "return CharNum(event, 'numero');", :size => 10%></td>
+          <td align="center"><%= f.text_field :correo, :class => "text"%></td>
+        </tr>
+      </table></td>
+    </tr>
+
+    <!-- espacio -->
+    <tr>
+      <td colspan="3"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "comparecencias", :action => "new_or_edit", :id => @comparecencia-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+<!--
+<script>
+  enable_disable_others("motivo_inasistencias", "escolaridad_motivos_inasistencias_otros","");
+</script>
+-->
+
+
+<!--
+<=observe_field :escolaridad_clave_escuela,
+              :url => { :controller => 'escolaridad', :action => 'get_nombre_escuela' },
+              :update => 'show_clave',
+              :with => :escolaridad_clave_escuela,
+              :frequency => 0.5 %>
+
+<=observe_field :_nivel,
+              :url => { :controller => 'escolaridad', :action => 'get_grados' },
+              :update => :escolaridad_grado_id,
+              :with => :_nivel %>
+-->

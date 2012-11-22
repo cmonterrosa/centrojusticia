@@ -1,4 +1,6 @@
-<% form_for :sesion, @sesion, :url => { :action => "save_with_date", :date => @fecha, :horario => @horario, :origin => params[:origin] } do |f| -%>
+<%= error_messages_for :sesion %>
+
+<% form_for :sesion, @sesion, :url => { :action => "save_with_date", :date => @fecha, :horario => @horario, :origin => params[:origin] }, :html => {:id => "new_sesion_with_date"}  do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="3" align="center" >NUEVA SESIÓN</td>
@@ -16,9 +18,9 @@
               <td align="center">¿Notificar vía correo electrónico?</td>
             </tr>
             <tr>
-              <td align="center"><%= f.text_field :num_tramite, :class => "text", :onchange => "validar_expediente();"%></td>
-              <td align="center"><%= f.select :mediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
-              <td align="center"><%= f.select :comediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
+              <td align="center"><%= f.text_field :num_tramite, :class => "text", :onchange => "validar_expediente();"%></td> <!-- :onchange => "validar_expediente(); -->
+              <td align="center"><%= f.select :mediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
+              <td align="center"><%= f.select :comediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
               <td align="center"><%=  f.check_box :notificacion%></td>
             </tr>
           </table>
@@ -92,3 +94,5 @@
     </tr>
   </table>
 <% end %>
+
+

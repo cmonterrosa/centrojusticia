@@ -1,0 +1,2 @@
+page.alert "Prueba!"
+page.insert_html :bottom, "rjs", "<br/> Wahla!"

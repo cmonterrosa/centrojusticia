@@ -1,0 +1,44 @@
+<div class="titulocalendario">
+  <p>Comparecencia</p>
+</div>
+
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+    
+      <td>
+          <%=link_to_remote image_tag("iconos/informacion.png", :size => "128x128", :alt => "Informacion", :title => "Informacion"), :update => "divcontenido",
+          :url => { :action => "show_informacion_general", :id => @tramite.id },
+          :before => "Element.show('spinner')",
+          :complete => "Element.hide('spinner')",
+          :html => {:title => "Más información"}%>
+      </td>
+
+      <%if @comparecencia%>
+        <td>
+           <%=link_to_remote image_tag("iconos/participantes.png", :size => "128x128", :alt => "Participantes", :title => "Participantes"), :update => "divcontenido",
+            :url => { :action => "show_participantes", :id => @tramite.id },
+            :before => "Element.show('spinner')",
+            :complete => "Element.hide('spinner')",
+            :html => {:title => "Participantes"}%>
+        </td>
+      <%end%>
+ </tr>
+  <tr align="center">
+   <td class="menu" align="center">Información General</td>
+    <%if @comparecencia%>
+      <td class="menu" align="center">Participantes</td>
+    <%end%>
+  </tr>
+</table>
+
+
+
+
+<!-- spinner -->
+<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" /><br />
+<!-- contenido -->
+<div id="divcontenido">
+
+</div>
+
+

@@ -52,21 +52,25 @@ class SesionesController < ApplicationController
     inner join roles_users ru on u.id=ru.user_id
     inner join roles r on ru.role_id=r.id
     where r.name='ESPECIALISTAS' and
-    u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?)", @fecha, @horario.hora, @horario.minutos ])
+    u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno", @fecha, @horario.hora, @horario.minutos ])
     #@especialistas ||=  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
   end
 
   def save_with_date
     @origin = params[:origin]
     @sesion = Sesion.new(params[:sesion])
+    @mediador = (params[:sesion][:mediador_id] =~ /^\d{1,5}$/)? User.find(params[:sesion][:mediador_id]) : nil
+    @comediador = (params[:sesion][:comediador_id] =~ /^\d{1,5}$/)? User.find(params[:sesion][:comediador_id]) : nil
     @horario = Horario.find(params[:horario]) if params[:horario]
     @sesion.horario = @horario if @horario
     @sesion.horario ||= Horario.find(params[:sesion][:horario_id])
-    # --- if tramite exists ---
-    folio, anio = params[:sesion][:num_tramite].split("/") if params[:sesion][:num_tramite]
-    @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio, folio])
-    @sesion.tramite = (@tramite) ? @ŧramite : Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
-    #@sesion.horario = Horario.find(params[:horario]) if params[:horario]
+    #---- if tramite has a valid format -----
+    if params[:sesion][:num_tramite] =~ /^\d{1,4}\/20\d{2}$/
+       folio, anio = params[:sesion][:num_tramite].split("/")
+       @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio, folio])
+       @tramite ||= Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
+       @sesion.tramite = @tramite
+    end
     @sesion.fecha = Date.parse(params[:date]) if params[:date]
     @sesion.user = current_user
     #--- guardamos historia de hora y minutos ---
@@ -74,8 +78,7 @@ class SesionesController < ApplicationController
     @sesion.minutos = @sesion.horario.minutos
     @sesion.sala_id = @sesion.horario.sala_id
     @sesion.activa = true
-    if @sesion.save
-       @sesion.generate_clave
+    if @sesion.tramite && @mediador && @comediador && @sesion.save && @sesion.generate_clave
          #--- Notificaciones ---
          if @sesion.notificacion && @sesion.comediador_id && @sesion.mediador_id
             NotificationsMailer.deliver_sesion_created("mediador", @sesion)
@@ -85,6 +88,13 @@ class SesionesController < ApplicationController
        redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
     else
        flash[:notice] = "no se puedo guardar, verifique"
+       @fecha = Date.parse(params[:date])
+       @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
+       @especialistas = User.find_by_sql(["SELECT u.* FROM users u
+          inner join roles_users ru on u.id=ru.user_id
+          inner join roles r on ru.role_id=r.id
+          where r.name='ESPECIALISTAS' and
+          u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?)", @fecha, @horario.hora, @horario.minutos ])
        render :action => "new_with_date"
     end
 
@@ -185,23 +195,6 @@ class SesionesController < ApplicationController
      redirect_to :action => "show", :id => @sesion, :user => current_user.id
   end
 
-# def update_schedule2
-#   #render :text => "Seleccionaste #{params[:mediador]}"
-#
-#    @sesion= Sesion.find(params[:sesion]) if params[:sesion]
-#   @mediador = User.find(params[:mediador]) if params[:mediador]
-#   @comediador = User.find(params[:comediador]) if params[:comediador]
-#   @horario = Horario.find(params[:horario]) if params[:horario]
-#   @fecha = Date.parse(params[:fecha]) if params[:fecha]
-#   flash[:notice] = "No se pudo actualizar correctamente, verifique"
-#     if @sesion && @horario && @fecha && @mediador && @comediador
-#        if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id)
-#           flash[:notice] = "Hora de sesión actualizada correctamente"
-#        end
-#    end
-#     #redirect_to :action => "show", :id => @sesion, :user => current_user.id
-#     render :text => "Sesion: #{@sesion.clave} actualizada correctamente"
-# end
 
 
   def filtro_fecha

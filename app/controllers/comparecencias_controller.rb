@@ -1,10 +1,18 @@
 class ComparecenciasController < ApplicationController
   require_role "especialistas"
 
-  def new_or_edit
+  def show
     @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
+    @tramite = (@comparecencia) ? @comparecencia.tramite : Tramite.find(params[:id]) if params[:id]
     @comparecencia ||= Comparecencia.new
     @comparecencia.tramite ||= Tramite.find(params[:id])
+  end
+
+  def new_or_edit
+    redirect_to :action => "show", :id => params[:id]
+    #@comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
+    #@comparecencia ||= Comparecencia.new
+    #@comparecencia.tramite ||= Tramite.find(params[:id])
   end
 
   def save
@@ -22,10 +30,12 @@ class ComparecenciasController < ApplicationController
     if @comparecencia.save
       flash[:notice] = "Guardado correctamente"
       #redirect_to :controller => "tramites", :action => "menu", :id => @tramite
-       render :action => "new_or_edit"
+       #render :action => "new_or_edit"
+       redirect_to :action => "show", :id => @tramite
     else
       flash[:notice] = "No se pudo guardar, verifique"
-      render :action => "new_or_edit"
+     # render :action => "new_or_edit"
+       render :action => "show_informacion_general"
     end
   end
 
@@ -40,4 +50,21 @@ class ComparecenciasController < ApplicationController
                                        :order => "c.fechahora")
   end
 
+
+  #--- ajax actions --
+
+  def show_informacion_general
+    @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
+    @comparecencia ||= Comparecencia.new
+    @comparecencia.tramite ||= Tramite.find(params[:id])
+     return render(:partial => 'new_or_edit', :layout => false)
+    #render :text => "<h3>Informacion general</h3>"
+  end
+
+  def show_participantes
+    @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
+    @comparecencia ||= Comparecencia.new
+    @comparecencia.tramite ||= Tramite.find(params[:id])
+    return render(:partial => 'list_participantes', :layout => false)
+  end
 end

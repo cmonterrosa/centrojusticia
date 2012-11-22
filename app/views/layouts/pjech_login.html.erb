@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Centro Estatal de Justicia Alternativa - Chiapas</title>
+  <%= stylesheet_link_tag "oficial"%>
+</head>
+
+<style>
+body {
+/*background: url("/images/pjech/fondo_alternativa.jpg");*/
+background-repeat: no-repeat;
+/*background-repeat: repeat-x;*/
+}
+
+table
+{
+margin-left: auto;
+margin-right: auto;
+}
+
+td
+{
+padding:2px;
+}
+
+.input {
+    border: 1px solid #006;
+    background: #ffc;
+}
+
+
+div.centered{
+    display:block;
+
+    /*set the div in the center of the screen*/
+    position:absolute;
+    top:25%;
+    left:15%;
+    width:1024px;
+  }
+
+</style>
+
+  <body onload="document.getElementById('login').focus()" style="background: url('/images/pjech/fondo-total.jpg');">
+     <div class="centered">
+        <table width="1024px" align="center">
+          <tr>
+              <th align="center"> <%=image_tag("pjech/logo_centro_estatal.png", :border => 0)%></th>
+              <th align="left"><%=image_tag("pjech/barra_inciar.png", :border => 0)%></th>
+          </tr>
+
+          <!--espacio -->
+          <tr>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+          </tr>
+
+          <!-- inicia form -->
+          <% form_tag session_path do -%>
+          <tr align="center">
+            <th rowspan="6" width="55%">
+              <%=image_tag("pjech/logo_rojo.png", :border => 0, :size => "118×154", :alt => "PJECH")%>
+            </th>
+          </tr>
+          <tr>
+          <td class="titulocalendario">Usuario:</td>
+          </tr>
+          <tr>
+            <td>
+            <%= text_field_tag 'login', @login, :class => "input" %>
+            </td>
+          </tr>
+          <tr>
+            <td class="titulocalendario">Contraseña:</td>
+          </tr>
+          <tr>
+            <td><%= password_field_tag 'password', nil, :class => "input"%></td>
+          </tr>
+          <!-- boton -->
+          <tr>
+           <td valign="bottom"><input title="inicio de sesión" alt="inicio de sesión" type="image"  src="/images/botones/btn_entrar.png"/></td>
+          </tr>
+        <%end%>
+      </table>
+   </div>
+
+  </body>
+
+
+</html>
+
+
