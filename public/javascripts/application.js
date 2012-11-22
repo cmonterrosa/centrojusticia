@@ -213,6 +213,12 @@ $j('#sesion_start_at').datetimepicker({
 });
 });
 
+$(function() {
+$j('#orientacion_fechahora').datetimepicker({
+	timeFormat: 'h:m'
+});
+});
+
 
 $(function() {
   $j('#sesion_fecha').datepicker({

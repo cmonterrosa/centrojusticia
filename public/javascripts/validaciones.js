@@ -20,17 +20,24 @@ return false;
 }
 
 
+function disable_submit()
+{
+ document.getElementById("submit").disabled = true;
+ return true;
+}
+
+
 function validar_expediente()
 {
  var formato = /^\d{1,4}\/20\d{2}$/
  if (document.getElementById("sesion_num_tramite").value.match(formato))
      {
-      document.getElementById("submit").disabled = false;
+      //document.getElementById("submit").disabled = false;
       return true;
      }
  else
      {
-      document.getElementById("submit").disabled = true;
+      //document.getElementById("submit").disabled = true;
       alert("Formato inválido, ej. 23/2012");
       document.getElementById("sesion_num_tramite").focus();
       return false
