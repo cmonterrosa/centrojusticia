@@ -15,6 +15,7 @@ class CreateOrientacions < ActiveRecord::Migration
       t.integer :municipio_id
       t.integer :tramite_id
       t.boolean :notificacion
+      t.integer :especialista_id
       t.timestamps
     end
   end
