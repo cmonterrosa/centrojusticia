@@ -10,10 +10,9 @@ class ComparecenciasController < ApplicationController
 
   def new_or_edit
     redirect_to :action => "show", :id => params[:id]
-    #@comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
-    #@comparecencia ||= Comparecencia.new
-    #@comparecencia.tramite ||= Tramite.find(params[:id])
   end
+
+
 
   def save
     @tramite = Tramite.find(params[:tramite])
