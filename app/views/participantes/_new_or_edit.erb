@@ -62,7 +62,7 @@
               <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
             </td>
             <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "comparecencias", :action => "new_or_edit", :id => @comparecencia-%>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "comparecencias", :action => "new_or_edit", :id => @comparecencia.tramite-%>
             </td>
           </tr>
         </table>
@@ -71,22 +71,3 @@
   </table>
 <% end %>
 
-<!--
-<script>
-  enable_disable_others("motivo_inasistencias", "escolaridad_motivos_inasistencias_otros","");
-</script>
--->
-
-
-<!--
-<=observe_field :escolaridad_clave_escuela,
-              :url => { :controller => 'escolaridad', :action => 'get_nombre_escuela' },
-              :update => 'show_clave',
-              :with => :escolaridad_clave_escuela,
-              :frequency => 0.5 %>
-
-<=observe_field :_nivel,
-              :url => { :controller => 'escolaridad', :action => 'get_grados' },
-              :update => :escolaridad_grado_id,
-              :with => :_nivel %>
--->
