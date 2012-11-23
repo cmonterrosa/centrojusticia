@@ -1,10 +1,12 @@
 <div class="titulocalendario">
   <p>
-    Seleccione un horario
+    Participantes
   </p>
 </div>
 
-<table class="table1">
+
+<%unless @comparecencia.participantes.empty?%>
+  <table class="table1">
     <thead>
          <!-- Nombre de los integrantes -->
          <tr>
@@ -23,8 +25,8 @@
                               </tr>
             <%end%>
      </tbody>
-</table>
-
+  </table>
+<%end%>
 
 
 <%if Comparecencia.exists?(@comparecencia.id)%>
