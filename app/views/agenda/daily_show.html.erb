@@ -3,7 +3,9 @@
     AGENDA DIARIA DE SESIONES
   </p>
   <p>
-    <%=(@fecha.strftime("%d de %B de %Y")).upcase%>
+    <%=link_to "<", :action => "daily_show", :day => @before.day, :month => @before.month, :year => @before.year, :origin => @origin%>&nbsp;
+    <%=(@fecha.strftime("%d de %B de %Y")).upcase%>&nbsp;
+    <%=link_to ">", :action => "daily_show", :day => @after.day, :month => @after.month, :year => @after.year, :origin => @origin%>
   </p>
 </div>
 
