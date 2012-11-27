@@ -12,12 +12,12 @@ class CustomsController < ApplicationController
         return render(:partial => 'subdireccion', :layout => "oficial")
     elsif @usuario.has_role?(:especialistas)
         return render(:partial => 'especialistas', :layout => "oficial")
+    elsif @usuario.has_role?(:atencionpublico)
+        return render(:partial => 'atencionpublico', :layout => "oficial")
     elsif @usuario.has_role?(:controlagenda)
         return render(:partial => 'controlagenda', :layout => 'oficial')
     elsif @usuario.has_role?(:invitadores)
         return render(:partial => 'invitadores', :layout => "oficial")
-    elsif @usuario.has_role?(:atencionpublico)
-        return render(:partial => 'atencionpublico', :layout => "oficial")
     else
         return render(:partial => 'publico_general', :layout => "oficial")
     end
