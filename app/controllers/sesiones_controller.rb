@@ -2,6 +2,7 @@ class SesionesController < ApplicationController
    #before_filter :login_required
    #layout 'oficial', :except => "select_schedule"
     require_role "admin", :only => [:save, :edit]
+    require_role "controlagenda", :for => [:new_with_date]
 
   def list_by_tramite
     @tramite = Tramite.find(params[:id])
@@ -52,8 +53,8 @@ class SesionesController < ApplicationController
     inner join roles_users ru on u.id=ru.user_id
     inner join roles r on ru.role_id=r.id
     where r.name='ESPECIALISTAS' and
-    u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno", @fecha, @horario.hora, @horario.minutos ])
-    #@especialistas ||=  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) AND
+    u.id not in (select comediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno", @fecha, @horario.hora, @horario.minutos, @fecha, @horario.hora, @horario.minutos ])
   end
 
   def save_with_date
@@ -91,11 +92,12 @@ class SesionesController < ApplicationController
        @fecha = Date.parse(params[:date])
        @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
        @especialistas = User.find_by_sql(["SELECT u.* FROM users u
-          inner join roles_users ru on u.id=ru.user_id
-          inner join roles r on ru.role_id=r.id
-          where r.name='ESPECIALISTAS' and
-          u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?)", @fecha, @horario.hora, @horario.minutos ])
-       render :action => "new_with_date"
+        inner join roles_users ru on u.id=ru.user_id
+        inner join roles r on ru.role_id=r.id
+        where r.name='ESPECIALISTAS' and
+        u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) AND
+        u.id not in (select comediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno", @fecha, @horario.hora, @horario.minutos, @fecha, @horario.hora, @horario.minutos ])
+    render :action => "new_with_date"
     end
 
   end

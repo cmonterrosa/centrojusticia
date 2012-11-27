@@ -1,5 +1,6 @@
 class AgendaController < ApplicationController
-  require_role [:controlagenda, :especialistas], :for => [:management, :search_sesiones]
+  require_role [:controlagenda], :for => [:new_sesion]
+  require_role [:controlagenda, :especialistas, :lecturaagenda], :for => [:management, :search_sesiones, :calendario]
 
  
   def calendario
