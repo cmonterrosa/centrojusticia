@@ -16,8 +16,9 @@ class Sesion < ActiveRecord::Base
 
   def start_at
     horario = Horario.find(self.horario_id) if self.horario_id
-    fecha = DateTime.civil(self.fecha.year, self.fecha.month, self.fecha.day, horario.hora, horario.minutos)
+    fecha = DateTime.civil(self.fecha.year, self.fecha.month, self.fecha.day, horario.hora, horario.minutos) if self.fecha
     return (fecha) if fecha
+    return nil
   end
 
   def mediador
