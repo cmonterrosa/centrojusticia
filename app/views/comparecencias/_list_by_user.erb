@@ -5,7 +5,7 @@
         <td style="vertical-align: middle;">Involucrado</td>
         <td style="vertical-align: middle;">Carácter con el que compadece</td>
         <td style="vertical-align: middle;"><%=h "Estatus"%></td>
-        <td style="vertical-align: middle;" colspan="2">Acciones</td>
+        <td style="vertical-align: middle;" colspan="3">Acciones</td>
     </tr>
     <%@comparecencias.each do |comparecencia|%>
       <tr>
@@ -13,7 +13,8 @@
         <td style="vertical-align: middle;"><%=comparecencia.tramite.orientacion.solicitante%></td>
         <td style="vertical-align: middle;"><%=comparecencia.caracter%></td>
         <td style="vertical-align: middle;"><%=comparecencia.tramite.estatu.descripcion%></td>
-        <td style="vertical-align: middle;"><%=link_to "Detalle",{:controller => "comparecencias", :action => "new_or_edit", :id => comparecencia.tramite}, :class => 'boton'%></td>
+        <td style="vertical-align: middle;"><%=link_to "Trámite", {:controller => "tramites", :action => "menu", :id => comparecencia.tramite}, :class => 'boton'%></td>
+        <td style="vertical-align: middle;"><%=link_to "Editar",{:controller => "comparecencias", :action => "new_or_edit", :id => comparecencia.tramite}, :class => 'boton'%></td>
         <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :controller => "tramites", :id => comparecencia.tramite}, :class => 'boton'%></td>
         <td style="vertical-align: middle;"></td>
       </tr>
