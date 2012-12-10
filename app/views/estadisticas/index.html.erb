@@ -20,7 +20,7 @@
 <table width="50%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
         <td>
-           <%=link_to image_tag('iconos/estadisticas/especialistas.png', :size => "128x128") , {:action => "grafica_sesiones_especialistas"}, :title => "gráfica de sesiones detallada por especilista", :class => "fancybox fancybox.iframe"%>
+           <%=link_to image_tag('iconos/estadisticas/especialistas.png', :size => "128x128") , {:action => "grafica_sesiones_especialistas"}, :title => "gráfica de sesiones detallada por especialista", :class => "fancybox fancybox.iframe"%>
         </td>
        <td>
          <a href="#" title="Gráfica por materia">
@@ -37,22 +37,18 @@
     <th>&nbsp;</th>
   </tr>
   <tr align="center">
-        <td>
-         <a href="#" title="Gráfica por meses">
-           <img src="/images/iconos/estadisticas/meses.png" width="128" height="128" alt="Asignación de especialistas y Materias" />
-         </a>
-        </td>
-
          <td>
-         <a href="#" title="Gráfica por municipios">
-           <img src="/images/iconos/estadisticas/municipios.png" width="128" height="128" alt="Administración de horarios" />
-         </a>
-        </td>
+           <%=link_to image_tag('iconos/estadisticas/gender.png', :size => "128x128") , {:action => "grafica_atencion_sexo"}, :title => "gráfica de atencion por sexo", :class => "fancybox fancybox.iframe"%>
+          </td>
+
+          <td>
+           <%=link_to image_tag('iconos/estadisticas/people.png', :size => "128x128") , {:action => "grafica_atencion_rango_edad"}, :title => "gráfica de atencion por rago de edades", :class => "fancybox fancybox.iframe"%>
+          </td>
   </tr>
 
   <tr>
-    <td class="menu" align="center">Gráfica por meses</td>
-    <td class="menu" align="center">Gráfica por municipios</td>
+    <td class="menu" align="center">Gráfica por sexo</td>
+    <td class="menu" align="center">Gráfica por rango de edad</td>
   </tr>
 </table>
 
