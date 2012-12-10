@@ -18,9 +18,15 @@ class CustomsController < ApplicationController
         return render(:partial => 'controlagenda', :layout => 'oficial')
     elsif @usuario.has_role?(:invitadores)
         return render(:partial => 'invitadores', :layout => "oficial")
+    elsif @usuario.has_role?(:convenios)
+        return render(:partial => 'convenios', :layout => "oficial")
     else
         return render(:partial => 'publico_general', :layout => "oficial")
     end
+  end
+
+  def library
+    
   end
 
   def profile
