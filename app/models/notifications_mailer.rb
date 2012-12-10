@@ -18,7 +18,7 @@ class NotificationsMailer < ActionMailer::Base
       user = (tipo=="mediador" ? sesion.mediador : sesion.comediador)
       tipo = "especialista" if tipo=="mediador"
       setup_email(user)
-      @sesion = Sesion.find(sesion)
+      @sesion = sesion
       @tramite = @sesion.tramite
       @subject    += "Se te ha programado una sesión como #{tipo}"
       @body[:url]  = "http://#{SITE_URL}/sesiones/show/#{@sesion.id}"
