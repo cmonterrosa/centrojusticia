@@ -82,15 +82,21 @@ class TramitesController < ApplicationController
          @tramite.update_attributes(params[:tramite])
          update_tramite_model if @tramite.save
       elsif params.has_key?(:sesion)
-         @sesion = Sesion.find(:first, :conditions => ["tramite_id = ? and start_at is NULL", params[:id]])
+         @sesion = Sesion.find(:first, :conditions => ["tramite_id = ?", params[:id]])
          @sesion ||= Sesion.new(params[:sesion])
          @tramite = @sesion.tramite = Tramite.find(params[:id])
-         update_tramite_model if @sesion.save
-         #--- Notificamos a especialistas si ya tienen fecha --
-         if @sesion.start_at && @sesion.comediador_id && @sesion.mediador_id
-            NotificationsMailer.deliver_sesion_created("mediador", @sesion)
-            NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+         @sesion.num_tramite = @tramite.folio_inverso
+         if @sesion && @sesion.comediador_id && @sesion.mediador_id
+            update_tramite_model if @sesion.generate_clave
+            #NotificationsMailer.deliver_sesion_created("mediador", @sesion)
+            #NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+            flash[:notice] = "Especialista y comediador notificados vía correo electrónico"
+         else
+            flash[:notice] = "No se pudo notificar por correo electrónico"
+            redirect_to :action => "list"
          end
+
+
       elsif params.has_key?(:infosesion)
         @tramite = Tramite.find(params[:id])
         update_tramite_model
