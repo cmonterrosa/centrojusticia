@@ -25,6 +25,10 @@ class Tramite < ActiveRecord::Base
     "#{self.anio}/#{self.folio}"
   end
 
+  def folio_inverso
+    "#{self.folio}/#{self.anio}"
+  end
+
   def estatus
     result = (self.estatu ) ? self.estatu.descripcion : nil
     return result
