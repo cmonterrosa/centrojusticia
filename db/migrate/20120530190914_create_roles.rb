@@ -7,7 +7,7 @@ class CreateRoles < ActiveRecord::Migration
     end
 
     # roles por defecto
-    Role.create(:name => "consejo", :descripcion => "Consejo de la Judicatura", :prioridad => 1)
+    #Role.create(:name => "consejo", :descripcion => "Consejo de la Judicatura", :prioridad => 1)
     Role.create(:name => "admin", :descripcion => "Administrador global", :prioridad => 2)
     Role.create(:name => "direccion", :descripcion => "Dirección General", :prioridad => 3)
     Role.create(:name => "subdireccion", :descripcion => "Subdirección Regional", :prioridad => 4)
