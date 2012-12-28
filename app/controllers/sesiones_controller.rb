@@ -9,6 +9,18 @@ class SesionesController < ApplicationController
     @sesiones = Sesion.find(:all, :conditions => ["tramite_id = ?", @tramite.id])
   end
 
+  def asignar_horario
+    unless (@sesion = Sesion.find(params[:id]))
+      flash[:notice] = "No se pudo encontrar sesion, verifique"
+      redirect_to :controller => "home"
+    else
+      @mediador = User.find(params[:mediador_id])
+      @comediador = User.find(params[:comediador_id])
+      @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+      @notificacion = (params[:sesion_notificacion]) ? true : false
+    end
+   end
+
   def list_by_user
     if params[:limit] =~ /\d/
       @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND activa=true", current_user.id], :order => "fecha DESC", :limit => params[:limit])
@@ -177,16 +189,39 @@ class SesionesController < ApplicationController
   end
 
 
+  def show_schedules_with_especialistas
+       show_schedules()
+       @tiposesion = Tiposesion.find(params[:sesion_tiposesion_id]) if params[:sesion_tiposesion_id]
+
+#   @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+#   @salas = Sala.find(:all, :order => "descripcion")
+#   @sesion= Sesion.find(params[:sesion]) if params[:sesion]
+#   @mediador = User.find(params[:sesion_mediador_id]) if params[:sesion_mediador_id]
+#   @comediador = User.find(params[:sesion_comediador_id]) if params[:sesion_comediador_id]
+#   @horario = Horario.find(params[:horario]) if params[:horario]
+#   @fecha = Date.parse(params[:sesion_fecha]) if params[:sesion_fecha]
+#   @noweekend = (1..5).include?(@fecha.wday)
+#   @notificacion = (params[:sesion_notificacion]) ? true : false
+#   @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id as id from sesions where fecha = ?)",  @fecha])
+#   @title = "Resultados encontrados"
+#   @horarios_disponibles = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
+  end
+
+
+
+
   def update_schedule
    @sesion= Sesion.find(params[:sesion]) if params[:sesion]
    @mediador = User.find(params[:mediador]) if params[:mediador]
    @comediador = User.find(params[:comediador]) if params[:comediador]
    @horario = Horario.find(params[:horario]) if params[:horario]
    @fecha = Date.parse(params[:fecha]) if params[:fecha]
+   @tiposesion = Tiposesion.find(params[:tiposesion]) if params[:tiposesion]
    flash[:notice] = "No se pudo actualizar correctamente, verifique"
      if @sesion && @horario && @fecha && @mediador && @comediador
         if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id)
            #---- Notificamos a especialistas ---
+           @sesion.update_attributes!(:tiposesion_id => @tiposesion.id) if @tiposesion
            if params[:notificacion] == "true"
              NotificationsMailer.deliver_sesion_updated("mediador", @sesion)
              NotificationsMailer.deliver_sesion_updated("comediador", @sesion)
