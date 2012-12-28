@@ -1,39 +1,4 @@
-<h1>Reprogramar sesión: <%=@sesion.clave%></h1>
-
-<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
- <table class="table1" >
-  <tr align="center">
-    <th align="center">Fecha</th>
-    <th align="center">Hora actual</th>
-    <th align="center">¿Notificar por correo electrónico?</th>
-  </tr>
- <tr align="center">
-
-   <%=h (@sesion.fecha ? (text_field_tag "sesion_fecha", "#{@sesion.fecha.strftime('%Y/%m/%d')}") : (text_field_tag "sesion_fecha") )%>
-    <!--
-    <td><= text_field_tag "sesion_fecha", "#{@sesion.fecha.strftime('%Y/%m/%d')}" %></td>
-    -->
-
-
-    <td><%= text_field_tag 'sesion_hora', nil, :placeholder => @sesion.hora_completa%></td>
-    <td><%= check_box_tag 'sesion_notificacion', @notificacion%></td>
- </tr>
-
- <tr align="center">
-   <th align="center">Especialista</th>
-   <th>Comediador</th>
-   <th></th>
- </tr>
- <tr align="center">
-    <td><%= select_tag 'sesion_mediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @mediador.id)%></td>
-    <td><%= select_tag 'sesion_comediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @comediador.id)%></td>
-    <td><%= submit_tag "Buscar horarios"%></td>
- </tr>
-  </table>
-<% end %>
-<br />
-
-
+<!-- template for show schedules -->
 
 <% if @noweekend %>
 
@@ -57,7 +22,7 @@
          </tr>
     </thead>
     <!-- Recorremos los horarios -->
-    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :notificacion => @notificacion}, :multipart => true, :remote => true ) do -%>
+    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :notificacion => @notificacion, :tiposesion => @tiposesion}, :multipart => true, :remote => true ) do -%>
           <tbody>
               <% @horarios_disponibles.each do |horario| %>
                             <tr>
@@ -99,12 +64,3 @@
 </div>
 
 <%end%>
-
-
-
-<br />
-<!-- back -->
-<div align="center">
-   <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  {:action => "show", :user => current_user.id, :id => @sesion}, {:title => "Regresar al menú anterior"}%><br />
-</div>
-

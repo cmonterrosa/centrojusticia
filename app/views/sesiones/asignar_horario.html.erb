@@ -1,0 +1,52 @@
+<h1>Asignar horario de sesión: <%=@sesion.clave%></h1>
+
+<% form_tag({:action => 'show_schedules_with_especialistas', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
+ <table class="table1" >
+  <tr align="center">
+    <th align="center">Fecha</th>
+    <th align="center">¿Notificar por correo electrónico?</th>
+    <th align="center">Tipo de sesión</th>
+  </tr>
+ <tr align="center">
+    <td><%= text_field_tag "sesion_fecha" %></td>
+    <td><%= check_box_tag 'sesion_notificacion', @notificacion%></td>
+     <td><%= select_tag 'sesion_tiposesion_id', options_from_collection_for_select(Tiposesion.all, 'id', 'descripcion')%></td>
+ </tr>
+
+ <tr align="center">
+   <th align="center">Especialista</th>
+   <th>Comediador</th>
+   <th></th>
+ </tr>
+ <tr align="center">
+    <td><%= select_tag 'sesion_mediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @sesion.mediador.id)%></td>
+    <td><%= select_tag 'sesion_comediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @sesion.comediador.id)%></td>
+    <td><%= submit_tag "Buscar horarios", :onclick => "enable_especialistas();"%></td>
+ </tr>
+  </table>
+<% end %>
+<br />
+
+
+<!-- back -->
+<div align="center">
+   <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  {:action => "show", :user => current_user.id, :id => @sesion}, {:title => "Regresar al menú anterior"}%><br />
+</div>
+
+
+
+<script type="text/javascript">
+      window.onload=function(){
+        document.getElementById("sesion_mediador_id").disabled = true;
+        document.getElementById("sesion_comediador_id").disabled = true;
+      };
+
+      function enable_especialistas (){
+        document.getElementById("sesion_mediador_id").disabled = false;
+        document.getElementById("sesion_comediador_id").disabled = false;
+      };
+
+
+</script>
+
+

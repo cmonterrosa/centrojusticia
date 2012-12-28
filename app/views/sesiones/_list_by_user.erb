@@ -22,7 +22,7 @@
         <%else%>
           <td style="vertical-align: middle;"><%=image_tag("iconos/false.png", :border =>0)%></td>
         <%end%>
-      <td style="vertical-align: middle;"><%=h(sesion.start_at ? sesion.start_at.strftime("%Y-%m-%d %H:%M:%S") : "---")%></td>
+       <td style="vertical-align: middle;"><%=h(sesion.start_at ? sesion.start_at.strftime("%Y-%m-%d %H:%M:%S") : (link_to "Asignar horario",{:action => "asignar_horario", :id => sesion, :mediador_id=> sesion.mediador_id, :comediador_id => sesion.comediador_id}, :class => 'boton'))%></td>
        <td style="vertical-align: middle;"><%=h (sesion.tiposesion) ? sesion.tiposesion.descripcion : "---"%></td>
        <td style="vertical-align: middle;"><b><%=h (sesion.mediador) ? sesion.mediador.nombre_completo : "---"%></b></td>
        <td style="vertical-align: middle;"><%=h (sesion.comediador) ? sesion.comediador.nombre_completo : "---"%></td>
