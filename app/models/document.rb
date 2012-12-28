@@ -37,7 +37,7 @@ class Document
         end
         else
          mode = "w+"
-          ENV["LC_CTYPE"] = "es_MX.ISO8859-1"
+          #ENV["LC_CTYPE"] = "es_MX.ISO8859-1"
           Dir.foreach(Dir.getwd+"/app/jasper/lib") do |file|
           interface_classpath << ":#{Dir.getwd}/app/jasper/lib/" + file if (file != '.' and file != '..' and file.match(/.jar/))
           end
