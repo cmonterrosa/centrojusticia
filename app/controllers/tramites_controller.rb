@@ -70,7 +70,11 @@ class TramitesController < ApplicationController
             when "fech-asig" #---- asignación de fecha y hora de sesión ----
                 return render(:partial => 'asignacion_fecha_hora_sesion', :layout => "oficial")
             when "invi-firm"
-                return  render(:partial => 'firma_invitaciones', :layout => "oficial")
+               @sesion = Sesion.find(:first, :conditions => ["tramite_id = ? AND signed_at is NULL", @tramite.id], :order => "fecha DESC")
+               @invitacion = Invitacion.find_by_sesion_id(@sesion.id)
+               @invitacion ||= Invitacion.create(:user_id => current_user.id, :sesion_id => @sesion.id)
+               @role = Role.find_by_name("invitadores")
+               return  render(:partial => 'firma_invitaciones', :layout => "oficial")
             when "invi-proc"
                 redirect_to :action => "show", :controller => "invitaciones", :id=> @tramite
             else
@@ -96,9 +100,14 @@ class TramitesController < ApplicationController
             redirect_to :action => "list"
          end
 
-
+      #--- firma de invitaciones --
       elsif params.has_key?(:infosesion)
         @tramite = Tramite.find(params[:id])
+        @invitacion = Invitacion.find(params[:invitacion]) if params[:invitacion]
+        @invitacion.invitador_id = User.find(params[:infosesion_invitador]).id if params[:infosesion_invitador]
+        @invitacion.sesion.signed_at = Time.now
+        @invitacion.sesion.signer_id = current_user.id
+        @invitacion.save && @invitacion.sesion.save
         update_tramite_model
       else
         flash[:notice] = "No se pudo cambiar el estatus, verifique"
