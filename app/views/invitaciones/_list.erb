@@ -13,10 +13,15 @@
       
         <%@invitaciones.each do |invitacion|%>
           <tr>
-            <td><%=invitacion.sesion.start_at.strftime("%Y-%m-%d %H:%M")%></td>
-            <td><%=invitacion.fecha_hora_entrega.strftime("%Y-%m-%d %H:%M")%></td>
-            <td><%=link_to 'Imprimir', {:action => "print", :id => invitacion}, :title => "Imprimir invitacion de trámite #{invitacion.tramite.folio_integrado}", :class => 'boton'%></td>
-            <td><%=link_to 'Enviar por correo', {:action => "send_email", :id => invitacion}, :title => "Enviar invitacion de trámite #{invitacion.tramite.folio_integrado}", :class => 'boton'%></td>
+            <td><%=h (invitacion.sesion.start_at)? invitacion.sesion.start_at.strftime("%Y-%m-%d %H:%M") : "---"%></td>
+            <td><%=h (invitacion.fecha_hora_entrega)? (invitacion.fecha_hora_entrega.strftime("%Y-%m-%d %H:%M")) : "---"%></td>
+
+            <%if invitacion.signed?%>
+              <td>Firmada: <%=h invitacion.sesion.signed_at.strftime("%Y-%m-%d %H:%M") %></td>
+              <td><%=link_to 'Imprimir', {:action => "generar", :id => invitacion}, :title => "Imprimir invitacion de trámite #{invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
+            <%else%>
+              <td><%=link_to 'No se puede imprimir por falta de firma', :title => "Imprimir invitacion de trámite #{invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
+            <%end%>
           </tr>
         <%end%>
     </tbody>
