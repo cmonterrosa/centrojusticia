@@ -5,6 +5,7 @@ class Sesion < ActiveRecord::Base
   belongs_to :user
   belongs_to :tiposesion
   belongs_to :sala
+  has_one :invitacion
 
     #--- Validaciones --
     validates_uniqueness_of :clave
