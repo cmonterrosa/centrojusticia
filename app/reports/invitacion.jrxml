@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="233"/>
+	<property name="ireport.y" value="93"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -16,6 +16,7 @@
 	<parameter name="P_FECHA" class="java.lang.String"/>
 	<parameter name="P_ESPECIALISTA" class="java.lang.String"/>
 	<parameter name="P_SUBDIRECTOR" class="java.lang.String"/>
+	<parameter name="P_ARTICULO_ESP" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select * from users]]>
 	</queryString>
@@ -63,16 +64,16 @@
 				<imageExpression class="java.lang.String"><![CDATA["/home/cmonterrosa/NetBeansProjects/centrojusticia/app/reports/imagenes/logo.jpg"]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement x="369" y="93" width="157" height="20"/>
+				<reportElement x="350" y="93" width="176" height="20"/>
 				<textElement>
-					<font size="11" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252"/>
+					<font size="10" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_LUGAR}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="369" y="113" width="157" height="20"/>
+				<reportElement x="350" y="113" width="176" height="20"/>
 				<textElement>
-					<font size="11"/>
+					<font size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FECHA}]]></textFieldExpression>
 			</textField>
@@ -81,7 +82,7 @@
 				<textElement>
 					<font fontName="Arial" size="11" isBold="true" pdfEncoding="Cp1252"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_NOMBRE}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["C. " + $P{P_NOMBRE}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="51" y="166" width="112" height="20"/>
@@ -95,60 +96,60 @@
 				<textElement textAlignment="Justified">
 					<font size="11" isBold="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["En atencion a  la solicitud de " + $P{P_ARTICULO} + " "  + $P{P_SOLICITANTE} + ", realizada el día " + $P{P_FECHA_ORIENTACION} + " del año en" +
+				<textFieldExpression class="java.lang.String"><![CDATA["En atencion a  la solicitud " + $P{P_ARTICULO} + "  C. "  + $P{P_SOLICITANTE} + ", realizada el día " + $P{P_FECHA_ORIENTACION} + " del año en " +
 "curso, el Centro de Justicia Alternativa le extiende una INVITACION para que nos acompañe el día " + $P{P_FECHA_SESION} +
 " en nuestras instalaciones ubicadas en Calle Candoquis, esquina con Avenida Pino, número 290, Fraccionamiento El Bosque," +
 " en la Ciudad de Tuxtla Gutiérrez, con la finalidad de explicarle las ventajas que ofrecen los medios alternativos de solución de conflictos a quienes," +
 "como en su caso, pudieran tener diferencias entre particulares." + "\n\n" +
 
-"En este sentido, mediante el diálogo y la buena voluntad pueden llegar a un arreglo armonioso en el que ambos resulten favorecidos, a través de un" +
+"En este sentido, mediante el diálogo y la buena voluntad pueden llegar a un arreglo armonioso en el que ambos resulten favorecidos, a través de un " +
 "procedimiento ágil, flexible y gratuito, conducido por un especialista del Centro, ahorrando el tiempo y los costos de un proceso judicial." + "\n\n" +
 
 
-"No omito manifestarle que podrá acompañarse de persona de su confianza y que puede presentar la documentación relacionada con el asunto por" +
+"No omito manifestarle que podrá acompañarse de persona de su confianza y que puede presentar la documentación relacionada con el asunto por " +
 "el que se le invita. Asimismo, será necesario presentarse con una identificación oficial y copia fotostática de la misma." + "\n\n" +
 
-"Le hacemos saber que ha sido designado como especialista para atender el asunto a tratar, " + $P{P_ESPECIALISTA} + "." + "\n\n" +
+"Le hacemos saber que ha sido designado como especialista para atender el asunto a tratar, " + $P{P_ARTICULO_ESP} + " Lic. " + $P{P_ESPECIALISTA} + "." + "\n\n" +
 
 "Agradeceremos confirmar su asistencia al teléfono (961) 61 78700, ext. 8863, 8864 y 8865." + "\n\n"]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="51" y="570" width="100" height="20"/>
+				<reportElement x="51" y="558" width="100" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Cordialmente]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="51" y="619" width="247" height="20"/>
+				<reportElement x="51" y="605" width="247" height="20"/>
 				<textElement>
 					<font size="11" isBold="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECTOR}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="51" y="639" width="100" height="16"/>
+				<reportElement x="51" y="625" width="100" height="16"/>
 				<textElement>
 					<font size="11" isBold="true"/>
 				</textElement>
 				<text><![CDATA[Subdirector]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="51" y="676" width="120" height="20"/>
+				<reportElement x="51" y="665" width="120" height="20"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Archivo/expediente"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="51" y="717" width="441" height="10"/>
+				<reportElement x="51" y="707" width="441" height="10"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Calle Candoquis número 290, esquina con Avenida Pino, Fraccionamiento el Bosque, C.P. 29047 Tuxtla Gutiérrez, Chiapas"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="51" y="727" width="321" height="11"/>
+				<reportElement x="51" y="717" width="321" height="11"/>
 				<textElement>
 					<font size="7"/>
 				</textElement>
