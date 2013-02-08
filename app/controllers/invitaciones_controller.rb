@@ -14,14 +14,15 @@ class InvitacionesController < ApplicationController
     if @invitacion
        @sesion = @invitacion.sesion
        @tramite = @sesion.tramite
-       @involucrado = Participante.find(:first, 
+       @involucrado = Participante.find(params[:p]) if params[:p]
+       @involucrado ||= Participante.find(:first,
                       :conditions => ["comparecencia_id = ?", Comparecencia.find_by_tramite_id(@tramite).id])
        #-- Parametros
        param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
        #param["P_NOMBRE"]={:tipo=>"String", :valor=>"Carlos Augusto Monterrosa López"}
        param["P_NOMBRE"]={:tipo=>"String", :valor=>@involucrado.nombre_completo}
        #param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>"Lic. Amauri Palacios Aquino"}
-       param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>@invitacion.especialista}
+       param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>@invitacion.especialista.nombre_completo}
        #param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>"Rodrigo Domínguez Moscoso"}
        param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@invitacion.subdireccion.titular}
        #param["P_ARTICULO"]={:tipo=>"String", :valor=>"la"}
@@ -65,8 +66,23 @@ class InvitacionesController < ApplicationController
   end
 
   def list_by_user
+     @invitaciones = Invitacion.find(:all, :conditions => ["invitador_id = ?", current_user.id])
+  end
+
+  def razonar
+    @invitacion = Invitacion.find(params[:id])
+    if @invitacion && (@invitacion.invitador_id == current_user.id || current_user.has_role?(Role.find_by_name("admin")))
+        
+    else
+      render :text => "No tiene privilegios de razonar la invitación o no existe"
+    end
 
   end
 
+
+  def menu_print
+    @invitacion = Invitacion.find(params[:id])
+    @participantes = @invitacion.sesion.tramite.comparecencia.participantes
+  end
 
 end
