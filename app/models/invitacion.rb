@@ -6,7 +6,7 @@ class Invitacion < ActiveRecord::Base
   end
 
   def especialista
-    return User.find(Sesion.find(self.sesion_id).mediador_id).nombre_completo
+    return User.find(Sesion.find(self.sesion_id).mediador_id)
   end
 
   def subdireccion
