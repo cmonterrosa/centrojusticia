@@ -219,4 +219,10 @@ class AdminController < ApplicationController
    @token= generate_token
  end
 
+ def change_password
+   if validate_token(params[:t]) && @user = User.find(params[:id])
+     render :text => params[:t]
+   end
+ end
+
 end
