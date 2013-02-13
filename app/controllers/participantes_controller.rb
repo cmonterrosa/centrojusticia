@@ -37,4 +37,11 @@ class ParticipantesController < ApplicationController
     end
   end
 
+  def show
+    if Participante.exists?(params[:id])
+        @participante =  Participante.find(params[:id])
+        @tramite = @participante.comparecencia.tramite
+    end
+  end
+
 end
