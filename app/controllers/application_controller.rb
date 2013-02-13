@@ -23,5 +23,11 @@ class ApplicationController < ActionController::Base
 #    render :template => "layouts/404", :layout => "oficial", :status => 404
 #  end
 
+ def update_tramite_model(tramite=nil)
+    @tramite=tramite if tramite
+    flash[:notice] = (@tramite.update_flujo_estatus!(current_user)) ? "Registro actualizado correctamente" :  "No se pudo guardar, verifique"
+    #redirect_to :action => "list"
+  end
+
 
 end
