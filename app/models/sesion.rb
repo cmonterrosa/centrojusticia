@@ -14,6 +14,11 @@ class Sesion < ActiveRecord::Base
     validates_format_of :num_tramite, :with => /^\d{1,4}\/20\d{2}$/, :message => " El formato debe de ser num/anio"
 
 
+ def initialize(params = nil)
+    super
+    self.notificacion = 0 unless self.notificacion
+ end
+
 
   def start_at
     horario = Horario.find(self.horario_id) if self.horario_id
