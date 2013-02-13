@@ -17,6 +17,13 @@ class InvitacionesController < ApplicationController
        @involucrado = Participante.find(params[:p]) if params[:p]
        @involucrado ||= Participante.find(:first,
                       :conditions => ["comparecencia_id = ?", Comparecencia.find_by_tramite_id(@tramite).id])
+
+       # Timestamp for printing for a invitador
+       if current_user.id == @invitacion.invitador_id
+         update_tramite_model(@invitacion.sesion.tramite) if @invitacion.printed_at.nil?
+         @invitacion.update_attributes!(:printed_at => Time.now) if @invitacion.printed_at.nil?
+       end
+
        #-- Parametros
        param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
        #param["P_NOMBRE"]={:tipo=>"String", :valor=>"Carlos Augusto Monterrosa López"}
@@ -80,9 +87,43 @@ class InvitacionesController < ApplicationController
   end
 
 
+  def save
+    if params[:id] && @invitacion = Invitacion.find(params[:id])
+      @invitacion.entregada ||= params[:invitacion][:entregada]
+      @invitacion.justificacion ||= params[:invitacion][:justificacion]
+      anio, mes, dia, hora, minutos = params[:invitacion]["fecha_hora_entrega(1i)"],  params[:invitacion]["fecha_hora_entrega(2i)"],  params[:invitacion]["fecha_hora_entrega(3i)"], params[:invitacion]["fecha_hora_entrega(4i)"], params[:invitacion]["fecha_hora_entrega(5i)"]
+      date = DateTime.civil(anio.to_i,mes.to_i,dia.to_i,hora.to_i, minutos.to_i)
+      @invitacion.fecha_hora_entrega ||= date if date
+      if @invitacion.save
+        # Actualizamos status
+        # Si se cambia la hora por primera vez
+        if @invitacion.fecha_hora_entrega == date
+            update_tramite_model(@invitacion.sesion.tramite) if @invitacion.entregada == true
+        end
+        flash[:notice] = "Invitacion actualizada correctamente"
+      else
+        flash[:notice] = "No se pudo guardar verifique"
+        render :action => "razonar"
+      end
+    else
+       flash[:notice] ||= "No existe invitacion"
+    end
+    redirect_to :action => "list_by_user"
+  end
+
+
   def menu_print
     @invitacion = Invitacion.find(params[:id])
     @participantes = @invitacion.sesion.tramite.comparecencia.participantes
+  end
+
+  def show
+    if params[:id] && @invitacion = Invitacion.find(params[:id])
+      @tramite = @invitacion.sesion.tramite
+    else
+      flash[:notice] = "No se encontro invitacion"
+      redirect_to :action => "list_by_user"
+    end
   end
 
 end
