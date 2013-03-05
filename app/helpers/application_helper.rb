@@ -16,4 +16,11 @@ module ApplicationHelper
     end
   end
 
+
+  def to_iso(texto)
+    c = Iconv.new('ISO-8859-15//IGNORE//TRANSLIT', 'UTF-8')
+    iso = c.iconv(texto)
+    return iso
+  end
+
 end
