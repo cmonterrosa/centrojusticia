@@ -12,7 +12,7 @@ class CreateRoles < ActiveRecord::Migration
     Role.create(:name => "direccion", :descripcion => "Dirección General", :prioridad => 3)
     Role.create(:name => "subdireccion", :descripcion => "Subdirección Regional", :prioridad => 4)
     Role.create(:name => "controlagenda", :descripcion => "Control de agenda", :prioridad => 5)
-    Role.create(:name => "lecturaagenda", :descripcion => "Control de agenda", :prioridad => 6)
+    Role.create(:name => "lecturaagenda", :descripcion => "Lectura de agenda", :prioridad => 6)
     Role.create(:name => "jefeatencionpublico", :descripcion => "Jefatura de área de Atención al público", :prioridad => 7)
     Role.create(:name => "atencionpublico", :descripcion => "Area de Atención al público", :prioridad => 8)
     Role.create(:name => "especialistas", :descripcion => "Especialistas públicos", :prioridad => 9)
