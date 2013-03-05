@@ -44,3 +44,8 @@ function validar_expediente()
      }
 }
 
+function disable_num_expediente()
+{
+    document.getElementById("sesion_num_tramite").disabled=true;
+    return true;
+}
