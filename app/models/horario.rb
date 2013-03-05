@@ -12,17 +12,18 @@ class Horario < ActiveRecord::Base
   end
 
   def hora_completa_turno
+    minutos = self.minutos.to_s.rjust(2, '0')
     case self.hora
     when (1..11)
-      return "a las #{self.hora.to_s} de la mañana"
+      return "a las #{self.hora.to_s}:#{minutos} de la mañana"
     when (12)
-      return "a las 12 del día"
+      return "a las 12:#{minutos} del día"
     when (13)
-      return "a la 1 de la tarde"
+      return "a la 1:#{minutos} de la tarde"
     when (14..18)
-      return "a las #{(self.hora.to_i - 12).to_s} de la tarde"
+      return "a las #{(self.hora.to_i - 12).to_s}:#{minutos} de la tarde"
     when (19..24)
-      return "a las #{(self.hora.to_i - 12).to_s} de la noche"
+      return "a las #{(self.hora.to_i - 12).to_s}:#{minutos} de la noche"
     end
   end
 

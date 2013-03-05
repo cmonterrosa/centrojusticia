@@ -7,16 +7,17 @@ class Sesion < ActiveRecord::Base
   belongs_to :sala
   has_one :invitacion
 
-    #--- Validaciones --
-    validates_uniqueness_of :clave
-    validates_presence_of :mediador_id
-    validates_presence_of :comediador_id
-    validates_format_of :num_tramite, :with => /^\d{1,4}\/20\d{2}$/, :message => " El formato debe de ser num/anio"
+  #--- Validaciones --
+  validates_uniqueness_of :clave
+  validates_presence_of :mediador_id
+  validates_presence_of :comediador_id
+  validates_format_of :num_tramite, :with => /^\d{1,4}\/20\d{2}$/, :message => " El formato debe de ser num/anio"
 
 
  def initialize(params = nil)
     super
     self.notificacion = 0 unless self.notificacion
+    self.concluida = 0 unless self.concluida
  end
 
 
@@ -52,16 +53,18 @@ class Sesion < ActiveRecord::Base
   end
 
   def generate_clave
-    clave = (rand(10)).to_s + Array.new(2) { (rand(122-97) + 97).chr }.join + (rand(1000)).to_s.rjust(2, "0")
+    id = (self.id) ? (self.id) : (Sesion.maximum(:id) + 1)
+    clave = Time.now.year.to_s[2,3] + id.to_s.rjust(4,"0")
+    #clave = (rand(10)).to_s + Array.new(2) { (rand(122-97) + 97).chr }.join + (rand(1000)).to_s.rjust(2, "0")
     while not (Sesion.find_by_clave(clave)).nil?
-      clave = (rand(10)).to_s + Array.new(2) { (rand(122-97) + 97).chr }.join + (rand(1000)).to_s.rjust(2, "0")
+      clave = Time.now.year.to_s[2,3] + (self.id + 1).to_s.rjust(4,"0")
+      #clave = (rand(10)).to_s + Array.new(2) { (rand(122-97) + 97).chr }.join + (rand(1000)).to_s.rjust(2, "0")
     end
     self.clave = clave
-    self.save!
   end
 
   def has_permission?(current_user)
-     if current_user.has_role?("controlagenda") || self.user == current_user
+    if current_user.has_role?("controlagenda") || self.user == current_user || self.mediador_id== current_user.id
        return true
      else
        return false

@@ -84,8 +84,7 @@ class User < ActiveRecord::Base
   def self.authenticate(login, password)
     return nil if login.blank? || password.blank?
     u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL and activo=true', login] # need to get the salt
-    u && u.authenticated?(password) ? u : nil
-    (u.update_attributes!(:last_login => Time.now)) ? u : nil
+    u && u.authenticated?(password) && u.update_attributes!(:last_login => Time.now) ? u : nil
   end
 
   def login=(value)
