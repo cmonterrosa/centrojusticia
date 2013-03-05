@@ -7,7 +7,7 @@ class Orientacion < ActiveRecord::Base
   has_one :comparecencia
 
   #---- validaciones ---
-  validates_presence_of :sala_id, :message => "Seleccione una sala"
+  #validates_presence_of :sala_id, :message => "Seleccione una sala"
   validates_presence_of :municipio_id, :message => "Seleccione una municipio"
 
   def solicitante
