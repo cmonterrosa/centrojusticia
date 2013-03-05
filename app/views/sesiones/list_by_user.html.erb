@@ -1,6 +1,6 @@
 <h4 style=" font-family:  Helvetica;">Listado de sesiones asignadas al especialista: <%=current_user.nombre_completo%></h4>
 <p>
-  <%=link_to "Ver todas", :action => "list_by_user"%> | <%=link_to "Más recientes", :action => "list_by_user", :limit=> 5%>
+  <%=link_to "Activas", :action => "list_by_user", :activas => 1%> | <%=link_to "Cerradas", :action => "list_by_user", :activas => 0%> | <%=link_to "Todas", :action => "list_by_user"%>
 </p>
 <%= render :partial => "list_by_user"%>
 <br />

@@ -1,0 +1,5 @@
+<h4 style=" font-family:  Helvetica;">Invitaciones para: <%=current_user.nombre_completo%></h4><br />
+<%= render :partial => "list"%>
+
+<br />
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "tramites", :action => "menu", :id => @tramite%><br />

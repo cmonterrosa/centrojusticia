@@ -22,11 +22,9 @@
         <td>
            <%=link_to image_tag('iconos/estadisticas/especialistas.png', :size => "128x128") , {:action => "grafica_sesiones_especialistas"}, :title => "gráfica de sesiones detallada por especialista", :class => "fancybox fancybox.iframe"%>
         </td>
-       <td>
-         <a href="#" title="Gráfica por materia">
-          <img src="/images/iconos/estadisticas/materia.png" width="128" height="128" alt="administración de usuarios" />
-         </a>
-       </td>
+           <td>
+           <%=link_to image_tag('iconos/estadisticas/materia.png', :size => "128x128") , {:action => "grafica_materia"}, :title => "gráfica por materia", :class => "fancybox fancybox.iframe"%>
+          </td>
   </tr>
   <tr align="center">
     <td class="menu">Gráfica por especialistas</td>

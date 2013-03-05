@@ -1,0 +1,94 @@
+<% form_for :sesion, @sesion, :url => { :action => "save_with_date", :date => @fecha, :horario => @horario, :origin => "agenda" }, :html => {:id => "new_sesion_with_date"}  do |f| -%>
+  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr bgcolor="#CCCCCC" class="titulo">
+      <td colspan="3" align="center" >NUEVA SESIÓN</td>
+    </tr>
+    <tr align="center">
+      <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+            <tr bgcolor="#E8E8E8" class="subtitulo">
+              <td align="center" colspan="4">DATOS GENERALES</td>
+            </tr>
+            <tr align=" justify" class="pregunta">
+              <td align="center">Número de expediente</td>
+              <td align="center">Especialista</td>
+              <td align="center">Comediador</td>
+              <td align="center">¿Notificar vía correo electrónico?</td>
+            </tr>
+            <tr>
+              <td align="center"><%= f.text_field :num_tramite, :value => @tramite.folio_inverso, :class => "text",  :onfocus => "document.getElementById('sesion_num_tramite').disabled=true; "%></td> <!-- :onchange => "validar_expediente(); -->
+              <td align="center"><%= f.select :mediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
+              <td align="center"><%= f.select :comediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
+              <td align="center"><%=  f.check_box :notificacion%></td>
+            </tr>
+          </table>
+       </td>
+    </tr>
+
+
+    <!-- Fecha y hora -->
+    <tr align="center">
+      <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+            <tr bgcolor="#E8E8E8" class="subtitulo">
+              <td align="center" colspan="3">DATOS DE LA SESIÓN</td>
+            </tr>
+            <tr align=" justify" class="pregunta">
+                <td align="center">Fecha</td>
+                <td align="center">Hora y sala</td>
+                <td align="center">Tipo de sesión</td>
+            </tr>
+            <tr>
+              <td align="center"><%=f.label "#{(@fecha.strftime("%d de %B de %Y")).upcase}"%></td>
+              <%unless @horario%>
+                <td align="center"><%= f.select :horario_id, @horarios.collect{|a| [a.hora_completa, a.id]}, :prompt => 'Seleccione una opción'%></td>
+              <%else%>
+                <td align="center"><%=@horario.descripcion_completa%></td>
+              <%end%>
+              <td align="center"><%= f.select :tiposesion_id, @tipos_sesiones.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+            </tr>
+        </table>
+      </td>
+    </tr>
+
+
+
+
+    <!-- Detalle -->
+    <tr align="center">
+      <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+            <tr bgcolor="#E8E8E8" class="subtitulo">
+              <td align="center" colspan="1">DETALLE</td>
+            </tr>
+            <tr align=" justify" class="pregunta">
+                <td align="center">Observaciones</td>
+            </tr>
+            <tr>
+                <td align="center"><%= f.text_area :observaciones, :size => "40x10"%></td>
+            </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- espacio -->
+    <tr>
+      <td colspan="3"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input id ="submit" title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onclick="document.getElementById('sesion_num_tramite').disabled=false;"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "agenda", :action => "daily_show", :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => params[:origin]-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>

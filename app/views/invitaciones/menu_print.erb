@@ -1,0 +1,38 @@
+<%if @participantes%>
+<h3>
+  Menú de impresión
+</h3>
+<table class="table1">
+    <thead>
+         <!-- Titulos -->
+         <tr>
+            <th scope="col" abbr="Starter">Nombre completo</th>
+            <th scope="col" abbr="Starter">Dirección</th>
+            <th scope="col" abbr="Starter" colspan="2">Acciones</th>
+         </tr>
+    </thead>
+
+    <tbody>
+
+        <%@participantes.each do |participante|%>
+          <tr>
+            <td><%=h (participante.nombre_completo)? (participante.nombre_completo) : ("---")%></td>
+            <td><%=h (participante.domicilio) ? (participante.domicilio) : ("----")%></td>
+            <%if @invitacion.signed?%>
+              <td>Firmada: <%=h @invitacion.sesion.signed_at.strftime("%Y-%m-%d %H:%M") %></td>
+             <td><%=link_to 'Imprimir', {:action => "generar", :id => @invitacion.id, :p => participante }, :title => "Imprimir invitaciones de trámite #{@invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
+            <%else%>
+              <td><%=link_to 'No se puede imprimir por falta de firma', :title => "Imprimir invitacion de trámite #{invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
+            <%end%>
+          </tr>
+        <%end%>
+    </tbody>
+</table>
+
+<%else%>
+  <h3> No existe información</h3><br />
+<%end%>
+
+
+
+<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "invitaciones", :action => "list_by_user"%><br />

@@ -1,0 +1,53 @@
+<table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr bgcolor="#CCCCCC" class="titulo">
+      <td colspan="3" align="center" >DETALLE DE PARTICIPANTES</td>
+    </tr>
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5">DATOS GENERALES</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Nombre completo</td>
+          <td align="center">Fecha de nacimiento</td>
+          <td align="center">Sexo</td>
+          
+        </tr>
+        <tr>
+          <td align="center"><%=h  (@participante) ? @participante.nombre_completo : "---"%> </td>
+          <td align="center"><%=h  ((@participante.fecha_nac) ? @participante.fecha_nac.strftime("%Y-%m-%d") : "---")%> </td>
+          <td align="center"><%=h (@participante.sexo) ? @participante.sexo : "---"%></td>
+        </tr>
+      </table></td>
+    </tr>
+
+    <!-- Datos de entrega -->
+
+        <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5">DATOS DE UBICACION</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Domicilio</td>
+          <td align="center">Municipio</td>
+          <td align="center">Teléfono</td>
+        </tr>
+        <tr>
+          <td align="center"><%=h  ((@participante.domicilio) ? @participante.domicilio : "--") %> </td>
+          <td align="center"><%=h (@participante.municipio_id ? @participante.municipio.descripcion : "---")%> </td>
+          <td align="center"><%=h ((@participante.telefono_particular) ? "#{@participante.telefono_particular} (Particular)" : "#{@participante.telefono_celular} (Celular)")%></td>
+        </tr>
+      </table></td>
+    </tr>
+
+    <!-- espacio -->
+    <tr>
+      <td colspan="3"><hr /></td>
+    </tr>
+
+  </table>
+
+

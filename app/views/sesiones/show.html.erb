@@ -25,18 +25,19 @@
 
 <!-- Mostramos icono de bitácora si es mediador o comediador -->
 
-
-<% if @sesion.mediador_id == current_user.id || @sesion.comediador_id == current_user.id %>
-<!-- Acciones -->
-<table width="50%" border="0" cellspacing="0" cellpadding="0">
-  <tr align="center">
-      <td>
-        <a href="/sesiones/bitacora/<%=h @sesion.id%>/?t=<%=h @token%>" title=Bitácora">
-         <img src="/images/iconos/bitacora.png" width="64" height="64" alt="bitácora" />
-        </a>
-      </td>
-  </tr>
-</table><br />
+<%if @sesion.invitacion%>
+  <% if @sesion.invitacion.entregada == true && (@sesion.mediador_id == current_user.id || @sesion.comediador_id == current_user.id )%>
+  <!-- Acciones -->
+    <table width="50%" border="0" cellspacing="0" cellpadding="0">
+      <tr align="center">
+        <td>
+          <a href="/sesiones/bitacora/<%=h @sesion.id%>/?t=<%=h @token%>" title=Bitácora">
+            <img src="/images/iconos/bitacora.png" width="64" height="64" alt="bitácora" />
+          </a>
+        </td>
+      </tr>
+    </table><br />
+  <%end%>
 <%end%>
 
 <!-- contenido -->

@@ -3,25 +3,36 @@
     <thead>
          <!-- Titulos -->
          <tr>
+            <th scope="col" abbr="Starter"></th>
             <th scope="col" abbr="Starter">Fecha de sesión</th>
             <th scope="col" abbr="Starter">Fecha de entrega</th>
-            <th scope="col" abbr="Starter" colspan="2">Acciones</th>
+            <th scope="col" abbr="Starter">Estatus del trámite</th>
+            <th scope="col" abbr="Starter" colspan="4">Acciones</th>
          </tr>
     </thead>
 
     <tbody>
-      
         <%@invitaciones.each do |invitacion|%>
           <tr>
-            <td><%=h (invitacion.sesion.start_at)? invitacion.sesion.start_at.strftime("%Y-%m-%d %H:%M") : "---"%></td>
-            <td><%=h (invitacion.fecha_hora_entrega)? (invitacion.fecha_hora_entrega.strftime("%Y-%m-%d %H:%M")) : "---"%></td>
+              <%if invitacion.entregada == true%>
+                <td style="vertical-align: middle;"><%=image_tag("iconos/true.png", :border =>0)%></td>
+              <%else%>
+                <td style="vertical-align: middle;"><%=image_tag("iconos/false.png", :border =>0)%></td>
+              <%end%>
 
+            <td><%=h (invitacion.sesion.start_at)? invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---"%></td>
+            <td><%=h (invitacion.fecha_hora_entrega)? (invitacion.fecha_hora_entrega.strftime("%d de %B de %Y / %H:%M")) : "---"%></td>
+            <td><%=h (invitacion.sesion.tramite) ? (invitacion.sesion.tramite.estatus) : "---"%></td>
             <%if invitacion.signed?%>
-              <td>Firmada: <%=h invitacion.sesion.signed_at.strftime("%Y-%m-%d %H:%M") %></td>
-              <td><%=link_to 'Imprimir', {:action => "generar", :id => invitacion}, :title => "Imprimir invitacion de trámite #{invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
+              <td><%=link_to 'Imprimir', {:action => "menu_print", :id => invitacion}, :title => "Imprimir invitaciones de trámite #{invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
+              <%unless invitacion.fecha_hora_entrega%>
+                <td><%=link_to 'Razonar',{:action => "razonar", :id => invitacion}, :title => "Razonar invitación", :class => 'boton'%></td>
+              <%end%>
             <%else%>
               <td><%=link_to 'No se puede imprimir por falta de firma', :title => "Imprimir invitacion de trámite #{invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
             <%end%>
+          <!-- detalle -->
+          <td><%=link_to 'Detalle', {:action => "show", :id => invitacion}, :title => "Detalle de invitación", :class => 'boton'%></td>
           </tr>
         <%end%>
     </tbody>

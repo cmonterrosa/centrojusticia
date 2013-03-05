@@ -1,8 +1,8 @@
 <div id="divlista">
   <!-- mediador -->
-  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
-      <th colspan="6">
+      <th colspan="7">
         Asignado como mediador
       </th>
      </tr>
@@ -13,11 +13,11 @@
         <td style="vertical-align: middle;">Tipo</td>
         <td style="vertical-align: middle;">Especialista</td>
         <td style="vertical-align: middle;">Comediador</td>
-        <td style="vertical-align: middle;">Detalle</td>
+        <td style="vertical-align: middle;" colspan="2">Detalle / Folio </td>
     </tr>
     <%@sesiones_mediador.each do |sesion|%>
     <tr>
-        <%if sesion.activa== true%>
+        <%if sesion.concluida == true%>
           <td style="vertical-align: middle;"><%=image_tag("iconos/true.png", :border =>0)%></td>
         <%else%>
           <td style="vertical-align: middle;"><%=image_tag("iconos/false.png", :border =>0)%></td>
@@ -26,16 +26,24 @@
        <td style="vertical-align: middle;"><%=h (sesion.tiposesion) ? sesion.tiposesion.descripcion : "---"%></td>
        <td style="vertical-align: middle;"><b><%=h (sesion.mediador) ? sesion.mediador.nombre_completo : "---"%></b></td>
        <td style="vertical-align: middle;"><%=h (sesion.comediador) ? sesion.comediador.nombre_completo : "---"%></td>
-       <td style="vertical-align: middle;"><%=link_to "Bitácora", {:action => "bitacora", :id => sesion}, :class => 'boton'%></td>
+       
+       <!-- Verificamos que la invitacion este entregada para capturar bitácora -->
+       <%if sesion.invitacion && sesion.invitacion.entregada%>
+        <td style="vertical-align: middle;"><%=link_to "Bitácora", {:action => "bitacora", :id => sesion}, :class => 'boton'%></td>
+       <%else%>
+        <td style="vertical-align: middle;">Invitación no entregada</td>
+       <%end%>
+
+       <td style="vertical-align: middle;"><%=link_to "#{sesion.tramite.folio_integrado}", {:action => "show", :controller => "tramites", :id => sesion.tramite.id}, :class => 'boton', :target => "_blank"%></td>
     </tr>
     <%end%>
   </table><br /><br />
 
   <!-- comediador -->
   <!-- mediador -->
-  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
-      <th colspan="6">
+      <th colspan="7">
         Asignado como comediador
       </th>
      </tr>
@@ -44,13 +52,13 @@
         <td style="vertical-align: middle;"></td>
         <td style="vertical-align: middle;">Fecha/Hora</td>
         <td style="vertical-align: middle;">Descripción</td>
-        <td style="vertical-align: middle;">Mediador</td>
+        <td style="vertical-align: middle;">Especialista</td>
         <td style="vertical-align: middle;">Comediador</td>
-        <td style="vertical-align: middle;">Detalle</td>
+        <td style="vertical-align: middle;" colspan="2">Detalle / Folio</td>
     </tr>
     <%@sesiones_comediador.each do |sesion|%>
     <tr>
-      <%if sesion.activa== true%>
+      <%if sesion.concluida== true%>
           <td style="vertical-align: middle;"><%=image_tag("iconos/true.png", :border =>0)%></td>
         <%else%>
           <td style="vertical-align: middle;"><%=image_tag("iconos/false.png", :border =>0)%></td>
@@ -59,7 +67,16 @@
        <td style="vertical-align: middle;"><%=h (sesion.tiposesion) ? sesion.tiposesion.descripcion : "---"%></td>
        <td style="vertical-align: middle;"><%=h (sesion.mediador) ? sesion.mediador.nombre_completo : "---"%></td>
        <td style="vertical-align: middle;"><b><%=h (sesion.comediador) ? sesion.comediador.nombre_completo : "---"%></b></td>
-       <td style="vertical-align: middle;"><%=link_to "Bitácora", {:action => "bitacora", :id => sesion}, :class => 'boton'%></td>
+    
+          <!-- Verificamos que la invitacion este entregada para capturar bitácora -->
+       <%if sesion.invitacion && sesion.invitacion.entregada%>
+        <td style="vertical-align: middle;"><%=link_to "Bitácora", {:action => "bitacora", :id => sesion}, :class => 'boton'%></td>
+       <%else%>
+        <td style="vertical-align: middle;">Invitación no entregada</td>
+       <%end%>
+
+         <td style="vertical-align: middle;"><%=link_to "#{sesion.tramite.folio_integrado}", {:action => "show", :controller => "tramites", :id => sesion.tramite.id}, :class => 'boton', :target => "_blank"%></td>
+
     </tr>
     <%end%>
   </table><br /><br />
