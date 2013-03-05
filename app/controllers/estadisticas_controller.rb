@@ -57,6 +57,16 @@ class EstadisticasController < ApplicationController
       send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list.png")
   end
 
+  def grafica_materia
+      g = Gruff::Pie.new
+      g.title = "Trámites por materia"
+      @materias = Materia.find(:all, :order => "descripcion")
+      @materias.each do |materia|
+        g.data("#{materia.descripcion}", [Tramite.count(:id, :conditions => ["materia_id = ?", materia.id])])
+      end
+      send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list_by_materia.png")
+  end
+
 
   
 

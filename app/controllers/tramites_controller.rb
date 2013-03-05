@@ -18,6 +18,29 @@ class TramitesController < ApplicationController
     end
   end
 
+  def pdf
+    @tramite = Tramite.find(params[:id])
+    make_and_send_pdf("resumen_#{@tramite.anio.to_s}_#{@tramite.folio.to_s}")
+  end
+
+   def socama
+    make_and_send_pdf("socama")
+  end
+
+  def showpdf
+    #@tramite = Tramite.find(1)
+    respond_to do |format|
+       format.html
+       format.pdf do
+        render :pdf => "file_name",
+               :template => "tramites/showpdf.erb",
+               :stylesheets => ["application","prince"],
+               :layout => "pdf",
+               :disposition => "inline" # PDF will be sent inline, means you can load it inside an iFrame or Embed
+      end
+    end
+  end
+
   def menu
     unless @tramite=Tramite.find(params[:id])
       flash[:notice] = "No se encontro trámite, verifique"

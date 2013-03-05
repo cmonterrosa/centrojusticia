@@ -219,10 +219,26 @@ class AdminController < ApplicationController
    @token= generate_token
  end
 
- def change_password
-   if validate_token(params[:t]) && @user = User.find(params[:id])
-     render :text => params[:t]
+ def edit_user
+   unless validate_token(params[:t]) && @user = User.find(params[:id])
+    flash[:notice] = "No se pudo encontrar usuario"
+    redirect_to :action => "index"
    end
+ end
+
+ def save_user
+    @user = User.find(params[:id])
+    @user.update_attributes(params[:user])
+    @user.activated_at ||= Time.now
+    @user.activo=true
+    success = @user && @user.save
+    if success && @user.errors.empty?
+      flash[:notice] = "Tus datos se actualizaron correctamente"
+      redirect_to :action => "show_users"
+    else
+      flash[:notice]  = "No se pudieron modificar tus datos, verifica"
+      render :action => 'edit_user'
+    end
  end
 
 end

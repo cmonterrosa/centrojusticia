@@ -1,7 +1,8 @@
 class SesionesController < ApplicationController
    #before_filter :login_required
    #layout 'oficial', :except => "select_schedule"
-    require_role "admin", :only => [:save, :edit]
+    #require_role "admin", :only => [:save, :edit]
+    require_role "especialistas", :for => [:new, :list_by_user, :list_by_tramite]
     require_role "controlagenda", :for => [:new_with_date]
 
   def list_by_tramite
@@ -22,13 +23,18 @@ class SesionesController < ApplicationController
    end
 
   def list_by_user
-    if params[:limit] =~ /\d/
-      @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND activa=true", current_user.id], :order => "fecha DESC", :limit => params[:limit])
-      @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND activa=true",current_user.id], :order => "fecha DESC", :limit => params[:limit])
-    else
-      @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ?", current_user.id], :order => "fecha DESC")
-      @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ?",current_user.id], :order => "fecha DESC")
+    if params[:activas]
+      case params[:activas].to_i
+        when 1
+            @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1", current_user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
+            @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida !=1",current_user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
+        when 0
+            @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida = 1", current_user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
+            @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida = 1", current_user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
+      end
     end
+    @sesiones_mediador ||= Sesion.find(:all, :conditions => ["mediador_id = ?", current_user.id], :order => "fecha, hora, minutos, created_at")
+    @sesiones_comediador ||= Sesion.find(:all, :conditions => ["comediador_id = ?",current_user.id], :order => "fecha, hora, minutos, created_at")
   end
 
   def list_by_fecha
@@ -80,7 +86,7 @@ class SesionesController < ApplicationController
     #---- if tramite has a valid format -----
     if params[:sesion][:num_tramite] =~ /^\d{1,4}\/20\d{2}$/
        folio, anio = params[:sesion][:num_tramite].split("/")
-       @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio, folio])
+       @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio.to_i, folio.to_i])
        @tramite ||= Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
        @sesion.tramite = @tramite
     end
@@ -91,7 +97,8 @@ class SesionesController < ApplicationController
     @sesion.minutos = @sesion.horario.minutos
     @sesion.sala_id = @sesion.horario.sala_id
     @sesion.activa = true
-    if @sesion.tramite && @mediador && @comediador && @sesion.save && @sesion.generate_clave
+    @sesion.generate_clave if @sesion.clave.nil?
+    if @sesion.tramite && @mediador && @comediador && @sesion.save
          #--- Notificaciones ---
          if @sesion.notificacion && @sesion.comediador_id && @sesion.mediador_id
             NotificationsMailer.deliver_sesion_created("mediador", @sesion)
@@ -120,6 +127,7 @@ class SesionesController < ApplicationController
     @sesion.update_attributes(params[:sesion])
     @tramite = Tramite.find(params[:id]) if params[:tramite]
     @sesion.tramite = @tramite unless @sesion.tramite
+    @sesion.finished_at ||= Time.now if params[:sesion][:concluida] == "1"
     if @sesion.save
        flash[:notice] = "Sesión guardada correctamente"
        redirect_to :action => @redireccion, :id => @tramite
@@ -192,19 +200,6 @@ class SesionesController < ApplicationController
   def show_schedules_with_especialistas
        show_schedules()
        @tiposesion = Tiposesion.find(params[:sesion_tiposesion_id]) if params[:sesion_tiposesion_id]
-
-#   @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
-#   @salas = Sala.find(:all, :order => "descripcion")
-#   @sesion= Sesion.find(params[:sesion]) if params[:sesion]
-#   @mediador = User.find(params[:sesion_mediador_id]) if params[:sesion_mediador_id]
-#   @comediador = User.find(params[:sesion_comediador_id]) if params[:sesion_comediador_id]
-#   @horario = Horario.find(params[:horario]) if params[:horario]
-#   @fecha = Date.parse(params[:sesion_fecha]) if params[:sesion_fecha]
-#   @noweekend = (1..5).include?(@fecha.wday)
-#   @notificacion = (params[:sesion_notificacion]) ? true : false
-#   @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id as id from sesions where fecha = ?)",  @fecha])
-#   @title = "Resultados encontrados"
-#   @horarios_disponibles = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
   end
 
 
@@ -217,9 +212,11 @@ class SesionesController < ApplicationController
    @horario = Horario.find(params[:horario]) if params[:horario]
    @fecha = Date.parse(params[:fecha]) if params[:fecha]
    @tiposesion = Tiposesion.find(params[:tiposesion]) if params[:tiposesion]
+   @sala = @horario.sala ? @horario.sala.id : nil
+   @user = current_user ? current_user.id : nil
    flash[:notice] = "No se pudo actualizar correctamente, verifique"
      if @sesion && @horario && @fecha && @mediador && @comediador
-        if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id)
+        if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id, :sala_id => @sala, :user_id => @user)
            #---- Notificamos a especialistas ---
            @sesion.update_attributes!(:tiposesion_id => @tiposesion.id) if @tiposesion
            if params[:notificacion] == "true"
@@ -276,4 +273,30 @@ class SesionesController < ApplicationController
   end
 
 
+ def enable_form
+   if params[:numero_tramite] =~ /^\d{1,4}\/20\d{2}$/
+       folio, anio = params[:numero_tramite].split("/")
+       @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio.to_i, folio.to_i])     
+       @sesiones_activas = (@tramite) ?  Sesion.find(:all, :conditions => ["tramite_id = ? AND concluida = 0", @tramite.id]) : Array.new
+       if @tramite && @sesiones_activas.empty?
+          @fecha = Date.parse(params[:date])
+          @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
+          @horario = Horario.find(params[:horario]) if params[:horario]
+          @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
+          #@tramite = (params[:id]) ? Tramite.find(params[:id]) : Tramite.new
+          @tramite = Tramite.find(params[:id]) if params[:id]
+          @especialistas = User.find_by_sql(["SELECT u.* FROM users u
+          inner join roles_users ru on u.id=ru.user_id
+          inner join roles r on ru.role_id=r.id
+          where r.name='ESPECIALISTAS' and
+          u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) AND
+          u.id not in (select comediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno", @fecha, @horario.hora, @horario.minutos, @fecha, @horario.hora, @horario.minutos ])
+          return render(:partial => 'new_with_date', :layout => false) if request.xhr?
+       else
+         return render(:partial => 'tramite_not_exists', :layout => false) if request.xhr?
+       end
+    else
+       return render(:partial => 'format_no_valid', :layout => false) if request.xhr?
+   end
+ end
 end

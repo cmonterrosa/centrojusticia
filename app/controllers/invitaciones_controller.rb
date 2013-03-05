@@ -89,6 +89,9 @@ class InvitacionesController < ApplicationController
 
   def save
     if params[:id] && @invitacion = Invitacion.find(params[:id])
+      unless @invitacion.entregada == true && @invitacion.fecha_hora_entrega.nil?
+        @change_status = true
+      end
       @invitacion.entregada ||= params[:invitacion][:entregada]
       @invitacion.justificacion ||= params[:invitacion][:justificacion]
       anio, mes, dia, hora, minutos = params[:invitacion]["fecha_hora_entrega(1i)"],  params[:invitacion]["fecha_hora_entrega(2i)"],  params[:invitacion]["fecha_hora_entrega(3i)"], params[:invitacion]["fecha_hora_entrega(4i)"], params[:invitacion]["fecha_hora_entrega(5i)"]
@@ -97,9 +100,7 @@ class InvitacionesController < ApplicationController
       if @invitacion.save
         # Actualizamos status
         # Si se cambia la hora por primera vez
-        if @invitacion.fecha_hora_entrega == date
-            update_tramite_model(@invitacion.sesion.tramite) if @invitacion.entregada == true
-        end
+        update_tramite_model(@invitacion.sesion.tramite) if @change_status
         flash[:notice] = "Invitacion actualizada correctamente"
       else
         flash[:notice] = "No se pudo guardar verifique"
