@@ -1,0 +1,318 @@
+<style>
+@import url(http://www.princexml.com/fonts/gentium/index.css) all;
+@page { size: 20cm 20cm; margin: 2cm 1cm; font: 14px "Trebuchet MS", sans-serif; }
+
+@page serial {
+  @top-left { content: string(code, first) " · "  string(country, first) }
+  @top-right { content: string(country, last) " · " string(code, last) }
+}
+@page serial:right {
+  @bottom-right { content: counter(page) }
+  @bottom-center { content: string(title) }
+}
+@page serial:left {
+  @bottom-left { content: counter(page) }
+  @bottom-center { content: string(title) }
+}
+@page :first {
+  background: url(bg.svg);
+  @bottom-right { content: none }
+  @bottom-center { content: none }
+}
+@page serial:blank {
+  @top-left { content: none }
+  @top-right { content: none }
+  @bottom-right { content: none }
+  @bottom-center { content: none }
+}
+body { font: 12px sans-serif }
+div.chapter { columns: 2; column-fill: auto; page: serial }
+table { border-collapse: collapse; }
+td, th { border: thin solid black; text-align: left; vertical-align: top; padding: 2px 3px }
+td.flag, td.country { padding: 10px }
+td.flag { border-right: hidden; }
+td.country { string-set: country content();
+  font-size: 1.6em;
+  text-align: right; }
+td.code { string-set: code content() }
+tr.country { height: 133px; background: #bbb }
+thead tr { border-bottom: solid gray 2px }
+tfoot tr { border-top: solid gray 2px }
+col.price { text-align: right; background: #eee }
+img { width: 150px; xborder: thin solid black; padding: 0; margin: 0 }
+div.frontcover { page-break-after: always; font-family: Gentium }
+div.frontcover h1 { font-size: 50px; margin-top: 175px; text-align: center;
+  text-transform: uppercase; string-set: title content() }
+div.frontcover h2 { font-size: 30px; margin-top: 160px; text-align: center;
+  string-set: subtitle content() }
+div.backcover { page-break-before: left; text-align: center }
+div.backcover img { margin: 4em auto }
+@media screen {
+  div.frontcover h1 { margin: 1em 0 }
+  div.frontcover h2 { margin: 1em 0 }
+  div.chapter table { margin: 0 auto }
+}
+
+#SaltoDePagina
+{
+PAGE-BREAK-AFTER: always;
+}
+
+
+/* Estilo para las tablas*/
+/* Estilo para las tablas */
+table.sample {
+	border: 6px inset #8B8378;
+	-moz-border-radius: 6px;
+        FONT-FAMILY: Verdana;
+        font-size: 12px;
+        margin-left:auto;
+        margin-right:auto;
+}
+table.sample td {
+	border: 0px solid black;
+	padding: 0.2em 2ex 0.2em 2ex;
+	color: black;
+}
+table.sample tr.d0 td {
+	background-color: #FCF6CF;
+}
+table.sample tr.d1 td {
+	background-color: #FEFEF2;
+}
+table.sample td.d0 {
+	background-color: #FCF6CF;
+}
+table.sample td.d2 {
+	background-color: #FF8C00;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas */
+table.sample td.d0 {
+	background-color: #FFE4C4;
+}
+
+
+/* para el titulo */
+
+.titulocalendario {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 18px; color: #791E16;
+    font-weight: bold;
+    text-decoration:none;
+    text-shadow:1px 1px 0px #ffffff;
+}
+
+table { page-break-inside: avoid }
+</style>
+
+<!-- contenido -->
+<div class="titulocalendario">
+  <p>Resumen General</p>
+  <p>Folio: <%=link_to @tramite.folio_integrado, :action => "menu", :id => @tramite%></p>
+</div>
+
+
+
+<div id="divlista">
+  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="2">
+        Datos generales
+      </th>
+     </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b><%=h to_iso("Especialista para orientación:")%></b></td>
+       <td style="vertical-align: middle;"> <%=h to_iso((@tramite.orientacion ? @tramite.orientacion.user.nombre_completo : "No existe información"))%></td>
+    </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Sala:</b></td>
+      <td style="vertical-align: middle;"><%=h to_iso(@tramite.orientacion ? @tramite.orientacion.sala.descripcion : "No existe información")%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Solicitante:</b></td>
+       <td style="vertical-align: middle;"><%=h to_iso(@tramite.orientacion ? @tramite.orientacion.solicitante : "No existe información")%></td>
+    </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Observaciones:</b></td>
+      <td style="vertical-align: middle;"><%=h to_iso(@tramite.orientacion ? @tramite.orientacion.observaciones : "No existe información")%></td>
+    </tr>
+
+    
+    <!-- Datos de ubicacion -->
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b><%=h to_iso("Correo electrónico:")%></b></td>
+       <td style="vertical-align: middle;"><%=h to_iso(@tramite.orientacion ? @tramite.orientacion.correo : "---")%></td>
+
+    </tr>
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b><%=h to_iso("Dirección:")%>s</b></td>
+      <td style="vertical-align: middle;"><%=h to_iso(@tramite.orientacion ? @tramite.orientacion.direccion : "---")%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Municipio:</b></td>
+       <td style="vertical-align: middle;"><%=h to_iso(@tramite.orientacion ? @tramite.orientacion.municipio.descripcion : "---")%></td>
+    </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b><%=h to_iso("Teléfono:")%></b></td>
+       <td style="vertical-align: middle;"><%=h to_iso(@tramite.orientacion ? @tramite.orientacion.telefono : "---")%></td>
+    </tr>
+
+    <!--- datos especificos -->
+    <%if @tramite.materia%>
+      <tr class="d1">
+         <td style="vertical-align: middle;"><b>Materia:</b></td>
+         <td style="vertical-align: middle;"><%=h to_iso(@tramite.materia.descripcion)%></td>
+      </tr>
+    <%end%>
+
+  </table>
+  <br /><br />
+
+
+ <%if @comparecencia = @tramite.comparecencia%>
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th colspan="2">
+          Datos de la comparecencia
+        </th>
+      </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Procedencia:</b></td>
+        <td style="vertical-align: middle;"><%=h to_iso(@comparecencia.procedencia)%></td>
+      </tr>
+
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b><%=h to_iso("Carácter con el que compadece:")%></b></td>
+        <td style="vertical-align: middle;"><%=h to_iso(@comparecencia.caracter)%></td>
+      </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b><%=h to_iso("Día/hora de preferencia:")%></b></td>
+        <td style="vertical-align: middle;"><%=h to_iso(day_of_the_week(@comparecencia.dia_preferencia))%> / <%=@comparecencia.hora_preferencia%>:00 hrs.</td>
+      </tr>
+    </table><br /><br />
+
+    <!-- detalle del asunto -->
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+       <th colspan="2">
+           Detalle del asunto
+       </th>
+     </tr>
+
+      <tr class="d0">
+        <th colspan="2"><%=h to_iso(text_area(:comparecencia, :asunto, :size => "80x10", :disabled => 'disabled'))%></th>
+      </tr>
+     </table>
+     <br /><br />
+  <%end%>
+
+  <!-- Participantes del trámite -->
+  <% if @tramite.comparecencia %>
+    <%unless @tramite.comparecencia.participantes.empty?%>
+      <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+        <tr style="background-color:gray; color:white">
+          <th colspan="2">
+            Participantes
+          </th>
+        </tr>
+
+        <%clase=0%>
+        <% @tramite.comparecencia.participantes.each do |participante|%>
+          <tr class="d<%=invert_class(clase)%>">
+            <td align="center"><%=h to_iso(link_to "#{participante.nombre_completo}", :action => "show", :controller => "participantes", :id => participante)%></td>
+          </tr>
+          <%clase = invert_class(clase)%>
+        <%end%>
+      </table><br /><br />
+    <%end%>
+  <%end%>
+
+<!--
+  <div id="SaltoDePagina"></div>
+-->
+  <!-- Historial de estados-->
+  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="2">
+        Historial
+      </th>
+     </tr>
+     <tr class="d0">
+        <td style="vertical-align: middle;"><b><%=h to_iso("Descripción")%></b></td>
+         <td style="vertical-align: middle;"<b>Fecha hora</b></td>
+     </tr>
+     <%Historia.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "created_at").each do |row|%>
+       <tr class="d1">
+         <td style="vertical-align: middle;"><%=h to_iso(row.estatu.descripcion)%></td>
+         <td style="vertical-align: middle;"><%=row.created_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
+     </tr>
+     <%end%>
+  </table><br /><br />
+
+
+  <!-- Historial de sesiones-->
+  <%if @tramite.sesions.size > 0%>
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th colspan="5">
+          Detalle de sesiones
+        </th>
+      </tr>
+      <tr class="d0">
+          <td style="vertical-align: middle;"><b>Id</b></td>
+          <td style="vertical-align: middle;"><b><%=h to_iso("Descripción")%></b></td>
+          <td style="vertical-align: middle;"><b>Fecha/hora inicio</b></td>
+          <td style="vertical-align: middle;"><b>Mediador</b></td>
+          <td style="vertical-align: middle;"><b>Comediador</b></td>
+      </tr>
+      <%Sesion.find(:all, :conditions => ["tramite_id = ?", @tramite.id]).each do |row|%>
+        <tr class="d1">
+          <td style="vertical-align: middle;"><%=h (row.clave) ? row.clave : "---"%></td>
+          <td style="vertical-align: middle;"><%=h to_iso((row.tiposesion_id ? row.tiposesion.descripcion : "---"))%></td>
+          <td style="vertical-align: middle;"><%=h(row.start_at ? row.start_at.strftime("%Y-%m-%d %H:%M:%S") : "---")%></td>
+          <td style="vertical-align: middle;"><%=h to_iso((row.mediador ? row.mediador.nombre_completo : "---"))%></td>
+          <td style="vertical-align: middle;"><%=h to_iso((row.comediador ? row.comediador.nombre_completo : "---"))%></td>
+        </tr>
+     <%end%>
+  </table><br /><br />
+  <%end%>
+
+
+  <!-- Documentacion anexa -->
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+       <th colspan="2">
+           <%=h to_iso("Documentación Anexa")%>
+       </th>
+     </tr>
+
+      <tr class="d0">
+          <td style="vertical-align: middle;"><b>Documento</b></td>
+          <td style="vertical-align: middle;"<b>Fecha hora</b></td>
+      </tr>
+      <%clase=0%>
+      <%@tramite.adjuntos.each do |a|%>
+        <tr class="d<%=invert_class(clase)%>">
+          <td style="vertical-align: middle;"><b><%=h to_iso(link_to "#{a.tipodoc.descripcion}", :controller => "upload", :action => "download", :id => a)%></b></td>
+          <td style="vertical-align: middle;"><%=a.created_at.strftime("%Y-%m-%d / %H:%M:%S")%></td>
+        </tr>
+        <%clase = invert_class(clase)%>
+      <%end%>
+    </table><br /><br />
+</div>
+

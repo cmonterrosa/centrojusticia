@@ -1,10 +1,15 @@
 <!-- ficha -->
 <%= render :partial => "ficha"%>
 
+
+
+<%if @sesion.start_at%>
+
+
 <!-- vistazo de la invitacion -->
 <div id="invitacion_pdf">
   <object data="/invitaciones/generar/<%=@invitacion.id%>" type="application/pdf" width="800" height="700">
-    <p>Si no aparece el plugin para visualizar el pdf. 
+    <p>Si no aparece el plugin para visualizar el pdf.
       <a href="/invitaciones/generar/<%=@invitacion.id%>" target="_blank">Haga click aquí para descargarlo en una nueva ventana.</a>
     </p>
   </object>
@@ -34,6 +39,15 @@
    </tr>
 <%end%>
 </table>
+
+
+
+
+<%else%>
+  <h4>Aún no se ha asignado fecha y hora por parte del especialista</h4>
+<%end%>
+
+
 
 
 <br />
