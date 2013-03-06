@@ -14,14 +14,17 @@
           <td align="center">Fecha/hora</td>
           <td align="center">Procedencia</td>
           <td align="center">Carácter con el que compadece</td>
-          <td align="center">Hora de preferencia</td>
+          <td align="center">Hora(s) de preferencia</td>
         </tr>
         <tr>
           <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
           <td align="center"><%= f.text_field :procedencia, :class => "text"%></td>
           <td align="center"><%= f.text_field :caracter, :class => "text"%></td>
-          <td align="center"><%= f.select(:hora_preferencia, 1..24, :prompt => 'Seleccione una opción')%></td>
-        </tr>
+          <td align="center"><%= f.text_field :hora_preferencia, :class => "text", :placeholder=> "Ej. 13-15"%></td>
+          <!--
+          <td align="center"><= f.select(:hora_preferencia, 1..24, :prompt => 'Seleccione una opción')%></td>
+          -->
+         </tr>
       </table></td>
     </tr>
     <!-- segunda barra inferior -->
@@ -32,16 +35,16 @@
           <td align="center" colspan="4" ></td>
         </tr>
         <tr align=" justify" class="pregunta">
-           <td align="center">Día de preferencia</td>
+           <td align="center">Día(s) de preferencia</td>
           <td align="center">¿Es del conocimiento de alguna autoridad?</td>
           <td align="center">Datos</td>
           <td align="center">Observaciones</td>
         </tr>
         <tr>
           <!--
-          <td align="center"><= f.select(:dia_preferencia, %w[LUNES MARTES MIERCOLES JUEVES VIERNES SABADO], :prompt => 'Seleccione una opción')%></td>
+            <td align="center"><= f.select :dia_preferencia, DIAS_ATENCION.map{|dia| [dia[1], dia[0]]}, :prompt => 'Seleccione una opción' %> </td>
           -->
-          <td align="center"><%= f.select :dia_preferencia, DIAS_ATENCION.map{|dia| [dia[1], dia[0]]}, :prompt => 'Seleccione una opción' %> </td>
+          <td align="center"><%= f.text_field :dia_preferencia, :class => "text", :placeholder => "Ej. Lunes,Martes"%></td>
           <td align="center"><%=f.check_box :conocimiento%></td>
           <td align="center"><%= f.text_field :datos, :class => "text"%></td>
           <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>
