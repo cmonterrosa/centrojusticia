@@ -53,11 +53,13 @@ class OrientacionsController < ApplicationController
     @tramite = Tramite.new
     @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
     #@tramite.anio = params[:orientacion]["fechahora(1i)"].to_i
-    @tramite.anio = params[:orientacion][:fechahora].split("/")[0]
+    @tramite.anio = params[:orientacion][:fechahora].split("/")[0] if params[:orientacion][:fechahora]
+    @tramite.anio ||= Time.now.year
     @tramite.generar_folio unless @tramite.folio
     @tramite.subdireccion_id = current_user.subdireccion_id unless @tramite.subdireccion
     @tramite.user= current_user
     @orientacion = Orientacion.new(params[:orientacion])
+    @orientacion.fechahora ||= Time.now
     @orientacion.tramite = @tramite
     @orientacion.especialista_id = User.find(params[:orientacion][:user_id]).id if params[:orientacion][:user_id]
     if @orientacion.save && @tramite.save
