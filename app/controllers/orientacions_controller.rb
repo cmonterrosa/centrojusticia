@@ -59,10 +59,11 @@ class OrientacionsController < ApplicationController
     @tramite.user= current_user
     @orientacion = Orientacion.new(params[:orientacion])
     @orientacion.tramite = @tramite
+    @orientacion.especialista_id = User.find(params[:orientacion][:user_id]).id if params[:orientacion][:user_id]
     if @orientacion.save && @tramite.save
       @tramite.update_estatus!("tram-inic", current_user) # update estatus of tramite
         if @orientacion.notificacion
-           NotificationsMailer.deliver_tramite_created(@tramite, @tramite.user) #sends the email
+           NotificationsMailer.deliver_tramite_created(@tramite, @orientacion.especialista) #sends the email
            flash[:notice] = "Guardado correctamente y envío de notificación por email" 
         else
           flash[:notice] = "Guardado correctamente, sin envío de notificación por email"
