@@ -22,5 +22,13 @@ class Orientacion < ActiveRecord::Base
     self.nombre.upcase! unless self.nombre.nil?
   end
 
+  def especialista
+    if self.especialista_id
+       return User.find(self.especialista_id)
+    else
+      return nil
+    end
+  end
+
  
 end
