@@ -13,7 +13,7 @@
 
    <tr>
      <th>Especialista:</th>
-    <td><%=@tramite.user.nombre_completo%></td>
+    <td><%=h (@tramite.orientacion.especialista) ? @tramite.orientacion.especialista.nombre_completo : "No existe informacion"%></td>
    </tr>
 
    <tr>
@@ -42,11 +42,6 @@
   </tr>
 
   <tr>
-    <th>Sala:</th>
-    <td><%=@tramite.orientacion.sala.descripcion%></td>
-  </tr>
-
-  <tr>
     <th>Procedencia:</th>
     <td><%=@tramite.orientacion.municipio.descripcion%></td>
   </tr>
@@ -54,6 +49,11 @@
   <tr>
     <th>Solicitante:</th>
     <td> <%=@tramite.orientacion.solicitante%></td>
+  </tr>
+
+  <tr>
+    <th>Capturado por:</th>
+    <td><%=h (@tramite.user) ? @tramite.user.nombre_completo : "No existe información"%></td>
   </tr>
 </table>
 
