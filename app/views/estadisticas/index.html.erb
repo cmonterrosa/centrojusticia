@@ -20,15 +20,20 @@
 <table width="50%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
         <td>
-           <%=link_to image_tag('iconos/estadisticas/especialistas.png', :size => "128x128") , {:action => "grafica_sesiones_especialistas"}, :title => "gráfica de sesiones detallada por especialista", :class => "fancybox fancybox.iframe"%>
+           <%=link_to image_tag('iconos/estadisticas/especialistas.png', :size => "128x128") , {:action => "select_grafica_sesiones_especialistas"}, :title => "gráfica de sesiones detallada por especialista", :class => "fancybox fancybox.iframe"%>
         </td>
-           <td>
+         <td>
            <%=link_to image_tag('iconos/estadisticas/materia.png', :size => "128x128") , {:action => "grafica_materia"}, :title => "gráfica por materia", :class => "fancybox fancybox.iframe"%>
-          </td>
+        </td>
+         <td>
+           <%=link_to image_tag('iconos/estadisticas/listado_atendidos.png', :size => "128x128") , {:action => "select_personas_atendidas"}, :title => "Personas atendidas"%>
+        </td>
+
   </tr>
   <tr align="center">
     <td class="menu">Gráfica por especialistas</td>
     <td class="menu">Gráfica por materia</td>
+    <td class="menu">Listado de personas atendidas</td>
   </tr>
   <tr>
     <th>&nbsp;</th>

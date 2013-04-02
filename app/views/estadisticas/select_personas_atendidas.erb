@@ -1,0 +1,27 @@
+<div class="titulocalendario">
+  <p>
+    Personas atendidas
+  </p>
+</div>
+
+
+<% form_tag({:action => 'search_personas_atendidas', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
+ <table class="table1" >
+  <tr align="center">
+      <th align="center">Fecha inicio</th>
+      <th align="center">Fecha fin</th>
+      <th align="center">&nbsp;</th>
+  </tr>
+  <tr align="center">
+      <td><%= text_field_tag "fecha_inicio", Time.now.strftime("%Y/%m/%d") %></td>
+      <td><%= text_field_tag 'fecha_fin',  Time.now.strftime("%Y/%m/%d")%></td>
+      <td><%= submit_tag "Buscar"%></td>
+  </tr>
+</table>
+<% end %>
+<br />
+
+
+
+<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "estadisticas"%><br />
+

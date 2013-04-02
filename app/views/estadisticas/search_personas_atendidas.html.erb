@@ -1,0 +1,60 @@
+<div class="titulocalendario">
+  <p>
+    Personas atendidas
+  </p>
+</div>
+
+
+<% form_tag({:action => 'search_personas_atendidas', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
+ <table class="table1" >
+  <tr align="center">
+      <th align="center">Fecha inicio</th>
+      <th align="center">Fecha fin</th>
+      <th align="center">&nbsp;</th>
+  </tr>
+  <tr align="center">
+      <td><%= text_field_tag "fecha_inicio", @inicio.strftime("%Y/%m/%d") %></td>
+      <td><%= text_field_tag 'fecha_fin',  @fin.strftime("%Y/%m/%d")%></td>
+      <td><%= submit_tag "Buscar"%></td>
+  </tr>
+</table>
+<% end %>
+<br />
+
+<div class="titulocalendario">
+  <%if @inicio.strftime("%d de %B de %Y") == @fin.strftime("%d de %B de %Y")%>
+      <p>
+       <%=@inicio.strftime("%d de %B de %Y")%>
+      </p>
+  <%else%>
+      <p>
+        Periodo comprendido entre el día <%=@inicio.strftime("%d de %B de %Y")%> y el día <%=@fin.strftime("%d de %B de %Y")%>
+      </p>
+  <%end%>
+</div>
+<div id="divlista">
+  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+        <th style="vertical-align: middle;" align="center">NP</th>
+        <th style="vertical-align: middle;" align="center">Número de trámite</th>
+        <th style="vertical-align: middle;" align="center">Especialista</th>
+        <th style="vertical-align: middle;" align="center">Categoría</th>
+        <th style="vertical-align: middle;" align="center">Fecha/Hora</th>
+     </tr>
+     <%clase=0%>
+     <%contador=1%>
+     <%for tramite in @tramites%>
+        <tr class="d<%=invert_class(clase)%>">
+          <td style="vertical-align: middle;"><%=contador%></td>
+          <td style="vertical-align: middle;"><%=link_to "#{tramite.folio_integrado}", {:action => "show", :controller => "tramites", :id => tramite}, {:target => "_blank", :method => :delete}%></td>
+          <td style="vertical-align: middle;"><%=h tramite.orientacion.especialista.nombre_completo%></td>
+          <td style="vertical-align: middle;"><%=h (tramite.orientacion.especialista.categoria) ? tramite.orientacion.especialista.categoria : "-----"%></td>
+          <td style="vertical-align: middle;"><%=h tramite.created_at.strftime("%d de %B de %Y - %H:%M:%S")%></td>
+        </tr>
+        <%contador+=1%>
+        <%clase = invert_class(clase)%>
+     <%end%>
+  </table>
+</div>
+
+<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "estadisticas"%><br />
