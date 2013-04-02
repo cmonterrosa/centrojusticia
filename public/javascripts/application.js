@@ -13,6 +13,48 @@ function CharNum(e, modo)
     }
 }
 
+
+
+
+function enable_disable_razonsocial_OLD()
+{
+    var combo_tipo_persona = document.getElementById("participante_tipopersona_id")
+    var razonsocial = document.getElementById("participante_razon_social")
+    alert(document.getElementById("participante_tipopersona_id").value);
+    if(combo_tipo_persona.value == '2')
+    {
+       alert("Cambiop");
+       document.getElementById("participante_razon_social").disabled = false
+       razonsocial.focus();
+    }
+}
+
+function enable_disable_razonsocial()
+{
+     alert("prueba");
+    var selectElemen = document.getElementById("participante_tipopersona_id")
+    var textfieldElemen = document.getElementById("participante_razon_social")
+    var tamano = selectElemen.length;
+
+    for(i = 0; i < tamano; i++){
+        if((selectElemen[i].value == '2') && selectElemen[i].selected){
+             alert(document.getElementById("participante_tipopersona_id").value);
+            textfieldElemen.disabled = false;
+            textfieldElemen.focus();
+            break;
+        }
+        else
+            if(typeof select == "object"){
+                textfieldElemen.value = "";
+                textfieldElemen.disabled = true;
+            }
+    }
+ }
+
+
+
+
+
 function enable_disable_others(select, textfield1, textfield2)
 {
     if(typeof select == "object")
@@ -24,7 +66,7 @@ function enable_disable_others(select, textfield1, textfield2)
     var tamano = selectElemen.length;
 
     for(i = 0; i < tamano; i++){
-        if((selectElemen[i].value == 'otr' || selectElemen[i].value == 'si') && selectElemen[i].selected){
+        if((selectElemen[i].value == 'MORAL' || selectElemen[i].value == 'si') && selectElemen[i].selected){
             textfieldElemen.disabled = false;
             break;
         }
@@ -230,6 +272,26 @@ $(function() {
   });
 });
 
+
+$(function() {
+  $j('#fecha_inicio').datepicker({
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: true
+  });
+});
+
+$(function() {
+  $j('#fecha_fin').datepicker({
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: true
+  });
+});
 
 //$(function() {
 //$j('#sesion_fecha').datepicker({
