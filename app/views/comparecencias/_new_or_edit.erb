@@ -38,16 +38,20 @@
            <td align="center">Día(s) de preferencia</td>
           <td align="center">¿Es del conocimiento de alguna autoridad?</td>
           <td align="center">Datos</td>
+          <!--
           <td align="center">Observaciones</td>
+          -->
         </tr>
         <tr>
           <!--
             <td align="center"><= f.select :dia_preferencia, DIAS_ATENCION.map{|dia| [dia[1], dia[0]]}, :prompt => 'Seleccione una opción' %> </td>
           -->
-          <td align="center"><%= f.text_field :dia_preferencia, :class => "text", :placeholder => "Ej. Lunes,Martes"%></td>
+          <td align="center"><%= f.text_field :dia_preferencia, :class => "text", :placeholder => "Ej. Lunes, Martes"%></td>
           <td align="center"><%=f.check_box :conocimiento%></td>
           <td align="center"><%= f.text_field :datos, :class => "text"%></td>
-          <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>
+          <!--
+          <td align="center"><= f.text_field :observaciones, :class => "text"%></td>
+          -->
         </tr>
       </table></td>
      </tr>

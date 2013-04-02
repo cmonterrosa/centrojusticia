@@ -1,6 +1,6 @@
 <div class="titulocalendario">
   <p>
-    Participantes
+    Lista de Participantes
   </p>
 </div>
 
@@ -11,18 +11,34 @@
          <!-- Nombre de los integrantes -->
          <tr>
              <th scope="col" abbr="Starter">NP</th>
-             <th scope="col" abbr="Starter">Nombre completo</th>
-             <th scope="col" abbr="Starter" colspan="2">Acciones</th>
+             <th scope="col" abbr="Starter">Rol</th>
+             <th scope="col" abbr="Starter">Nombre completo o Razón Social</th>
+             <th scope="col" abbr="Starter" colspan="3">Acciones</th>
          </tr>
     </thead>
     <tbody>
+          <%contador=1%>
           <% @comparecencia.participantes.each do |participante| %>
                               <tr>
-                                <td>1</td>
-                                <td> <%=participante.nombre_completo%></td>
-                                <td> <%=button_to 'Ver información', :action => "new_or_edit", :controller => "participantes", :id => @comparecencia, :participante => participante%></td>
+                                <td><%=h contador%></td>
+                                <td> <%=h (participante.perfil) ? participante.perfil : "---"%></td>
+                                <%if participante.tipopersona%>
+                                  <td><%=h (participante.tipopersona.descripcion == 'MORAL') ? participante.razon_social : participante.nombre_completo%></td>
+                                  <td> <%=button_to 'Ver información', :action => "new_or_edit_persona_#{participante.tipopersona.descripcion.downcase}", :controller => "participantes", :id => @comparecencia, :participante => participante%></td>
+                                <%else%>
+                                  <td><%=h "-----"%></td>
+                                <%end%>
+
+
+
+                                <%if participante.perfil=="SOLICITANTE"%>
+                                   <td> <%=button_to 'Imprimir acta', :action => "generar_pdf_acta_comparecencia", :controller => "comparecencias", :id => @comparecencia, :participante => participante%></td>
+                                <%else%>
+                                   <td> <%=button_to 'Imprimir', :action => "generar_pdf_involucrado", :controller => "comparecencias", :id => @comparecencia, :participante => participante%></td>
+                                <%end%>
                                 <td> <%=button_to 'Eliminar', {:action => "delete", :controller => "participantes", :id => participante}, :confirm => '¿Seguro que desea eliminarlo?'%></td>
                               </tr>
+            <%contador+=1%>
             <%end%>
      </tbody>
   </table>
@@ -30,10 +46,12 @@
 
 
 <%if Comparecencia.exists?(@comparecencia.id)%>
+<br />
 <table class="table1">
   <thead>
     <tr>
-       <td align="center"><%= link_to image_tag("botones/anadir_integrante.png", :width => 170, :height=>"40", :border =>0 ) , :action => "new_or_edit", :controller => "participantes", :id => @comparecencia, :token => @comparecencia-%></td>
+       <td align="center"><%= link_to image_tag("botones/agregar_persona_fisica.png", :width => 250, :height=>"40", :border =>0 ) , :action => "new_or_edit_persona_fisica", :controller => "participantes", :id => @comparecencia, :token => @comparecencia-%></td>
+       <td align="center"><%= link_to image_tag("botones/agregar_persona_moral.png", :width => 250, :height=>"40", :border =>0 ) , :action => "new_or_edit_persona_moral", :controller => "participantes", :id => @comparecencia, :token => @comparecencia-%></td>
     </tr>
   </thead>
 </table>
