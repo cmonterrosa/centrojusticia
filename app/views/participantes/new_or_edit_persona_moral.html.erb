@@ -1,0 +1,110 @@
+<% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id } do |f| -%>
+  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr bgcolor="#CCCCCC" class="titulo">
+      <td colspan="3" align="center" >PERSONA MORAL</td>
+    </tr>
+
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5">DATOS DE PROCEDENCIA</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center"></td>
+          <td align="center">Rol</td>
+          <td align="center">Razón Social</td>
+          <td align="center">A través de:</td>
+        </tr>
+        <tr>
+          <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%></td>
+          <td align="center"><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción', :required => true)%></td>
+          <td align="center"><%= f.text_field :razon_social, :onKeyPress => "return CharNum(event, 'letra');",  :placeholder => "Es necesario capturarlo", :required => true%></td>
+          <td align="center"><%= f.text_field :apoderado_legal, :onKeyPress => "return CharNum(event, 'letra');",  :placeholder => "Solo capturar si existe"%></td>
+        </tr>
+      </table></td>
+    </tr>
+
+
+  
+    <!-- segunda barra inferior -->
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5" >DATOS DE UBICACIÓN</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Municipio</td>
+          <td align="center">Domicilio</td>
+          <td align="center">Referencias Domiciliarias</td>
+        </tr>
+        <tr>
+          <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+          <td align="center"><%= f.text_area :domicilio, :size => "40x10", :class => "text", :required => true%></td>
+          <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x10", :class => "text"%></td>
+        </tr>
+      </table></td>
+    </tr>
+
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5" >DATOS DE LOCALIZACION</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Teléfono Particular</td>
+          <td align="center">Teléfono Celular</td>
+          <td align="center">Teléfono Celular Adicional</td>
+          <td align="center">Correo Electrónico</td>
+        </tr>
+        <tr>
+          <td align="center"><%= f.text_field :telefono_particular, :class => "text", :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
+          <td align="center"><%= f.text_field :telefono_celular, :class => "text", :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
+          <td align="center"><%= f.text_field :telefono_celular_aux, :class => "text", :onKeyPress => "return CharNum(event, 'numero');", :size => 20, :placeholder => "Capturar solo si existe"%></td>
+          <td align="center"><%= f.text_field :correo, :class => "text"%></td>
+        </tr>
+      </table></td>
+    </tr>
+
+    <!-- Observaciones -->
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5" >DATOS ADICIONALES</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Observaciones y/o documentos que exhibe</td>
+        </tr>
+        <tr>
+            <td align="center"><%= f.text_area :observaciones%></td>
+        </tr>
+      </table></td>
+    </tr>
+
+
+    <!-- espacio -->
+    <tr>
+      <td colspan="3"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "comparecencias", :action => "new_or_edit", :id => @comparecencia.tramite-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+
