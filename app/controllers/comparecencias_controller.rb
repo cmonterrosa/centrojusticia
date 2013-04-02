@@ -86,7 +86,7 @@ class ComparecenciasController < ApplicationController
         conocimiento = (@comparecencia.conocimiento) ? "SÍ" : "NO"
         param["P_CONOCIMIENTO"]={:tipo=>"String", :valor=>conocimiento}
         param["P_DATOS"]={:tipo=>"String", :valor=>@comparecencia.datos}
-        param["P_ASUNTO"]={:tipo=>"String", :valor=>(@comparecencia.asunto).gsub!(/\$/, '\$')}
+        param["P_ASUNTO"]={:tipo=>"String", :valor=>(@comparecencia.asunto).gsub(/\$/, '\$')}
         param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo.upcase}
         param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=>@solicitante.tipopersona.descripcion}
         param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>@solicitante.referencia_domiciliaria}
