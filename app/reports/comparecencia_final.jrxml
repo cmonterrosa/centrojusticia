@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="comparecencia_final" language="groovy" pageWidth="712" pageHeight="892" columnWidth="672" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="181"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/cmonterrosa/NetBeansProjects/centrojusticia_dev/app/reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="P_FECHA" class="java.lang.String"/>
+	<parameter name="P_PROCEDENCIA" class="java.lang.String"/>
+	<parameter name="P_SOLICITANTE" class="java.lang.String"/>
+	<parameter name="P_EDAD" class="java.lang.String"/>
+	<parameter name="P_SEXO" class="java.lang.String"/>
+	<parameter name="P_ORIGINARIO" class="java.lang.String"/>
+	<parameter name="P_CARACTER" class="java.lang.String"/>
+	<parameter name="P_DOMICILIO" class="java.lang.String"/>
+	<parameter name="P_TELEFONO_CASA" class="java.lang.String"/>
+	<parameter name="P_TELEFONO_TRABAJO" class="java.lang.String"/>
+	<parameter name="APP_URL" class="java.lang.String"/>
+	<parameter name="P_TELEFONO_CELULAR" class="java.lang.String"/>
+	<parameter name="P_CORREO" class="java.lang.String"/>
+	<parameter name="P_HORARIO_PREFERENCIA" class="java.lang.String"/>
+	<parameter name="P_CONOCIMIENTO" class="java.lang.String"/>
+	<parameter name="P_DATOS" class="java.lang.String"/>
+	<parameter name="P_OBSERVACIONES" class="java.lang.String"/>
+	<parameter name="P_ESPECIALISTA" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[select * from users]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="login" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="61" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="557" splitType="Stretch">
+			<subreport>
+				<reportElement x="27" y="0" width="613" height="557"/>
+				<subreportParameter name="P_CONOCIMIENTO"/>
+				<subreportParameter name="P_HORARIO_PREFERENCIA"/>
+				<subreportParameter name="P_SEXO"/>
+				<subreportParameter name="P_TELEFONO_CELULAR"/>
+				<subreportParameter name="P_PROCEDENCIA"/>
+				<subreportParameter name="APP_URL"/>
+				<subreportParameter name="P_ORIGINARIO"/>
+				<subreportParameter name="P_TELEFONO_CASA"/>
+				<subreportParameter name="SUBREPORT_DIR">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_OBSERVACIONES"/>
+				<subreportParameter name="P_DATOS"/>
+				<subreportParameter name="P_TELEFONO_TRABAJO"/>
+				<subreportParameter name="P_FECHA"/>
+				<subreportParameter name="P_CARACTER"/>
+				<subreportParameter name="P_CORREO"/>
+				<subreportParameter name="P_ESPECIALISTA"/>
+				<subreportParameter name="P_SOLICITANTE"/>
+				<subreportParameter name="P_DOMICILIO"/>
+				<subreportParameter name="P_EDAD"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "comparecencia_partial.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
