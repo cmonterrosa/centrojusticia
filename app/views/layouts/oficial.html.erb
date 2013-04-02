@@ -6,9 +6,10 @@
     <%= javascript_include_tag 'BubbleTooltips' %>
 
     <!-- apis para datepicker de calendario -->
-    <%= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/redmond/jquery-ui.css", "application" %>
-    <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js", "application" %>
-    
+    <!-- <= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/redmond/jquery-ui.css", "application" %> -->
+    <%= stylesheet_link_tag "jquery-ui.css", "application" %>
+    <!-- <= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js", "application" %> -->
+    <%= javascript_include_tag "jquery.min", "jquery-ui.min", "application" %>
     <%=javascript_include_tag "datetimepicker"%>
     <%=javascript_include_tag "datepicker_es"%>
 
