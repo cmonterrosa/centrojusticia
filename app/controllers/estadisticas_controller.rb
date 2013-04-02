@@ -7,6 +7,13 @@ class EstadisticasController < ApplicationController
 
   end
 
+  def select_grafica_sesiones_especialistas
+     @title = "Seleccion de especialistas"
+     @action = "grafica_sesiones_especialistas"
+     return render(:partial => 'select_date_range', :layout => 'only_jquery')
+  end
+
+
   def grafica_sesiones_especialistas
       g = Gruff::Pie.new
       #g = Gruff::Bar.new
@@ -68,7 +75,15 @@ class EstadisticasController < ApplicationController
   end
 
 
-  
+  def select_personas_atendidas
+    
+  end
+
+  def search_personas_atendidas
+  params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+  @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+  @tramites = Tramite.find(:all, :conditions => ["created_at between ? AND ?",@inicio, @fin], :order => "created_at")
+  end
 
 
 end

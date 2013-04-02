@@ -45,12 +45,20 @@ class OrientacionsController < ApplicationController
   def new_or_edit
     @orientacion = Orientacion.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
     @orientacion ||= Orientacion.new
-    @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    #@especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    #Orientacion.count(:id, :conditions => ["user_id = ? AND fechahora BETWEEN ? AND ?", 1, 6.months.ago, Time.now]).size
+    especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
+    especialistas.each do |e| e["orientaciones"] = Orientacion.count(:id, :conditions => ["user_id = ? AND fechahora BETWEEN ? AND ?", e.id, 6.months.ago, Time.now])  end
+    @especialistas = especialistas.sort{|p1,p2| p1.orientaciones <=> p2.orientaciones}
+    @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
+    #select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = "especialistas" order by u.login
   end
 
    def save
     #--- Iniciamos trámite --
-    @tramite = Tramite.new
+    @orientacion = Orientacion.find(:first, :conditions => ["id = ?", params[:id]]) if params[:id]
+    (@orientacion) ? @orientacion.update_attributes(params[:orientacion]) : @orientacion = Orientacion.new(params[:orientacion])
+    @tramite = (@orientacion.tramite) ? @orientacion.tramite : Tramite.new
     @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
     #@tramite.anio = params[:orientacion]["fechahora(1i)"].to_i
     @tramite.anio = params[:orientacion][:fechahora].split("/")[0] if params[:orientacion][:fechahora]
@@ -58,7 +66,6 @@ class OrientacionsController < ApplicationController
     @tramite.generar_folio unless @tramite.folio
     @tramite.subdireccion_id = current_user.subdireccion_id unless @tramite.subdireccion
     @tramite.user= current_user
-    @orientacion = Orientacion.new(params[:orientacion])
     @orientacion.fechahora ||= Time.now
     @orientacion.tramite = @tramite
     @orientacion.especialista_id = User.find(params[:orientacion][:user_id]).id if params[:orientacion][:user_id]

@@ -192,6 +192,22 @@ class TramitesController < ApplicationController
       return render(:partial => 'comediadores', :layout => false) if request.xhr?
   end
 
+  def only_orientacion
+    @tramite = Tramite.find(params[:id])
+    @estatus = Estatu.find_by_clave("no-compar")
+    @tramite.estatu_id = @estatus.id if @tramite
+    @tramite.only_orientacion = true if @tramite
+    @historia = Historia.new(:tramite_id => @tramite.id, :user_id => current_user.id, :estatu_id => @estatus.id) if @tramite && current_user
+    if @tramite.save && @historia.save
+       #--- Actualizamos estatus --
+       flash[:notice] = "Registro actualizado correctamente"
+       redirect_to :action => "list_by_user", :controller => "orientacions"
+    else
+       flash[:notice] = "Registro actualizado correctamente"
+       redirect_to :action => "list_by_user", :controller => "orientacions"
+    end
+  end
+
 protected
   def generar_folio(anio)
     maximo=  Tramite.maximum(:folio, :conditions => ["anio = ?", anio])

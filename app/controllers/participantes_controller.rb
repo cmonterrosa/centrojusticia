@@ -1,10 +1,21 @@
 class ParticipantesController < ApplicationController
-  def new_or_edit
+  def new_or_edit_persona_fisica
      @participante = Participante.new if params[:token]
      @participante = Participante.find(params[:participante]) if params[:participante]
      @participante ||= Participante.new
      @comparecencia = Comparecencia.find(params[:id])
+     @tipo_persona = Tipopersona.find_by_descripcion("FISICA")
   end
+  
+   def new_or_edit_persona_moral
+     @participante = Participante.new if params[:token]
+     @participante = Participante.find(params[:participante]) if params[:participante]
+     @participante ||= Participante.new
+     @comparecencia = Comparecencia.find(params[:id])
+     @tipo_persona = Tipopersona.find_by_descripcion("MORAL")
+  end
+
+
 
   def save
     if Participante.exists?(params[:participante_id])
