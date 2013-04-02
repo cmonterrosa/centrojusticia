@@ -1,24 +1,27 @@
 <div id="divlista">
-  <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-    <tr class="d0">
-       <td style="vertical-align: middle;">Fecha/Hora</td>
-        <td style="vertical-align: middle;">Solicitante</td>
-        <td style="vertical-align: middle;">Sala</td>
-        <td style="vertical-align: middle;"><%=h "Estatus"%></td>
-        <td style="vertical-align: middle;" colspan="2">Acciones</td>
+  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <tr style="background-color:gray; color:white">
+       <th style="vertical-align: middle;" align="center">Fecha/Hora</th>
+       <th style="vertical-align: middle;" align="center">Solicitante</th>
+       <th style="vertical-align: middle;" align="center"><%=h "Estatus"%></th>
+       <th style="vertical-align: middle;" colspan="3" align="center">Acciones</th>
     </tr>
+    <%clase=0%>
     <%@orientaciones.each do |orientacion|%>
-      <tr>
+       <tr class="d<%=invert_class(clase)%>">
         <td style="vertical-align: middle;"><%=orientacion.fechahora.strftime("%Y-%m-%d %H:%M")%></td>
         <td style="vertical-align: middle;"><%=orientacion.solicitante%></td>
-        <% if orientacion.sala %>
-          <td style="vertical-align: middle;"><%=orientacion.sala.descripcion%></td>
+        <% if !orientacion.tramite.only_orientacion %>
+          <td style="vertical-align: middle;"><%=orientacion.tramite.estatu.descripcion%></td>
+          <td style="vertical-align: middle;"><%=link_to "Levantar Comparecencia",{:controller => "comparecencias", :action => "new_or_edit", :id => orientacion.tramite},  :confirm => '¿Esta seguro que desea capturar la comparecencia?', :class => 'boton'%></td>
+          <td style="vertical-align: middle;"><%=link_to "Sólo Orientación",{:controller => "tramites", :action => "only_orientacion", :id => orientacion.tramite},  :confirm => '¿Esta seguro que será una orientación únicamente?', :class => 'boton'%></td>
+        <%else%>
+          <td style="vertical-align: middle;"><%=h "Sólo Orientación"%></td>
         <%end%>
-        <td style="vertical-align: middle;"><%=orientacion.tramite.estatu.descripcion%></td>
-        <td style="vertical-align: middle;"><%=link_to "Comparecencia",{:controller => "comparecencias", :action => "new_or_edit", :id => orientacion.tramite},  :confirm => '¿Esta seguro que desea capturar la comparecencia?', :class => 'boton'%></td>
         <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :controller => "tramites", :id => orientacion.tramite}, :class => 'boton'%></td>
         <td style="vertical-align: middle;"></td>
       </tr>
+      <%clase = invert_class(clase)%>
     <%end%>
   </table>
 </div>

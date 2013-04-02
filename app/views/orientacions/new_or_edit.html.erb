@@ -1,7 +1,7 @@
 <!-- Validate Plugin -->
 <%=javascript_include_tag "validations/jquery_validate.js"%>
 
-<% form_for :orientacion, @orientacion, :url => { :action => "save" }, :html => {:id => "new_orientacion"} do |f| -%>
+<% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="3" align="center" >ORIENTACIONES</td>
@@ -19,11 +19,16 @@
           <td align="center">Observaciones</td>
         </tr>
         <tr>
+          <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
           <!--
-          <td align="center"><=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
+            <td align="center"><=f.text_field :fechahora%></td>
           -->
-          <td align="center"><%=f.text_field :fechahora%></td>
-          <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, {:selected => @especialistas[rand(@especialistas.size)].id}%></td>
+
+          <%if @especialista%>
+              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}%></td>
+          <%else%>
+              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, {:selected => @especialistas.first}%></td>
+          <%end%>
           <td align="center"><%=f.check_box :notificacion%> </td>
           <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>
         </tr>
@@ -43,10 +48,10 @@
           <td align="center">Sexo</td>
         </tr>
         <tr>
-          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :class => "text", :required => true%></td>
-          <td align="center"><%= f.text_field :materno,  :onKeyPress => "return CharNum(event, 'letra');", :class => "text"%></td>
-          <td align="center"><%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :class => "text", :required => true%></td>
-          <td align="center"><%= f.select(:sexo, ["Masculino", "Femenino"], :prompt => 'Seleccione una opción')%></td>
+          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
+          <td align="center"><%= f.text_field :materno,  :onKeyPress => "return CharNum(event, 'letra');"%></td>
+          <td align="center"><%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
+          <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
         </tr>
       </table></td>
       </tr>
@@ -71,7 +76,7 @@
               <=options_from_collection_for_select(MotivoInasistencia.find(:all), :clave, :descripcion, @s_motivos)%>
             </select>
             -->
-            <%= f.text_field :direccion, :class => "text"%>
+            <%= f.text_area :direccion, :class => "text", :size => "40x10"%>
           </td>
           <td><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td><%= f.text_field :telefono, :onKeyPress => "return CharNum(event, 'numero');", :class => "text"%></td>
