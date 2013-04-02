@@ -112,6 +112,15 @@ table.sample td.d0 {
 table { page-break-inside: avoid }
 </style>
 
+<%#*<table width="65%" border="0" cellspacing="0">%>
+  <%#*<tr align="center">%>
+    <%#*<td align="right" width="35%">%>
+       <%#*<img src="pjech/logo_rojo.png" alt="Big Boat"/>%>
+    <%#*</td>%>
+  <%#*</tr>%>
+<%#*</table>%>
+
+
 <!-- contenido -->
 <div class="titulocalendario">
   <p>Resumen General</p>
@@ -128,16 +137,12 @@ table { page-break-inside: avoid }
       </th>
      </tr>
 
-    <tr class="d1">
+    <tr class="d0">
        <td style="vertical-align: middle;"><b><%=h to_iso("Especialista para orientación:")%></b></td>
        <td style="vertical-align: middle;"> <%=h to_iso((@tramite.orientacion ? @tramite.orientacion.user.nombre_completo : "No existe información"))%></td>
     </tr>
 
-    <tr class="d0">
-      <td style="vertical-align: middle;"><b>Sala:</b></td>
-      <td style="vertical-align: middle;"><%=h to_iso(@tramite.orientacion ? @tramite.orientacion.sala.descripcion : "No existe información")%></td>
-    </tr>
-
+  
     <tr class="d1">
        <td style="vertical-align: middle;"><b>Solicitante:</b></td>
        <td style="vertical-align: middle;"><%=h to_iso(@tramite.orientacion ? @tramite.orientacion.solicitante : "No existe información")%></td>

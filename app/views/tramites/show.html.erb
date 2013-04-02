@@ -84,7 +84,7 @@
 
       <tr class="d0">
         <td style="vertical-align: middle;"><b>Día/hora de preferencia:</b></td>
-        <td style="vertical-align: middle;"><%=day_of_the_week(@comparecencia.dia_preferencia)%> / <%=@comparecencia.hora_preferencia%>:00 hrs.</td>
+        <td style="vertical-align: middle;"><%=@comparecencia.dia_preferencia%> / <%=@comparecencia.hora_preferencia%></td>
       </tr>
     </table><br /><br />
 
@@ -156,7 +156,7 @@
           <td style="vertical-align: middle;"><b>Id</b></td>
           <td style="vertical-align: middle;"><b>Descripción</b></td>
           <td style="vertical-align: middle;"><b>Fecha/hora inicio</b></td>
-          <td style="vertical-align: middle;"><b>Mediador</b></td>
+          <td style="vertical-align: middle;"><b>Especialista</b></td>
           <td style="vertical-align: middle;"><b>Comediador</b></td>
       </tr>
       <%Sesion.find(:all, :conditions => ["tramite_id = ?", @tramite.id]).each do |row|%>
