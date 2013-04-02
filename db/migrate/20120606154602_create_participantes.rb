@@ -6,7 +6,7 @@ class CreateParticipantes < ActiveRecord::Migration
       t.string :nombre, :limit => 60
       t.date :fecha_nac
       t.string :sexo, :limit => 1
-      t.string :domicilio, :limit => 100
+      t.string :domicilio
       t.string :telefono_particular, :limit => 10
       t.string :telefono_celular, :limit => 10
       t.string :correo, :limit => 30

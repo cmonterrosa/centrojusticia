@@ -11,9 +11,9 @@ class CreateEspecialistas < ActiveRecord::Migration
                     :email => "#{login}@correo.com",
                     :password => login.strip,
                     :password_confirmation => login.strip,
-                    :paterno => paterno.strip,
-                    :materno => materno.strip,
-                    :nombre => nombre.strip,
+                    :paterno => paterno.strip.upcase,
+                    :materno => materno.strip.upcase,
+                    :nombre => nombre.strip.upcase,
                     :activo => true,
                     :subdireccion_id => 1)
         begin

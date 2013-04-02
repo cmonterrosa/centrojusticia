@@ -8,8 +8,11 @@ class CreateMaterias < ActiveRecord::Migration
     Materia.create(:descripcion => "PENAL")
     Materia.create(:descripcion => "MERCANTIL")
     Materia.create(:descripcion => "FISCAL")
+    Materia.create(:descripcion => "FAMILIAR")
+    Materia.create(:descripcion => "AGRARIO")
+    Materia.create(:descripcion => "ADMINISTRATIVO")
+    Materia.create(:descripcion => "JUSTICIA ADOLESCENTES")
     Materia.create(:descripcion => "OTRA")
-
 
     create_table "materias_users", :id => false do |t|
       t.integer "user_id", "materia_id"
