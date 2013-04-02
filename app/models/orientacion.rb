@@ -17,9 +17,9 @@ class Orientacion < ActiveRecord::Base
   before_save :mayusculas
 
   def mayusculas
-    self.paterno.upcase! unless self.paterno.nil?
-    self.materno.upcase! unless self.materno.nil?
-    self.nombre.upcase! unless self.nombre.nil?
+#    self.paterno.upcase! unless self.paterno.nil?
+#    self.materno.upcase! unless self.materno.nil?
+#    self.nombre.upcase! unless self.nombre.nil?
   end
 
   def especialista

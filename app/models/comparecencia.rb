@@ -3,4 +3,18 @@ class Comparecencia < ActiveRecord::Base
   belongs_to :user
   has_many :participantes
   has_one :expediente
+
+  def before_save
+    self.asunto.upcase! if self.asunto
+    self.caracter.upcase! if self.caracter
+    self.datos.upcase! if self.datos
+    self.dia_preferencia.upcase if self.dia_preferencia
+    self.hora_preferencia.upcase if self.hora_preferencia
+    self.procedencia.upcase! if self.procedencia
+  end
+
+  def solicitante
+    return (Participante.find(:first, :conditions => ["comparecencia_id = ? AND perfil = 'SOLICITANTE'", self.id]))
+  end
+
 end
