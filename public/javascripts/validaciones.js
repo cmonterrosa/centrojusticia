@@ -49,3 +49,21 @@ function disable_num_expediente()
     document.getElementById("sesion_num_tramite").disabled=true;
     return true;
 }
+
+
+
+function textCounter(field, maxlimit)
+{
+    if (field.value.length > maxlimit)
+        {
+            //field.value = field.value.substring(0, maxlimit);
+            alert("Se ha sobrepasado el limite de caracteres");
+            field.focus();
+        }
+        // otherwise, update 'characters left' counter
+    //else
+
+        // countfield.value = maxlimit - field.value.length;
+}
+
+
