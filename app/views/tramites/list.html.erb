@@ -8,7 +8,11 @@
     <tr>
       <th align="center"><%= select :estatu, :id, Estatu.find(@estatus_unicos).collect{|a| [a.descripcion, a.id]}, :prompt => 'Todos los estatus'%></th>
     </tr>
-  </table><br /><br />
+  </table><br />
+
+<p>
+   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "list"}, :title => "Recargar"%>
+</p>
 
 <!-- contenido -->
 <%= render :partial => "listajaxbasic"%>
