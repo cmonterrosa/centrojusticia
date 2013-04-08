@@ -68,7 +68,7 @@
             </form>
             <div class ="loginlayout">
               <%=link_to 'Mi Perfil',  {:controller => "customs", :action => "profile"}, :title => "Datos personales y perfiles a los que perteneces", :style => "font-size: 12px; color: #FFFFFF;"%> |
-              <%=link_to 'Mi Página',  {:controller => "customs"}, :title => "Menú personalizado", :style => "font-size: 12px; color: #FFFFFF;"%> |
+              <%=link_to 'Mi Actividad',  {:controller => "customs", :action => "activity"}, :title => "Mi actividad", :style => "font-size: 12px; color: #FFFFFF;"%> |
               <%=link_to 'Cerrar sesión', {:action => "destroy", :controller=>"sessions"}, :title => "¿Desea salir del sistema?", :style => "font-size: 12px; color: #FFFFFF;"%>
             </div>
         <%end%>
