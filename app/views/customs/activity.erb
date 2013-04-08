@@ -1,0 +1,36 @@
+<h4 style=" font-family:  Helvetica;">Usuario: <%=@usuario.nombre_completo%></h4>
+
+
+<div id="divlista">
+  <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="2">
+        Mi actividad
+      </th>
+     </tr>
+
+     <tr class="d0">
+       <td style="vertical-align: middle;"><b>Trámites iniciados:</b></td>
+       <td style="vertical-align: middle;"><%=Tramite.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
+    </tr>
+
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Orientaciones realizadas:</b></td>
+       <td style="vertical-align: middle;"><%=Orientacion.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
+    </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Comparecencias levantadas:</b></td>
+      <td style="vertical-align: middle;"><%=Comparecencia.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Última conexión:</b></td>
+       <td style="vertical-align: middle;"><%=h (@usuario.last_login) ? @usuario.last_login.strftime("%d de %B de %Y / %H:%M") : 'Sin conexión'%></td>
+    </tr>
+</table>
+</div>
+
+  <br /><br />
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />

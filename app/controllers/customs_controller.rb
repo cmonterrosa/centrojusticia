@@ -33,6 +33,10 @@ class CustomsController < ApplicationController
     @usuario = current_user
   end
 
+  def activity
+    @usuario = current_user
+  end
+
   def edit
     @user = current_user
   end
