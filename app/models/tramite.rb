@@ -22,11 +22,13 @@ class Tramite < ActiveRecord::Base
   end
 
   def folio_integrado
-    "#{self.anio}/#{self.folio}"
+   # "#{self.anio}/#{self.folio}"
+   "#{self.anio[2..4]}#{self.folio.to_s.rjust(5, '0')}"
   end
 
   def folio_inverso
-    "#{self.folio}/#{self.anio}"
+    "#{self.anio[2..4]}#{self.folio.to_s.rjust(5, '0')}"
+     #"#{self.folio}/#{self.anio}"
   end
 
   def estatus
