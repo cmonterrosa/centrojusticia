@@ -11,7 +11,8 @@ class Orientacion < ActiveRecord::Base
   validates_presence_of :municipio_id, :message => "Seleccione una municipio"
 
   def solicitante
-    "#{self.paterno} #{self.materno} #{self.nombre}"
+   # "#{self.paterno} #{self.materno} #{self.nombre}"
+    "#{self.nombre} #{self.paterno} #{self.materno}"
   end
 
   before_save :mayusculas

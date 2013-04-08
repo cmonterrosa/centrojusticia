@@ -15,7 +15,8 @@ class Participante < ActiveRecord::Base
   #end
 
   def nombre_completo
-    "#{self.paterno} #{self.materno} #{self.nombre}"
+    #"#{self.paterno} #{self.materno} #{self.nombre}"
+    "#{self.nombre} #{self.paterno} #{self.materno}"
   end
 
   def edad
