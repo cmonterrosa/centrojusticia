@@ -4,8 +4,7 @@
   </p>
 </div>
 
-
-<% form_tag({:action => 'search_personas_atendidas', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
+<% form_tag({:action => @action} ) do -%>
  <table class="table1" >
   <tr align="center">
       <th align="center">Fecha inicio</th>
@@ -17,6 +16,8 @@
       <td><%= text_field_tag 'fecha_fin',  Time.now.strftime("%Y/%m/%d")%></td>
       <td><%= submit_tag "Buscar"%></td>
   </tr>
+  <tr>
+    <th>&nbsp;</th>
+  </tr>
 </table>
 <% end %>
-<br />
