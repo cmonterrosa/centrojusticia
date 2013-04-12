@@ -31,7 +31,7 @@
 
   </tr>
   <tr align="center">
-    <td class="menu">Gráfica por especialistas</td>
+    <td class="menu">Gráfica de Orientaciones</td>
     <td class="menu">Gráfica por materia</td>
     <td class="menu">Listado de personas atendidas</td>
   </tr>
@@ -47,11 +47,16 @@
           <td>
            <%=link_to image_tag('iconos/estadisticas/people.png', :size => "128x128") , {:action => "grafica_atencion_rango_edad"}, :title => "gráfica de atencion por rago de edades", :class => "fancybox fancybox.iframe"%>
           </td>
+
+           <td>
+           <%=link_to image_tag('iconos/estadisticas/estadisticas_generales.png', :size => "128x128") , {:action => "select_estadisticas_generales"}, :title => "Estadisticas generales", :class => "fancybox fancybox.iframe"%>
+          </td>
   </tr>
 
   <tr>
     <td class="menu" align="center">Gráfica por sexo</td>
     <td class="menu" align="center">Gráfica por rango de edad</td>
+    <td class="menu" align="center">Estadísticas Generales</td>
   </tr>
 </table>
 
