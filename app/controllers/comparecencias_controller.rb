@@ -33,7 +33,7 @@ class ComparecenciasController < ApplicationController
        param["P_CORREO_ELECTRONICO"]={:tipo=>"String", :valor=>@involucrado.correo}
        param["P_OBSERVACIONES"]={:tipo=>"String", :valor=>@involucrado.observaciones}
        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>@involucrado.referencia_domiciliaria}
-       param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo.upcase}
+       param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
        #--- Validacion de que existe al menos un solicitante ---
        if @comparecencia.solicitante
            (@comparecencia.solicitante.nombre) ?   param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@comparecencia.solicitante.nombre_completo} :    param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@comparecencia.solicitante.razon_social}
@@ -87,7 +87,7 @@ class ComparecenciasController < ApplicationController
         param["P_CONOCIMIENTO"]={:tipo=>"String", :valor=>conocimiento}
         param["P_DATOS"]={:tipo=>"String", :valor=>@comparecencia.datos}
         param["P_ASUNTO"]={:tipo=>"String", :valor=>(@comparecencia.asunto).gsub(/\$/, '\$')}
-        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo.upcase}
+        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
         param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=>@solicitante.tipopersona.descripcion}
         param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>@solicitante.referencia_domiciliaria}
         #--- params only for moral person ---
