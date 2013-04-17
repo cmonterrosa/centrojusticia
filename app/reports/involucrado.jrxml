@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="337"/>
+	<property name="ireport.y" value="433"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -217,7 +217,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="37" y="540" width="498" height="94"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Droid Serif" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_OBSERVACIONES}]]></textFieldExpression>
 			</textField>
@@ -267,30 +267,30 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="23" y="706" width="232" height="20"/>
+				<reportElement mode="Transparent" x="23" y="706" width="259" height="20"/>
 				<textElement>
-					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Droid Serif" size="10" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["LIC. " + $P{P_ESPECIALISTA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="23" y="660" width="232" height="20"/>
+				<reportElement x="23" y="660" width="259" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[NOMBRE Y FIRMA DEL ESPECIALISTA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="276" y="660" width="269" height="20"/>
+				<reportElement x="295" y="660" width="250" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[NOMBRE Y FIRMA DEL SOLICITANTE]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="276" y="706" width="268" height="20"/>
+				<reportElement mode="Transparent" x="295" y="706" width="249" height="20"/>
 				<textElement>
-					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Droid Serif" size="10" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SOLICITANTE}]]></textFieldExpression>
 			</textField>
