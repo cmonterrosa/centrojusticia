@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="444"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -99,7 +99,7 @@
 				<text><![CDATA[CARÁCTER CON EL QUE COMPARECE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="23" y="692" width="222" height="20"/>
+				<reportElement x="23" y="692" width="254" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -199,7 +199,7 @@
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="23" y="551" width="498" height="123"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_ASUNTO}]]></textFieldExpression>
 			</textField>
@@ -214,16 +214,16 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_DATOS}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="266" y="692" width="271" height="20"/>
+				<reportElement x="289" y="692" width="248" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[NOMBRE Y FIRMA DEL SOLICITANTE]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="23" y="733" width="222" height="20"/>
+				<reportElement mode="Transparent" x="23" y="733" width="256" height="20"/>
 				<textElement>
-					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Droid Serif" size="10" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["LIC. " + $P{P_ESPECIALISTA}]]></textFieldExpression>
 			</textField>
@@ -231,9 +231,9 @@
 				<reportElement x="17" y="233" width="520" height="64"/>
 			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="266" y="733" width="273" height="20"/>
+				<reportElement mode="Transparent" x="289" y="733" width="250" height="20"/>
 				<textElement>
-					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Droid Serif" size="10" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SOLICITANTE}]]></textFieldExpression>
 			</textField>
