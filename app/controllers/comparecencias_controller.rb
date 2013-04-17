@@ -1,6 +1,7 @@
 include SendDocHelper
 class ComparecenciasController < ApplicationController
-  require_role "especialistas"
+  require_role [:especialistas, :convenios]
+  #require_role "especialistas"
 
   def show
     @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
@@ -24,6 +25,7 @@ class ComparecenciasController < ApplicationController
        param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
        param["P_NOMBRE_INVOLUCRADO"]={:tipo=>"String", :valor=>@involucrado.nombre_completo}
        (@involucrado.edad > 0) ? param["P_EDAD"]={:tipo=>"String", :valor=>"#{@involucrado.edad} AÑOS"} : param["P_EDAD"]={:tipo=>"String", :valor=>""}
+
        param["P_SEXO"]={:tipo=>"String", :valor=>@involucrado.sexo_descripcion}
        (@involucrado.municipio) ? param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@involucrado.municipio.descripcion} : ""
        param["P_DOMICILIO"]={:tipo=>"String", :valor=>@involucrado.domicilio}
