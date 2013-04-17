@@ -19,6 +19,8 @@
           <td align="center">Nombre(s)</td>
           <td align="center">Sexo</td>
           <td align="center">Fecha de Nacimiento</td>
+          <td align="center">Edad</td>
+
         </tr>
         <tr>
           <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%></td>
@@ -28,6 +30,10 @@
           <td align="center"><%= f.text_field :nombre, :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
           <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
           <td align="center"><%=f.date_select :fecha_nac, :start_year => 1928, :end_year => Time.now.year%></td>
+          <td align="center">
+            <%= f.select(:anio_nac,  hash_of_years)%>
+          </td>
+
         </tr>
       </table></td>
     </tr>
@@ -45,8 +51,8 @@
         </tr>
         <tr>
           <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
-          <td align="center"><%= f.text_area :domicilio, :size => "40x10", :class => "text", :required => true%></td>
-          <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x10", :class => "text"%></td>
+          <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true%></td>
+          <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x10"%></td>
         </tr>
       </table></td>
     </tr>
@@ -64,9 +70,9 @@
           <td align="center">Correo Electrónico</td>
         </tr>
         <tr>
-          <td align="center"><%= f.text_field :telefono_particular, :class => "text", :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
-          <td align="center"><%= f.text_field :telefono_celular, :class => "text", :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
-          <td align="center"><%= f.text_field :telefono_celular_aux, :class => "text", :onKeyPress => "return CharNum(event, 'numero');", :size => 20, :placeholder => "Capturar solo si existe"%></td>
+          <td align="center"><%= f.text_field :telefono_particular,  :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
+          <td align="center"><%= f.text_field :telefono_celular,  :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
+          <td align="center"><%= f.text_field :telefono_celular_aux, :onKeyPress => "return CharNum(event, 'numero');", :size => 20, :placeholder => "Capturar solo si existe"%></td>
           <td align="center"><%= f.text_field :correo%></td>
         </tr>
       </table></td>
