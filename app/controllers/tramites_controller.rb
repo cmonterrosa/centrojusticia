@@ -1,6 +1,7 @@
 class TramitesController < ApplicationController
   before_filter :login_required
   require_role [:especialistas, :subdireccion], :for => [:menu]
+  require_role [:admin], :for => [:destroy]
 
 
   def index
@@ -23,8 +24,16 @@ class TramitesController < ApplicationController
     make_and_send_pdf("resumen_#{@tramite.anio.to_s}_#{@tramite.folio.to_s}")
   end
 
-   def socama
-    make_and_send_pdf("socama")
+  def destroy
+    @tramite = Tramite.find(params[:id])
+    @orientacion = Orientacion.find_by_tramite_id(params[:id])
+    @historico = Historia.find_by_tramite_id(params[:id])
+    if @orientacion.destroy && @historico.destroy && @tramite.destroy
+      flash[:notice] = "Registro eliminado correctamente"
+    else
+      flash[:notice] = "No se pudo eliminar, verifique"
+    end
+    redirect_to :action => "list"
   end
 
   def showpdf
@@ -178,6 +187,20 @@ class TramitesController < ApplicationController
     if params[:estatu_id].size > 0
       @estatu = Estatu.find(params[:estatu_id])
       @tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "created_at DESC") if @estatu
+    end
+     @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
+     @tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
+    return render(:partial => 'listajaxbasic', :layout => false) if request.xhr?
+  end
+
+  def filtro_nombre
+    if params[:search_nombre].size > 4
+      @nombre = params[:search_nombre]
+      @tramites = Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND nombre like ? OR paterno like ?", "#{@nombre}%",  "#{@nombre}%"], :order => "t.created_at DESC")
+      @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND nombre like ? OR paterno like ?", "#{@nombre.upcase}%",  "#{@nombre.upcase}%"], :order => "t.created_at DESC")
+      #@tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "created_at DESC") if @estatu
+    else
+      return render(:partial => 'noresults', :layout => false) if request.xhr?
     end
      @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
      @tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
