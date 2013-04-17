@@ -14,16 +14,29 @@ class Participante < ActiveRecord::Base
     #self.referencia_domiciliaria.upcase! if self.referencia_domiciliaria
   #end
 
+  def before_save
+    self.anio_nac = self.fecha_nac.year if (self.fecha_nac.year && self.anio_nac == Time.now.year.to_s)
+  end
+
   def nombre_completo
     #"#{self.paterno} #{self.materno} #{self.nombre}"
     "#{self.nombre} #{self.paterno} #{self.materno}"
   end
 
   def edad
-    this_year = Time.now.year
-    birth_year = (self.fecha_nac) ? self.fecha_nac.year : nil
-   (birth_year)? (this_year - birth_year) : 0
+    if self.fecha_nac
+      if self.fecha_nac.year != Time.now.year && self.fecha_nac.month != Time.now.month
+        this_year = Time.now.year
+        birth_year = (self.fecha_nac) ? self.fecha_nac.year : nil
+        result = (birth_year)? (this_year - birth_year) : 0
+        return result
+      end
+    end
+    if self.anio_nac
+      return Time.now.year.to_i - self.anio_nac.to_i
+    end
   end
+
 
   def sexo_descripcion
     (self.sexo == "M")? "MASCULINO" : "FEMENINO"
