@@ -3,6 +3,7 @@ class ParticipantesController < ApplicationController
      @participante = Participante.new if params[:token]
      @participante = Participante.find(params[:participante]) if params[:participante]
      @participante ||= Participante.new
+     #@participante.anio_nac = (Time.now.year.to_i - @participante.anio_nac.to_i) if  @participante.anio_nac
      @comparecencia = Comparecencia.find(params[:id])
      @tipo_persona = Tipopersona.find_by_descripcion("FISICA")
   end
