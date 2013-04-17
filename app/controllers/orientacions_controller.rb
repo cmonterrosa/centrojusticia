@@ -1,6 +1,6 @@
 class OrientacionsController < ApplicationController
   require_role [:atencionpublico, :subdireccion], :for => [:new_or_edit, :save]
-  require_role "especialistas", :for => [:list_by_user]
+  require_role [:especialistas, :convenios], :for => [:list_by_user]
 
   def index
    
@@ -43,15 +43,21 @@ class OrientacionsController < ApplicationController
   end
 
   def new_or_edit
+    #--- If is specialist extra ----
+    @extra = true if params[:t] == "extra"
     @orientacion = Orientacion.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
     @orientacion ||= Orientacion.new
-    #@especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
-    #Orientacion.count(:id, :conditions => ["user_id = ? AND fechahora BETWEEN ? AND ?", 1, 6.months.ago, Time.now]).size
-    especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
-    especialistas.each do |e| e["orientaciones"] = Orientacion.count(:id, :conditions => ["user_id = ? AND fechahora BETWEEN ? AND ?", e.id, 6.months.ago, Time.now])  end
-    @especialistas = especialistas.sort{|p1,p2| p1.orientaciones <=> p2.orientaciones}
-    @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
-    #select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = "especialistas" order by u.login
+    if @extra
+      @caption = (@extra) ? "CON PERSONAL EXTRAORDINARIO" : ""
+      @caption_type_specialist = (@extra) ? "Extraordinario" : ""
+      @especialistas = Role.find_by_name("convenios").users.sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
+      @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
+    else
+      especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
+      especialistas.each do |e| e["orientaciones"] = Orientacion.count(:id, :conditions => ["user_id = ? AND fechahora BETWEEN ? AND ?", e.id, 6.months.ago, Time.now])  end
+      @especialistas = especialistas.sort{|p1,p2| p1.orientaciones <=> p2.orientaciones}
+      @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
+    end
   end
 
    def save
@@ -70,7 +76,7 @@ class OrientacionsController < ApplicationController
     @orientacion.tramite = @tramite
     @orientacion.especialista_id = User.find(params[:orientacion][:user_id]).id if params[:orientacion][:user_id]
     if @orientacion.save && @tramite.save
-      @tramite.update_estatus!("tram-inic", current_user) # update estatus of tramite
+      @tramite.update_estatus!("tram-inic", current_user)
         if @orientacion.notificacion
            NotificationsMailer.deliver_tramite_created(@tramite, @orientacion.especialista) #sends the email
            flash[:notice] = "Guardado correctamente y envío de notificación por email" 
