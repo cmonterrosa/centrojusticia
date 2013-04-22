@@ -24,8 +24,9 @@ class ComparecenciasController < ApplicationController
        #-- Parametros
        param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
        param["P_NOMBRE_INVOLUCRADO"]={:tipo=>"String", :valor=>@involucrado.nombre_completo}
-       (@involucrado.edad > 0) ? param["P_EDAD"]={:tipo=>"String", :valor=>"#{@involucrado.edad} AÑOS"} : param["P_EDAD"]={:tipo=>"String", :valor=>""}
-
+       if @involucrado.edad
+        (@involucrado.edad > 0) ? param["P_EDAD"]={:tipo=>"String", :valor=>"#{@involucrado.edad} AÑOS"} : param["P_EDAD"]={:tipo=>"String", :valor=>""}
+       end
        param["P_SEXO"]={:tipo=>"String", :valor=>@involucrado.sexo_descripcion}
        (@involucrado.municipio) ? param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@involucrado.municipio.descripcion} : ""
        param["P_DOMICILIO"]={:tipo=>"String", :valor=>@involucrado.domicilio}
@@ -73,11 +74,15 @@ class ComparecenciasController < ApplicationController
         param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
         @comparecencia.procedencia ? param["P_PROCEDENCIA"]={:tipo=>"String", :valor=>@comparecencia.procedencia.upcase} : param["P_PROCEDENCIA"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
-        param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}
+        (@solicitante.tipopersona.descripcion == "MORAL") ?  param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.apoderado_legal} :  param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}
+        #param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}
         #param["P_EDAD"]={:tipo=>"String", :valor=>@solicitante.edad}
-        (@solicitante.edad > 0) ? param["P_EDAD"]={:tipo=>"String", :valor=>"#{@solicitante.edad} AÑOS"} : param["P_EDAD"]={:tipo=>"String", :valor=>""}
+        if @solicitante.edad
+          (@solicitante.edad > 0) ? param["P_EDAD"]={:tipo=>"String", :valor=>"#{@solicitante.edad} AÑOS"} : param["P_EDAD"]={:tipo=>"String", :valor=>""}
+        end
         param["P_SEXO"]={:tipo=>"String", :valor=>@solicitante.sexo_descripcion}
-        param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.municipio.descripcion}
+        (@solicitante.municipio) ? param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.municipio.descripcion} : param["P_ORIGINARIO"]={:tipo=>"String", :valor=>""} 
+        #param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.municipio.descripcion}
         @comparecencia.caracter ? param["P_CARACTER"]={:tipo=>"String", :valor=>@comparecencia.caracter.upcase} : param["P_CARACTER"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
         param["P_DOMICILIO"]={:tipo=>"String", :valor=>@solicitante.domicilio}
         param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@solicitante.telefono_particular}
