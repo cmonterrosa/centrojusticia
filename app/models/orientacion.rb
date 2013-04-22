@@ -14,14 +14,14 @@ class Orientacion < ActiveRecord::Base
    # "#{self.paterno} #{self.materno} #{self.nombre}"
     "#{self.nombre} #{self.paterno} #{self.materno}"
   end
-
-  before_save :mayusculas
-
-  def mayusculas
-#    self.paterno.upcase! unless self.paterno.nil?
-#    self.materno.upcase! unless self.materno.nil?
-#    self.nombre.upcase! unless self.nombre.nil?
-  end
+#
+#  before_save :mayusculas
+#
+#  def mayusculas
+##    self.paterno.upcase! unless self.paterno.nil?
+##    self.materno.upcase! unless self.materno.nil?
+##    self.nombre.upcase! unless self.nombre.nil?
+#  end
 
   def especialista
     if self.especialista_id
