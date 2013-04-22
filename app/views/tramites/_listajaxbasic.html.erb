@@ -1,22 +1,21 @@
 <!-- contenido -->
 <div id="divlista">
-    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
           <th style="vertical-align: middle;" align="center">Folio T</th>
           <th style="vertical-align: middle;" align="center">Solicitante</th>
           <th style="vertical-align: middle;" align="center">Ultima actualización</th>
           <th style="vertical-align: middle;" align="center"><%=h "Estatus"%></th>
-          <th style="vertical-align: middle;" colspan="4" align="center">Acciones</th>
+          <th style="vertical-align: middle;" colspan="5" align="center">Acciones</th>
       </tr>
     <%clase=1%>
+
+    <%tramite_iniciado_estatus = Estatu.find_by_clave("tram-inic")%>
+
     <%@tramites.each do |tramite|%>
     <tr class="d<%=invert_class(clase)%>">
-        <td style="vertical-align: middle;"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
-       <%if tramite.orientacion%>
-           <td style="vertical-align: middle;"><%=tramite.orientacion.solicitante%></td>
-       <%else%>
-           <td style="vertical-align: middle;">---</td>
-       <%end%>
+       <td style="vertical-align: middle;"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
+       <td style="vertical-align: middle;"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
        <td style="vertical-align: middle;"><%=tramite.updated_at.strftime('%d de %B de %Y - %H:%M:%S')%></td>
        <td style="vertical-align: middle;"><%=tramite.estatus%></td>
        <!-- siguiente estatus -->
@@ -33,8 +32,18 @@
 
         <%clase = invert_class(clase)%>
 
-       <!-- resumen general -->
-       <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :id => tramite}, :class => 'boton'  -%></td>
+        <!-- Edicion -->
+        <%if (tramite.estatu_id == tramite_iniciado_estatus.id && tramite.user_id == current_user.id)%>
+          <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "orientacions", :action => "new_or_edit", :id => tramite.id}, :class => 'boton') %></td>
+        <%end%>
+
+        <!-- Eliminar -->
+        <%if (tramite.estatu_id == tramite_iniciado_estatus.id && current_user.has_role?("admin"))%>
+              <td style="vertical-align: middle;"><%=link_to "Eliminar", {:action => "destroy", :id => tramite}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
+        <%end%>
+
+        <!-- resumen general -->
+        <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :id => tramite}, :class => 'boton'  -%></td>
     </tr>
     <%end%>
   </table>
@@ -49,3 +58,12 @@
         :action => 'filtro_estatus'},
         :update => 'divlista',
         :with => :estatu_id %>
+
+  <%= observe_field :search_nombre,
+        :frequency => 0.36,
+        :before => "Element.show('spinner')",
+        :success => "Element.hide('spinner')",
+        :url => {:controller => 'tramites',
+        :action => 'filtro_nombre'},
+        :update => 'divlista',
+        :with => :search_nombre %>
