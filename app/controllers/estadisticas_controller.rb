@@ -3,16 +3,43 @@ require 'gruff'
 class EstadisticasController < ApplicationController
   layout 'oficial_fancy'
 
-  def index
+     def index
 
-  end
-
+     end
 
     def select_grafica_orientaciones_especialistas
      @title = "Seleccione el rango de fechas"
      @action = "grafica_orientaciones_especialistas"
      return render(:partial => 'select_date_range', :layout => 'only_jquery')
-  end
+    end
+
+    def select_estadisticas_generales
+      @title = "Seleccione el rango de fechas"
+      @action = "estadisticas_generales"
+      return render(:partial => 'select_date_range', :layout => 'only_jquery')
+    end
+
+    def estadisticas_generales
+          if params[:fecha_inicio] && params[:fecha_fin]
+             params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+             @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+             @total_orientaciones = Orientacion.count(:id, :conditions => ["fechahora between ? AND ?", @inicio, @fin])
+             @orientaciones_hombres = Orientacion.count(:sexo, :conditions => ["sexo = ? AND fechahora between ? AND ?", 'M', @inicio, @fin])
+             @orientaciones_mujeres = Orientacion.count(:sexo, :conditions => ["sexo = ? AND fechahora between ? AND ?", 'F', @inicio, @fin])
+             @comparecencias_concluidas = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin])
+             @solo_orientacion = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('no-compar') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin])
+             especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
+             @comparecencias_conocimiento = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND e.clave in ('comp-conc') AND (c.conocimiento = ? ) AND (c.fechahora between ? AND ?)", true, @inicio, @fin])
+             @comparecencias_noconocimiento = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND e.clave in ('comp-conc') AND (c.conocimiento = ? ) AND (c.fechahora between ? AND ?)", false, @inicio, @fin])
+             @especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_periodo(@inicio,@fin) <=> p2.num_orientaciones_periodo(@inicio,@fin)}
+             @especialista_mas_activo = @especialistas.last.nombre_completo
+             @especialista_menos_activo = @especialistas.first.nombre_completo
+             @participantes_hombres = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c, participantes p", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND c.id = p.comparecencia_id AND e.clave in ('comp-conc') AND (p.sexo = ? ) AND (c.fechahora between ? AND ?)", "M", @inicio, @fin])
+             @participantes_mujeres = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c, participantes p", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND c.id = p.comparecencia_id AND e.clave in ('comp-conc') AND (p.sexo = ? ) AND (c.fechahora between ? AND ?)", "F", @inicio, @fin])
+             @personas_morales = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c, participantes p, tipopersonas tp", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND c.id = p.comparecencia_id AND p.tipopersona_id = tp.id AND e.clave in ('comp-conc') AND (tp.descripcion = ? ) AND (c.fechahora between ? AND ?)", "MORAL", @inicio, @fin])
+             return render(:partial => 'estadisticas_generales', :layout => 'only_jquery')
+          end
+    end
 
 
   def grafica_orientaciones_especialistas
@@ -133,9 +160,15 @@ class EstadisticasController < ApplicationController
   end
 
   def search_personas_atendidas
-  params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
-  @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
-  @tramites = Tramite.find(:all, :conditions => ["created_at between ? AND ?",@inicio, @fin], :order => "created_at")
+    params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+    @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+    @tramites = Tramite.find(:all, :conditions => ["created_at between ? AND ?",@inicio, @fin], :order => "created_at")
+  end
+
+  def show_cargas_trabajo
+     especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
+     @especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_por_semana <=> p2.num_orientaciones_por_semana}
+     return render(:partial => 'show_cargas_trabajo', :layout => 'only_jquery')
   end
 
 
