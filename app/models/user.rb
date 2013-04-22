@@ -1,4 +1,5 @@
 require 'digest/sha1'
+require 'date'
 
 class User < ActiveRecord::Base
   
@@ -49,7 +50,7 @@ class User < ActiveRecord::Base
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :password, :password_confirmation, :paterno, :materno, :nombre, :direccion, :activo, :tel_celular, :last_login, :categoria
+  attr_accessible :login, :email, :password, :password_confirmation, :paterno, :materno, :nombre, :direccion, :activo, :tel_celular, :last_login, :categoria, :num_orientaciones_por_semana, :full_description_for_especialistas
 
 
   # Activates the user in the database.
@@ -97,6 +98,25 @@ class User < ActiveRecord::Base
 
   def nombre_completo
     "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip}"
+  end
+
+  def full_description_for_especialistas
+     "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip}"
+     # "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip} | #{num_orientaciones_por_semana} Orientaciones"
+  end
+
+  def num_orientaciones_por_semana
+      now = Date.today
+      seven_days_ago = (now - 7)
+      #numero_orientaciones = Orientacion.find_by_sql("SELECT count(o.especialista_id) AS count_especialista_id FROM `orientacions` o, tramites t, estatus e WHERE (o.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (o.especialista_id = 10 ) AND (o.created_at between '2013-04-12' AND '2013-04-19')) ")
+      #numero_orientaciones = Orientacion.count(:especialista_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.especialista_id = ? ) AND (orientacions.created_at between ? AND ?)", self.id, seven_days_ago, now])
+      #return numero_orientaciones
+      num_orientaciones_periodo(seven_days_ago, now)
+  end
+
+  def num_orientaciones_periodo(inicio,fin)
+      numero_orientaciones = Orientacion.count(:especialista_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.especialista_id = ? ) AND (orientacions.created_at between ? AND ?)", self.id, inicio, fin])
+      return numero_orientaciones
   end
 
     protected
