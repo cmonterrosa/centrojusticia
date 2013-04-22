@@ -196,8 +196,8 @@ class TramitesController < ApplicationController
   def filtro_nombre
     if params[:search_nombre].size > 4
       @nombre = params[:search_nombre]
-      @tramites = Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND nombre like ? OR paterno like ?", "#{@nombre}%",  "#{@nombre}%"], :order => "t.created_at DESC")
-      @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND nombre like ? OR paterno like ?", "#{@nombre.upcase}%",  "#{@nombre.upcase}%"], :order => "t.created_at DESC")
+      @tramites = Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ? OR o.paterno like ?", "#{@nombre}%",  "#{@nombre}%"], :order => "t.created_at DESC")
+      @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ? OR o.paterno like ?", "#{@nombre.upcase}%",  "#{@nombre.upcase}%"], :order => "t.created_at DESC")
       #@tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "created_at DESC") if @estatu
     else
       return render(:partial => 'noresults', :layout => false) if request.xhr?
