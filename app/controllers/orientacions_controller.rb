@@ -54,8 +54,9 @@ class OrientacionsController < ApplicationController
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
     else
       especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
-      especialistas.each do |e| e["orientaciones"] = Orientacion.count(:id, :conditions => ["user_id = ? AND fechahora BETWEEN ? AND ?", e.id, 6.months.ago, Time.now])  end
-      @especialistas = especialistas.sort{|p1,p2| p1.orientaciones <=> p2.orientaciones}
+      #especialistas.each do |e| e["orientaciones"] = Orientacion.count(:id, :conditions => ["user_id = ? AND fechahora BETWEEN ? AND ?", e.id, 6.months.ago, Time.now])  end
+      #@especialistas = especialistas.sort{|p1,p2| p1.orientaciones <=> p2.orientaciones}
+      @especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_por_semana <=> p2.num_orientaciones_por_semana}
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
     end
   end
