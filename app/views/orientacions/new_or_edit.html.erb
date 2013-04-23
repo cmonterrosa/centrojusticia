@@ -4,7 +4,7 @@
 <% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" >ORIENTACIONES</td>
+      <td colspan="3" align="center" >ORIENTACIONES <%=@caption%></td>
     </tr>
     <tr align="center">
       <td align="center">
@@ -14,7 +14,7 @@
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center">Fecha/hora</td>
-          <td align="center">Especialista</td>
+          <td align="center">Especialista <%=@caption_type_specialist%> / Orientaciones en los últimos 7 días</td>
            <td align="center">¿Notificar especialista vía correo?</td>
           <td align="center">Observaciones</td>
         </tr>
@@ -25,9 +25,9 @@
           -->
 
           <%if @especialista%>
-              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}%></td>
+              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%></td>
           <%else%>
-              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, {:selected => @especialistas.first}%></td>
+              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%></td>
           <%end%>
           <td align="center"><%=f.check_box :notificacion%> </td>
           <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>
