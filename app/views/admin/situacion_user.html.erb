@@ -4,7 +4,7 @@
 <% form_for :user, @user, :url => { :action => "save_user", :id => @user.id } do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" >EDITAR USUARIO</td>
+      <td colspan="3" align="center" >ESTABLECER ESTATUS DE USUARIO</td>
     </tr>
     <tr align="center">
       <td align="center">
@@ -13,16 +13,12 @@
           <td align="center" colspan="4">DATOS GENERALES</td>
         </tr>
         <tr align=" justify" class="pregunta">
-          <td align="center">Login</td>
-          <td align="center">Nombre</td>
-          <td align="center">Apellido Paterno</td>
-          <td align="center">Apellido Materno</td>
+           <td align="center">Nombre de usuario</td>
+          <td align="center">Nombre completo del Empleado</td>
         </tr>
         <tr>
           <td align="center"><%= f.text_field :login, :disabled => true%> <div id="mensaje"></div></td>
-          <td align="center"><%= f.text_field :nombre,  :required => true%></td>
-          <td align="center"><%= f.text_field :paterno,  :required => true%></td>
-          <td align="center"><%= f.text_field :materno%></td>
+          <td align="center"><%=h @user.nombre_completo%></td>
         </tr>
       </table></td>
     </tr>
@@ -34,35 +30,10 @@
           <td align="center" colspan="4" ></td>
         </tr>
         <tr align=" justify" class="pregunta">
-          <td align="center">Área a la que pertenece</td>
-          <td align="center">Correo electrónico</td>
-          <td align="center">Domicilio Particular</td>
-          <td align="center">Teléfono Celular</td>
+          <td align="center">Estatus actual</td>
         </tr>
         <tr>
-          <td align="center"> <%= f.select :subdireccion_id, Subdireccion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
-          <td align="center"><%=f.text_field :email, :required => true%></td>
-          <td align="center"><%= f.text_field :direccion%></td>
-          <td align="center"><%= f.text_field :tel_celular%></td>
-        </tr>
-      </table></td>
-     </tr>
-     <!-- barra inferior -->
-       <tr align="center">
-      <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4" >&nbsp;</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">Categoría</td>
-          <td align="center">Contraseña</td>
-          <td align="center">Confirmación de la contraseña</td>
-       </tr>
-        <tr>
-          <td align="center"><%= f.text_field :categoria %></td>
-          <td align="center"><%= f.password_field :password %></td>
-          <td align="center"><%= f.password_field :password_confirmation %></td>
+          <td align="center"> <%= f.select :situacion_id, Situacion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
         </tr>
       </table></td>
      </tr>
@@ -88,6 +59,16 @@
     </tr>
   </table>
 <% end %>
+
+
+
+
+
+
+
+
+
+
 
 
 

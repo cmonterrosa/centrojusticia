@@ -6,7 +6,7 @@
        <td style="vertical-align: middle;">Login</td>
        <td style="vertical-align: middle;">Nombre</td>
        <td style="vertical-align: middle;">Correo electrónico</td>
-       <td style="vertical-align: middle;" colspan="2">Acciones</td>
+       <td style="vertical-align: middle;" colspan="3">Acciones</td>
     </tr>
     <%@usuarios.each do |user|%>
     <tr class="d1">
@@ -14,6 +14,7 @@
       <td style="vertical-align: middle;"><%=h(user.nombre_completo)%></td>
       <td style="vertical-align: middle;"><%=h(user.email)%></td>
       <td style="vertical-align: middle;"><%=link_to "Editar", {:action => "edit_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
+       <td style="vertical-align: middle;"><%=link_to "Estatus", {:action => "situacion_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
      </tr>
     <%end%>
   </table>
