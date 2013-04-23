@@ -1,0 +1,100 @@
+<h2 align="center">Estadísticas generales</h2>
+<h3 align="center">Del período del <%=@inicio.strftime('%d de %B de %Y')%> al <%=@fin.strftime('%d de %B de %Y')%></h3>
+
+
+<!-- contenido -->
+<div id="divlista">
+    <table width="85%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+
+    <tr style="background-color:gray; color:white">
+        <th colspan="2">
+          Orientaciones
+        </th>
+    </tr>
+    <tr class="d0">
+       <td style="vertical-align: middle;">Número de orientaciones</td>
+       <td style="vertical-align: middle;"><%=h @total_orientaciones%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;">Hombres</td>
+       <td style="vertical-align: middle;"><%=h @orientaciones_hombres%> (<%=(@orientaciones_hombres / @total_orientaciones.to_f) * 100%>)%</td>
+    </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;">Mujeres</td>
+       <td style="vertical-align: middle;"><%=h @orientaciones_mujeres%> (<%=(@orientaciones_mujeres / @total_orientaciones.to_f) * 100%>)%</td>
+    </tr>
+
+     <tr style="background-color:gray; color:white">
+        <th colspan="2">
+          Comparecencias
+        </th>
+    </tr>
+
+     <tr class="d1">
+       <td style="vertical-align: middle;">Concluidas</td>
+       <td style="vertical-align: middle;"><%=h @comparecencias_concluidas%></td>
+     </tr>
+
+     <tr class="d0">
+       <td style="vertical-align: middle;">Solo orientación</td>
+       <td style="vertical-align: middle;"><%=h @solo_orientacion%></td>
+     </tr>
+
+     <tr class="d1">
+       <td style="vertical-align: middle;">Con conocimiento de alguna autoridad</td>
+       <td style="vertical-align: middle;"><%=h @comparecencias_conocimiento%></td>
+     </tr>
+
+        <tr class="d0">
+       <td style="vertical-align: middle;">Sin conocimiento de alguna autoridad</td>
+       <td style="vertical-align: middle;"><%=h @comparecencias_noconocimiento%></td>
+     </tr>
+
+    
+
+
+      <tr style="background-color:gray; color:white">
+        <th colspan="2">
+          Especialistas
+        </th>
+      </tr>
+
+     <tr class="d1">
+       <td style="vertical-align: middle;">Nombre</td>
+       <td style="vertical-align: middle;">Atendidos</td>
+     </tr>
+
+     <%@especialistas.each do |e|%>
+        <tr class="d0">
+          <td style="vertical-align: middle;"><%=e.nombre_completo%></td>
+          <td style="vertical-align: middle;"><%=e.num_orientaciones_periodo(@inicio,@fin)%></td>
+        </tr>
+     <%end%>
+
+     
+     <tr style="background-color:gray; color:white">
+        <th colspan="2">
+          Participantes
+        </th>
+     </tr>
+
+
+     <tr class="d1">
+       <td style="vertical-align: middle;">Hombres</td>
+       <td style="vertical-align: middle;"><%=h @participantes_hombres%></td>
+     </tr>
+
+
+     <tr class="d0">
+       <td style="vertical-align: middle;">Mujeres</td>
+       <td style="vertical-align: middle;"><%=h @participantes_mujeres%></td>
+     </tr>
+
+      <tr class="d1">
+       <td style="vertical-align: middle;">Personas morales</td>
+       <td style="vertical-align: middle;"><%=h @personas_morales%></td>
+     </tr>
+ </table>
+</div>
