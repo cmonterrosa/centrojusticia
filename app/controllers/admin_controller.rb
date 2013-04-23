@@ -241,4 +241,11 @@ class AdminController < ApplicationController
     end
  end
 
+ def situacion_user
+   unless validate_token(params[:t]) && @user = User.find(params[:id])
+    flash[:notice] = "No se pudo encontrar usuario"
+    redirect_to :action => "index"
+   end
+ end
+
 end
