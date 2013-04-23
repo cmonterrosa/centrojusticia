@@ -15,7 +15,9 @@ class Participante < ActiveRecord::Base
   #end
 
   def before_save
-    self.anio_nac = self.fecha_nac.year if (self.fecha_nac.year && self.anio_nac == Time.now.year.to_s)
+    if self.fecha_nac
+      self.anio_nac = self.fecha_nac.year if (self.fecha_nac.year && self.anio_nac == Time.now.year.to_s)
+    end
   end
 
   def nombre_completo
@@ -26,10 +28,10 @@ class Participante < ActiveRecord::Base
   def edad
     if self.fecha_nac
       if self.fecha_nac.year != Time.now.year && self.fecha_nac.month != Time.now.month
-        this_year = Time.now.year
-        birth_year = (self.fecha_nac) ? self.fecha_nac.year : nil
-        result = (birth_year)? (this_year - birth_year) : 0
-        return result
+        #this_year = Time.now.year
+        #birth_year = (self.fecha_nac) ? self.fecha_nac.year : nil
+        #result = (birth_year)? (this_year - birth_year) : 0
+        return birthday
       end
     end
     if self.anio_nac
@@ -41,6 +43,19 @@ class Participante < ActiveRecord::Base
   def sexo_descripcion
     (self.sexo == "M")? "MASCULINO" : "FEMENINO"
   end
+
+  def birthday
+    user = Participante.find(self.id)
+    today = Date.today
+    new = user.fecha_nac.to_date.change(:year => today.year)
+    user = user.fecha_nac
+    if Date.civil_to_jd(today.year, today.month, today.day) >= Date.civil_to_jd(new.year, new.month, new.day)
+      age = today.year - user.year
+    else
+      age = (today.year - user.year) -1
+    end
+    age
+end
 
 
 
