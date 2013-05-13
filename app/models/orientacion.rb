@@ -8,7 +8,7 @@ class Orientacion < ActiveRecord::Base
 
   #---- validaciones ---
   #validates_presence_of :sala_id, :message => "Seleccione una sala"
-  validates_presence_of :municipio_id, :message => "Seleccione una municipio"
+  #validates_presence_of :municipio_id, :message => "Seleccione una municipio"
 
   def solicitante
    # "#{self.paterno} #{self.materno} #{self.nombre}"
