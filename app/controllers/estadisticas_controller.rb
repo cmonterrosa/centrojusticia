@@ -41,8 +41,8 @@ class EstadisticasController < ApplicationController
           end
     end
 
-
-  def grafica_orientaciones_especialistas
+#--- Inicia gráfica de orientaciones ----
+  def grafica_orientaciones_especialistas_old
       g = Gruff::Pie.new
       #g = Gruff::Bar.new
       g.title = "Orientaciones"
@@ -69,6 +69,30 @@ class EstadisticasController < ApplicationController
      g.labels = {0=>'Número por especialista'}
     send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list.png")
   end
+
+ def grafica_orientaciones_especialistas
+      g = Gruff::Bar.new
+      g.title = "Orientaciones"
+      especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+      if params[:fecha_inicio] && params[:fecha_fin]
+          params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+          @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+          g.title = "Orientaciones del #{@inicio.strftime('%d/%m')} al #{@fin.strftime('%d/%m')}"
+          #@especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_periodo(@inicio,@fin) <=> p2.num_orientaciones_periodo(@inicio,@fin)}
+          especialistas.each do |especialista|
+                g.data("#{especialista.nombre}(#{especialista.num_orientaciones_periodo(@inicio,@fin)})", [especialista.num_orientaciones_periodo(@inicio,@fin)]) if especialista.num_orientaciones_periodo(@inicio,@fin) > 0
+          end
+      else
+            g.title = "Total de orientaciones"
+            especialistas.each do |especialista|
+            total_sesiones = Orientacion.count(:id, :conditions => ["user_id = ?", especialista.id.to_i])
+              if total_sesiones > 0
+                g.data("#{especialista.nombre}", [total_sesiones])
+              end
+            end
+      end
+      send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list.png")
+ end
 
 
 
@@ -162,7 +186,8 @@ class EstadisticasController < ApplicationController
   def search_personas_atendidas
     params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
     @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
-    @tramites = Tramite.find(:all, :conditions => ["created_at between ? AND ?",@inicio, @fin], :order => "created_at")
+    #@tramites = Tramite.find(:all, :conditions => ["created_at between ? AND ?",@inicio, @fin], :order => "created_at")
+     @tramites = Tramite.find(:all, :select => "tramites.*", :joins => "tramites, orientacions orientacions, estatus e", :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin])
   end
 
   def show_cargas_trabajo
