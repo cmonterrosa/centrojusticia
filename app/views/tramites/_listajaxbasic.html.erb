@@ -4,19 +4,21 @@
       <tr style="background-color:gray; color:white">
           <th style="vertical-align: middle;" align="center">Folio T</th>
           <th style="vertical-align: middle;" align="center">Solicitante</th>
-          <th style="vertical-align: middle;" align="center">Ultima actualización</th>
+          <th style="vertical-align: middle;" align="center">Fecha/Hora inicial</th>
           <th style="vertical-align: middle;" align="center"><%=h "Estatus"%></th>
           <th style="vertical-align: middle;" colspan="5" align="center">Acciones</th>
       </tr>
     <%clase=1%>
 
     <%tramite_iniciado_estatus = Estatu.find_by_clave("tram-inic")%>
+    <%solo_orientacion = Estatu.find_by_clave("no-compar")%>
+    <%comparecencia_concluida = Estatu.find_by_clave("comp-conc")%>
 
     <%@tramites.each do |tramite|%>
     <tr class="d<%=invert_class(clase)%>">
        <td style="vertical-align: middle;"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
        <td style="vertical-align: middle;"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
-       <td style="vertical-align: middle;"><%=tramite.updated_at.strftime('%d de %B de %Y - %H:%M:%S')%></td>
+       <td style="vertical-align: middle;"><%=tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
        <td style="vertical-align: middle;"><%=tramite.estatus%></td>
        <!-- siguiente estatus -->
        <%ids = []%>
@@ -37,9 +39,24 @@
           <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "orientacions", :action => "new_or_edit", :id => tramite.id}, :class => 'boton') %></td>
         <%end%>
 
-        <!-- Eliminar -->
+        <!-- Eliminar si es inicio de tramite-->
         <%if (tramite.estatu_id == tramite_iniciado_estatus.id && current_user.has_role?("admin"))%>
               <td style="vertical-align: middle;"><%=link_to "Eliminar", {:action => "destroy", :id => tramite}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
+        <%end%>
+
+        <!-- Eliminar si es solo orientacion-->
+        <%if (tramite.estatu_id == solo_orientacion.id && current_user.has_role?("admin"))%>
+              <td style="vertical-align: middle;"><%=link_to "Eliminar", {:action => "destroy", :id => tramite}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
+        <%end%>
+
+         <!-- Edicion si es solo captura -->
+        <%if (tramite.estatu_id ==solo_orientacion.id && tramite.user_id == current_user.id)%>
+          <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "orientacions", :action => "captura_historica", :id => tramite.id}, :class => 'boton') %></td>
+        <%end%>
+
+        <!-- Mostrar o modificar número de expediente -->
+        <%if (tramite.estatu_id ==comparecencia_concluida.id && current_user.has_role?("captura"))%>
+          <td style="vertical-align: middle;"><%=h (link_to "Núm Expediente", {:controller => "tramites", :action => "show_numero_expediente", :id => tramite.id}, :class => 'boton') %></td>
         <%end%>
 
         <!-- resumen general -->
@@ -66,4 +83,4 @@
         :url => {:controller => 'tramites',
         :action => 'filtro_nombre'},
         :update => 'divlista',
-        :with => :search_nombre %>
+        :with => "search_nombre"%>
