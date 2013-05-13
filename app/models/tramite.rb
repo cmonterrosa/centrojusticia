@@ -10,9 +10,10 @@ class Tramite < ActiveRecord::Base
   has_many :sesions
 
   #---- Validaciones ----
-  validates_uniqueness_of :folio, :scope => :anio
-  validates_presence_of :subdireccion_id, :message => "Seleccione una subdireccion"
-  
+  #validates_uniqueness_of :folio, :scope => :anio
+  #validates_presence_of :subdireccion_id, :message => "Seleccione una subdireccion"
+
+
   def undo_status
     #--- ultimo estatus ---
     @historia = Historia.find(:first, :conditions => ["tramite_id = ?", self.id], :order => "created_at DESC")
@@ -64,6 +65,18 @@ class Tramite < ActiveRecord::Base
       folio = 1 unless maximo
       folio ||= maximo.to_i + 1
       self.folio = folio
+   end
+
+   def generar_folio_expediente!
+      anio = self.anio
+      maximo=  Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", anio])
+      folio = 1 unless maximo
+      folio ||= maximo.to_i + 1
+      self.update_attributes!(:folio_expediente => folio) if folio
+   end
+
+   def numero_expediente
+     (self.folio_expediente) ?  "#{self.folio_expediente.to_s.rjust(4, '0')}/#{self.anio}" : nil
    end
 
 
