@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="48"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -15,7 +15,7 @@
 	<parameter name="P_TELEFONO_CASA" class="java.lang.String"/>
 	<parameter name="P_TELEFONO_TRABAJO" class="java.lang.String"/>
 	<parameter name="P_TELEFONO_CELULAR" class="java.lang.String"/>
-	<parameter name="P_CORREO" class="java.lang.String"/>
+	<parameter name="P_CORREO_ELECTRONICO" class="java.lang.String"/>
 	<parameter name="P_OBSERVACIONES" class="java.lang.String"/>
 	<parameter name="APP_URL" class="java.lang.String"/>
 	<parameter name="P_TIPO_PERSONA" class="java.lang.String"/>
@@ -99,7 +99,7 @@
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_CORREO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_CORREO_ELECTRONICO}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="282" y="460" width="57" height="20"/>
@@ -255,9 +255,9 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FECHA}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="151" y="143" width="383" height="20"/>
+				<reportElement mode="Transparent" x="129" y="143" width="405" height="20"/>
 				<textElement>
-					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_RAZON_SOCIAL}]]></textFieldExpression>
 			</textField>
