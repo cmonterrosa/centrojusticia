@@ -20,6 +20,7 @@
        <td style="vertical-align: middle;"><%=Orientacion.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
     </tr>
 
+    
     <tr class="d0">
       <td style="vertical-align: middle;"><b>Comparecencias levantadas:</b></td>
       <td style="vertical-align: middle;"><%=Comparecencia.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
