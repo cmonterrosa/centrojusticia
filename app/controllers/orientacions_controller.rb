@@ -1,5 +1,5 @@
 class OrientacionsController < ApplicationController
-  require_role [:atencionpublico, :subdireccion], :for => [:new_or_edit, :save]
+  require_role [:atencionpublico, :subdireccion, :direccion], :for => [:new_or_edit, :save]
   require_role [:especialistas, :convenios], :for => [:list_by_user]
 
   def index
@@ -53,10 +53,14 @@ class OrientacionsController < ApplicationController
       @especialistas = Role.find_by_name("convenios").users.sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
     else
-      especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
+      #especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
+      especialistas = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles
+
       #especialistas.each do |e| e["orientaciones"] = Orientacion.count(:id, :conditions => ["user_id = ? AND fechahora BETWEEN ? AND ?", e.id, 6.months.ago, Time.now])  end
       #@especialistas = especialistas.sort{|p1,p2| p1.orientaciones <=> p2.orientaciones}
-      @especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_por_semana <=> p2.num_orientaciones_por_semana}
+      #-- por semana @especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_por_semana <=> p2.num_orientaciones_por_semana}
+      #@especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_dos_dias <=> p2.num_orientaciones_dos_dias}
+      @especialistas = especialistas.sort{|p1,p2| p1.puntuacion <=> p2.puntuacion}
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
     end
   end
@@ -74,6 +78,7 @@ class OrientacionsController < ApplicationController
     @tramite.subdireccion_id = current_user.subdireccion_id unless @tramite.subdireccion
     @tramite.user= current_user
     @orientacion.fechahora ||= Time.now
+    @tramite.fechahora = @orientacion.fechahora
     @orientacion.tramite = @tramite
     @orientacion.especialista_id = User.find(params[:orientacion][:user_id]).id if params[:orientacion][:user_id]
     if @orientacion.save && @tramite.save
@@ -90,4 +95,42 @@ class OrientacionsController < ApplicationController
       render :action => "new_or_edit"
     end
    end
+
+   def captura_historica
+     @orientacion = Orientacion.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
+     @orientacion ||= Orientacion.new
+     @solo_especialistas = Role.find_by_name("especialistas").users
+     @convenios = Role.find_by_name("convenios").users
+     @especialistas = (@solo_especialistas +  @convenios).sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
+     @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
+   end
+
+   def captura_historica_save
+    #--- Iniciamos trámite --
+    @orientacion = Orientacion.find(:first, :conditions => ["id = ?", params[:id]]) if params[:id]
+    (@orientacion) ? @orientacion.update_attributes(params[:orientacion]) : @orientacion = Orientacion.new(params[:orientacion])
+    @tramite = (@orientacion.tramite) ? @orientacion.tramite : Tramite.new
+    @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    #@tramite.anio = params[:orientacion]["fechahora(1i)"].to_i
+    @tramite.anio = params[:orientacion][:fechahora].split("/")[0] if params[:orientacion][:fechahora]
+    @tramite.anio ||= Time.now.year
+    @tramite.generar_folio unless @tramite.folio
+    @tramite.subdireccion_id = current_user.subdireccion_id unless @tramite.subdireccion
+    @tramite.user= current_user
+    @orientacion.fechahora ||= Time.now
+    @tramite.fechahora = @orientacion.fechahora
+    @orientacion.tramite = @tramite
+    @orientacion.especialista_id = User.find(params[:orientacion][:user_id]).id if params[:orientacion][:user_id]
+    if @orientacion.save && @tramite.save
+      @tramite.update_estatus!("tram-inic", current_user)
+      @tramite.update_estatus!("no-compar", current_user)
+      flash[:notice] = "El solicitante: #{@orientacion.solicitante} guardado correctamente"
+      redirect_to :controller => "home"
+    else
+      flash[:notice] = "No se pudo guardar, verifique"
+      render :action => "captura_historica"
+    end
+   end
+
+
 end
