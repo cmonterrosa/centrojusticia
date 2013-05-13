@@ -1,0 +1,106 @@
+<!-- Validate Plugin -->
+<%=javascript_include_tag "validations/jquery_validate.js"%>
+
+<p>
+   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "show_numero_expediente"}, :title => "Recargar"%>
+</p>
+
+
+<% form_for :tramite, @tramite, :url => { :action => "save_numero_expediente", :id => @tramite }, :html => {:id => "numero_expediente"} do |f| -%>
+  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr bgcolor="#CCCCCC" class="titulo">
+      <td colspan="3" align="center" >DETALLE DE TRAMITE</td>
+    </tr>
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5">DATOS GENERALES</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Folio de trámite</td>
+          <td align="center">Año</td>
+          <td align="center">Consecutivo de expediente</td>
+          <td align="center">Fecha/hora</td>
+          <td align="center">Especialista que dio orientación</td>
+        </tr>
+        <tr>
+          <td align="center"><%=  f.text_field :folio, :value => "#{@tramite.folio_integrado}", :disabled => true, :size => "10"%></td>
+          <td align="center"><%=  f.text_field :anio, :disabled => true, :size => "10"%></td>
+          <td align="center"><%=f.text_field :folio_expediente, :size => "12"%></td>
+          <td align="center"><%=f.text_field :fechahora, :value => "#{@tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')}", :disabled => true%></td>
+          <%if @orientacion%>
+              <td align="center"><%= text_field :orientacion, :especialista, :value => "#{@orientacion.especialista.nombre_completo}", :disabled => true, :size => "65"%></td>
+          <%else%>
+              <td align="center">---</td>
+          <%end%>
+        </tr>
+      </table></td>
+    </tr>
+    <%if @orientacion%>
+    <!-- segunda barra inferior -->
+     <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="4" >DATOS PERSONALES DEL SOLICITANTE</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Apellido Paterno</td>
+          <td align="center">Apellido Materno</td>
+          <td align="center">Nombre(s)</td>
+        </tr>
+        <tr>
+          <td align="center"><%= text_field :orientacion, :paterno, :onKeyPress => "return CharNum(event, 'letra');", :disabled => true%></td>
+          <td align="center"><%= text_field :orientacion, :materno,  :onKeyPress => "return CharNum(event, 'letra');", :disabled => true%></td>
+          <td align="center"><%= text_field :orientacion, :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :disabled => true%></td>
+        </tr>
+      </table></td>
+      </tr>
+
+    <!-- barra media -->
+    <tr class="Estilo3">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr align="center" bgcolor="#E8E8E8" class="subtitulo">
+            <td colspan="4" >DATOS DE UBICACION DEL SOLICITANTE</td>
+          </tr>
+        <tr align="center" class="pregunta">
+          <td>Dirección</td>
+          <td>Municipio</td>
+          <td>Teléfono</td>
+          <td>Correo</td>
+        </tr>
+        <tr align="center">
+          <td> <%= text_area :orientacion, :direccion,  :size => "40x10", :disabled => true%></td>
+          <td><%= text_field :orientacion, :municipio_id, :value => "#{@orientacion.municipio.descripcion}", :disabled => true%></td>
+          <td><%= text_field :orientacion, :telefono, :disabled => true%></td>
+          <td><%= text_field :orientacion, :correo, :disabled => true%></td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+  <%end%>
+    <!-- espacio -->
+    <tr>
+      <td colspan="3"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "home"-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+

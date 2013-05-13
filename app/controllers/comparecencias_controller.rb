@@ -125,6 +125,7 @@ class ComparecenciasController < ApplicationController
     end
     @comparecencia.user = current_user
     if @comparecencia.save
+       @tramite.generar_folio_expediente!
       flash[:notice] = "Guardado correctamente"
       #redirect_to :controller => "tramites", :action => "menu", :id => @tramite
        #render :action => "new_or_edit"
