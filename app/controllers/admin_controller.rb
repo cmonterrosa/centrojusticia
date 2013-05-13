@@ -1,7 +1,9 @@
 class AdminController < ApplicationController
   #before_filter :login_required
-  require_role [:admin], :except => [:index]
-  
+   #require_role :admin#, :except => [:index]
+   require_role [:direccion,:admindireccion]
+  #require_role :direccion, :only => [:show_users, :situacion_user, :statistics_user, :permissions_user, :permission_show, :add_permission_user, :permissions_index, :save_permission  ]
+   require_role :admin, :only => [:save_user, :add_user]
   def new_area
     
   end
@@ -241,11 +243,64 @@ class AdminController < ApplicationController
     end
  end
 
+ #---- Human Resources Administration --------
+
  def situacion_user
    unless validate_token(params[:t]) && @user = User.find(params[:id])
     flash[:notice] = "No se pudo encontrar usuario"
     redirect_to :action => "index"
    end
+ end
+
+ def statistics_user
+   flash[:notice] = "Función en construcción"
+   redirect_to :action => "show_users"
+ end
+
+def permissions_user
+   if validate_token(params[:t]) && @user = User.find(params[:id])
+      @user = User.find(params[:id])
+      @movimientos = Movimiento.find(:all, :conditions => ["user_id = ?", @user.id], :order => "fecha_inicio,fecha_fin")
+   end
+end
+
+def permission_show
+  @movimiento = Movimiento.find(params[:id])
+end
+
+ def add_permission_user
+    unless validate_token(params[:t]) && @user = User.find(params[:id])
+      @user = User.find(params[:id])
+      @situaciones = Situacion.find(:all, :conditions => ["descripcion != 'DISPONIBLE'"])
+      @movimiento = Movimiento.new
+      @movimiento.user_id = @user.id if @user
+    end
+ end
+
+
+ def permissions_index
+   
+ end
+
+
+ def permissions_for_people
+   @movimiento ||= Movimiento.new
+ end
+
+ def save_permission
+   @movimiento = Movimiento.new(params[:movimiento])
+   @movimiento.autorizo = current_user.id if current_user
+   (@movimiento.save) ? flash[:notice] = "Permiso creado correctamente" : flash[:notice] = "No se pudo guardar, verifique"
+   #update status of current
+   redirect_to :action => "permissions_user", :t => generate_token, :id => @movimiento.user
+ end
+
+ def search_permissions
+   
+ end
+
+ def detail_permission
+   @movimiento = Movimiento.find(params[:id])
  end
 
 end
