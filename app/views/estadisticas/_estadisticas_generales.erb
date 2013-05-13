@@ -18,12 +18,12 @@
 
     <tr class="d1">
        <td style="vertical-align: middle;">Hombres</td>
-       <td style="vertical-align: middle;"><%=h @orientaciones_hombres%> (<%=(@orientaciones_hombres / @total_orientaciones.to_f) * 100%>)%</td>
+       <td style="vertical-align: middle;"><%=h @orientaciones_hombres%> (<%=  "%.2f" % ((@orientaciones_hombres / @total_orientaciones.to_f) * 100)%>)%</td>
     </tr>
 
     <tr class="d0">
        <td style="vertical-align: middle;">Mujeres</td>
-       <td style="vertical-align: middle;"><%=h @orientaciones_mujeres%> (<%=(@orientaciones_mujeres / @total_orientaciones.to_f) * 100%>)%</td>
+       <td style="vertical-align: middle;"><%=h @orientaciones_mujeres%> (<%=  "%.2f" % ((@orientaciones_mujeres / @total_orientaciones.to_f) * 100)%>)%</td>
     </tr>
 
      <tr style="background-color:gray; color:white">

@@ -1,6 +1,6 @@
 <div class="titulocalendario">
   <p>
-    Personas atendidas
+    Bitácora de atención
   </p>
 </div>
 
@@ -49,7 +49,7 @@
           <td style="vertical-align: middle;"><%=link_to "#{tramite.folio_integrado}", {:action => "show", :controller => "tramites", :id => tramite}, {:target => "_blank", :method => :delete}%></td>
           <td style="vertical-align: middle;"><%=h tramite.orientacion.especialista.nombre_completo%></td>
           <td style="vertical-align: middle;"><%=h (tramite.orientacion.especialista.categoria) ? tramite.orientacion.especialista.categoria : "-----"%></td>
-          <td style="vertical-align: middle;"><%=h tramite.created_at.strftime("%d de %B de %Y - %H:%M:%S")%></td>
+          <td style="vertical-align: middle;"><%=h tramite.fechahora.strftime("%d de %B de %Y - %H:%M:%S")%></td>
         </tr>
         <%contador+=1%>
         <%clase = invert_class(clase)%>
