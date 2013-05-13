@@ -7,9 +7,27 @@ class TramitesController < ApplicationController
   def index
   end
 
+  def show_numero_expediente
+    if @tramite = Tramite.find(params[:id])
+       @orientacion = Orientacion.find_by_tramite_id(@tramite.id)
+    end
+  end
+
+  def save_numero_expediente
+    if params[:id] && params[:tramite][:folio_expediente] =~ /^\d{1,}$/
+      @tramite = Tramite.find(params[:id])
+      @tramite.update_attributes!(:folio_expediente => params[:tramite][:folio_expediente])
+      flash[:notice] = "Número de expediente actualizado correctamente"
+      redirect_to :action => "list", :controller => "tramites"
+    else
+      flash[:notice] = "El formato no es válido, verifique"
+      render :action => "show_numero_expediente"
+    end
+  end
+
   def list
     @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
-    @tramites = Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
+    @tramites = Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC")
    end
 
   def show
@@ -186,24 +204,26 @@ class TramitesController < ApplicationController
   def filtro_estatus
     if params[:estatu_id].size > 0
       @estatu = Estatu.find(params[:estatu_id])
-      @tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "created_at DESC") if @estatu
+      @tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "fechahora DESC") if @estatu
     end
      @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
-     @tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
+     @tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC")
     return render(:partial => 'listajaxbasic', :layout => false) if request.xhr?
   end
 
   def filtro_nombre
-    if params[:search_nombre].size > 4
-      @nombre = params[:search_nombre]
-      @tramites = Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ? OR o.paterno like ?", "#{@nombre}%",  "#{@nombre}%"], :order => "t.created_at DESC")
-      @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ? OR o.paterno like ?", "#{@nombre.upcase}%",  "#{@nombre.upcase}%"], :order => "t.created_at DESC")
-      #@tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "created_at DESC") if @estatu
-    else
-      return render(:partial => 'noresults', :layout => false) if request.xhr?
+    if params[:search_nombre]
+      if params[:search_nombre].size > 4
+        @nombre = params[:search_nombre]
+        @tramites = Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ? OR o.paterno like ?", "#{@nombre}%",  "#{@nombre}%"], :order => "t.fechahora DESC")
+        @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ? OR o.paterno like ?", "#{@nombre.upcase}%",  "#{@nombre.upcase}%"], :order => "t.fechahora DESC")
+        #@tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "created_at DESC") if @estatu
+      else
+        return render(:partial => 'noresults', :layout => false) if request.xhr?
+      end
     end
-     @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
-     @tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
+    @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
+    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
     return render(:partial => 'listajaxbasic', :layout => false) if request.xhr?
   end
 
