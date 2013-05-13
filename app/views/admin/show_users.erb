@@ -1,25 +1,65 @@
-<h2>Listado de usuarios</h2><br />
+<div class="titulocalendario">
+  Listado de Usuarios
+</div>
+
+
+<p>
+   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "show_users"}, :title => "Recargar"%>
+</p>
+
+
 <!-- contenido -->
+
+
 <div id="divlista">
-    <table width="85%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-    <tr class="d0">
-       <td style="vertical-align: middle;">Login</td>
-       <td style="vertical-align: middle;">Nombre</td>
-       <td style="vertical-align: middle;">Correo electrónico</td>
-       <td style="vertical-align: middle;" colspan="3">Acciones</td>
-    </tr>
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th style="vertical-align: middle;">&nbsp;</th>
+        <th style="vertical-align: middle;">Login</th>
+        <th style="vertical-align: middle;">Nombre</th>
+        <th style="vertical-align: middle;">Estatus actual</th>
+        <th style="vertical-align: center;" colspan="4">Acciones</th>
+      </tr>
+    <%clase=0%>
     <%@usuarios.each do |user|%>
-    <tr class="d1">
+    <tr class="d<%=invert_class(clase)%>">
+      <td style="vertical-align: middle;">
+      <%=case user.estatus_actual
+        when "INCAPACIDAD"
+            h(image_tag("iconos/licencia2.png", :border =>0))
+        when "LICENCIA"
+            h(image_tag("iconos/licencia2.png", :border =>0))
+        when "PERMISO"
+            h(image_tag("iconos/permiso2.png", :border =>0))
+        else
+            h(image_tag("iconos/disponible2.png", :border =>0))
+        end%>
+      </td>
+
       <td style="vertical-align: middle;"><%=h(user.login)%></td>
       <td style="vertical-align: middle;"><%=h(user.nombre_completo)%></td>
-      <td style="vertical-align: middle;"><%=h(user.email)%></td>
-      <td style="vertical-align: middle;"><%=link_to "Editar", {:action => "edit_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
-       <td style="vertical-align: middle;"><%=link_to "Estatus", {:action => "situacion_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
-     </tr>
+      <td style="vertical-align: middle;"><%=h (user.estatus_actual) ? user.estatus_actual : "----"%></td>
+      <%if current_user.has_role?("admin")%>
+        <td style="vertical-align: middle;"><%=link_to "Editar", {:action => "edit_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
+      <%end%>
+      <!--
+      <td style="vertical-align: middle;"><=link_to "Estatus", {:action => "situacion_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
+      -->
+      <%unless user.has_role?("admin") || user.has_role?("direccion")%>
+        <td style="vertical-align: middle;"><%=link_to "Histórico de Estatus", {:action => "permissions_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
+        <!--
+        <td style="vertical-align: middle;"><=link_to "Estadísticas", {:action => "statistics_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
+        -->
+      <%else%>
+        <td style="vertical-align: middle;">&nbsp;</td>
+      <%end%>
+     <%clase = invert_class(clase)%>
+    </tr>
     <%end%>
   </table>
 </div>
 
-
-<br /><%=link_to "Crear usuario", {:action => "new_from_admin", :controller => "users", :id => @token}, :class => 'boton'  -%>
-<br /><br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />
+<%if current_user.has_role?("admin")%>
+  <br /><%=link_to "Crear usuario", {:action => "new_from_admin", :controller => "users", :id => @token}, :class => 'boton'  -%>
+<%end%>
+<br /><br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
