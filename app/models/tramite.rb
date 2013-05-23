@@ -1,4 +1,5 @@
 class Tramite < ActiveRecord::Base
+  belongs_to :atencion
   belongs_to :subdireccion
   belongs_to :materia
   belongs_to :user
