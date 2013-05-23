@@ -23,16 +23,17 @@
           <td align="center">Consecutivo de expediente</td>
           <td align="center">Fecha/hora</td>
           <td align="center">Especialista que dio orientación</td>
+          
         </tr>
         <tr>
           <td align="center"><%=  f.text_field :folio, :value => "#{@tramite.folio_integrado}", :disabled => true, :size => "10"%></td>
           <td align="center"><%=  f.text_field :anio, :disabled => true, :size => "10"%></td>
           <td align="center"><%=f.text_field :folio_expediente, :size => "12"%></td>
           <td align="center"><%=f.text_field :fechahora, :value => "#{@tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')}", :disabled => true%></td>
-          <%if @orientacion%>
+          <%if @orientacion.especialista%>
               <td align="center"><%= text_field :orientacion, :especialista, :value => "#{@orientacion.especialista.nombre_completo}", :disabled => true, :size => "65"%></td>
           <%else%>
-              <td align="center">---</td>
+              <td align="center">No existe información</td>
           <%end%>
         </tr>
       </table></td>

@@ -1,6 +1,11 @@
 <!-- Validate Plugin -->
 <%=javascript_include_tag "validations/jquery_validate.js"%>
 
+<p>
+   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%>
+</p>
+
+
 <% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
@@ -14,7 +19,7 @@
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center">Fecha/hora</td>
-          <td align="center">Especialista <%=@caption_type_specialist%> / Orientaciones en los últimos 7 días</td>
+          <td align="center">Especialista <%=@caption_type_specialist%> / Orientaciones en los últimos 2 días</td>
            <td align="center">¿Notificar especialista vía correo?</td>
           <td align="center">Observaciones</td>
         </tr>

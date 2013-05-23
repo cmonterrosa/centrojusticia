@@ -57,10 +57,12 @@
         <tr align=" justify" class="pregunta">
           <td align="center">Contraseña</td>
           <td align="center">Confirmación de la contraseña</td>
+          <td align="center">Estatus actual</td>
        </tr>
         <tr>
           <td align="center"><%= f.password_field :password %></td>
           <td align="center"><%= f.password_field :password_confirmation %></td>
+          <td align="center"> <%= f.select :situacion_id, Situacion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
         </tr>
       </table></td>
      </tr>

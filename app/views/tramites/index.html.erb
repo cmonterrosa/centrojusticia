@@ -1,5 +1,13 @@
+<table width="65%" border="0" cellspacing="0">
+  <tr align="center">
+    <td align="right" width="35%"><%=image_tag("pjech/logo_rojo.png", :border => 0, :size => "118×154", :alt => "PJECH")%></td>
+    <td align="left" width="65%"><%=image_tag("pjech/barra_tramites.png", :border => 0, :alt => "PJECH")%></td>
+  </tr>
+</table>
+<br />
+<!--
 <h3 style="color:#104E8B; font-family: Helvetica;">Trámites</h3>
-
+-->
 <table width="70%" border="0" cellspacing="0" cellpadding="0">
     <tr align="center">
         <!-- Tramite normal -->
@@ -10,7 +18,7 @@
         </td>
 
         <!-- Atencion extraordinaria -->
-        <%if current_user.has_role?("admin") || current_user.has_role?("direccion") || current_user.has_role?("admindireccion")%>
+        <%if current_user.has_role?("admin") || current_user.has_role?("direccion") || current_user.has_role?("admindireccion") || current_user.has_role?("subdireccion")%>
           <td>
               <a href="/extraordinaria" title="Iniciar atención extraordinaria">
                 <img src="/images/iconos/new_orientacion_extra.png" width="128" height="128" alt="nueva orientación con personal extraordinario" />
@@ -41,7 +49,7 @@
   <tr align="center">
     <td class="menu">Iniciar trámite</td>
 
-    <%if current_user.has_role?("admin") || current_user.has_role?("direccion") || current_user.has_role?("admindireccion")%>
+    <%if current_user.has_role?("admin") || current_user.has_role?("direccion") || current_user.has_role?("admindireccion") || current_user.has_role?("subdireccion")%>
         <td class="menu">Atenciones extraordinarias</td>
     <%end%>
 

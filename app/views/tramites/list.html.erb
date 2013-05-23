@@ -18,5 +18,15 @@
 
 <!-- contenido -->
 <%= render :partial => "listajaxbasic"%>
+
+<!-- shortcut for show all tramites -->
+<%unless @all%>
+  <div class="notice">
+    <p>
+      <%=link_to "Mostrar todos los trámites", :action => "list", :t => "all"%>
+    </p>
+  </div>
+<%end%>
+
 <br />
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "customs"%><br />

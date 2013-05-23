@@ -19,9 +19,15 @@
       </th>
      </tr>
 
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Trámite iniciado por:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@tramite.user_id ? User.find(@tramite.user_id).nombre_completo : "No existe información")%></td>
+    </tr>
+
+
     <tr class="d0">
        <td style="vertical-align: middle;"><b>Especialista para orientación:</b></td>
-       <td style="vertical-align: middle;"> <%=h(@tramite.orientacion ? @tramite.orientacion.user.nombre_completo : "No existe información")%></td>
+       <td style="vertical-align: middle;"> <%=h(@tramite.orientacion.especialista ? @tramite.orientacion.especialista.nombre_completo : "No existe información")%></td>
     </tr>
 
     <tr class="d1">
