@@ -15,6 +15,7 @@ class CreateSituacions < ActiveRecord::Migration
     Situacion.create(:descripcion => "PERMISO")
     Situacion.create(:descripcion => "EN SESION")
     Situacion.create(:descripcion => "EN LICENCIA")
+    Situacion.create(:descripcion => "EN GUARDIA")
 
     # Establish the default status for all users
     User.find(:all).each do |u| u.update_attributes!(:situacion_id => positive.id) end
