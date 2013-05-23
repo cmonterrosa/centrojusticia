@@ -23,11 +23,21 @@ class EstadisticasController < ApplicationController
           if params[:fecha_inicio] && params[:fecha_fin]
              params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
              @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
-             @total_orientaciones = Orientacion.count(:id, :conditions => ["fechahora between ? AND ?", @inicio, @fin])
-             @orientaciones_hombres = Orientacion.count(:sexo, :conditions => ["sexo = ? AND fechahora between ? AND ?", 'M', @inicio, @fin])
-             @orientaciones_mujeres = Orientacion.count(:sexo, :conditions => ["sexo = ? AND fechahora between ? AND ?", 'F', @inicio, @fin])
+             ### anterior
+             #@total_orientaciones = Orientacion.count(:id, :conditions => ["fechahora between ? AND ?", @inicio, @fin])
+             #@orientaciones_hombres = Orientacion.count(:sexo, :conditions => ["sexo = ? AND fechahora between ? AND ?", 'M', @inicio, @fin])
+             #@orientaciones_mujeres = Orientacion.count(:sexo, :conditions => ["sexo = ? AND fechahora between ? AND ?", 'F', @inicio, @fin])
+
+
+
+             @orientaciones_hombres = Orientacion.count(:sexo, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.fechahora between ? AND ?) AND orientacions.sexo = ?", @inicio, @fin, 'M'])
+             @orientaciones_mujeres = Orientacion.count(:sexo, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.fechahora between ? AND ?) AND orientacions.sexo = ?", @inicio, @fin, 'F'])
              @comparecencias_concluidas = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin])
              @solo_orientacion = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('no-compar') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin])
+
+             @total_orientaciones = @comparecencias_concluidas + @solo_orientacion
+             @atenciones_extraordinarias = Extraordinaria.count(:id, :conditions => ["fechahora between ? AND ?", @inicio, @fin])
+
              especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
              @comparecencias_conocimiento = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND e.clave in ('comp-conc') AND (c.conocimiento = ? ) AND (c.fechahora between ? AND ?)", true, @inicio, @fin])
              @comparecencias_noconocimiento = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND e.clave in ('comp-conc') AND (c.conocimiento = ? ) AND (c.fechahora between ? AND ?)", false, @inicio, @fin])
@@ -146,6 +156,8 @@ class EstadisticasController < ApplicationController
       @sum_31_45 = Participante.count(:fecha_nac, :conditions => ["fecha_nac < ? AND fecha_nac >= ?", @today.years_ago(30), @today.years_ago(45)])
       @sum_46_60 = Participante.count(:fecha_nac, :conditions => ["fecha_nac < ? AND fecha_nac >= ?", @today.years_ago(45), @today.years_ago(60)])
       @sum_60_mas = Participante.count(:fecha_nac, :conditions => ["fecha_nac < ?", @today.years_ago(60)])
+
+
       # --- Datos --
       g.data("de 1 a 15", [ @sum_1_15])
       g.data("de 16 a 30", [ @sum_16_30])
