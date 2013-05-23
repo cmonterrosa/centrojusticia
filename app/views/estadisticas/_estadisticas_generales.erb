@@ -7,48 +7,60 @@
     <table width="85%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
 
     <tr style="background-color:gray; color:white">
-        <th colspan="2">
+        <th colspan="3">
           Orientaciones
         </th>
     </tr>
     <tr class="d0">
-       <td style="vertical-align: middle;">Número de orientaciones</td>
+       <td style="vertical-align: middle;" colspan="2">Número de orientaciones</td>
        <td style="vertical-align: middle;"><%=h @total_orientaciones%></td>
     </tr>
 
     <tr class="d1">
-       <td style="vertical-align: middle;">Hombres</td>
+       <td style="vertical-align: middle;" colspan="2">Hombres</td>
        <td style="vertical-align: middle;"><%=h @orientaciones_hombres%> (<%=  "%.2f" % ((@orientaciones_hombres / @total_orientaciones.to_f) * 100)%>)%</td>
     </tr>
 
     <tr class="d0">
-       <td style="vertical-align: middle;">Mujeres</td>
+       <td style="vertical-align: middle;" colspan="2">Mujeres</td>
        <td style="vertical-align: middle;"><%=h @orientaciones_mujeres%> (<%=  "%.2f" % ((@orientaciones_mujeres / @total_orientaciones.to_f) * 100)%>)%</td>
     </tr>
+    
+    <!-- Estraordinarias --->
+    <tr style="background-color:gray; color:white">
+        <th colspan="3">
+          Atenciones extraordinarias
+        </th>
+    </tr>
+    <tr class="d1">
+       <td style="vertical-align: middle;" colspan="2">Número de atenciones extraordinarias</td>
+       <td style="vertical-align: middle;"><%=h @atenciones_extraordinarias%></td>
+    </tr>
 
-     <tr style="background-color:gray; color:white">
-        <th colspan="2">
+    <tr style="background-color:gray; color:white">
+        <th colspan="3">
           Comparecencias
         </th>
     </tr>
 
+     
      <tr class="d1">
-       <td style="vertical-align: middle;">Concluidas</td>
-       <td style="vertical-align: middle;"><%=h @comparecencias_concluidas%></td>
-     </tr>
-
-     <tr class="d0">
-       <td style="vertical-align: middle;">Solo orientación</td>
+       <td style="vertical-align: middle;" colspan="2">Solo orientación</td>
        <td style="vertical-align: middle;"><%=h @solo_orientacion%></td>
      </tr>
 
-     <tr class="d1">
-       <td style="vertical-align: middle;">Con conocimiento de alguna autoridad</td>
+     <tr class="d0">
+       <td style="vertical-align: middle;" colspan="2">Concluidas</td>
+       <td style="vertical-align: middle;"><%=h @comparecencias_concluidas%></td>
+     </tr>
+
+<tr class="d1">
+       <td style="vertical-align: middle;" colspan="2">Con conocimiento de alguna autoridad</td>
        <td style="vertical-align: middle;"><%=h @comparecencias_conocimiento%></td>
      </tr>
 
         <tr class="d0">
-       <td style="vertical-align: middle;">Sin conocimiento de alguna autoridad</td>
+       <td style="vertical-align: middle;" colspan="2">Sin conocimiento de alguna autoridad</td>
        <td style="vertical-align: middle;"><%=h @comparecencias_noconocimiento%></td>
      </tr>
 
@@ -56,44 +68,46 @@
 
 
       <tr style="background-color:gray; color:white">
-        <th colspan="2">
+        <th colspan="3">
           Especialistas
         </th>
       </tr>
 
      <tr class="d1">
        <td style="vertical-align: middle;">Nombre</td>
-       <td style="vertical-align: middle;">Atendidos</td>
+       <td style="vertical-align: middle;">Atención normal</td>
+       <td style="vertical-align: middle;">Atención extraordinaria</td>
      </tr>
 
      <%@especialistas.each do |e|%>
         <tr class="d0">
           <td style="vertical-align: middle;"><%=e.nombre_completo%></td>
           <td style="vertical-align: middle;"><%=e.num_orientaciones_periodo(@inicio,@fin)%></td>
+          <td style="vertical-align: middle;"><%=Extraordinaria.count(:id, :conditions => ["especialista_id = ? AND fechahora between ? AND ?", e.id, @inicio, @fin])%></td>
         </tr>
      <%end%>
 
      
      <tr style="background-color:gray; color:white">
-        <th colspan="2">
+        <th colspan="3">
           Participantes
         </th>
      </tr>
 
 
      <tr class="d1">
-       <td style="vertical-align: middle;">Hombres</td>
+       <td style="vertical-align: middle;" colspan="2">Hombres</td>
        <td style="vertical-align: middle;"><%=h @participantes_hombres%></td>
      </tr>
 
 
      <tr class="d0">
-       <td style="vertical-align: middle;">Mujeres</td>
+       <td style="vertical-align: middle;" colspan="2">Mujeres</td>
        <td style="vertical-align: middle;"><%=h @participantes_mujeres%></td>
      </tr>
 
       <tr class="d1">
-       <td style="vertical-align: middle;">Personas morales</td>
+       <td style="vertical-align: middle;" colspan="2">Personas morales</td>
        <td style="vertical-align: middle;"><%=h @personas_morales%></td>
      </tr>
  </table>
