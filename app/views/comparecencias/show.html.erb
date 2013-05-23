@@ -1,8 +1,19 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+
 <div class="titulocalendario">
   <p>Comparecencia</p>
 </div>
 
-<table width="50%" border="0" cellspacing="0" cellpadding="0">
+<table width="70%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
     
       <td>
@@ -21,12 +32,31 @@
             :complete => "Element.hide('spinner')",
             :html => {:title => "Participantes"}%>
         </td>
-      <%end%>
+
+        <%if current_user.has_role?("admin")%>
+         <td>
+           <%=link_to image_tag('iconos/horarios2.png', :size => "128x128") , {:action => "show_schedules", :id => @comparecencia.tramite}, :title => "seleccion de horario", :class => "fancybox fancybox.iframe"%>
+         </td>
+        <%end%>
+
+        <!--
+        <td>
+           <=link_to_remote image_tag("iconos/horarios2.png", :size => "128x128", :alt => "Horario", :title => "Participantes"), :update => "divcontenido",
+            :url => { :action => "show_schedules", :id => @tramite.id },
+            :before => "Element.show('spinner')",
+            :complete => "Element.hide('spinner')",
+            :html => {:title => "Selección de horario"}%>
+        </td>
+        -->
+    <%end%>
  </tr>
   <tr align="center">
    <td class="menu" align="center">Información General</td>
     <%if @comparecencia%>
       <td class="menu" align="center">Participantes</td>
+      <%if current_user.has_role?("admin")%>
+        <td class="menu" align="center">Selección de horario</td>
+      <%end%>
     <%end%>
   </tr>
 </table>
