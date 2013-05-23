@@ -9,9 +9,9 @@ class Sesion < ActiveRecord::Base
 
   #--- Validaciones --
   validates_uniqueness_of :clave
-  validates_presence_of :mediador_id
-  validates_presence_of :comediador_id
-  validates_format_of :num_tramite, :with => /^\d{1,4}\/20\d{2}$/, :message => " El formato debe de ser num/anio"
+  #validates_presence_of :mediador_id
+  #validates_presence_of :comediador_id
+  #validates_format_of :num_tramite, :with => /^\d{1,4}\/20\d{2}$/, :message => " El formato debe de ser num/anio"
 
 
  def initialize(params = nil)
@@ -53,12 +53,10 @@ class Sesion < ActiveRecord::Base
   end
 
   def generate_clave
-    id = (self.id) ? (self.id) : (Sesion.maximum(:id) + 1)
+    id = maximo = (Sesion.maximum(:id)) ? (Sesion.maximum(:id)) : 1
     clave = Time.now.year.to_s[2,3] + id.to_s.rjust(4,"0")
-    #clave = (rand(10)).to_s + Array.new(2) { (rand(122-97) + 97).chr }.join + (rand(1000)).to_s.rjust(2, "0")
     while not (Sesion.find_by_clave(clave)).nil?
-      clave = Time.now.year.to_s[2,3] + (self.id + 1).to_s.rjust(4,"0")
-      #clave = (rand(10)).to_s + Array.new(2) { (rand(122-97) + 97).chr }.join + (rand(1000)).to_s.rjust(2, "0")
+      clave = Time.now.year.to_s[2,3] + (id + 1).to_s.rjust(4,"0")
     end
     self.clave = clave
   end
