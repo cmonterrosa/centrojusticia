@@ -1,10 +1,10 @@
- # Security functions
-  include Security
+# Security functions
+include Security
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
   def day_of_the_week(day)
-      @dias = {1 => "Lunes", 2 => "Martes", 3 => "Miércoles", 4 => "Jueves",  5 => "Viernes", 6 => "Sábado"}
+      @dias = {1 => "LUNES", 2 => "MARTES", 3 => "MIERCOLES", 4 => "JUEVES",  5 => "VIERNES", 6 => "SÁBADO", 7 => "DOMINGO"}
       return @dias[day]
   end
 
