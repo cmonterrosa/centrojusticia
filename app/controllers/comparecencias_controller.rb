@@ -1,7 +1,8 @@
 include SendDocHelper
 class ComparecenciasController < ApplicationController
-  require_role [:especialistas, :convenios]
-  #require_role "especialistas"
+  layout 'oficial_fancy'
+  require_role [:especialistas, :convenios, :atencionpublico]
+  
 
   def show
     @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
@@ -165,4 +166,95 @@ class ComparecenciasController < ApplicationController
     @comparecencia.tramite ||= Tramite.find(params[:id])
     return render(:partial => 'list_participantes', :layout => false)
   end
+
+  ########## MANEJO DE HORARIO DE SESIONES ######################
+
+  def show_schedules
+    unless @sesion = Sesion.find_by_tramite_id(params[:id])
+      @tramite = Tramite.find(params[:id]) if params[:id]
+      @sesion = Sesion.new
+      @sesiones = Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos")
+      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
+      @title = "Selección de horario"
+      return render(:partial => 'calendario', :layout => "only_jquery")
+    else
+      return render(:partial => 'sesion_asignada', :layout => "only_jquery")
+    end
+  end
+
+  def daily_show
+    @tramite = Tramite.find(params[:id]) if params[:id]
+    @origin=params[:origin] if params[:origin]
+    if params[:year] =~ /^\d{4}$/ && params[:month] =~ /^\d{1,2}$/ && params[:day] =~ /^\d{1,2}$/
+       @fecha = DateTime.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
+       @before = @fecha.yesterday
+       @after = @fecha.tomorrow
+       @salas = Sala.find(:all, :order => "descripcion")
+       @horarios = Horario.find(:all, :group => "hora,minutos")
+       return render(:partial => 'daily_show', :layout => "only_jquery")
+    else
+      redirect_to :action => @accion
+    end
+  end
+
+
+   def add_schedule_to_comparecencia
+        @tramite = Tramite.find(params[:id]) if params[:id]
+        @fecha = Date.parse(params[:date])
+        @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
+        @horario = Horario.find(params[:horario]) if params[:horario]
+        @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
+        @tramite = (params[:id]) ? Tramite.find(params[:id]) : Tramite.new
+        @sesiones_activas = (@tramite) ?  Sesion.find(:all, :conditions => ["tramite_id = ? AND concluida = 0", @tramite.id]) : Array.new
+        @fecha = Date.parse(params[:date])
+        @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
+        @horario = Horario.find(params[:horario]) if params[:horario]
+        @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
+        @tramite = Tramite.find(params[:id]) if params[:id]
+        @default_type_of_sesion = Tiposesion.find_by_descripcion("RESERVA DE SESION")
+        @especialistas = User.find_by_sql(["SELECT u.* FROM users u
+        inner join roles_users ru on u.id=ru.user_id
+        inner join roles r on ru.role_id=r.id
+        where r.name='ESPECIALISTAS' and
+        u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) AND
+        u.id not in (select comediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno", @fecha, @horario.hora, @horario.minutos, @fecha, @horario.hora, @horario.minutos ])
+        return render(:partial => 'new_sesion_with_date', :layout => "only_jquery")
+   end
+
+     def save_with_date
+    @tramite = Tramite.find(params[:id]) if params[:id]
+    @origin = params[:origin]
+    @sesion = Sesion.new(params[:sesion])
+    @sesion.tramite = @tramite if @tramite
+    @horario = Horario.find(params[:horario]) if params[:horario]
+    @sesion.horario = @horario if @horario
+    @sesion.horario ||= Horario.find(params[:sesion][:horario_id])
+    #---- if tramite has a valid format -----
+    @sesion.fecha = Date.parse(params[:date]) if params[:date]
+    @sesion.user = current_user
+    #--- guardamos historia de hora y minutos ---
+    @sesion.hora = @sesion.horario.hora
+    @sesion.minutos = @sesion.horario.minutos
+    @sesion.sala_id = @sesion.horario.sala_id
+    @sesion.activa = true
+    @sesion.generate_clave if @sesion.clave.nil?
+    @sesion.tiposesion =  Tiposesion.find_by_descripcion("RESERVA DE SESION")
+    if @sesion.tramite &&  @sesion.save
+       flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
+       redirect_to :action => "daily_show", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
+    else
+       flash[:notice] = "no se puedo guardar, verifique"
+       @fecha = Date.parse(params[:date])
+       @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
+       @especialistas = User.find_by_sql(["SELECT u.* FROM users u
+        inner join roles_users ru on u.id=ru.user_id
+        inner join roles r on ru.role_id=r.id
+        where r.name='ESPECIALISTAS' and
+        u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) AND
+        u.id not in (select comediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno", @fecha, @horario.hora, @horario.minutos, @fecha, @horario.hora, @horario.minutos ])
+       render :action => "add_schedule_to_comparecencia"
+    end
+
+  end
+
 end
