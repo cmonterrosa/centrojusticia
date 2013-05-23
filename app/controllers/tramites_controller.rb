@@ -27,8 +27,9 @@ class TramitesController < ApplicationController
 
   def list
     @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
-    @tramites = Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC")
-   end
+    @tramites = (params[:t] == "all") ? Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC") : Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC LIMIT 35")
+    @all = true if params[:t] == "all"
+  end
 
   def show
     unless @tramite=Tramite.find(params[:id])
@@ -46,7 +47,7 @@ class TramitesController < ApplicationController
     @tramite = Tramite.find(params[:id])
     @orientacion = Orientacion.find_by_tramite_id(params[:id])
     @historico = Historia.find_by_tramite_id(params[:id])
-    if @orientacion.destroy && @historico.destroy && @tramite.destroy
+    if ((@orientacion) ? @orientacion.destroy : true) && ((@historico) ? @historico.destroy : true) && ((@tramite) ? @tramite.destroy : false)
       flash[:notice] = "Registro eliminado correctamente"
     else
       flash[:notice] = "No se pudo eliminar, verifique"
