@@ -56,14 +56,81 @@ function textCounter(field, maxlimit)
 {
     if (field.value.length > maxlimit)
         {
-            //field.value = field.value.substring(0, maxlimit);
             alert("Se ha sobrepasado el limite de caracteres");
             field.focus();
         }
-        // otherwise, update 'characters left' counter
-    //else
-
-        // countfield.value = maxlimit - field.value.length;
 }
 
 
+///* Funciones para evitar que cierren la página */
+//
+//window.onkeydown      = whatKey;
+//window.onbeforeunload = closeSystem;
+//
+//function closeSystem(evt)
+//{	//alert("Paso 2. Activa onbeforeunload");
+//  	evt = (evt) ? evt : event;
+//
+//	clickY  = evt.clientY;
+//        altKey  = evt.altKey;
+//	keyCode = evt.keyCode;
+//	keyVals = document.getElementById('ffKeyTrap');
+//	bnclose=0;
+//	if(!evt.clientY)
+//		{
+//
+//			// Window Closing in FireFox
+//			// capturing ALT + F4
+//
+//			if(keyVals.value == 'true115') bnclose=1;
+//  			if(keyVals.value == ''||parseInt(keyVals.value)== 8)
+//			{
+//            	// capturing a window close by "X" ?
+//             	// we have no keycodes
+//				bnclose=1;
+//         	}
+//			if(keyVals.value == 'exit') return "CONFIRMA SALIR DEL SISTEMA?";
+//     	}
+//	else
+//		{
+//			if(clickY>0&&keyVals.value=='exit') bnclose=1;
+//			else
+//			{
+//         		// Window Closing in IE
+//		        // capturing ALT + F4
+//    		    if (altKey == true && keyCode == 115){ //return "cierra con boton X";
+//        	    	// capturing a window close by "X"
+//					bnclose=1;
+//         			}
+//			 	else  //return "cierra con ?";
+//					if(clickY < 0){
+//        	     		// simply leaving the page via a link
+//						//return "cierra con boton X";
+//						bnclose=1;
+//				     }
+//					 else { return void(0); }
+//     		}
+//
+//		}
+//		if(bnclose)
+//		{
+//                        alert (document.URL);
+//			return "ESTA CERRANDO EL SISTEMA SIN CERRAR SESION,\nSI NO HA GUARDADO CAMBIOS, ESTOS SE PERDERAN..." + document.URL;
+//
+//		}
+//}
+//
+//function whatKey(evt)
+//{
+//     evt = (evt) ? evt : event;
+//     keyVals = document.getElementById('ffKeyTrap');
+//     altKey  = evt.altKey;
+//     keyCode = evt.keyCode;
+//
+//     if(altKey && keyCode == 115){
+//         keyVals.value = String(altKey) + String(keyCode);
+//     	}
+//	//agregado para no mostrar mensaje con F5
+//	 else if(!altKey &&(keyCode == 116||keyCode==8)){ keyVals.value=String(keyCode);
+//	 }
+//}

@@ -294,6 +294,50 @@ $(function() {
 });
 
 //$(function() {
+//  $j('#movimiento_fecha_inicio').datepicker({
+//      showMonthAfterYear: false,
+//      numberOfMonths: 2,
+//      showOn: 'both',
+//      buttonImage: '/images/iconos/calendar_mini.png',
+//      buttonImageOnly: true
+//  });
+//});
+
+//$(function() {
+//  $j('#movimiento_fecha_fin').datepicker({
+//      showMonthAfterYear: false,
+//      numberOfMonths: 2,
+//      showOn: 'both',
+//      buttonImage: '/images/iconos/calendar_mini.png',
+//      buttonImageOnly: true
+//  });
+//});
+
+$(function() {
+$j('#movimiento_fecha_inicio').datetimepicker({
+      timeFormat: 'h:m',
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: true
+});
+});
+
+$(function() {
+$j('#movimiento_fecha_fin').datetimepicker({
+      timeFormat: 'h:m',
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: true
+});
+});
+
+
+
+//$(function() {
 //$j('#sesion_fecha').datepicker({
 //        numberOfMonths: 2
 //
