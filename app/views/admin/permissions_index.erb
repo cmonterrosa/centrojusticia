@@ -1,0 +1,34 @@
+<table width="65%" border="0" cellspacing="0">
+  <tr align="center">
+    <td align="right" width="35%"><%=image_tag("pjech/logo_rojo.png", :border => 0, :size => "118×154", :alt => "PJECH")%></td>
+    <td align="left" width="65%"><%=image_tag("pjech/barra_admon.png", :border => 0, :alt => "PJECH")%></td>
+  </tr>
+</table>
+<br />
+
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+       <td>
+         <a href="/admin/permissions_for_people" title="Administración de permisos">
+          <img src="/images/iconos/perfiles2.png" width="128" height="128" alt="administración de áreas" />
+         </a>
+       </td>
+
+       <td>
+         <a href="/admin/search_permissions" title="Consulta de permisos">
+          <img src="/images/iconos/perfiles2.png" width="128" height="128" alt="administración de áreas" />
+         </a>
+       </td>
+
+  </tr>
+  <tr align="center">
+    <td class="menu">Crear Permiso</td>
+    <td class="menu">Consultar Permiso</td>
+  </tr>
+  <tr>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+</table>
+
+<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />

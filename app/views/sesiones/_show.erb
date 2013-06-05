@@ -1,4 +1,48 @@
-  <!-- Detalle de sesion -->
+
+<% if @sesion.has_permission?(@user) %>
+<!-- Acciones -->
+<table width="70%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+      <td>
+        <a href="/sesiones/change_sesion_data/<%=h @sesion.id%>/?t=<%=h @token%>" title="Reprogramar horario de sesión">
+         <img src="/images/iconos/horarios.png" width="64" height="64" alt="tramites" />
+        </a>
+      </td>
+
+      <td>
+        <a href="/sesiones/edit/<%=h @sesion.id%>/?t=<%=h @token%>" title="Editar datos de la sesión">
+         <img src="/images/iconos/edit.png" width="64" height="64" alt="tramites" />
+        </a>
+      </td>
+
+      <td>
+          <%= link_to image_tag("iconos/cancel.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post %><br />
+      </td>
+  </tr>
+</table>
+<%end%>
+
+
+<!-- Mostramos icono de bitácora si es mediador o comediador -->
+
+<%if @sesion.invitacion%>
+  <% if @sesion.invitacion.entregada == true && (@sesion.mediador_id == current_user.id || @sesion.comediador_id == current_user.id )%>
+  <!-- Acciones -->
+    <table width="70%" border="0" cellspacing="0" cellpadding="0">
+      <tr align="center">
+        <td>
+          <a href="/sesiones/bitacora/<%=h @sesion.id%>/?t=<%=h @token%>" title=Bitácora">
+            <img src="/images/iconos/bitacora.png" width="64" height="64" alt="bitácora" />
+          </a>
+        </td>
+      </tr>
+    </table><br />
+  <%end%>
+<%end%>
+
+
+
+<!-- Detalle de sesion -->
   <table class="table1" width="70%">
     <thead style="background-color:gray; color:white">
       <th colspan="2">

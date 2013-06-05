@@ -1,0 +1,186 @@
+<%@tramite = @extraordinaria.tramite%>
+
+<div class="titulocalendario">
+  <p>Resumen General</p>
+  <p>Folio: <%=link_to @tramite.folio_integrado, :action => "menu", :id => @tramite%></p>
+  <p>Número de expediente: <%=h (@tramite.numero_expediente) ? (@tramite.numero_expediente) : "----"%></p>
+</div>
+
+
+<div id="divlista">
+   <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="2">
+        Datos generales
+      </th>
+     </tr>
+
+    
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b>Especialista que brindó atención extraordinaria:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@extraordinaria.especialista ? @extraordinaria.especialista.nombre_completo : "No existe información")%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Solicitante:</b></td>
+       <td style="vertical-align: middle;"><%=h(@extraordinaria ? @extraordinaria.solicitante : "No existe información")%></td>
+    </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b>Procedencia:</b></td>
+       <td style="vertical-align: middle;"><%=h(@extraordinaria.procedencia ? @extraordinaria.procedencia.descripcion : "No existe información")%></td>
+    </tr>
+
+
+    <tr class="d1">
+      <td style="vertical-align: middle;"><b>Observaciones:</b></td>
+      <td style="vertical-align: middle;"><%=h(@extraordinaria.observaciones ? @extraordinaria.observaciones : "No existe información")%></td>
+    </tr>
+
+
+    <!--- datos especificos -->
+    <%if @tramite.materia%>
+      <tr class="d1">
+         <td style="vertical-align: middle;"><b>Materia:</b></td>
+         <td style="vertical-align: middle;"><%=@tramite.materia.descripcion%></td>
+      </tr>
+    <%end%>
+
+  </table>
+  <br /><br />
+
+
+ <%if @comparecencia = @tramite.comparecencia%>
+    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th colspan="2">
+          Datos de la comparecencia
+        </th>
+      </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Procedencia:</b></td>
+        <td style="vertical-align: middle;"><%=@comparecencia.procedencia%></td>
+      </tr>
+
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b>Carácter con el que compadece:</b></td>
+        <td style="vertical-align: middle;"><%=@comparecencia.caracter%></td>
+      </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Día/hora de preferencia:</b></td>
+        <td style="vertical-align: middle;"><%=@comparecencia.dia_preferencia%> / <%=@comparecencia.hora_preferencia%></td>
+      </tr>
+    </table><br /><br />
+
+    <!-- detalle del asunto -->
+    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+       <th colspan="2">
+           Detalle del asunto
+       </th>
+     </tr>
+
+      <tr class="d0">
+        <th colspan="2"><%=text_area(:comparecencia, :asunto, :size => "90x10", :disabled => 'disabled')%></th>
+      </tr>
+     </table>
+     <br /><br />
+  <%end%>
+
+  <!-- Participantes del trámite -->
+  <% if @tramite.comparecencia %>
+    <%unless @tramite.comparecencia.participantes.empty?%>
+      <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+        <tr style="background-color:gray; color:white">
+          <th colspan="2">
+            Participantes
+          </th>
+        </tr>
+
+        <%clase=0%>
+        <% @tramite.comparecencia.participantes.each do |participante|%>
+          <tr class="d<%=invert_class(clase)%>">
+            <td align="center"><%=link_to "#{participante.nombre_completo}", :action => "show", :controller => "participantes", :id => participante%></td>
+          </tr>
+          <%clase = invert_class(clase)%>
+        <%end%>
+      </table><br /><br />
+    <%end%>
+  <%end%>
+
+  <!-- Historial de estados-->
+  <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="2">
+        Historial
+      </th>
+     </tr>
+     <tr class="d0">
+        <td style="vertical-align: middle;"><b>Descripción</b></td>
+         <td style="vertical-align: middle;"<b>Fecha hora</b></td>
+     </tr>
+     <%Historia.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "created_at").each do |row|%>
+       <tr class="d1">
+         <td style="vertical-align: middle;"><%=row.estatu.descripcion%></td>
+         <td style="vertical-align: middle;"><%=row.created_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
+     </tr>
+     <%end%>
+  </table><br /><br />
+
+
+  <!-- Historial de sesiones-->
+  <%if @tramite.sesions.size > 0%>
+    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th colspan="5">
+          Detalle de sesiones
+        </th>
+      </tr>
+      <tr class="d0">
+          <td style="vertical-align: middle;"><b>Id</b></td>
+          <td style="vertical-align: middle;"><b>Descripción</b></td>
+          <td style="vertical-align: middle;"><b>Fecha/hora inicio</b></td>
+          <td style="vertical-align: middle;"><b>Especialista</b></td>
+          <td style="vertical-align: middle;"><b>Comediador</b></td>
+      </tr>
+      <%Sesion.find(:all, :conditions => ["tramite_id = ?", @tramite.id]).each do |row|%>
+        <tr class="d1">
+          <td style="vertical-align: middle;"><%=h (row.clave) ? row.clave : "---"%></td>
+          <td style="vertical-align: middle;"><%=h(row.tiposesion_id ? row.tiposesion.descripcion : "---")%></td>
+          <td style="vertical-align: middle;"><%=h(row.start_at ? row.start_at.strftime("%Y-%m-%d %H:%M:%S") : "---")%></td>
+          <td style="vertical-align: middle;"><%=h(row.mediador ? row.mediador.nombre_completo : "---")%></td>
+          <td style="vertical-align: middle;"><%=h(row.comediador ? row.comediador.nombre_completo : "---")%></td>
+        </tr>
+     <%end%>
+  </table><br /><br />
+  <%end%>
+
+
+
+  <!-- Documentacion anexa -->
+    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+       <th colspan="2">
+           Documentación Anexa
+       </th>
+     </tr>
+
+      <tr class="d0">
+          <td style="vertical-align: middle;"><b>Documento</b></td>
+          <td style="vertical-align: middle;"<b>Fecha hora</b></td>
+      </tr>
+      <%clase=0%>
+      <%@tramite.adjuntos.each do |a|%>
+        <tr class="d<%=invert_class(clase)%>">
+          <td style="vertical-align: middle;"><b><%=link_to "#{a.tipodoc.descripcion}", :controller => "upload", :action => "download", :id => a%></b></td>
+          <td style="vertical-align: middle;"><%=a.created_at.strftime("%Y-%m-%d / %H:%M:%S")%></td>
+        </tr>
+        <%clase = invert_class(clase)%>
+      <%end%>
+    </table><br /><br />
+</div>
+
+<br />
+  <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />

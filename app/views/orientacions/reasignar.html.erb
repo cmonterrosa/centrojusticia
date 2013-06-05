@@ -1,0 +1,70 @@
+<!-- Validate Plugin -->
+<%=javascript_include_tag "validations/jquery_validate.js"%>
+
+<p>
+   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "reasignar", :id => @orientacion.tramite}, :title => "Recargar"%>
+</p>
+
+<% form_for :historia, @historia, :url => { :action => "save_reasignacion", :id => @orientacion, :ei => @especialista_inicial, :en => @especialista_nuevo }, :html => {:id => "new_orientacion"} do |f| -%>
+  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr bgcolor="#CCCCCC" class="titulo">
+      <td colspan="3" align="center" >REASIGNAR ORIENTACION</td>
+    </tr>
+  
+    <!-- barra inicial -->
+    <tr class="Estilo3">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr align="center" bgcolor="#E8E8E8" class="subtitulo">
+            <td colspan="2" >ESPECIALISTAS</td>
+          </tr>
+        <tr align="center" class="pregunta">
+          <td>Asignado inicialmente</td>
+          <td>Nuevo</td>
+        </tr>
+        <tr align="center">
+          <td><%=@especialista_inicial.nombre_completo%></td>
+          <td><%=@especialista_nuevo.nombre_completo%></td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+
+       <!-- barra media -->
+    <tr class="Estilo3">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr align="center" bgcolor="#E8E8E8" class="subtitulo">
+            <td colspan="1" >JUSTIFICACION</td>
+          </tr>
+        <tr align="center" class="pregunta">
+          <td>Escoja la más adecuada</td>
+        </tr>
+        <tr align="center">
+          <td><%= f.select :justificacion_id, Justificacion.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción', :required => true%></td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- espacio -->
+    <tr>
+      <td colspan="3"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "home"-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+

@@ -1,0 +1,90 @@
+<!-- Validate Plugin -->
+<%=javascript_include_tag "validations/jquery_validate.js"%>
+
+<% form_for :orientacion, @orientacion, :url => { :action => "por_escrito_save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
+  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr bgcolor="#CCCCCC" class="titulo">
+      <td colspan="3" align="center" >NUEVA SOLICITUD POR ESCRITO</td>
+    </tr>
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5">DATOS GENERALES</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Fecha/hora</td>
+          <td align="center">Observaciones</td>
+        </tr>
+        <tr>
+          <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
+          <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>
+        </tr>
+      </table></td>
+    </tr>
+    <!-- segunda barra inferior -->
+      <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="4" >DATOS PERSONALES DEL SOLICITANTE</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Apellido Paterno</td>
+          <td align="center">Apellido Materno</td>
+          <td align="center">Nombre(s)</td>
+          <td align="center">Sexo</td>
+        </tr>
+        <tr>
+          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
+          <td align="center"><%= f.text_field :materno,  :onKeyPress => "return CharNum(event, 'letra');"%></td>
+          <td align="center"><%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
+          <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
+        </tr>
+      </table></td>
+      </tr>
+
+    <!-- barra media -->
+    <tr class="Estilo3">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr align="center" bgcolor="#E8E8E8" class="subtitulo">
+            <td colspan="4" >DATOS DE UBICACION DEL SOLICITANTE</td>
+          </tr>
+        <tr align="center" class="pregunta">
+          <td>Dirección</td>
+          <td>Municipio</td>
+          <td>Teléfono</td>
+          <td>Correo</td>
+        </tr>
+        <tr align="center">
+          <td><%= f.text_area :direccion, :class => "text", :size => "40x10"%></td>
+          <td><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+          <td><%= f.text_field :telefono, :onKeyPress => "return CharNum(event, 'numero');", :class => "text"%></td>
+          <td><%= f.text_field :correo%></td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+    <!-- espacio -->
+    <tr>
+      <td colspan="3"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "home"-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+

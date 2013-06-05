@@ -1,3 +1,13 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
 <!-- contenido -->
 <div id="divlista">
     <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
@@ -13,6 +23,7 @@
     <%tramite_iniciado_estatus = Estatu.find_by_clave("tram-inic")%>
     <%solo_orientacion = Estatu.find_by_clave("no-compar")%>
     <%comparecencia_concluida = Estatu.find_by_clave("comp-conc")%>
+    <%tramite_reasignado = Estatu.find_by_clave("tram-reas")%>
 
     <%@tramites.each do |tramite|%>
     <tr class="d<%=invert_class(clase)%>">
@@ -33,6 +44,20 @@
        <%end%>
 
         <%clase = invert_class(clase)%>
+            
+        <!-- Reasignacion -->
+        <%if current_user.has_role?("admin")%>
+          <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("admin")))%>
+            <td style="vertical-align: middle;"><%=h (link_to "Reasignar", {:controller => "orientacions", :action => "reasignar", :id => tramite.id}, :class => 'boton') %></td>
+          <%end%>
+        <%end%>
+
+        <!-- Confirmación -->
+        <%if current_user.has_role?("admin")%>
+          <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("admin")))%>
+            <td style="vertical-align: middle;"><%=h (link_to "Confirmar", {:controller => "orientacions", :action => "confirmar", :id => tramite.id}, :title => "Confirmar orientacion", :class => "fancybox fancybox.iframe") %></td>
+          <%end%>
+        <%end%>
 
         <!-- Edicion -->
         <%if (tramite.estatu_id == tramite_iniciado_estatus.id && tramite.user_id == current_user.id)%>

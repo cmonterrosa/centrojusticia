@@ -1,20 +1,10 @@
-<script type="text/javascript">
-		$j(document).ready(function() {
-			/*
-			 *  Simple image gallery. Uses default settings
-			 */
-
-			$j('.fancybox').fancybox();
-               });
-</script>
-
 <div class="titulocalendario">
-  <p>
+  <p style="font-size: 16px;">
     AGENDA DIARIA DE SESIONES
   </p>
   <p>
     <%=link_to "<", :action => "daily_show", :day => @before.day, :month => @before.month, :year => @before.year, :origin => @origin%>&nbsp;
-      <%=day_of_the_week(@fecha.strftime("%u").to_i)%>, <%=(@fecha.strftime("%d de %B de %Y")).upcase%>&nbsp;
+    <%=day_of_the_week(@fecha.strftime("%u").to_i)%>, <%=(@fecha.strftime('%d de %B de %Y')).upcase%>&nbsp;
     <%=link_to ">", :action => "daily_show", :day => @after.day, :month => @after.month, :year => @after.year, :origin => @origin%>
   </p>
 </div>
@@ -38,18 +28,15 @@
           <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa) : "--"%></th>
               <%@salas.each do |sala|%>
                  <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
-                 <!--
-                 <td><=h (sesion) ? (link_to sesion.resume, :action => 'show', :controller => 'sesiones', :id => sesion) : " "%></td>
-                 -->
-              <%if sesion%>
+                 <%if sesion%>
                  <%@backgrounds_colors = colors_to_days%>
                  <td style="background-color: <%=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">
-                    <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
-                 </td>
-
+                        <!-- <=link_to sesion.resume, :action => 'show', :controller => 'sesiones', :id => sesion%> -->
+                        <%=link_to sesion.resume, "#"%>
+                    </td>
                  <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
                     <td style="background-color: #D7F2FF;">
-                        <%=  link_to "Disponible", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
+                        <%=  link_to "Disponible", {:action => "add_schedule_to_comparecencia", :id => @tramite, :controller => "comparecencias", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
                     </td>
                  <%else%>
                     <td></td>
@@ -60,7 +47,3 @@
    </tbody>
 </table>
 <%end%>
-
-
-<br /><br />
-<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => @origin, :action => "management", :month => @fecha.strftime("%Y-%m")%><br />

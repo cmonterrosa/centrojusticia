@@ -1,0 +1,53 @@
+<div class="titulocalendario">
+  Trámites iniciados por escrito
+</div>
+
+<!-- Nuevo -->
+<p>
+  <%=h (link_to "Nuevo", {:controller => "atencion", :action => "por_escrito_new_or_edit"}, :class => 'boton') %>
+</p>
+
+<!-- contenido -->
+<div id="divlista">
+    <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+          <th style="vertical-align: middle;" align="center">Solicitante</th>
+          <th style="vertical-align: middle;" align="center">Expediente</th>
+          <th style="vertical-align: middle;" align="center">Capturado por:</th>
+          <th style="vertical-align: middle;" align="center">Fecha/Hora inicial</th>
+          <th style="vertical-align: middle;" align="center"><%=h "Estatus actual"%></th>
+          <th style="vertical-align: middle;" colspan="3" align="center">Acciones</th>
+      </tr>
+    <%clase=1%>
+
+
+    <%@tramites_por_escrito.each do |e|%>
+    <tr class="d<%=invert_class(clase)%>">
+      <td style="vertical-align: middle;"><%=h (Orientacion.find_by_tramite_id(e.id)) ? Orientacion.find_by_tramite_id(e.id).solicitante : "----"%></td>
+       <td style="vertical-align: middle;"><%=h (e.numero_expediente) ? e.numero_expediente : "----"%></td>
+       <td style="vertical-align: middle;"><%=h (e.user_id) ? User.find(e.user_id).nombre_completo : "----"%></td>
+       <td style="vertical-align: middle;"><%=h (e.fechahora) ? e.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "---"%></td>
+       <td style="vertical-align: middle;"><%=h (e.estatus) ? e.estatus : "---"%></td>
+       <%clase = invert_class(clase)%>
+
+        <!-- Edicion -->
+        <%if ( e.user_id == current_user.id)%>
+          <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "atencion", :action => "por_escrito_new_or_edit", :id => e.id}, :class => 'boton') %></td>
+        <%end%>
+
+        <!-- Eliminar si es inicio de tramite-->
+        <%if (current_user.has_role?("admin"))%>
+              <td style="vertical-align: middle;"><%=link_to "Eliminar", {:controller => "tramites", :action => "destroy", :id => e.id}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
+        <%end%>
+
+        <!-- resumen general -->
+        <td style="vertical-align: middle;"><%=link_to "Resumen", {:controller => "tramites", :action => "show", :id => e.id}, :class => 'boton'  -%></td>
+    </tr>
+    <%end%>
+  </table>
+</div>
+
+
+<br/>
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "atencion", :action => "index"%><br />
+

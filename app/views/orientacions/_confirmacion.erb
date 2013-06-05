@@ -1,0 +1,52 @@
+<%= error_messages_for :user %>
+ <div class="centered">
+        <table width="1024px" align="center">
+          <tr>
+              <th align="left"><%=image_tag("pjech/barra_confirmar-orientacion.png", :border => 0)%></th>
+          </tr>
+
+          <!--espacio -->
+          <tr>
+            <th>&nbsp;</th>
+          </tr>
+
+          <!-- inicia form -->
+          <% form_for :historia, @historia, :url => { :action => "save_confirmar", :tramite => @tramite} do |f| -%>
+
+           <tr>
+            <td class="titulocalendario">Id de trámite:</td>
+           </tr>
+           <tr>
+             <td><%=@tramite.folio_integrado%></td>
+           </tr>
+
+          <tr>
+            <td class="titulocalendario">Usuario:</td>
+          </tr>
+          <tr>
+            <td>
+            <%= text_field_tag 'login', @login, :class => "input" %>
+            </td>
+          </tr>
+          <tr>
+            <td class="titulocalendario">Contraseña:</td>
+          </tr>
+          <tr>
+            <td><%= password_field_tag 'password', nil, :class => "input"%></td>
+          </tr>
+          <!-- boton -->
+          <tr>
+           <td valign="bottom"><input title="inicio de sesión" alt="inicio de sesión" type="image"  src="/images/botones/btn_entrar.png"/></td>
+          </tr>
+        <%end%>
+      </table>
+    <table>
+      <tr>
+        <th>&nbsp;</th>
+      </tr>
+    </table>
+   </div>
+
+
+
+

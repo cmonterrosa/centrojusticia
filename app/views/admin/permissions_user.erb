@@ -1,0 +1,53 @@
+<p>
+   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "permissions_user", :id => @user, :t => generate_token}, :title => "Recargar"%>
+</p>
+
+
+<div class="titulocalendario">
+  <p>Permisos del empleado</p>
+  <p><%=@user.nombre_completo%></p>
+</div>
+
+
+<div id="divlista">
+    <!-- Historico de movimientos -->
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+          <td style="vertical-align: middle;">Tipo</td>
+          <td style="vertical-align: middle;">Fecha/hora inicio</td>
+          <td style="vertical-align: middle;">Fecha/hora fin</td>
+          <td style="vertical-align: middle;">Registró</td>
+          <td style="vertical-align: middle;" colspan="3">&nbsp;</td>
+      </tr>
+      <%clase=0%>
+      <%@movimientos.each do |m|%>
+        <tr class="d<%=invert_class(clase)%>">
+          <td style="vertical-align: middle;"><b><%=h (m.situacion) ? (m.situacion.descripcion) : "----"%></b></td>
+          <td style="vertical-align: middle;"><b><%=m.fecha_inicio.strftime("%Y-%m-%d / %H:%M:%S")%></b></td>
+          <td style="vertical-align: middle;"><b><%=m.fecha_fin.strftime("%Y-%m-%d / %H:%M:%S")%></b></td>
+          <td style="vertical-align: middle;"><b><%=h (m.autorizo) ? User.find(m.autorizo).nombre_completo : "---"%></b></td>
+          <td style="vertical-align: middle;"><%=link_to "Detalle", {:action => "detail_permission", :id => m}, :class => 'boton', :title => "Detalle del Registro"-%></td>
+          <%if m.fecha_inicio >= Time.now%>
+            <td style="vertical-align: middle;"><%=link_to "Cancelar", {:action => "cancel_permission", :id => m, :user => @user}, :confirm => "¿Esta seguro que desea cancelar el registro?", :method => :delete, :class => 'boton', :title => "Cancelar Registro"-%></td>
+            <td style="vertical-align: middle;"><%=link_to "Reprogramar", {:action => "redit_permission", :id => m, :user => @user}, :confirm => "¿Esta seguro que desea reprogramar el registro?", :method => :delete, :class => 'boton', :title => "Reprogramar Registro"-%></td>
+          <%else%>
+             <td style="vertical-align: middle;">&nbsp;</td>
+             <td style="vertical-align: middle;">&nbsp;</td>
+          <%end%>
+        </tr>
+        <%clase = invert_class(clase)%>
+      <%end%>
+    </table><br /><br />
+
+    <!-- Historico de movimientos -->
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr>
+       <th colspan="2" align="center">
+          <%=link_to "Nuevo Cambio de Estatus", {:action => "add_permission_user", :controller => "admin", :id => @user, :t => generate_token}, :class => 'boton', :title => "Capturar nuevo registro"%>
+       </th>
+     </tr>
+    </table>
+</div>
+
+<br />
+  <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "show_users"%><br />
