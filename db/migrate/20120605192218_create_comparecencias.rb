@@ -3,7 +3,7 @@ class CreateComparecencias < ActiveRecord::Migration
     create_table :comparecencias do |t|
       t.datetime :fechahora
       t.string :procedencia, :limit => 40
-      t.string :caracter, :limit => 40
+      t.string :caracter, :limit => 60
       t.integer :hora_preferencia
       t.integer :dia_preferencia
       t.boolean :conocimiento
