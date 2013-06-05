@@ -47,12 +47,21 @@ class SesionesController < ApplicationController
      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
   end
 
+   #---- tentativamente lo eliminaremos -----
   def show
     @sesion = Sesion.find(params[:id])
     @token = generate_token
     @user = (params[:user])? User.find(params[:user]) : current_user
     current_user ||= User.find(params[:user]) if params[:user]
-    
+  end
+
+  def show_window
+    @token = generate_token
+    @user = (params[:user])? User.find(params[:user]) : current_user
+    current_user ||= User.find(params[:user]) if params[:user]
+    @sesion = Sesion.find(params[:id]) if params[:id]
+    @tramite = @sesion.tramite if @sesion
+    render :partial => 'show', :layout => 'only_jquery'
   end
 
   def new

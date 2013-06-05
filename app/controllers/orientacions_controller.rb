@@ -8,11 +8,12 @@ class OrientacionsController < ApplicationController
 
   def list_by_user
     @user = current_user
-    @estatus = Estatu.find_by_clave("tram-inic")
+    #@estatus = Estatu.find_by_clave("tram-inic")
+    #@estatuses = Estatu.find(:all, :conditions => ["clave in (?)", ['tram-inic', 'tram-reas']])
     @orientaciones = Orientacion.find(:all,
                                        :select => "o.*",
-                                       :joins => "o, tramites t",
-                                       :conditions => ["o.tramite_id = t.id AND o.user_id = ? AND t.estatu_id = ?", @user.id, @estatus.id],
+                                       :joins => "o, tramites t, estatus e",
+                                       :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?)", @user.id, ['tram-reas', 'tram-inic']],
                                        :order => "o.fechahora")
 
   end
@@ -34,11 +35,7 @@ class OrientacionsController < ApplicationController
   def change_estatus
     @orientacion = Orientacion.find(params[:id])
     @orientacion.estatu = Estatu.find_by_descripcion(params[:token])
-    if @orientacion.save
-        flash[:notice] = "Estatus de orientación cambiado correctamente"
-    else
-        flash[:notice] = "No se puedo cambiar estatus, verifique"
-    end
+    flash[:notice] = (@orientacion.save) ? "Estatus de orientación cambiado correctamente" : "No se puedo cambiar estatus, verifique"
     redirect_to :action => "list_by_user"
   end
 
@@ -64,6 +61,36 @@ class OrientacionsController < ApplicationController
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
     end
   end
+
+
+    ############## REASIGNACION DE ORIENTACION ##################
+
+   def reasignar
+     @orientacion = Orientacion.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
+     @todos_especialistas = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles.sort{|p1,p2| p1.puntuacion <=> p2.puntuacion}
+     @especialista_inicial = @orientacion.especialista
+     @especialista_nuevo = @todos_especialistas.at(@todos_especialistas.index(@orientacion.especialista) + 1)
+     @historia = Historia.new
+   end
+
+   def save_reasignacion
+      #@historia = Historia.find(:first, :conditions => ["tramite_id = ?", @orientacion.tramite_id], :order => "created_at DESC")
+     @orientacion = Orientacion.find(params[:id])
+     @tramite = @orientacion.tramite
+     @especialista_inicial = User.find(params[:ei])
+     @especialista_nuevo = User.find(params[:en])
+     @justificacion = Justificacion.find(params[:historia][:justificacion_id])
+     @orientacion.especialista_id = @especialista_nuevo.id
+     if @orientacion.save && @tramite.update_estatus_with_especialista!("tram-reas",current_user,@especialista_inicial,@justificacion)
+        flash[:notice] = "Orientación reasignada correctamente"
+        redirect_to :action => "index", :controller => "home"
+     else
+       flash[:notice] = "Ocurrió un error, verifique"
+       render :action => "reasignar"
+     end
+   end
+
+
 
    def save
     #--- Iniciamos trámite --
@@ -95,6 +122,8 @@ class OrientacionsController < ApplicationController
       render :action => "new_or_edit"
     end
    end
+
+   ################# CAPTURA HISTORICA ####################
 
    def captura_historica
      @orientacion = Orientacion.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
@@ -131,6 +160,30 @@ class OrientacionsController < ApplicationController
       render :action => "captura_historica"
     end
    end
+
+
+   def confirmar
+       @tramite = Tramite.find(params[:id])
+       @orientacion = Orientacion.find_by_tramite_id(params[:id])
+       return render(:partial => 'confirmacion', :layout => "only_jquery")
+   end
+
+   def save_confirmar
+     ### Verify the user logins and have the role ##########
+     @tramite = Tramite.find(params[:tramite])
+     if @user = User.find_by_login(params[:login])
+        if User.authenticate(params[:login], params[:password]) && (@user.has_role?("especialistas") || @user.has_role?("convenios"))
+            if @tramite
+                @orientacion = Orientacion.find_by_tramite_id(@tramite.id)
+                @user = User.find_by_login(params[:login])
+                @orientacion.especialista_id = @user
+                @text = (@orientacion.save && @tramite.update_estatus!("orie-conf", current_user)) ? ("Confirmado exitosamente por #{@user.nombre_completo}") : ("No se pudo confirmar, intente de nuevo")
+                return render(:partial => 'success_confirmation', :layout => "only_jquery")
+            end
+        end
+     end
+     return render(:partial => 'confirmacion', :layout => "only_jquery")
+    end
 
 
 end

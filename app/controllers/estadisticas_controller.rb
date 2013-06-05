@@ -83,6 +83,24 @@ class EstadisticasController < ApplicationController
  def grafica_orientaciones_especialistas
       g = Gruff::Bar.new
       g.title = "Orientaciones"
+      g.no_data_message = "No existe información"
+      g.add_color("#E00CF7")
+      g.add_color("#1BFB02") # Verde Fuerte
+      g.add_color("#B3FF00")
+      g.add_color("#0037FF")
+      g.add_color("#2CF8EE")
+      g.add_color("#EABFFE") # Moradito claro
+      g.add_color("#F5F83C") #Amarillo
+      g.add_color("#FD24A3") #Rosa Mexicano
+      g.add_color("#FD242F") # Rojo
+      g.add_color("#AFD2FE") # Celeste
+      g.add_color("#C1F7BB") # verde Pistache
+
+     
+              g.additional_line_values
+              g.has_left_labels
+              g.x_axis_label = "xxxx"
+
       especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
       if params[:fecha_inicio] && params[:fecha_fin]
           params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
@@ -97,10 +115,11 @@ class EstadisticasController < ApplicationController
             especialistas.each do |especialista|
             total_sesiones = Orientacion.count(:id, :conditions => ["user_id = ?", especialista.id.to_i])
               if total_sesiones > 0
-                g.data("#{especialista.nombre}", [total_sesiones])
+                g.data("#{especialista.nombre}", [total_sesiones], '#ffcc00')
               end
             end
       end
+      g.sort
       send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list.png")
  end
 
@@ -207,6 +226,30 @@ class EstadisticasController < ApplicationController
      @especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_por_semana <=> p2.num_orientaciones_por_semana}
      return render(:partial => 'show_cargas_trabajo', :layout => 'only_jquery')
   end
+
+  def select_bitacora_ausencias_personal
+     @title = "Listado de trabajadores ausentes"
+     @action = "show_ausencias"
+     @situaciones = Situacion.find(:all, :conditions => ["descripcion not in (?)", "disponible"])
+     @situaciones << Situacion.new(:descripcion => "TODOS LOS MOTIVOS")
+     return render(:partial => 'select_date_range_ausencias', :layout => 'oficial')
+  end
+
+  def show_ausencias
+     if params[:fecha_inicio] && params[:fecha_fin]
+          params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+          @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+          @situacion = Situacion.find(params[:situacion]) if params[:situacion] && params[:situacion].size > 0
+          @movimientos = (@situacion) ? Movimiento.find(:all, :conditions => ["situacion_id = ? AND ((fecha_inicio between ? AND ?) OR (fecha_fin between ? AND ?))", @situacion, @inicio, @fin, @inicio, @fin], :order => "fecha_inicio,fecha_fin") : Movimiento.find(:all, :conditions => ["(fecha_inicio between ? AND ?) OR (fecha_fin between ? AND ?)", @inicio, @fin, @inicio, @fin], :order => "fecha_inicio,fecha_fin")
+          #--- Variables for show bar ----
+          @situaciones = Situacion.find(:all, :conditions => ["descripcion not in (?)", "disponible"])
+          @situaciones << Situacion.new(:descripcion => "TODOS LOS MOTIVOS")
+          @title = "Listado de trabajadores ausentes"
+          @action = "show_ausencias"
+          return render(:partial => 'show_ausencias', :layout => 'oficial')
+     end
+  end
+  
 
 
 end

@@ -1,4 +1,5 @@
 class TramitesController < ApplicationController
+  layout 'oficial_fancy'
   before_filter :login_required
   require_role [:especialistas, :subdireccion], :for => [:menu]
   require_role [:admin], :for => [:destroy]

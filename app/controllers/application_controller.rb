@@ -33,7 +33,13 @@ class ApplicationController < ActionController::Base
     c = Iconv.new('ISO-8859-15//IGNORE//TRANSLIT', 'UTF-8')
     iso = c.iconv(texto)
     return iso
-  end
+ end
+
+ def clean_string(string)
+   (string) ? (return string.to_s.gsub(/\$/, '\$').gsub(/\"/, '\"')) : (return "")
+ end
+
+ 
 
 
 end

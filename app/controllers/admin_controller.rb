@@ -47,11 +47,7 @@ class AdminController < ApplicationController
   def add_flujo
     if params[:flujo][:role_id] && params[:flujo][:old_status_id] && params[:flujo][:new_status_id]
        @flujo = Flujo.new(params[:flujo])
-       if @flujo.save
-         flash[:notice] = "Guardado correctamente"
-       else
-         flash[:notice] = "No se puedo guardar, verifique"
-       end
+       flash[:notice] = (@flujo.save) ?   "Guardado correctamente" :  "No se puedo guardar, verifique"
        redirect_to :action => "flujo"
     else
       flash[:notice] = "No se puedo guardar, verifique"
@@ -301,6 +297,34 @@ end
 
  def detail_permission
    @movimiento = Movimiento.find(params[:id])
+ end
+
+ def cancel_permission
+   @movimiento = Movimiento.find(params[:id])
+   @user = User.find(params[:user])
+   if @movimiento && @user
+    flash[:notice] = ( @movimiento.destroy)? "Registro cancelado correctamente" : "Registro no pudo cancelarse, verifique"
+   end
+   redirect_to :action => "permissions_user", :id => @user, :t => generate_token
+ end
+
+ def redit_permission
+   @movimiento = Movimiento.find(params[:id])
+   @user = User.find(params[:user])
+ end
+
+ def update_permission
+   @movimiento = Movimiento.find(params[:id])
+   @user = User.find(params[:user])
+   if @movimiento && @movimiento.update_attributes(params[:movimiento])
+     if @movimiento.save
+        flash[:notice] = "Registro actualizado correctamente"
+        redirect_to :action => "permissions_user", :id => @user, :t => generate_token
+     else
+       flash[:notice] = "No se pudo actualizar, verifique"
+       render :action => "redit_permission"
+     end
+   end
  end
 
 end

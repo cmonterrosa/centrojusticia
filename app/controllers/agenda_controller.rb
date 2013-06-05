@@ -1,4 +1,5 @@
 class AgendaController < ApplicationController
+  layout 'oficial_fancy'
   require_role [:controlagenda], :for => [:new_sesion]
   require_role [:controlagenda, :especialistas, :lecturaagenda], :for => [:management, :search_sesiones, :calendario]
 

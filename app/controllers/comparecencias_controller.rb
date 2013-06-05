@@ -15,6 +15,38 @@ class ComparecenciasController < ApplicationController
     redirect_to :action => "show", :id => params[:id]
   end
 
+  def generar_pdf_reserva_sesion
+    @sesion = Sesion.find(params[:id])
+    @tramite = @sesion.tramite
+    @comparecencia = Comparecencia.find_by_tramite_id(@tramite.id) if @tramite
+    if @sesion && @tramite && @comparecencia
+       param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
+       param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+       param["P_PRESIDENTE"]={:tipo=>"String", :valor=>MAGISTRADO_PRESIDENTE}
+       param["P_FECHA_CAPTURA"]={:tipo=>"String", :valor=>@sesion.created_at}
+       param["P_SOLICITANTE"]=(@comparecencia.solicitante) ? {:tipo=>"String", :valor=>@comparecencia.solicitante.nombre_completo} : {:tipo=>"String", :valor=>""}
+       param["P_ESPECIALISTA"]=(@comparecencia.user_id) ? {:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo} : {:tipo=>"String", :valor=>""}
+       param["P_FECHA_HORA_CAPTURA"]= (@sesion.created_at) ? {:tipo=>"String", :valor=>@sesion.created_at.strftime("%d DE %B DE %Y / %H:%M").upcase} :  {:tipo=>"String", :valor=>"---"}
+       param["P_NUM_EXPEDIENTE"]=(@tramite.numero_expediente) ? {:tipo=>"String", :valor=>@tramite.numero_expediente} : {:tipo=>"String", :valor=>""}
+       param["P_FOLIO"]={:tipo=>"String", :valor=>@tramite.folio_integrado}
+       param["P_ESPECIALISTA_SESION"]=(@sesion.mediador_id) ? {:tipo=>"String", :valor=>User.find(@sesion.mediador_id)} : {:tipo=>"String", :valor=>"SIN ASIGNAR"}
+       param["P_FECHA_SESION"]=(@sesion.start_at)? {:tipo=>"String", :valor=>@sesion.start_at.strftime('%d DE %B DE %Y').upcase} :  {:tipo=>"String", :valor=>""}
+       param["P_SALA_SESION"]=(@sesion.horario)? {:tipo=>"String", :valor=>@sesion.horario.sala.descripcion} :  {:tipo=>"String", :valor=>""}
+       param["P_HORA_SESION"]=(@sesion.horario)? {:tipo=>"String", :valor=>@sesion.hora_completa} : {:tipo=>"String", :valor=>""}
+       param["P_SOLICITANTES"]=(@comparecencia.solicitantes) ? {:tipo=>"String", :valor=>@comparecencia.solicitantes} : {:tipo=>"String", :valor=>""}
+       param["P_INVOLUCRADOS"]=(@comparecencia.involucrados) ? {:tipo=>"String", :valor=>@comparecencia.involucrados} : {:tipo=>"String", :valor=>""}
+       if File.exists?(REPORTS_DIR + "/reserva_sesion.jasper")
+           send_doc_jdbc("reserva_sesion", "reserva_sesion", param, output_type = 'pdf')
+       else
+          render :text => "Error"
+       end
+    else
+      flash[:notice] = "Imposible generar ticket de reserva, verifique parámetros"
+      redirect_to :action => "show", :id => params[:id]
+    end
+
+  end #--- finales
+
 
     def generar_pdf_involucrado
     @involucrado = Participante.find(params[:participante])
@@ -30,13 +62,17 @@ class ComparecenciasController < ApplicationController
        end
        param["P_SEXO"]={:tipo=>"String", :valor=>@involucrado.sexo_descripcion}
        (@involucrado.municipio) ? param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@involucrado.municipio.descripcion} : ""
-       param["P_DOMICILIO"]={:tipo=>"String", :valor=>@involucrado.domicilio}
+       #param["P_DOMICILIO"]={:tipo=>"String", :valor=>@involucrado.domicilio}
+
+       param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio)}
+      
+
        param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@involucrado.telefono_particular}
        param["P_TELEFONO_TRABAJO"]={:tipo=>"String", :valor=>@involucrado.telefono_celular_aux}
        param["P_TELEFONO_CELULAR"]={:tipo=>"String", :valor=>@involucrado.telefono_celular}
        param["P_CORREO_ELECTRONICO"]={:tipo=>"String", :valor=>@involucrado.correo}
-       param["P_OBSERVACIONES"]={:tipo=>"String", :valor=>@involucrado.observaciones}
-       param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>@involucrado.referencia_domiciliaria}
+       param["P_OBSERVACIONES"]={:tipo=>"String", :valor=>clean_string(@involucrado.observaciones)}
+       param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@involucrado.referencia_domiciliaria)}
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
        #--- Validacion de que existe al menos un solicitante ---
        if @comparecencia.solicitante
@@ -48,7 +84,7 @@ class ComparecenciasController < ApplicationController
        (@involucrado.tipopersona.descripcion == "MORAL" && @involucrado.razon_social) ?  param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=>@involucrado.razon_social.upcase} :  param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=> " "}
         #--- Values only for moral person
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
-         param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>@involucrado.apoderado_legal}
+        param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>@involucrado.apoderado_legal}
         if File.exists?(REPORTS_DIR + "/involucrado.jasper")
           (@involucrado.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("involucrado_persona_moral", "involucrado_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("involucrado", "involucrado", param, output_type = 'pdf')
           #send_doc_jdbc("involucrado", "involucrado", param, output_type = 'pdf')
@@ -84,8 +120,8 @@ class ComparecenciasController < ApplicationController
         param["P_SEXO"]={:tipo=>"String", :valor=>@solicitante.sexo_descripcion}
         (@solicitante.municipio) ? param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.municipio.descripcion} : param["P_ORIGINARIO"]={:tipo=>"String", :valor=>""} 
         #param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.municipio.descripcion}
-        @comparecencia.caracter ? param["P_CARACTER"]={:tipo=>"String", :valor=>@comparecencia.caracter.upcase} : param["P_CARACTER"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
-        param["P_DOMICILIO"]={:tipo=>"String", :valor=>@solicitante.domicilio}
+        @comparecencia.caracter ? param["P_CARACTER"]={:tipo=>"String", :valor=>clean_string(@comparecencia.caracter).upcase} : param["P_CARACTER"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
+        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio)}
         param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@solicitante.telefono_particular}
         param["P_TELEFONO_TRABAJO"]={:tipo=>"String", :valor=>@solicitante.telefono_celular_aux}
         param["P_TELEFONO_CELULAR"]={:tipo=>"String", :valor=>@solicitante.telefono_celular}
@@ -93,14 +129,14 @@ class ComparecenciasController < ApplicationController
         param["P_HORARIO_PREFERENCIA"]={:tipo=>"String", :valor=>@comparecencia.dia_preferencia.upcase + " (#{@comparecencia.hora_preferencia} HRS.)"}
         conocimiento = (@comparecencia.conocimiento) ? "SÍ" : "NO"
         param["P_CONOCIMIENTO"]={:tipo=>"String", :valor=>conocimiento}
-        param["P_DATOS"]={:tipo=>"String", :valor=>@comparecencia.datos}
+        param["P_DATOS"]={:tipo=>"String", :valor=>clean_string(@comparecencia.datos)}
         param["P_ASUNTO"]={:tipo=>"String", :valor=>(@comparecencia.asunto).gsub(/\$/, '\$')}
         param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
         param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=>@solicitante.tipopersona.descripcion}
-        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>@solicitante.referencia_domiciliaria}
+        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@solicitante.referencia_domiciliaria)}
         #--- params only for moral person ---
         param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>@solicitante.apoderado_legal}
-        param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=>@solicitante.razon_social}
+        param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.razon_social)}
         if File.exists?(REPORTS_DIR + "/comparecencia.jasper")
           (@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
           #send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
@@ -151,7 +187,6 @@ class ComparecenciasController < ApplicationController
 
 
   #--- ajax actions --
-
   def show_informacion_general
     @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
     @comparecencia ||= Comparecencia.new
@@ -178,7 +213,8 @@ class ComparecenciasController < ApplicationController
       @title = "Selección de horario"
       return render(:partial => 'calendario', :layout => "only_jquery")
     else
-      return render(:partial => 'sesion_asignada', :layout => "only_jquery")
+      redirect_to :action => "generar_pdf_reserva_sesion", :id => @sesion
+      #return render(:partial => 'sesion_asignada', :layout => "only_jquery")
     end
   end
 
@@ -241,8 +277,9 @@ class ComparecenciasController < ApplicationController
     @sesion.tiposesion =  Tiposesion.find_by_descripcion("RESERVA DE SESION")
     if @sesion.tramite &&  @sesion.save
        flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
-       redirect_to :action => "daily_show", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
-    else
+       #redirect_to :action => "daily_show", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
+       redirect_to :action => "generar_pdf_reserva_sesion", :id => @sesion
+   else
        flash[:notice] = "no se puedo guardar, verifique"
        @fecha = Date.parse(params[:date])
        @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
