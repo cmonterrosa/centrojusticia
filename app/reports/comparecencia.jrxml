@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="288"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -38,7 +38,7 @@
 	<title>
 		<band height="802" splitType="Stretch">
 			<rectangle radius="10">
-				<reportElement key="INICIO" style="Detail" x="15" y="545" width="522" height="145"/>
+				<reportElement key="INICIO" style="Detail" x="15" y="551" width="522" height="145"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="302" y="34" width="237" height="20"/>
@@ -146,14 +146,14 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_ORIGINARIO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="19" y="212" width="218" height="20"/>
-				<textElement>
+				<reportElement x="19" y="210" width="218" height="31"/>
+				<textElement verticalAlignment="Middle">
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CARÁCTER CON EL QUE COMPARECE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="23" y="697" width="249" height="20"/>
+				<reportElement x="23" y="702" width="249" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -167,77 +167,77 @@
 				<text><![CDATA[CENTRO ESTATAL DE JUSTICIA ALTERNATIVA]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="237" y="212" width="303" height="20"/>
-				<textElement>
-					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				<reportElement mode="Transparent" x="237" y="210" width="303" height="31"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Droid Serif" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_CARACTER}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="147" y="372" width="111" height="20"/>
+				<reportElement mode="Transparent" x="147" y="378" width="111" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TELEFONO_CASA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="17" y="372" width="130" height="20"/>
+				<reportElement x="17" y="378" width="130" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TELÉFONO DE CASA:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="406" y="372" width="133" height="20"/>
+				<reportElement mode="Transparent" x="406" y="378" width="133" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TELEFONO_TRABAJO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="258" y="372" width="148" height="20"/>
+				<reportElement x="258" y="378" width="148" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TELÉFONO DE TRABAJO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="149" y="396" width="109" height="20"/>
+				<reportElement mode="Transparent" x="149" y="402" width="109" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TELEFONO_CELULAR}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="19" y="396" width="130" height="20"/>
+				<reportElement x="19" y="402" width="130" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TELÉFONO CELULAR:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="261" y="396" width="56" height="20"/>
+				<reportElement x="261" y="402" width="56" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CORREO:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="317" y="396" width="222" height="20"/>
+				<reportElement mode="Transparent" x="317" y="402" width="222" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_CORREO}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="19" y="419" width="303" height="20"/>
+				<reportElement mode="Transparent" x="19" y="425" width="303" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["HORARIO DE PREFERENCIA PARA LAS SESIONES:   "]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="19" y="443" width="371" height="20"/>
+				<reportElement x="19" y="449" width="371" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -251,69 +251,69 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["Conmutador: (961) 6178700, página web: www.poderjudicialchiapas.gob.mx"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="19" y="556" width="511" height="131"/>
+				<reportElement mode="Transparent" x="19" y="562" width="511" height="131"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Droid Serif" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_ASUNTO}]]></textFieldExpression>
 			</textField>
 			<rectangle radius="10">
-				<reportElement key="DATOS" style="SubTitle" x="15" y="476" width="522" height="57"/>
+				<reportElement key="DATOS" style="SubTitle" x="15" y="482" width="522" height="57"/>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="25" y="482" width="498" height="46"/>
+				<reportElement mode="Transparent" x="25" y="488" width="498" height="46"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_DATOS}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="284" y="697" width="253" height="20"/>
+				<reportElement x="284" y="702" width="253" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[NOMBRE Y FIRMA DEL SOLICITANTE]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="23" y="738" width="249" height="20"/>
+				<reportElement mode="Transparent" x="23" y="743" width="249" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="10" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["LIC. " + $P{P_ESPECIALISTA}]]></textFieldExpression>
 			</textField>
 			<rectangle radius="10">
-				<reportElement x="17" y="243" width="522" height="55"/>
+				<reportElement x="17" y="249" width="522" height="55"/>
 			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="284" y="738" width="255" height="20"/>
+				<reportElement mode="Transparent" x="284" y="743" width="255" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="10" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SOLICITANTE}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="28" y="250" width="496" height="44"/>
+				<reportElement mode="Transparent" x="28" y="256" width="496" height="44"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_DOMICILIO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="35" y="237" width="81" height="15"/>
+				<reportElement mode="Opaque" x="35" y="243" width="81" height="15"/>
 				<textElement textAlignment="Center">
 					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[DOMICILIO:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="34" y="468" width="49" height="19"/>
+				<reportElement mode="Opaque" x="34" y="474" width="49" height="19"/>
 				<textElement textAlignment="Center">
 					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[DATOS:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="34" y="537" width="60" height="19"/>
+				<reportElement mode="Opaque" x="34" y="543" width="60" height="19"/>
 				<textElement textAlignment="Center">
 					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -331,34 +331,34 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["Calle Candoquis número 290, esquina con Avenida Pino, Fraccionamiento el Bosque, C.P. 29047 Tuxtla Gutiérrez, Chiapas"]]></textFieldExpression>
 			</textField>
 			<rectangle>
-				<reportElement x="395" y="443" width="62" height="20"/>
+				<reportElement x="395" y="449" width="62" height="20"/>
 			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="395" y="443" width="62" height="20"/>
+				<reportElement mode="Transparent" x="395" y="449" width="62" height="20"/>
 				<textElement textAlignment="Center">
 					<font fontName="Droid Serif" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_CONOCIMIENTO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="322" y="419" width="215" height="20"/>
+				<reportElement x="322" y="425" width="215" height="20"/>
 				<textElement>
 					<font fontName="Droid Serif" size="10"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_HORARIO_PREFERENCIA}]]></textFieldExpression>
 			</textField>
 			<rectangle radius="10">
-				<reportElement x="17" y="308" width="523" height="58"/>
+				<reportElement x="17" y="314" width="523" height="58"/>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="28" y="316" width="496" height="46"/>
+				<reportElement mode="Transparent" x="28" y="322" width="496" height="46"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="36" y="304" width="179" height="15"/>
+				<reportElement mode="Opaque" x="36" y="310" width="179" height="15"/>
 				<textElement textAlignment="Center">
 					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>

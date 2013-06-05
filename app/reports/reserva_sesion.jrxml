@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="96"/>
+	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12"/>
+	<parameter name="P_FECHA_CAPTURA" class="java.lang.String"/>
+	<parameter name="P_SOLICITANTE" class="java.lang.String"/>
+	<parameter name="P_ESPECIALISTA" class="java.lang.String"/>
+	<parameter name="P_FECHA_HORA_CAPTURA" class="java.lang.String"/>
+	<parameter name="P_NUM_EXPEDIENTE" class="java.lang.String"/>
+	<parameter name="P_FOLIO" class="java.lang.String"/>
+	<parameter name="P_ESPECIALISTA_SESION" class="java.lang.String"/>
+	<parameter name="P_FECHA_SESION" class="java.lang.String"/>
+	<parameter name="APP_URL" class="java.lang.String"/>
+	<parameter name="P_SALA_SESION" class="java.lang.String"/>
+	<parameter name="P_HORA_SESION" class="java.lang.String"/>
+	<parameter name="P_PRESIDENTE" class="java.lang.String"/>
+	<parameter name="P_INVOLUCRADOS" class="java.lang.String"/>
+	<parameter name="P_SOLICITANTES" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from users]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="login" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="802" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="16" y="230" width="522" height="79"/>
+			</rectangle>
+			<line>
+				<reportElement x="0" y="62" width="555" height="1"/>
+			</line>
+			<image>
+				<reportElement x="17" y="2" width="171" height="52"/>
+				<imageExpression class="java.lang.String"><![CDATA["/home/cmonterrosa/NetBeansProjects/centrojusticia_dev/app/reports/imagenes/logo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="15" y="67" width="523" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Droid Serif" size="13" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SOLICITUD DE TRÁMITE]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="187" y="106" width="166" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_NUM_EXPEDIENTE}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="199" y="126" width="324" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FECHA_CAPTURA}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="27" y="244" width="173" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NOMBRE DEL ESPECIALISTA:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="200" y="244" width="324" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_ESPECIALISTA_SESION}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="353" y="106" width="50" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FOLIO:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="319" width="516" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[NOMBRE Y FIRMA DEL ESPECIALISTA QUE BRINDÓ ORIENTACIÓN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Title" x="196" y="2" width="343" height="32"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Droid Serif" size="12" pdfFontName="Times-Bold"/>
+				</textElement>
+				<text><![CDATA[CENTRO ESTATAL DE JUSTICIA ALTERNATIVA]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="37" y="771" width="321" height="11"/>
+				<textElement>
+					<font size="7" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Conmutador: (961) 6178700, página web: www.poderjudicialchiapas.gob.mx"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="20" y="353" width="519" height="20"/>
+				<textElement textAlignment="Center">
+					<font fontName="Droid Serif" size="10" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_ESPECIALISTA}]]></textFieldExpression>
+			</textField>
+			<rectangle radius="10">
+				<reportElement x="16" y="92" width="522" height="121"/>
+			</rectangle>
+			<staticText>
+				<reportElement mode="Opaque" x="38" y="222" width="284" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DATOS DE LA SESIÓN SUJETA A CALIFICACIÓN:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="475" y="738" width="98" height="45"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/public/images/logos/logomodernizaPJE.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="38" y="761" width="436" height="10"/>
+				<textElement>
+					<font size="7" pdfFontName="Helvetica"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Calle Candoquis número 290, esquina con Avenida Pino, Fraccionamiento el Bosque, C.P. 29047 Tuxtla Gutiérrez, Chiapas"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="29" y="127" width="104" height="19"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SOLICITANTE(S):]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="133" y="127" width="390" height="30"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SOLICITANTES}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="453" y="106" width="70" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FOLIO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="52" y="86" width="122" height="15"/>
+				<textElement textAlignment="Center">
+					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[DATOS GENERALES:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="107" width="162" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHA Y HORA DE CAPTURA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="302" y="34" width="237" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Droid Serif" size="11" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[SUBDIRECCIÓN REGIONAL CENTRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="284" width="45" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[SALA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="264" width="45" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="257" y="264" width="49" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[HORA:]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="72" y="264" width="163" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FECHA_SESION}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="306" y="264" width="218" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_HORA_SESION}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="72" y="284" width="163" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SALA_SESION}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="196" y="107" width="212" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FECHA_HORA_CAPTURA} + " HRS."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="408" y="106" width="45" height="20"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FOLIO:]]></text>
+			</staticText>
+			<image>
+				<reportElement x="20" y="396" width="171" height="52"/>
+				<imageExpression class="java.lang.String"><![CDATA["/home/cmonterrosa/NetBeansProjects/centrojusticia_dev/app/reports/imagenes/logo.jpg"]]></imageExpression>
+			</image>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="23" y="474" width="327" height="38"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["C. " + $P{P_SOLICITANTE} + "\n" + "P R E S E N T E."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="649" width="518" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_PRESIDENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="20" y="669" width="518" height="48"/>
+				<textElement textAlignment="Center">
+					<font size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["PRESIDENTE DEL TRIBUNAL SUPERIOR DE JUSTICIA Y DEL CONSEJO DE LA JUDICATURA DEL ESTADO DE CHIAPAS"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="23" y="512" width="515" height="120"/>
+				<textElement textAlignment="Justified">
+					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Por este medio agradezco tu confianza en el Poder Judicial del Estado de Chiapas, ya que a través de la Justicia Alternativa y al emplear los medios alternativos de solución de conflictos, las personas resuelven directa y activamente sus diferencias jurídicas.
+
+Esta moderna forma de impartición de justicia te permite encausar tu conflicto interpersonal mediante la comunicación y el entendimiento coadyuvando en la construcción de acuerdos que satisfagan tus necesidades, se reducen los tiempos, la tensión, el enfrentamiento y los gastos de las partes en conflicto. Con la certeza y seguridad de que tus acuerdos o convenios serán elevados a categoría de cosa juzgada o sentencia ejecutoria, según sea el caso.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="381" width="555" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="109" y="396" width="446" height="33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Droid Serif" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA["2013, AÑO DE BELISARIO DOMÍNGUEZ"]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="29" y="157" width="115" height="14"/>
+				<textElement>
+					<font fontName="Droid Serif" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[INVOLUCRADO(S):]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="144" y="157" width="379" height="30"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font fontName="Droid Serif" size="10" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_INVOLUCRADOS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+</jasperReport>
