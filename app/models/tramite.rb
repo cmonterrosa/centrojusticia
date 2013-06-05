@@ -48,6 +48,18 @@ class Tramite < ActiveRecord::Base
     end
   end
 
+  def update_estatus_with_especialista!(clave,usuario,especialista=nil,justificacion=nil)
+    @estatus = Estatu.find_by_clave(clave) if (!clave.nil? && !usuario.nil?)
+    @especialista = (especialista) ? especialista.id : nil
+    @justificacion = (justificacion) ? Justificacion.find(justificacion) : nil
+    @history = Historia.new(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id, :especialista_id => @especialista ) if @estatus
+    if @history.save
+      #---- actualizacion del registro principal --
+      self.update_attributes!(:estatu_id => @estatus.id)
+      return true
+    end
+  end
+
   def update_flujo_estatus!(usuario)
        ids = []
        usuario.roles.each do |role| ids << role.id end
