@@ -23,4 +23,8 @@ module ApplicationHelper
     return iso
   end
 
+  def colors_to_days
+   return @backgrounds_colors = {1 => "#FACC2E", 2 => "#FA58D0", 3 => "#31B404", 4=> "#C1F7BB", 5 => "#AFD2FE"}
+  end
+
 end
