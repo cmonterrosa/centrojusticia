@@ -1,5 +1,10 @@
-Trámite iniciado vía internet           | tram-inte|0|0
+Trámite extraordinario iniciado         | tram-extr|0|0
+Trámite iniciado por escrito            | tram-escr|0|0
+Trámite iniciado por teléfono           | tram-tele|0|0
+Trámite iniciado por correo             | tram-corr|0|0
 Trámite iniciado                        | tram-inic|1|0
+Orientación confirmada                  | orie-conf|0|0
+Trámite reasignado                      | tram-reas|0|0
 Comparecencia no levantada              | no-compar|0|0
 Comparecencia concluida                 | comp-conc|0|0
 Tramite admitido                        | tram-admi|0|0
