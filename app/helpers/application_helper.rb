@@ -24,7 +24,7 @@ module ApplicationHelper
   end
 
   def colors_to_days
-   return @backgrounds_colors = {1 => "#FACC2E", 2 => "#FA58D0", 3 => "#31B404", 4=> "#C1F7BB", 5 => "#AFD2FE"}
+   return @backgrounds_colors = {0 => "#82FA58", 1 => "#FE2EC8", 2 => "#A9A9F5", 3 => "#31B404", 4=> "#F2F5A9", 5 => "#AFD2FE"}
   end
 
 end
