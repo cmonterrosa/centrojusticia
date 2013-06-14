@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="93"/>
+	<property name="ireport.y" value="211"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -17,6 +17,7 @@
 	<parameter name="P_ESPECIALISTA" class="java.lang.String"/>
 	<parameter name="P_SUBDIRECTOR" class="java.lang.String"/>
 	<parameter name="P_ARTICULO_ESP" class="java.lang.String"/>
+	<parameter name="P_APP_URL" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select * from users]]>
 	</queryString>
@@ -42,34 +43,6 @@
 	</background>
 	<title>
 		<band height="759" splitType="Stretch">
-			<staticText>
-				<reportElement style="Title" x="260" y="2" width="266" height="32"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="14"/>
-				</textElement>
-				<text><![CDATA[Centro Estatal de Justicia Alternativa]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="325" y="34" width="201" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="12"/>
-				</textElement>
-				<text><![CDATA[Subdirección Regional Centro]]></text>
-			</staticText>
-			<line>
-				<reportElement x="0" y="77" width="555" height="1"/>
-			</line>
-			<image>
-				<reportElement x="51" y="2" width="196" height="68"/>
-				<imageExpression class="java.lang.String"><![CDATA["/home/cmonterrosa/NetBeansProjects/centrojusticia/app/reports/imagenes/logo.jpg"]]></imageExpression>
-			</image>
-			<textField>
-				<reportElement x="350" y="93" width="176" height="20"/>
-				<textElement>
-					<font size="10" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_LUGAR}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="350" y="113" width="176" height="20"/>
 				<textElement>
@@ -109,7 +82,7 @@
 "No omito manifestarle que podrá acompañarse de persona de su confianza y que puede presentar la documentación relacionada con el asunto por " +
 "el que se le invita. Asimismo, será necesario presentarse con una identificación oficial y copia fotostática de la misma." + "\n\n" +
 
-"Le hacemos saber que ha sido designado como especialista para atender el asunto a tratar, " + $P{P_ARTICULO_ESP} + " Lic. " + $P{P_ESPECIALISTA} + "." + "\n\n" +
+"Le hacemos saber que ha sido designado como especialista para atender el asunto a tratar, " + $P{P_ARTICULO_ESP} + " LIC. " + $P{P_ESPECIALISTA} + "." + "\n\n" +
 
 "Agradeceremos confirmar su asistencia al teléfono (961) 61 78700, ext. 8863, 8864 y 8865." + "\n\n"]]></textFieldExpression>
 			</textField>
@@ -155,6 +128,27 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Conmutador: (961) 6178700, página web: www.poderjudicialchiapas.gob.mx"]]></textFieldExpression>
 			</textField>
+			<image>
+				<reportElement x="27" y="10" width="207" height="68"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{P_APP_URL} + "/app/reports/imagenes/logo.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="312" y="42" width="237" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Droid Serif" size="12" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[SUBDIRECCIÓN REGIONAL CENTRO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Title" x="206" y="10" width="343" height="32"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Droid Serif" size="14" pdfFontName="Times-Bold"/>
+				</textElement>
+				<text><![CDATA[CENTRO ESTATAL DE JUSTICIA ALTERNATIVA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="85" width="555" height="1"/>
+			</line>
 		</band>
 	</title>
 	<pageHeader>
