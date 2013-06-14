@@ -29,7 +29,11 @@ class Tramite < ActiveRecord::Base
   end
 
   def folio_inverso
+    if self.anio && self.folio
     "#{self.anio[2..4]}#{self.folio.to_s.rjust(5, '0')}"
+    else
+      false
+    end
      #"#{self.folio}/#{self.anio}"
   end
 
@@ -51,8 +55,8 @@ class Tramite < ActiveRecord::Base
   def update_estatus_with_especialista!(clave,usuario,especialista=nil,justificacion=nil)
     @estatus = Estatu.find_by_clave(clave) if (!clave.nil? && !usuario.nil?)
     @especialista = (especialista) ? especialista.id : nil
-    @justificacion = (justificacion) ? Justificacion.find(justificacion) : nil
-    @history = Historia.new(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id, :especialista_id => @especialista ) if @estatus
+    @justificacion = (justificacion) ? Justificacion.find(justificacion).id : nil
+    @history = Historia.new(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id, :especialista_id => @especialista, :justificacion_id => @justificacion ) if @estatus
     if @history.save
       #---- actualizacion del registro principal --
       self.update_attributes!(:estatu_id => @estatus.id)
@@ -73,19 +77,23 @@ class Tramite < ActiveRecord::Base
   end
 
    def generar_folio
-      anio = self.anio
-      maximo=  Tramite.maximum(:folio, :conditions => ["anio = ?", anio])
-      folio = 1 unless maximo
-      folio ||= maximo.to_i + 1
-      self.folio = folio
+     unless self.folio
+        anio = self.anio
+        maximo=  Tramite.maximum(:folio, :conditions => ["anio = ?", anio])
+        folio = 1 unless maximo
+        folio ||= maximo.to_i + 1
+        self.folio = folio
+     end
    end
 
    def generar_folio_expediente!
-      anio = self.anio
-      maximo=  Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", anio])
-      folio = 1 unless maximo
-      folio ||= maximo.to_i + 1
-      self.update_attributes!(:folio_expediente => folio) if folio
+     unless self.folio_expediente
+        anio = self.anio
+        maximo=  Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", anio])
+        folio = 1 unless maximo
+        folio ||= maximo.to_i + 1
+        self.update_attributes!(:folio_expediente => folio) if folio
+     end
    end
 
    def numero_expediente
