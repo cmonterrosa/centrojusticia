@@ -17,6 +17,7 @@ class SessionsController < ApplicationController
       # button. Uncomment if you understand the tradeoffs.
      
       session["nombre_completo"] = user.nombre_completo
+      session["user_id"] = current_user.id if current_user
       self.current_user = user
       new_cookie_flag = (params[:remember_me] == "1")
       handle_remember_cookie! new_cookie_flag

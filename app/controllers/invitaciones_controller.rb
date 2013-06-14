@@ -16,7 +16,7 @@ class InvitacionesController < ApplicationController
        @tramite = @sesion.tramite
        @involucrado = Participante.find(params[:p]) if params[:p]
        @involucrado ||= Participante.find(:first,
-                      :conditions => ["comparecencia_id = ?", Comparecencia.find_by_tramite_id(@tramite).id])
+                      :conditions => ["perfil = 'INVOLUCRADO' AND comparecencia_id = ?", Comparecencia.find_by_tramite_id(@tramite).id])
 
        # Timestamp for printing for a invitador
        if current_user.id == @invitacion.invitador_id
@@ -26,7 +26,7 @@ class InvitacionesController < ApplicationController
 
        #-- Parametros
        param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
-       #param["P_NOMBRE"]={:tipo=>"String", :valor=>"Carlos Augusto Monterrosa López"}
+       param["P_APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
        param["P_NOMBRE"]={:tipo=>"String", :valor=>@involucrado.nombre_completo}
        #param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>"Lic. Amauri Palacios Aquino"}
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>@invitacion.especialista.nombre_completo}
@@ -45,7 +45,11 @@ class InvitacionesController < ApplicationController
        #param["P_FECHA_SESION"]={:tipo=>"String", :valor=>"05 de marzo, a las 3 de la tarde"}
        param["P_FECHA_SESION"]={:tipo=>"String", :valor=>"#{@invitacion.fecha_sesion}"}
        param["P_ARTICULO_ESP"] = {:tipo => "String", :valor => @invitacion.articulo_esp}
-       send_doc_jdbc("invitacion", "invitacion", param, output_type = 'pdf')
+        if File.exists?(REPORTS_DIR + "/invitacion.jasper")
+           send_doc_jdbc("invitacion", "invitacion", param, output_type = 'pdf')
+       else
+          render :text => "Error"
+       end
     else
       render :text => "Imposible generar invitación, verifique los parámetros"
     end

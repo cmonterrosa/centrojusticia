@@ -1,6 +1,8 @@
+require 'date'
 class OrientacionsController < ApplicationController
   require_role [:atencionpublico, :subdireccion, :direccion], :for => [:new_or_edit, :save]
   require_role [:especialistas, :convenios], :for => [:list_by_user]
+  require_role [:admin, :admindireccion, :direccion], :for => [:show_especialistas_disponibles]
 
   def index
    
@@ -50,14 +52,7 @@ class OrientacionsController < ApplicationController
       @especialistas = Role.find_by_name("convenios").users.sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
     else
-      #especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
-      especialistas = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles
-
-      #especialistas.each do |e| e["orientaciones"] = Orientacion.count(:id, :conditions => ["user_id = ? AND fechahora BETWEEN ? AND ?", e.id, 6.months.ago, Time.now])  end
-      #@especialistas = especialistas.sort{|p1,p2| p1.orientaciones <=> p2.orientaciones}
-      #-- por semana @especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_por_semana <=> p2.num_orientaciones_por_semana}
-      #@especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_dos_dias <=> p2.num_orientaciones_dos_dias}
-      @especialistas = especialistas.sort{|p1,p2| p1.puntuacion <=> p2.puntuacion}
+      @especialistas = seleccionar_especialistas
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
     end
   end
@@ -67,10 +62,25 @@ class OrientacionsController < ApplicationController
 
    def reasignar
      @orientacion = Orientacion.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
-     @todos_especialistas = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles.sort{|p1,p2| p1.puntuacion <=> p2.puntuacion}
+     #@todos_especialistas = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles.sort{|p1,p2| p1.puntuacion <=> p2.puntuacion}
+     @todos_especialistas = seleccionar_especialistas
      @especialista_inicial = @orientacion.especialista
-     @especialista_nuevo = @todos_especialistas.at(@todos_especialistas.index(@orientacion.especialista) + 1)
-     @historia = Historia.new
+     @justificaciones = Justificacion.find(:all, :conditions => ["descripcion = ?", "ESPECIALISTA NO DA ATENCIÓN"])
+     if !@todos_especialistas.empty? && @todos_especialistas.include?(@orientacion.especialista)
+      @especialista_nuevo = @todos_especialistas.at(@todos_especialistas.index(@orientacion.especialista) + 1)
+       unless @especialista_nuevo
+         flash[:notice] = "No existen especialistas disponibles"
+         redirect_to :action => "list", :controller => "tramites"
+       end
+       @historia = Historia.new
+     else
+       if @todos_especialistas.first
+        @especialista_nuevo = @todos_especialistas.first
+       else
+          flash[:notice] = "No existen especialistas disponibles, intente más tarde"
+          redirect_to :action => "list", :controller => "tramites"
+       end
+     end
    end
 
    def save_reasignacion
@@ -79,7 +89,8 @@ class OrientacionsController < ApplicationController
      @tramite = @orientacion.tramite
      @especialista_inicial = User.find(params[:ei])
      @especialista_nuevo = User.find(params[:en])
-     @justificacion = Justificacion.find(params[:historia][:justificacion_id])
+     @justificacion = Justificacion.find(params[:historia][:justificacion_id]) if params[:historia][:justificacion_id]
+     @justificacion ||= Justificacion.find(:first, :conditions => ["descripcion = ?", "ESPECIALISTA NO DA ATENCIÓN"])
      @orientacion.especialista_id = @especialista_nuevo.id
      if @orientacion.save && @tramite.update_estatus_with_especialista!("tram-reas",current_user,@especialista_inicial,@justificacion)
         flash[:notice] = "Orientación reasignada correctamente"
@@ -108,6 +119,9 @@ class OrientacionsController < ApplicationController
     @tramite.fechahora = @orientacion.fechahora
     @orientacion.tramite = @tramite
     @orientacion.especialista_id = User.find(params[:orientacion][:user_id]).id if params[:orientacion][:user_id]
+    #### BUSQUEDA DE ESPECIALISTAS #####
+    @especialistas = seleccionar_especialistas
+    @orientacion.especialista_id ||= @especialistas.first.id
     if @orientacion.save && @tramite.save
       @tramite.update_estatus!("tram-inic", current_user)
         if @orientacion.notificacion
@@ -184,6 +198,23 @@ class OrientacionsController < ApplicationController
      end
      return render(:partial => 'confirmacion', :layout => "only_jquery")
     end
+
+def show_especialistas_disponibles
+    @especialistas = seleccionar_especialistas
+end
+
+
+
+protected
+
+   def seleccionar_especialistas
+      norm_date = Date.today
+      limite = DateTime.parse("#{Time.now.year}-#{Time.now.month}-#{Time.now.day} 15:55:00")
+      ahora = Time.parse("#{norm_date} #{DateTime.now.strftime "%H:%M:%S"}")
+      hora_limite = Time.parse("#{norm_date} #{limite.strftime "%H:%M:%S"}")
+      especialistas = (ahora >= hora_limite) ? Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_vespertinos : Role.find_by_name("ESPECIALISTAS").usuarios_disponibles
+      return (especialistas.sort{|p1,p2| p1.puntuacion <=> p2.puntuacion})
+   end
 
 
 end

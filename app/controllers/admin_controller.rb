@@ -327,4 +327,29 @@ end
    end
  end
 
+ ########### REPORTE DE ATENCIONES NO BRINDADAS ######
+ def atenciones_no_brindadas
+   @title = "Atenciones no brindadas al público"
+   @action = "show_atenciones_no_brindadas"
+ end
+
+ def show_atenciones_no_brindadas
+   @title = "Atenciones no brindadas al público"
+   @action = "show_atenciones_no_brindadas"
+    if params[:fecha_inicio] && params[:fecha_fin]
+       params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+       @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+    end
+    if @inicio && @fin
+       @tramites = Tramite.find(:all, :conditions => ["created_at between ? AND ?", @inicio, @fin])
+       @justificacion = Justificacion.find_by_descripcion("ESPECIALISTA NO DA ATENCIÓN")
+       @historias = Historia.find(:all, :conditions => ["tramite_id in (?) AND justificacion_id = ? AND especialista_id IS NOT NULL", @tramites.map{|t|t.id}, @justificacion.id ])
+    else
+      flash[:notice] = "Parámetros insuficientes, verifique"
+      redirect_to :action => "atenciones_no_brindadas"
+    end
+  end
+
+
+
 end

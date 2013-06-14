@@ -2,8 +2,10 @@ class SesionesController < ApplicationController
    #before_filter :login_required
    #layout 'oficial', :except => "select_schedule"
     #require_role "admin", :only => [:save, :edit]
-    require_role "especialistas", :for => [:new, :list_by_user, :list_by_tramite]
-    require_role "controlagenda", :for => [:new_with_date]
+    #require_role [:especialistas, :admindireccion], :for => [:new, :list_by_user, :list_by_tramite]
+    #require_role [:controlagenda, :admindireccion], :for => [:new_with_date]
+
+    require_role [:controlagenda, :admindireccion, :especialistas]
 
   def list_by_tramite
     @tramite = Tramite.find(params[:id])
@@ -76,12 +78,41 @@ class SesionesController < ApplicationController
     @horario = Horario.find(params[:horario]) if params[:horario]
     @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
     @tramite = (params[:id]) ? Tramite.find(params[:id]) : Tramite.new
+##    @especialistas = User.find_by_sql(["SELECT u.* FROM users u
+#    inner join roles_users ru on u.id=ru.user_id
+#    inner join roles r on ru.role_id=r.id
+#    where r.name='ESPECIALISTAS' and
+#    u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) AND
+#    u.id not in (select comediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno#", @fecha, @horario.hora, @horario.minutos, @fecha, @horario.hora, @horario.minutos ])
+
+    @sesion = Sesion.new
+    @sesion.fecha = @fecha
+    @sesion.horario = @horario
+    @fecha_hora_sesion = (@sesion.start_at) ? @sesion.start_at : nil
+    @especialistas = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion)
+
+
+    if current_user.has_role?("admindireccion")
+      render :partial => 'new_with_date', :layout => 'oficial'
+    else
+      flash[:notice] = "No tiene privilegios, consulte al administrador del sistema"
+      render :action => "home"
+    end
+
+
+    @fecha = Date.parse(params[:date])
+    @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
+    @horario = Horario.find(params[:horario]) if params[:horario]
+    @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
+    @tramite = (params[:id]) ? Tramite.find(params[:id]) : Tramite.new
     @especialistas = User.find_by_sql(["SELECT u.* FROM users u
     inner join roles_users ru on u.id=ru.user_id
     inner join roles r on ru.role_id=r.id
     where r.name='ESPECIALISTAS' and
     u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) AND
     u.id not in (select comediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno", @fecha, @horario.hora, @horario.minutos, @fecha, @horario.hora, @horario.minutos ])
+
+
   end
 
   def save_with_date
@@ -93,12 +124,23 @@ class SesionesController < ApplicationController
     @sesion.horario = @horario if @horario
     @sesion.horario ||= Horario.find(params[:sesion][:horario_id])
     #---- if tramite has a valid format -----
+    
     if params[:sesion][:num_tramite] =~ /^\d{1,4}\/20\d{2}$/
-       folio, anio = params[:sesion][:num_tramite].split("/")
-       @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio.to_i, folio.to_i])
-       @tramite ||= Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
-       @sesion.tramite = @tramite
+       folio_expediente, anio = params[:sesion][:num_tramite].split("/")
+       @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio_expediente = ?", anio.to_i, folio_expediente.to_i])
+       #@tramite ||= Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
+       @sesion.tramite = @tramite if @tramite
     end
+
+
+#    if params[:sesion][:num_tramite] =~ /^\d{1,4}\/20\d{2}$/
+#       folio, anio = params[:sesion][:num_tramite].split("/")
+#       @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio.to_i, folio.to_i])
+#       @tramite ||= Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
+#       @sesion.tramite = @tramite
+#    end
+
+
     @sesion.fecha = Date.parse(params[:date]) if params[:date]
     @sesion.user = current_user
     #--- guardamos historia de hora y minutos ---
@@ -107,12 +149,34 @@ class SesionesController < ApplicationController
     @sesion.sala_id = @sesion.horario.sala_id
     @sesion.activa = true
     @sesion.generate_clave if @sesion.clave.nil?
-    if @sesion.tramite && @mediador && @comediador && @sesion.save
-         #--- Notificaciones ---
-         if @sesion.notificacion && @sesion.comediador_id && @sesion.mediador_id
-            NotificationsMailer.deliver_sesion_created("mediador", @sesion)
-            NotificationsMailer.deliver_sesion_created("comediador", @sesion)
-         end
+     if    @mediador && @comediador && @sesion.save
+           ############### REGISTRAMOS AUSENCIA DE ESPECIALISTAS ##################
+            @situacion = Situacion.find_by_descripcion("EN SESION")
+            @rango_inicial =  10/(24 * 60.0) # 10 Minutos
+            @rango_final = 70/(24 * 60.0) # 1 Hora y veinte (80 minutos)
+            @fecha_inicio = @sesion.start_at - @rango_inicial
+            @fecha_fin = @sesion.start_at + @rango_final
+            @autorizo = (current_user) ? current_user.id : session["user_id"]
+            if @mediador
+               @movimiento_especialista = Movimiento.new
+               @movimiento_especialista.update_attributes(:situacion_id => @situacion.id,
+                :user_id => @mediador.id, :autorizo => @autorizo, :fecha_inicio => @fecha_inicio,
+                :fecha_fin => @fecha_fin, :observaciones => "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}")
+               @movimiento_especialista.save
+            end
+            if @comediador
+               @movimiento_comediador = Movimiento.new
+               @movimiento_comediador.update_attributes(:situacion_id => @situacion.id,
+                :user_id => @comediador.id, :autorizo => @autorizo, :fecha_inicio => @fecha_inicio,
+                :fecha_fin => @fecha_fin, :observaciones => "COMEDIADOR EN SESION, EXP. #{@sesion.num_tramite}")
+               @movimiento_comediador.save
+            end
+
+            #--- Notificaciones ---
+            if @sesion.notificacion && @sesion.comediador_id && @sesion.mediador_id
+              NotificationsMailer.deliver_sesion_created("mediador", @sesion)
+              NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+            end
        flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
        redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
     else
@@ -178,6 +242,17 @@ class SesionesController < ApplicationController
   end
 
   #---------------- Actualización de fecha/hora de sesion -------
+
+  def reprogramar
+    unless (@sesion = Sesion.find(params[:id]))
+      flash[:notice] = "No se pudo encontrar sesion, verifique"
+      redirect_to :controller => "home"
+    else
+      return render(:partial => 'reprogramar', :layout => "only_jquery")
+      @notificacion = (params[:sesion_notificacion]) ? true : false 
+    end
+  end
+
 
 
   def change_sesion_data
@@ -263,14 +338,26 @@ class SesionesController < ApplicationController
     if ((@sesion = Sesion.find(params[:id])) && validate_token(params[:t]))
         if @sesion.has_permission?(current_user)
              #----- Notificamos a especialistas ---
-             NotificationsMailer.deliver_sesion_canceled("mediador", @sesion)
-             NotificationsMailer.deliver_sesion_canceled("comediador", @sesion)
+             #NotificationsMailer.deliver_sesion_canceled("mediador", @sesion)
+             #NotificationsMailer.deliver_sesion_canceled("comediador", @sesion)
+
+             ############### BUSCAMOS A ESPECIALISTA Y COMEDIADOR ###############
+             if @sesion.num_tramite
+              @especialista = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?", @sesion.mediador_id, "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}%"])
+              @comediador = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?",  @sesion.comediador_id, "COMEDIADOR EN SESION, EXP. #{@sesion.num_tramite}%"])
+             end
+
             if @sesion.destroy
+              @especialista.destroy if @especialista
+              @comediador.destroy if @comediador
               flash[:notice] = "Sesión cancelada correctamente, notificación enviada a especialistas.."
-              redirect_to :controller => "home"
+              return render(:partial => 'sesion_cancelada_mensaje', :layout => 'only_jquery')
+              #redirect_to :controller => "home"
+
             else
               flash[:notice] = "No se pudo cancelar, verifique sesión"
-              redirect_to :action => "show", :id => @sesion
+               return render(:partial => 'no_results', :layout => 'only_jquery')
+              #redirect_to :action => "show", :id => @sesion
            end
         end
     elsif params[:id]

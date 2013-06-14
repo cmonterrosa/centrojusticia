@@ -16,6 +16,8 @@ class CustomsController < ApplicationController
         return render(:partial => 'especialistas', :layout => "oficial")
     elsif @usuario.has_role?(:oficinasubdireccion)
         return render(:partial => 'oficinasubdireccion', :layout => "oficial")
+    elsif @usuario.has_role?(:jefeatencionpublico)
+        return render(:partial => 'jefeatencionpublico', :layout => "oficial")
     elsif @usuario.has_role?(:atencionpublico)
         return render(:partial => 'atencionpublico', :layout => "oficial")
     elsif @usuario.has_role?(:controlagenda)

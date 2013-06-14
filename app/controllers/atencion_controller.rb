@@ -75,7 +75,7 @@ class AtencionController < ApplicationController
     @tramite.generar_folio unless @tramite.folio
     @tramite.subdireccion_id = current_user.subdireccion_id unless @tramite.subdireccion
     @orientacion.user, @tramite.user= current_user, current_user
-    @orientacion.tramite||= @tramite
+    @orientacion.tramite ||= @tramite
     @orientacion.fechahora ||= Time.now
     @tramite.fechahora = @orientacion.fechahora
     @tramite.atencion = @tipo_atencion if @tipo_atencion

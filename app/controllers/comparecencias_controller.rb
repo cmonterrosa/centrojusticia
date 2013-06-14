@@ -48,6 +48,28 @@ class ComparecenciasController < ApplicationController
   end #--- finales
 
 
+  def generar_pdf_observaciones
+         @solicitante = Participante.find(params[:participante])
+      if @solicitante && @solicitante.perfil == "SOLICITANTE" && @solicitante.observaciones.size > 4
+         @comparecencia = Comparecencia.find(params[:id])
+         param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
+         #-- Parametros
+         param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+         param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}
+         param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
+         param["P_OBSERVACIONES"]={:tipo=>"String", :valor=>clean_string(@solicitante.observaciones)}
+         param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
+         if File.exists?(REPORTS_DIR + "/impresion_observaciones_solicitante.jasper")
+           send_doc_jdbc("impresion_observaciones_solicitante", "impresion_observaciones_solicitante", param, output_type = 'pdf')
+           #send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
+         else
+           render :text => "Error"
+        end
+    else
+        render :text => "Imposible generar reporte involucrado, verifique los parámetros"
+    end
+ end
+
     def generar_pdf_involucrado
     @involucrado = Participante.find(params[:participante])
     @comparecencia = Comparecencia.find(params[:id])
@@ -191,7 +213,7 @@ class ComparecenciasController < ApplicationController
     @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
     @comparecencia ||= Comparecencia.new
     @comparecencia.tramite ||= Tramite.find(params[:id])
-     return render(:partial => 'new_or_edit', :layout => false)
+    return render(:partial => 'new_or_edit', :layout => false)
     #render :text => "<h3>Informacion general</h3>"
   end
 

@@ -1,9 +1,11 @@
 class AgendaController < ApplicationController
   layout 'oficial_fancy'
-  require_role [:controlagenda], :for => [:new_sesion]
-  require_role [:controlagenda, :especialistas, :lecturaagenda], :for => [:management, :search_sesiones, :calendario]
+  #require_role [:controlagenda, :admindireccion], :for => [:new_sesion]
+  #require_role [:controlagenda, :especialistas, :lecturaagenda, :admindireccion], :for => [:management, :search_sesiones, :calendario]
+  require_role [:controlagenda, :lecturaagenda, :especialistas, :admindireccion]
 
- 
+
+
   def calendario
       redirect_to :action => "management"
   end
@@ -89,6 +91,19 @@ class AgendaController < ApplicationController
     else
       redirect_to :action => @accion
     end
+  end
+
+  def update_daily_show
+       if params[:fecha]
+          @fecha = DateTime.parse(params[:fecha])
+          @before = @fecha.yesterday
+          @after = @fecha.tomorrow
+          @salas = Sala.find(:all, :order => "descripcion")
+          @horarios = Horario.find(:all, :group => "hora,minutos")
+          return render(:partial => 'dynamic_daily_show', :layout => 'only_jquery')
+       else
+          render :text => "Ocurrió un error, vuelva a cargar la página"
+       end
   end
 
 end

@@ -114,7 +114,10 @@ class TramitesController < ApplicationController
             when "espe-asig" 
                ##--- asignacion de especialista --
                session["tramite_id"] = @tramite.id
-                if !(@users = @tramite.materia.users).empty?
+               @fecha_hora_sesion = (Sesion.find_by_tramite_id(@tramite.id)) ? Sesion.find_by_tramite_id(@tramite.id).start_at : nil
+               @tipos_sesiones = Tiposesion.find(:all)
+               #if !(@users = @tramite.materia.users).empty?
+                if !(@users = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion)).empty?
                     return render(:partial => 'asignacion_especialista', :layout => "oficial")
                 else
                     return render(:partial => 'no_asignacion_especialista', :layout => "oficial")
@@ -139,24 +142,29 @@ class TramitesController < ApplicationController
          update_tramite_model if @tramite.save
       elsif params.has_key?(:sesion)
          @sesion = Sesion.find(:first, :conditions => ["tramite_id = ?", params[:id]])
-         @sesion ||= Sesion.new(params[:sesion])
+         (@sesion) ? @sesion.update_attributes(params[:sesion]) : @sesion = Sesion.new(params[:sesion])
          @tramite = @sesion.tramite = Tramite.find(params[:id])
          @sesion.num_tramite = @tramite.folio_inverso
          if @sesion && @sesion.comediador_id && @sesion.mediador_id
-            update_tramite_model if @sesion.generate_clave
-            #NotificationsMailer.deliver_sesion_created("mediador", @sesion)
-            #NotificationsMailer.deliver_sesion_created("comediador", @sesion)
-            flash[:notice] = "Especialista y comediador notificados vía correo electrónico"
+            if @sesion.save
+               update_tramite_model if @sesion.save
+               NotificationsMailer.deliver_sesion_created("mediador", @sesion)
+               NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+               flash[:notice] = "Especialista y comediador notificados vía correo electrónico"
+             else
+              flash[:notice] = "No se pudo guardar el registro, verifique"
+              redirect_to :action => "list"
+            end
          else
-            flash[:notice] = "No se pudo notificar por correo electrónico"
+            flash[:notice] = "Información incompleta, verifique"
             redirect_to :action => "list"
          end
-
+      
       #--- firma de invitaciones --
       elsif params.has_key?(:infosesion)
         @tramite = Tramite.find(params[:id])
         @invitacion = Invitacion.find(params[:invitacion]) if params[:invitacion]
-        @invitacion.invitador_id = User.find(params[:infosesion_invitador]).id if params[:infosesion_invitador]
+        #@invitacion.invitador_id = User.find(params[:infosesion_invitador]).id if params[:infosesion_invitador]
         @invitacion.sesion.signed_at = Time.now
         @invitacion.sesion.signer_id = current_user.id
         @invitacion.save && @invitacion.sesion.save
@@ -230,11 +238,11 @@ class TramitesController < ApplicationController
   end
 
   def get_comediador
-      @users = []
-      @sesion = Sesion.new
-      @mediador = User.find(params[:sesion_mediador_id])
-      Tramite.find(session["tramite_id"]).materia.users.each{|user|@users << user unless user.id == @mediador.id}
-      return render(:partial => 'comediadores', :layout => false) if request.xhr?
+    @tramite =  Tramite.find(session["tramite_id"])
+    @fecha_hora_sesion = (Sesion.find_by_tramite_id(@tramite.id)) ? Sesion.find_by_tramite_id(@tramite.id).start_at : nil
+    @users = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion)
+    @users.delete(User.find(params[:sesion_mediador_id]))
+    return render(:partial => 'comediadores', :layout => false) if request.xhr?
   end
 
   def only_orientacion
