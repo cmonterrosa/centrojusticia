@@ -3,17 +3,24 @@
 <!-- Acciones -->
 <table width="70%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
+
+       <!-- Por reeprogramar con los mismos especialistas -->
+      
+       <!-- ################ EN FASE DE CONSTRUCCION #############
+      <td><=link_to image_tag('iconos/horarios.png',  :size => "64x64", :mouseover => "iconos/horarios.png") , {:action => "reprogramar", :controller => "sesiones", :id => @sesion}, :title => "Reprogramar sesión"%></td>
+
       <td>
-        <a href="/sesiones/change_sesion_data/<%=h @sesion.id%>/?t=<%=h @token%>" title="Reprogramar horario de sesión">
+        <a href="/sesiones/change_sesion_data/<=h @sesion.id%>/?t=<=h @token%>" title="Reprogramar horario de sesión">
          <img src="/images/iconos/horarios.png" width="64" height="64" alt="tramites" />
         </a>
       </td>
 
       <td>
-        <a href="/sesiones/edit/<%=h @sesion.id%>/?t=<%=h @token%>" title="Editar datos de la sesión">
+        <a href="/sesiones/edit/<=h @sesion.id%>/?t=<=h @token%>" title="Editar datos de la sesión">
          <img src="/images/iconos/edit.png" width="64" height="64" alt="tramites" />
         </a>
       </td>
+       -->
 
       <td>
           <%= link_to image_tag("iconos/cancel.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post %><br />
@@ -53,7 +60,7 @@
      <%if @sesion.tramite%>
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Número de expediente:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=@sesion.tramite.folio_integrado%></td>
+        <td style="vertical-align: middle; width: 70%;"><%=@sesion.tramite.numero_expediente%></td>
      </tr>
      <%end%>
 
@@ -74,7 +81,7 @@
      <%if @sesion.start_at%>
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Hora de inicio:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=@sesion.start_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
+        <td style="vertical-align: middle; width: 70%;"><%=@sesion.start_at.strftime("%d DE %B DE %Y / %H:%M")%></td>
      </tr>
      <%end%>
 

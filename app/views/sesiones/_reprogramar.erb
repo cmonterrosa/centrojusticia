@@ -1,0 +1,43 @@
+<h1>Reprogramar sesión: <%=@sesion.clave%></h1>
+
+<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
+ <table class="table1" >
+  <tr align="center">
+    <th align="center">Fecha</th>
+    <th align="center">Hora actual</th>
+    <th align="center">¿Notificar por correo electrónico a especialistas?</th>
+  </tr>
+ <tr align="center">
+    <td><%= text_field_tag "sesion_fecha", "#{@sesion.fecha.strftime('%Y/%m/%d')}" %></td>
+    <td><%= text_field_tag 'sesion_hora', nil, :placeholder => @sesion.hora_completa%></td>
+    <td><%= check_box_tag 'sesion_notificacion', @notificacion%></td>
+ </tr>
+
+ <tr align="center">
+   <%if @sesion.mediador%>
+      <th>Especialista</th>
+   <%end%>
+   <%if @sesion.comediador%>
+      <th>Comediador</th>
+   <%end%>
+   <th></th>
+ </tr>
+ <tr align="center">
+    <%if @sesion.mediador%>
+      <td><%= select_tag 'sesion_mediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @sesion.mediador.id)%></td>
+    <%end%>
+    <%if @sesion.comediador%>
+      <td><%= select_tag 'sesion_comediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @sesion.comediador.id)%></td>
+    <%end%>
+    <td><%= submit_tag "Buscar horarios"%></td>
+ </tr>
+  </table>
+<% end %>
+<br />
+
+
+<!-- back -->
+<div align="center">
+   <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  {:action => "show", :user => current_user.id, :id => @sesion}, {:title => "Regresar al menú anterior"}%><br />
+</div>
+

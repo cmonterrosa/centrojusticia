@@ -38,10 +38,10 @@
             <td colspan="1" >JUSTIFICACION</td>
           </tr>
         <tr align="center" class="pregunta">
-          <td>Escoja la más adecuada</td>
+          <td>&nbsp;</td>
         </tr>
         <tr align="center">
-          <td><%= f.select :justificacion_id, Justificacion.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción', :required => true%></td>
+          <td><%= f.select :justificacion_id, @justificaciones.collect{|a| [a.descripcion, a.id]}, {:disabled => true}%></td>
         </tr>
         </table>
       </td>

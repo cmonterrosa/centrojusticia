@@ -6,29 +6,33 @@
   <%if @sesion.start_at%>
   <!-- vistazo de la invitacion -->
   <div id="invitacion_pdf">
-  <object data="/invitaciones/generar/<%=@invitacion.id%>" type="application/pdf" width="800" height="700">
+  <object data="/invitaciones/generar/<%=@invitacion.id%>" type="application/pdf" width="900" height="800">
       <p>Si no aparece el plugin para visualizar el pdf.
         <a href="/invitaciones/generar/<%=@invitacion.id%>" target="_blank">Haga click aquí para descargarlo en una nueva ventana.</a>
       </p>
     </object>
   </div>
 
+  <br /><br />
+
   <!-- firma -->
-  <table class="ficha" width="30%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table class="firmaInvitacion" width="60%">
     <% form_tag :action => 'update_estatus', :id =>@tramite, :invitacion => @invitacion do -%>
       <tr align="center" class="d1">
         <td>FIRMAR:</td>
         <td bgcolor="#f3f3f3" align="left">
-             <%=check_box_tag 'infosesion', 'firma'%>
+             <%=check_box_tag 'infosesion', 'firma', false, :class => "firmaInvitacion"%>
         </td>
       </tr>
 
+      <!--
       <tr align="center" class="d1">
         <td>INVITADOR:</td>
         <td bgcolor="#f3f3f3" align="left">
-            <%=select_tag "infosesion_invitador", options_from_collection_for_select(@role.users, "id", "nombre_completo")%>
+            <=select_tag "infosesion_invitador", options_from_collection_for_select(@role.users, "id", "nombre_completo")%>
         </td>
       </tr>
+      -->
 
       <tr>
         <td>

@@ -1,0 +1,58 @@
+
+<div class="titulocalendario">
+  <p>
+    <%=@title%>
+  </p>
+</div>
+
+<% form_tag({:action => @action} ) do -%>
+ <table>
+  <tr align="center">
+      <th align="center">Fecha inicio</th>
+      <th align="center">Fecha fin</th>
+      <th align="center">&nbsp;</th>
+  </tr>
+  <tr align="center">
+      <td><%= text_field_tag "fecha_inicio", Time.now.strftime("%Y/%m/%d") %></td>
+      <td><%= text_field_tag 'fecha_fin',  Time.now.strftime("%Y/%m/%d")%></td>
+      <td><%= submit_tag "Buscar"%></td>
+  </tr>
+</table>
+<% end %>
+
+
+
+
+<%if (@inicio && @fin)%>
+  <div class="titulocalendario">
+    <p>Periodo del <%=@inicio.strftime("%d de %B de %Y")%> al <%=@fin.strftime("%d de %B de %Y")%></p>
+  </div>
+<%end%>
+
+
+<div id="divlista">
+    <!-- Historico de movimientos -->
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+          <td style="vertical-align: middle;">Trámite</td>
+          <td style="vertical-align: middle;">Fecha hora</td>
+          <td style="vertical-align: middle;">Especialista</td>
+          <td style="vertical-align: middle;">Motivo</td>
+          <td style="vertical-align: middle;" colspan="3">&nbsp;</td>
+      </tr>
+      <%clase=0%>
+      <%@historias.each do |his|%>
+        <tr class="d<%=invert_class(clase)%>">
+          <td style="vertical-align: middle;"><b><%=h (his.tramite_id)? (Tramite.find(his.tramite_id).folio_inverso) : ("----")%></b></td>
+          <td style="vertical-align: middle;"><b><%=h (his.created_at)? his.created_at.strftime('%Y-%m-%d / %H:%M:%S') : ("---")%></b></td>
+          <td style="vertical-align: middle;"><b><%=h (his.especialista_id)? User.find(his.especialista_id).nombre_completo : ("--")%></b></td>
+          <td style="vertical-align: middle;"><b><%=h (his.justificacion_id) ? Justificacion.find(his.justificacion_id).descripcion : "---"%></b></td>
+        </tr>
+        <%clase = invert_class(clase)%>
+      <%end%>
+    </table><br /><br />
+
+</div>
+
+<br />
+  <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />

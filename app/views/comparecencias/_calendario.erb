@@ -1,4 +1,4 @@
-<div class="titulocalendario">
+<div class="titulocalendario" style="text-align: center;">
   <%=h(@title)%>
 </div>
 
@@ -11,10 +11,13 @@
   <% calendar_for @sesiones, :year => @date.year, :month => @date.month do |calendar| %>
     <%= calendar.head('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado') %>
     <% calendar.day(:day_method => :start_at) do |date, sesiones| %>
-       <%=(date.month == @date.month && (1..5).include?(date.wday) && date >= DateTime.now) ? (link_to date.day, {:action => "daily_show", :id => @tramite, :controller => "comparecencias", :year => date.year, :month=> date.month, :day => date.day, :origin => params[:controller]}, {:title => date.strftime("%d de %B de %Y"), :class => "titulocalendario"}) : date.day %>
+       <%=(date.month == @date.month && (1..5).include?(date.wday) && date.month >= 7) ? (link_to date.day, {:action => "daily_show", :id => @tramite, :controller => "comparecencias", :year => date.year, :month=> date.month, :day => date.day, :origin => params[:controller]}, {:title => date.strftime("%d de %B de %Y"), :class => "titulocalendario"}) : date.day %>
       <ul>
         <% for sesion in sesiones %>
-          <li><%= link_to "#{sesion.start_at.strftime("%H:%M")}", {:controller => "sesiones", :action => "show", :id => sesion}, {:title => "#{sesion.title}", :class => "sesionesdiarias"} %></li>
+          <!--
+          <li><= link_to "#{sesion.start_at.strftime("%H:%M")}", {:controller => "sesiones", :action => "show", :id => sesion}, {:title => "#{sesion.title}", :class => "sesionesdiarias"} %></li>
+          -->
+          <li><%= link_to "#{sesion.start_at.strftime("%H:%M")}",:title => "#{sesion.title}", :class => "titulocalendario"%></li>
         <% end %>
       </ul>
     <% end %>

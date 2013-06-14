@@ -19,35 +19,42 @@
   </p>
 </div>
 
-<%if (1..5) === @fecha.strftime("%w").to_i%>
 
-<table class="table1" border=1 width=90% style='table-layout:fixed'>
-    <thead>
-        <tr>
-            <th>Hora</th>
-            <%@salas.each do |sala|%>
+<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
+<div id="calendario">
+
+  <div class="ultima_conexion">
+    Ultima actualización: <%=Time.now.strftime("%H:%M:%S")%>
+  </div><br />
+
+<!-- From monday to friday -->
+  <%if (1..5) === @fecha.strftime("%w").to_i%>
+   <table class="table1" border=1 width=90% style='table-layout:fixed'>
+      <thead>
+          <tr>
+              <th>Hora</th>
+              <%@salas.each do |sala|%>
                 <th scope="col" abbr="Starter"><%=sala.descripcion%></th>
-            <%end%>
-         </tr>
-    </thead>
+              <%end%>
+          </tr>
+      </thead>
 
-    <tbody>
+      <tbody>
       <!-- horarios -->
       <%@horarios.each do |horario|%>
       <tr>
           <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa) : "--"%></th>
               <%@salas.each do |sala|%>
                  <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
-                 <!--
-                 <td><=h (sesion) ? (link_to sesion.resume, :action => 'show', :controller => 'sesiones', :id => sesion) : " "%></td>
-                 -->
-              <%if sesion%>
-                 <%@backgrounds_colors = colors_to_days%>
-                 <td style="background-color: <%=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">
-                    <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
-                 </td>
+                  <%if sesion%>
+                    <%@backgrounds_colors = colors_to_days%>
 
-                 <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
+                   <%if sesion.tiposesion_id%>
+                      <td style="background-color: <%=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">
+                        <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
+                      </td>
+                   <%end%>
+                  <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
                     <td style="background-color: #D7F2FF;">
                         <%=  link_to "Disponible", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
                     </td>
@@ -55,12 +62,23 @@
                     <td></td>
                  <%end%>
               <%end%>
-       </tr>
-      <%end%>
-   </tbody>
-</table>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
 <%end%>
+</div>
 
+<div id="error"></div>
 
 <br /><br />
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => @origin, :action => "management", :month => @fecha.strftime("%Y-%m")%><br />
+
+
+
+<%=periodically_call_remote(:url => { :action => 'update_daily_show', :controller => "agenda", :fecha => @fecha, :origin => @origin},
+                            :frequency => '45',
+                            :before => "Element.show('spinner')",
+                            :success => "Element.hide('spinner')",
+                            :update => { :success => "calendario", :failure => "error" })%>
+

@@ -36,7 +36,7 @@
         <%end%>
 
         <!-- Eliminar si es inicio de tramite-->
-        <%if (current_user.has_role?("admin"))%>
+        <%if (current_user.has_role?("jefeatencionpublico"))%>
               <td style="vertical-align: middle;"><%=link_to "Eliminar", {:controller => "tramites", :action => "destroy", :id => e.id}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
         <%end%>
 

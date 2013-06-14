@@ -1,16 +1,18 @@
-<h3>Asignación de mediador y comediador</h3>
+<div class="titulocalendario">
+  <p>Asignación de especialista y comediador</p>
+</div>
 
 <!-- ficha -->
 <%= render :partial => "ficha"%>
-
 <br /><br />
+
 
 <div id="scroll">
 <% form_tag :action => 'update_estatus', :id =>@tramite do -%>
 <table class="sample" width="50%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
           <th colspan="2">
-              Mediador
+              Especialista
           </th>
           <td>
             <%= collection_select("sesion", "mediador_id", @users, :id, :nombre_completo, :prompt => '>> Seleccione una opción')%>
@@ -23,6 +25,15 @@
           </th>
           <td>
             <%= collection_select("sesion", "comediador_id", @users, :id, :nombre_completo, :prompt => '>> Seleccione una opción')%>
+          </td>
+      </tr>
+
+       <tr style="background-color:gray; color:white">
+          <th colspan="2">
+              Tipo de sesión
+          </th>
+          <td>
+            <%= collection_select("sesion", "tiposesion_id", @tipos_sesiones, :id, :descripcion, :prompt => '>> Seleccione una opción')%>
           </td>
       </tr>
 

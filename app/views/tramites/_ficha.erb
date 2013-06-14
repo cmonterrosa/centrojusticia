@@ -1,10 +1,10 @@
 <!-- layout de ficha -->
 <div id="scroll">
-      <table class="ficha" width="70%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <table class="ficha" width="80%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
                 <tr align="center" class="d0">
                   <td width="20%">Folio</td>
                   <td width="40%" bgcolor="#E8E8E8">Solicitante</td>
-                  <td width="20%" bgcolor="#E8E8E8">Subdirección</td>
+                  <td width="20%" bgcolor="#E8E8E8">Fecha Reservada</td>
                   <td width="20%" bgcolor="#E8E8E8">Materia</td>
                 </tr>
                 <!-- Registros -->
@@ -13,7 +13,18 @@
                       <%=link_to "#{@tramite.folio_integrado}", {:action => "show", :id => @tramite}, :target => "_blank"%>
                   </td>
                   <td bgcolor="#f3f3f3"><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
-                  <td bgcolor="#f3f3f3"><%=@tramite.subdireccion.descripcion%></td>
+
+                  <!-- Si tiene fecha reservada -->
+                  <%if @sesion = Sesion.find_by_tramite_id(@tramite)%>
+                    <%if @sesion.start_at%>
+                      <td bgcolor="#f3f3f3"><%=@sesion.start_at.strftime('%d de %B de %Y')%> (<%=@sesion.hora_completa%>) </td>
+                    <%else%>
+                      <td bgcolor="#f3f3f3">&nbsp;</td>
+                    <%end%>
+                  <%else%>
+                    <td bgcolor="#f3f3f3">&nbsp;</td>
+                  <%end%>
+
                   <td bgcolor="#f3f3f3">
                     <div id="materia"><%=h(@tramite.materia ? @tramite.materia.descripcion : "No asignada")%></div>
                   </td>

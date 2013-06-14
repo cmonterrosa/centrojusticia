@@ -46,15 +46,15 @@
         <%clase = invert_class(clase)%>
             
         <!-- Reasignacion -->
-        <%if current_user.has_role?("admin")%>
+        <%if current_user.has_role?("atencionpublico")%>
           <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("admin")))%>
             <td style="vertical-align: middle;"><%=h (link_to "Reasignar", {:controller => "orientacions", :action => "reasignar", :id => tramite.id}, :class => 'boton') %></td>
           <%end%>
         <%end%>
 
         <!-- Confirmación -->
-        <%if current_user.has_role?("admin")%>
-          <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("admin")))%>
+        <%if current_user.has_role?("admin") && tramite.fechahora.yday == Time.now.yday%>
+          <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("atencionpublico")))%>
             <td style="vertical-align: middle;"><%=h (link_to "Confirmar", {:controller => "orientacions", :action => "confirmar", :id => tramite.id}, :title => "Confirmar orientacion", :class => "fancybox fancybox.iframe") %></td>
           <%end%>
         <%end%>

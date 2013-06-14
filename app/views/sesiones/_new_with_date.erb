@@ -16,7 +16,7 @@
               <td align="center">¿Notificar vía correo electrónico?</td>
             </tr>
             <tr>
-              <td align="center"><%= f.text_field :num_tramite, :value => @tramite.folio_inverso, :class => "text",  :onfocus => "document.getElementById('sesion_num_tramite').disabled=true; "%></td> <!-- :onchange => "validar_expediente(); -->
+              <td align="center"><%= f.text_field :num_tramite%></td> <!-- :onchange => "validar_expediente(); -->
               <td align="center"><%= f.select :mediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
               <td align="center"><%= f.select :comediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
               <td align="center"><%=  f.check_box :notificacion%></td>
@@ -45,7 +45,7 @@
               <%else%>
                 <td align="center"><%=@horario.descripcion_completa%></td>
               <%end%>
-              <td align="center"><%= f.select :tiposesion_id, @tipos_sesiones.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+              <td align="center"><%= f.select :tiposesion_id, @tipos_sesiones.collect{|a| [a.descripcion, a.id]}, :selected => Tiposesion.find_by_descripcion("ORIENTACION CONJUNTA")%></td>
             </tr>
         </table>
       </td>

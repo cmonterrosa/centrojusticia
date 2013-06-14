@@ -13,7 +13,7 @@
              <th scope="col" abbr="Starter">NP</th>
              <th scope="col" abbr="Starter">Rol</th>
              <th scope="col" abbr="Starter">Nombre completo o Razón Social</th>
-             <th scope="col" abbr="Starter" colspan="3">Acciones</th>
+             <th scope="col" abbr="Starter" colspan="4">Acciones</th>
          </tr>
     </thead>
     <tbody>
@@ -33,7 +33,10 @@
 
                                 <%if participante.perfil=="SOLICITANTE"%>
                                    <td> <%=button_to 'Imprimir acta', :action => "generar_pdf_acta_comparecencia", :controller => "comparecencias", :id => @comparecencia, :participante => participante%></td>
-                                <%else%>
+                                    <%if ((participante.observaciones) ? participante.observaciones.size > 4 : nil )%>
+                                        <td> <%=button_to 'Imprimir Observaciones', :action => "generar_pdf_observaciones", :controller => "comparecencias", :id => @comparecencia, :participante => participante%></td>
+                                    <%end%>
+                                  <%else%>
                                    <td> <%=button_to 'Imprimir', :action => "generar_pdf_involucrado", :controller => "comparecencias", :id => @comparecencia, :participante => participante%></td>
                                 <%end%>
                                 <td> <%=button_to 'Eliminar', {:action => "delete", :controller => "participantes", :id => participante}, :confirm => '¿Seguro que desea eliminarlo?'%></td>

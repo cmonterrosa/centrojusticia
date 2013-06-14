@@ -27,7 +27,7 @@
         <%end%>
 
         <!-- Atención convenios -->
-        <%if Time.now.hour > 15%>
+        <%if Time.now.hour > 15 || current_user.has_role?("admin")%>
           <div id="menu_especial">
               <td>
                 <a href="/orientacions/new_or_edit/?t=extra" title="Iniciar trámite personal extraordinario">
@@ -53,7 +53,7 @@
         <td class="menu">Atenciones extraordinarias</td>
     <%end%>
 
-     <%if Time.now.hour > 15%>
+     <%if Time.now.hour > 15 || current_user.has_role?("admin")%>
         <td class="menu">Iniciar trámite con personal extraordinario</td>
      <%end%>
     
