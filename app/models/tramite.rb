@@ -18,9 +18,10 @@ class Tramite < ActiveRecord::Base
   def undo_status
     #--- ultimo estatus ---
     @historia = Historia.find(:first, :conditions => ["tramite_id = ?", self.id], :order => "created_at DESC")
-    @historias.destroy
-    self.estatu = Historia.find(:first, :select => "id", :conditions => ["tramite_id = ?", self.id], :order => "created_at DESC")
-    self.save
+    @historia.destroy
+    #estatu  = Historia.find(:first, :select => "id", :conditions => ["tramite_id = ?", self.id], :order => "created_at DESC")
+    #self.estatu = estatu.id if estatu
+    #self.save
   end
 
   def folio_integrado

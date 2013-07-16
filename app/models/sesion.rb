@@ -12,7 +12,7 @@ class Sesion < ActiveRecord::Base
   #validates_presence_of :mediador_id
   #validates_presence_of :comediador_id
   #validates_format_of :num_tramite, :with => /^\d{1,4}\/20\d{2}$/, :message => " El formato debe de ser num/anio"
-  validates_uniqueness_of :horario_id, :scope => [:tramite_id, :tiposesion_id]
+  #validates_uniqueness_of :horario_id, :scope => [:tramite_id, :tiposesion_id, :mediador_id]
 
  def initialize(params = nil)
     super
@@ -62,7 +62,7 @@ class Sesion < ActiveRecord::Base
   end
 
   def has_permission?(current_user)
-    if current_user.has_role?("controlagenda") || self.user == current_user || self.mediador_id== current_user.id
+    if current_user.has_role?("controlagenda") || self.user == current_user || self.mediador_id== current_user.id || current_user.has_role?("admindireccion")
        return true
      else
        return false
@@ -78,6 +78,10 @@ class Sesion < ActiveRecord::Base
     end
   end
 
-
+  def cancel?(user=nil)
+    self.cancel = true
+    self.cancel_user = user.id if user
+    self.save
+  end
 
 end
