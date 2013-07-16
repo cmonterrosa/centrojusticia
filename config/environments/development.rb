@@ -17,6 +17,7 @@ config.action_controller.perform_caching             = false
 config.action_mailer.raise_delivery_errors = false
 SITE_URL = "ceja.poderjudicialchiapas.gob.mx"
 NOMBRE_OFICIAL="Centro Estatal de Justicia Alternativa Chiapas"
+MAGISTRADO_PRESIDENTE="MAGDO. RUTILIO ESCANDON CADENAS"
 CODIGO_SEGURIDAD="x1234567890"
 REPORTS_DIR = "#{RAILS_ROOT}/app/reports"
 SITE_URL = "ceja.poderjudicialchiapas.gob.mx"

@@ -26,3 +26,12 @@ config.action_mailer.delivery_method = :test
 # This is necessary if your schema can't be completely dumped by the schema dumper,
 # like if you have constraints or database-specific column types
 # config.active_record.schema_format = :sql
+
+
+SITE_URL = "ceja.poderjudicialchiapas.gob.mx"
+NOMBRE_OFICIAL="Centro Estatal de Justicia Alternativa Chiapas"
+MAGISTRADO_PRESIDENTE="MAGDO. RUTILIO ESCANDÓN CADENAS"
+HORAS_ATENCION=["8", "9", "10", "11", "14", "15", "16", "17", "18", "19", "20"]
+DIAS_ATENCION = {1 => "Lunes", 2 => "Martes", 3 => "Miércoles", 4 => "Jueves", 5=> "Viernes"}
+CODIGO_SEGURIDAD="x1234567890"
+REPORTS_DIR = "#{RAILS_ROOT}/app/reports"
