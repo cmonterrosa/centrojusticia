@@ -52,9 +52,9 @@
           <td align="center">Nombre(s)</td>
         </tr>
         <tr>
-          <td align="center"><%= text_field :orientacion, :paterno, :onKeyPress => "return CharNum(event, 'letra');", :disabled => true%></td>
-          <td align="center"><%= text_field :orientacion, :materno,  :onKeyPress => "return CharNum(event, 'letra');", :disabled => true%></td>
-          <td align="center"><%= text_field :orientacion, :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :disabled => true%></td>
+          <td align="center"><%= text_field :orientacion, :paterno, :onKeyPress => "return CharNum(event, 'letra');"%></td>
+          <td align="center"><%= text_field :orientacion, :materno,  :onKeyPress => "return CharNum(event, 'letra');"%></td>
+          <td align="center"><%= text_field :orientacion, :nombre,  :onKeyPress => "return CharNum(event, 'letra');"%></td>
         </tr>
       </table></td>
       </tr>
@@ -73,10 +73,10 @@
           <td>Correo</td>
         </tr>
         <tr align="center">
-          <td> <%= text_area :orientacion, :direccion,  :size => "40x10", :disabled => true%></td>
+          <td> <%= text_area :orientacion, :direccion,  :size => "40x10"%></td>
           <td><%= text_field :orientacion, :municipio_id, :value => "#{@orientacion.municipio.descripcion}", :disabled => true%></td>
-          <td><%= text_field :orientacion, :telefono, :disabled => true%></td>
-          <td><%= text_field :orientacion, :correo, :disabled => true%></td>
+          <td><%= text_field :orientacion, :telefono%></td>
+          <td><%= text_field :orientacion, :correo%></td>
         </tr>
         </table>
       </td>

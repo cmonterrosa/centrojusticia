@@ -1,13 +1,15 @@
-
+<!--
 <h4>
-  <%=link_to "Calendario personalizado", :action => "show_calendario", :id => "custom"%>
+  <=link_to "Calendario personalizado", :action => "show_calendario", :id => "custom"%>
 </h4>
+-->
 
 <%= render :partial => "calendario"%>
 <br />
 
 
 <!-- inicia form -->
+<%if current_user.has_role?("controlagenda")%>
 <% form_for :sesion, @sesion, :url => { :action => "search_sesiones" } do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
@@ -31,6 +33,7 @@
     </tr>
    </table>
 <% end %>
+<%end%>
 
 
 <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "customs"%><br />

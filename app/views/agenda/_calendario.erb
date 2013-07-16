@@ -13,9 +13,14 @@
     <% calendar.day(:day_method => :start_at) do |date, sesiones| %>
        <%=(date.month == @date.month && (1..5).include?(date.wday)) ? (link_to date.day, {:action => "daily_show", :controller => "agenda", :year => date.year, :month=> date.month, :day => date.day, :origin => params[:controller]}, {:title => date.strftime("%d de %B de %Y"), :class => "titulocalendario"}) : date.day %>
       <ul>
-        <% for sesion in sesiones %>
-          <li><%= link_to "#{sesion.start_at.strftime("%H:%M")}", {:controller => "sesiones", :action => "show", :id => sesion}, {:title => "#{sesion.title}", :class => "sesionesdiarias"} %></li>
-        <% end %>
+        <%if sesiones.size > 0%>
+        <li><%=  sesiones.size%> sesiones</li>
+        <%end%>
+        <!--
+        < for sesion in sesiones %>
+          <li><= link_to "#{sesion.start_at.strftime("%H:%M")}", {:controller => "sesiones", :action => "show", :id => sesion}, {:title => "#{sesion.title}", :class => "sesionesdiarias"} %></li>
+        < end %>
+        -->
       </ul>
     <% end %>
   <% end %>

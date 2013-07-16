@@ -29,7 +29,7 @@
     <tr class="d<%=invert_class(clase)%>">
        <td style="vertical-align: middle;"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
        <td style="vertical-align: middle;"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
-       <td style="vertical-align: middle;"><%=tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
+       <td style="vertical-align: middle;"><%=h (tramite.fechahora) ? tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "-----"%></td>
        <td style="vertical-align: middle;"><%=tramite.estatus%></td>
        <!-- siguiente estatus -->
        <%ids = []%>
@@ -53,7 +53,7 @@
         <%end%>
 
         <!-- Confirmación -->
-        <%if current_user.has_role?("admin") && tramite.fechahora.yday == Time.now.yday%>
+        <%if (current_user.has_role?("admin") || (current_user.has_role?("atencionpublico")) && tramite.fechahora.yday == Time.now.yday)%>
           <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("atencionpublico")))%>
             <td style="vertical-align: middle;"><%=h (link_to "Confirmar", {:controller => "orientacions", :action => "confirmar", :id => tramite.id}, :title => "Confirmar orientacion", :class => "fancybox fancybox.iframe") %></td>
           <%end%>

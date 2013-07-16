@@ -13,10 +13,22 @@
           <img src="/images/iconos/comparecencias.png" width="128" height="128" alt="comparecencias" />
         </a>
        </td>
+
+       <%if current_user.has_role?("lecturaagenda")%>
+       <td>
+        <a href="/customs/show_calendario" title="Calendario">
+          <img src="/images/iconos/calendario.png" width="128" height="128" alt="calendario" />
+        </a>
+       </td>
+       <%end%>
+
   </tr>
   <tr align="center">
    <td class="menu" align="center">Orientaciones</td>
-    <td class="menu" align="center">Comparecencias</td>
+   <td class="menu" align="center">Comparecencias</td>
+   <%if current_user.has_role?("lecturaagenda")%>
+      <td class="menu" align="center">Mi agenda</td>
+   <%end%>
   </tr>
   <tr>
     <th>&nbsp;</th>

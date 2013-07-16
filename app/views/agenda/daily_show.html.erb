@@ -13,9 +13,9 @@
     AGENDA DIARIA DE SESIONES
   </p>
   <p>
-    <%=link_to "<", :action => "daily_show", :day => @before.day, :month => @before.month, :year => @before.year, :origin => @origin%>&nbsp;
+    <%=link_to "<", :action => "daily_show", :day => @before.day, :month => @before.month, :year => @before.year, :origin => @origin, :type => @type%>&nbsp;
       <%=day_of_the_week(@fecha.strftime("%u").to_i)%>, <%=(@fecha.strftime("%d de %B de %Y")).upcase%>&nbsp;
-    <%=link_to ">", :action => "daily_show", :day => @after.day, :month => @after.month, :year => @after.year, :origin => @origin%>
+    <%=link_to ">", :action => "daily_show", :day => @after.day, :month => @after.month, :year => @after.year, :origin => @origin, :type => @type%>
   </p>
 </div>
 
@@ -45,7 +45,13 @@
       <tr>
           <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa) : "--"%></th>
               <%@salas.each do |sala|%>
-                 <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+
+             <%if @type%>
+              <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) ", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id])%>
+             <%else%>
+              <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+             <%end%>
+
                   <%if sesion%>
                     <%@backgrounds_colors = colors_to_days%>
 

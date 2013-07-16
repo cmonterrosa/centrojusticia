@@ -27,7 +27,7 @@
       <tr>
           <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa) : "--"%></th>
               <%@salas.each do |sala|%>
-                 <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+                 <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
                  <%if sesion%>
                  <%@backgrounds_colors = colors_to_days%>
                  <td style="background-color: <%=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">

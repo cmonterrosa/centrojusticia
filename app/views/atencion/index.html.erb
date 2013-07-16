@@ -16,8 +16,10 @@
         <%end%>
 
         <!-- Por escrito -->
-        <td><%=link_to image_tag('tipo_atencion/atencion_escrito.png',  :size => "128x128", :mouseover => "tipo_atencion/atencion_escrito_2.png") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito"%></td>
-
+        <%if current_user.has_role?("admin") || current_user.has_role?("direccion") || current_user.has_role?("oficinasubdireccion")%>
+          <td><%=link_to image_tag('tipo_atencion/atencion_escrito.png',  :size => "128x128", :mouseover => "tipo_atencion/atencion_escrito_2.png") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito"%></td>
+        <%end%>
+         
         <!-- Por telefono -->
         <td><%=link_to image_tag('tipo_atencion/atencion_telefono.png', :size => "128x128",  :mouseover => "tipo_atencion/atencion_telefono_2.png") , {:action => "por_telefono_index", :controller => "atencion"}, :title => "Atención por correo electrónico"%></td>
 
@@ -40,7 +42,10 @@
         <td class="menu">Atenciones extraordinarias</td>
     <%end%>
 
-     <td class="menu">Por escrito</td>
+     <%if current_user.has_role?("admin") || current_user.has_role?("direccion") || current_user.has_role?("oficinasubdireccion")%>
+      <td class="menu">Por escrito</td>
+     <%end%>
+
      <td class="menu">Por teléfono</td>
      <td class="menu">Por correo electrónico</td>
 

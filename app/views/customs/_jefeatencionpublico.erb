@@ -15,16 +15,20 @@
         </a>
       </td>
 
-      <td>
-        <a href="/agenda/calendario" title="Control de la agenda">
-           <img src="/images/iconos/calendario.png" width="128" height="128" alt="apoyos" />
-        </a>
-      </td>
+       <%if current_user.has_role?("lecturaagenda")%>
+        <td>
+          <a href="/agenda/calendario" title="Control de la agenda">
+            <img src="/images/iconos/calendario.png" width="128" height="128" alt="apoyos" />
+          </a>
+        </td>
+      <%end%>
   </tr>
   <tr align="center">
     <td class="menu">Iniciar Trámite</td>
     <td class="menu">Listado de trámites</td>
-    <td class="menu">Control de Agenda</td>
+    <%if current_user.has_role?("lecturaagenda")%>
+      <td class="menu">Control de Agenda</td>
+    <%end%>
   </tr>
 </table>
 

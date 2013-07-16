@@ -8,26 +8,30 @@
         </a>
       </td>
 
-      <!--
+      <!-- Listado de trámites -->
        <td>
-         <a href="/agenda/calendario" title="Control de la agenda">
-           <img src="/images/iconos/calendario.png" width="128" height="128" alt="apoyos" />
-         </a>
-       </td>
-      -->
-        <!-- Listado de trámites -->
-        <td>
             <a href="/tramites/list" title="Trámites">
               <img src="/images/iconos/seguimiento.png" width="128" height="128" alt="Trámites" />
             </a>
-        </td>
+       </td>
+
+       <!-- Agenda -->
+       <%if current_user.has_role?("lecturaagenda")%>
+       <td>
+         <a href="/agenda/calendario" title="Control de la agenda">
+           <img src="/images/iconos/calendario.png" width="128" height="128" alt="Control de la agenda" />
+         </a>
+       </td>
+       <%end%>
+
+
   </tr>
   <tr align="center">
     <td class="menu">Iniciar Trámite</td>
     <td class="menu">Listado de trámites</td>
-    <!--
-    <td class="menu">Agenda</td>
-    -->
+    <%if current_user.has_role?("lecturaagenda")%>
+      <td class="menu">Lectura de Agenda</td>
+    <%end%>
   </tr>
 </table>
 

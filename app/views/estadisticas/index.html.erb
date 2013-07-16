@@ -53,7 +53,13 @@
            <%=link_to image_tag('iconos_estadisticos/grafica_edad.png', :size => "128x128", :mouseover => "iconos_estadisticos/grafica_edad_2.png") , {:action => "grafica_atencion_rango_edad"}, :title => "gráfica de atencion por rago de edades", :class => "fancybox fancybox.iframe"%>
           </td>
 
-           <td>
+          <%if current_user.has_role?("direccion")%>
+            <td>
+              <%=link_to image_tag('iconos_estadisticos/grafica_no_atendidos.png', :size => "128x128", :mouseover => "iconos_estadisticos/grafica_no_atendidos_2.png") , {:action => "select_grafica_noatencion"}, :title => "gráfica de atencion por rago de edades", :class => "fancybox fancybox.iframe"%>
+            </td>
+          <%end%>
+
+          <td>
            <%=link_to image_tag('iconos_estadisticos/estadisticas_generales.png', :size => "128x128", :mouseover => "iconos_estadisticos/estadisticas_generales_2.png") , {:action => "select_estadisticas_generales"}, :title => "Estadisticas generales", :class => "fancybox fancybox.iframe"%>
           </td>
   </tr>
@@ -61,6 +67,9 @@
   <tr>
     <td class="menu" align="center">Gráfica por sexo</td>
     <td class="menu" align="center">Gráfica por rango de edad</td>
+    <%if current_user.has_role?("direccion")%>
+      <td class="menu" align="center">Gráfica de no atención</td>
+    <%end%>
     <td class="menu" align="center">Estadísticas Generales</td>
   </tr>
 </table>

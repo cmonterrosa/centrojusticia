@@ -17,19 +17,51 @@
       </thead>
 
       <tbody>
-      <!-- horarios -->
+      <!-- horarios 
+      <@horarios.each do |horario|%>
+      <tr>
+          <th scope="row"><=h (horario.hora_completa) ? (horario.hora_completa) : "--"%></th>
+              <@salas.each do |sala|%>
+                 <sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+                  <if sesion%>
+                    <@backgrounds_colors = colors_to_days%>
+                    <if sesion.tiposesion_id%>
+                    <td style="background-color: <=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">
+                      <=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
+                    </td>
+                    <end%>
+                  <elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
+                    <td style="background-color: #D7F2FF;">
+                        <=  link_to "Disponible", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
+                    </td>
+                 <else%>
+                    <td></td>
+                 <end%>
+              <end%>
+          </tr>
+        <end%>
+          -->
+
+              <!-- horarios -->
       <%@horarios.each do |horario|%>
       <tr>
           <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa) : "--"%></th>
               <%@salas.each do |sala|%>
-                 <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+
+             <%if @type%>
+              <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) ", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id])%>
+             <%else%>
+              <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+             <%end%>
+
                   <%if sesion%>
                     <%@backgrounds_colors = colors_to_days%>
-                    <%if sesion.tiposesion_id%>
-                    <td style="background-color: <%=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">
-                      <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
-                    </td>
-                    <%end%>
+
+                   <%if sesion.tiposesion_id%>
+                      <td style="background-color: <%=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">
+                        <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
+                      </td>
+                   <%end%>
                   <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
                     <td style="background-color: #D7F2FF;">
                         <%=  link_to "Disponible", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
@@ -40,6 +72,10 @@
               <%end%>
           </tr>
         <%end%>
+
+
+
+
       </tbody>
     </table>
 <%end%>

@@ -24,11 +24,12 @@
        <td style="vertical-align: middle;"> <%=h(@tramite.user_id ? User.find(@tramite.user_id).nombre_completo : "No existe información")%></td>
     </tr>
 
-
+   <%if @tramite.orientacion%>
     <tr class="d0">
        <td style="vertical-align: middle;"><b>Especialista para orientación:</b></td>
        <td style="vertical-align: middle;"> <%=h(@tramite.orientacion.especialista ? @tramite.orientacion.especialista.nombre_completo : "No existe información")%></td>
     </tr>
+   <%end%>
 
     <tr class="d1">
        <td style="vertical-align: middle;"><b>Solicitante:</b></td>
@@ -95,6 +96,11 @@
       </tr>
 
       <tr class="d0">
+        <td style="vertical-align: middle;"><b>Datos:</b></td>
+        <td style="vertical-align: middle;"><%=h (@comparecencia.datos)? @comparecencia.datos : "No existe información"%></td>
+      </tr>
+
+      <tr class="d1">
         <td style="vertical-align: middle;"><b>Día/hora de preferencia:</b></td>
         <td style="vertical-align: middle;"><%=@comparecencia.dia_preferencia%> / <%=@comparecencia.hora_preferencia%></td>
       </tr>
@@ -136,7 +142,11 @@
     <%end%>
   <%end%>
   
+  <!-- ficha -->
+<%= render :partial => "historial"%>
+
   <!-- Historial de estados-->
+  <!--
   <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
       <th colspan="2">
@@ -147,14 +157,14 @@
         <td style="vertical-align: middle;"><b>Descripción</b></td>
          <td style="vertical-align: middle;"<b>Fecha hora</b></td>
      </tr>
-     <%Historia.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "created_at").each do |row|%>
+     <Historia.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "created_at").each do |row|%>
        <tr class="d1">
-         <td style="vertical-align: middle;"><%=row.estatu.descripcion%></td>
-         <td style="vertical-align: middle;"><%=row.created_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
+         <td style="vertical-align: middle;"><=row.estatu.descripcion%></td>
+         <td style="vertical-align: middle;"><=row.created_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
      </tr>
-     <%end%>
+     <end%>
   </table><br /><br />
-
+-->
 
   <!-- Historial de sesiones-->
   <%if @tramite.sesions.size > 0%>

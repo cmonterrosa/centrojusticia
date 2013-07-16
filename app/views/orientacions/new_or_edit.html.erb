@@ -37,8 +37,9 @@
                 <td align="center">&nbsp;</td>
               <!--<td align="center"><= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%></td>-->
              <%else%>
-               <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, {:disabled => true}%></td>
-              <!-- <td align="center"><= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%></td>-->
+              <!-- disabled -->
+              <!-- <td align="center"><= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, {:disabled => true}%></td> -->
+              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%></td>
              <%end%>
           <%end%>
           <td align="center"><%=f.check_box :notificacion%> </td>

@@ -1,16 +1,17 @@
 <%= render :partial => "barra_superior"%>
 
-<table width="50%" border="0" cellspacing="0" cellpadding="0">
+<table width="60%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
-     <td>
-        <a href="/extraordinaria" title="Iniciar atención extraordinaria">
-          <img src="/images/iconos/new_orientacion_extra.png" width="128" height="128" alt="nueva orientación con personal extraordinario" />
-        </a>
-     </td>
 
+    <!-- Atencion extraordinaria -->
+    <td><%=link_to image_tag('tipo_atencion/tramite_extraordinario.png', :size => "128x128", :mouseover => "tipo_atencion/tramite_extraordinario_2.png") , {:action => "index", :controller => "extraordinaria"}, :title => "Atención por escrito de otras instancias"%></td
 
+    <!-- Por escrito -->
+    <td><%=link_to image_tag('tipo_atencion/atencion_escrito.png',  :size => "128x128", :mouseover => "tipo_atencion/atencion_escrito_2.png") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito de particulares"%></td>
   </tr>
-  <tr align="center">
-    <td class="menu" align="center">Atención Extraordinaria</td>
+
+    <tr align="center">
+     <td class="menu" align="center">Atención por escrito otras instituciones</td>
+     <td class="menu" align="center">Atención por escrito de particulares</td>
   </tr>
 </table>

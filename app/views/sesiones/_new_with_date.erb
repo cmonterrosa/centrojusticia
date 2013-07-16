@@ -17,8 +17,8 @@
             </tr>
             <tr>
               <td align="center"><%= f.text_field :num_tramite%></td> <!-- :onchange => "validar_expediente(); -->
-              <td align="center"><%= f.select :mediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
-              <td align="center"><%= f.select :comediador_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
+              <td align="center"><%= f.select :mediador_id, @mediadores.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
+              <td align="center"><%= f.select :comediador_id, @comediadores.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
               <td align="center"><%=  f.check_box :notificacion%></td>
             </tr>
           </table>

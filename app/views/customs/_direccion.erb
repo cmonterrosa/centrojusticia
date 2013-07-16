@@ -1,6 +1,6 @@
 <%= render :partial => "barra_superior"%>
 
-<table width="50%" border="0" cellspacing="0" cellpadding="0">
+<table width="85%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
       <td>
         <a href="/tramites" title="Trámites">
@@ -14,12 +14,23 @@
            <img src="/images/iconos/personal.png" width="128" height="128" alt="especialistas" />
          </a>
        </td>
-      
 
+        <td>
+         <a href="/admin/atenciones_no_brindadas" title="Atención no brindada">
+           <img src="/images/iconos/noatencionbrindada.png" width="128" height="128" alt="atencion no brindada" />
+         </a>
+        </td>
+      
        <td>
          <a href="/admin/show_users" title="Administración de Personal">
            <img src="/images/iconos/perfiles2.png" width="128" height="128" alt="rh" />
          </a>
+       </td>
+
+       <td>
+        <a href="/agenda/management" title="Calendario">
+          <img src="/images/iconos/agenda3.png" width="128" height="128" alt="calendario" />
+        </a>
        </td>
 
        <td>
@@ -28,11 +39,15 @@
          </a>
        </td>
 
+
+
   </tr>
   <tr align="center">
    <td class="menu" align="center">Trámites</td>
-   <td class="menu" align="center">Administración de Usuarios</td>
-   <td class="menu" align="center">Especialistas</td>
+   <td class="menu" align="center">Especialistas disponibles</td>
+   <td class="menu" align="center">Atención no brindada</td>
+   <td class="menu" align="center">Control de Personal</td>
+   <td class="menu" align="center">Agenda</td>
    <td class="menu" align="center">Estadísticas</td>
   </tr>
 </table>

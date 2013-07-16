@@ -6,7 +6,7 @@
         <th style="vertical-align: middle;" align="center">Involucrado</th>
         <th style="vertical-align: middle;" align="center">Carácter con el que comparece</th>
         <th style="vertical-align: middle;" align="center"><%=h "Estatus"%></th>
-        <th style="vertical-align: middle;" colspan="3" align="center">Acciones</th>
+        <th style="vertical-align: middle;" colspan="4" align="center">Acciones</th>
     </tr>
      <%clase=0%>
      <%counter=1%>
@@ -17,6 +17,13 @@
         <td style="vertical-align: middle;"><%=comparecencia.tramite.orientacion.solicitante%></td>
         <td style="vertical-align: middle;"><%=comparecencia.caracter%></td>
         <td style="vertical-align: middle;"><%=comparecencia.tramite.estatu.descripcion%></td>
+
+        <!-- Convertir en orientacion -->
+        <%@margen =  (120 * 60.0) # 120 Minutos%>
+        <%if (Time.now < (comparecencia.created_at + @margen)) || (Time.now < (comparecencia.updated_at + @margen))%>
+          <td style="vertical-align: middle;"><%=link_to "Cambiar a orientación", {:controller => "comparecencias", :action => "change_to_orientacion", :id => comparecencia}, :class => 'boton'%></td>
+        <%end%>
+
         <td style="vertical-align: middle;"><%=link_to "Trámite", {:controller => "tramites", :action => "menu", :id => comparecencia.tramite}, :class => 'boton'%></td>
         <td style="vertical-align: middle;"><%=link_to "Editar",{:controller => "comparecencias", :action => "new_or_edit", :id => comparecencia.tramite}, :class => 'boton'%></td>
         <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :controller => "tramites", :id => comparecencia.tramite}, :class => 'boton'%></td>
