@@ -1,0 +1,39 @@
+<h3>Admisión de asunto</h3>
+
+<!-- ficha -->
+<%= render :partial => "ficha"%>
+<br /><br />
+
+
+
+<!-- historial -->
+<%= render :partial => "historial"%>
+
+
+<div id="scroll">
+<% form_tag :action => 'update_estatus', :id =>@tramite, :type => "admitir" do -%>
+<table class="sample" width="50%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+          <th colspan="2">
+              Materia
+          </th>
+          <!--
+          <td>
+            <= collection_select("tramite", "materia_id", Materia.all, :id, :descripcion, {:selected => @tramite.materia})%>
+          </td>
+          -->
+           <tr>
+              <td><%= select("tramite", "materia_id", Materia.all.collect {|p| [ p.descripcion, p.id ] }, { :include_blank => true }, {:selected => @tramite.materia})%></td>
+           </tr>
+      </tr>
+      <tr>
+        <th>
+          <th class="boton"><%= submit_tag "Admitir", :onclick => "return comprobar();" %></th>
+        </th>
+      </tr>
+  </table>
+<% end %>
+</div>
+
+
+<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />

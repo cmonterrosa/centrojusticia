@@ -1,0 +1,22 @@
+<!-- Historial de estatus del tramite -->
+  <!-- Historial de estados-->
+  <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="3">
+        Historial
+      </th>
+     </tr>
+     <tr class="d0">
+        <td style="vertical-align: middle;"><b>Descripción</b></td>
+         <td style="vertical-align: middle;"<b>Fecha hora</b></td>
+         <td style="vertical-align: middle;"<b>Modificó</b></td>
+     </tr>
+     <%Historia.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "created_at").each do |row|%>
+       <tr class="d1">
+         <td style="vertical-align: middle;"><%=row.estatu.descripcion%></td>
+         <td style="vertical-align: middle;"><%=row.created_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
+         <td style="vertical-align: middle;"><%=(row.user) ? User.find(row.user).nombre_completo : "---"%></td>
+
+     </tr>
+     <%end%>
+  </table><br /><br />
