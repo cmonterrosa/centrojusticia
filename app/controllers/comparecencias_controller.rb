@@ -1,7 +1,7 @@
 include SendDocHelper
 class ComparecenciasController < ApplicationController
   layout 'oficial_fancy'
-  require_role [:especialistas, :convenios, :atencionpublico]
+  require_role [:especialistas, :convenios, :oficinasubdireccion]
   
 
   def show
@@ -29,10 +29,10 @@ class ComparecenciasController < ApplicationController
        param["P_FECHA_HORA_CAPTURA"]= (@sesion.created_at) ? {:tipo=>"String", :valor=>@sesion.created_at.strftime("%d DE %B DE %Y / %H:%M").upcase} :  {:tipo=>"String", :valor=>"---"}
        param["P_NUM_EXPEDIENTE"]=(@tramite.numero_expediente) ? {:tipo=>"String", :valor=>@tramite.numero_expediente} : {:tipo=>"String", :valor=>""}
        param["P_FOLIO"]={:tipo=>"String", :valor=>@tramite.folio_integrado}
-       param["P_ESPECIALISTA_SESION"]=(@sesion.mediador_id) ? {:tipo=>"String", :valor=>User.find(@sesion.mediador_id)} : {:tipo=>"String", :valor=>"SIN ASIGNAR"}
-       param["P_FECHA_SESION"]=(@sesion.start_at)? {:tipo=>"String", :valor=>@sesion.start_at.strftime('%d DE %B DE %Y').upcase} :  {:tipo=>"String", :valor=>""}
-       param["P_SALA_SESION"]=(@sesion.horario)? {:tipo=>"String", :valor=>@sesion.horario.sala.descripcion} :  {:tipo=>"String", :valor=>""}
-       param["P_HORA_SESION"]=(@sesion.horario)? {:tipo=>"String", :valor=>@sesion.hora_completa} : {:tipo=>"String", :valor=>""}
+       #param["P_ESPECIALISTA_SESION"]=(@sesion.mediador_id) ? {:tipo=>"String", :valor=>User.find(@sesion.mediador_id)} : {:tipo=>"String", :valor=>"SIN ASIGNAR"}
+       #param["P_FECHA_SESION"]=(@sesion.start_at)? {:tipo=>"String", :valor=>@sesion.start_at.strftime('%d DE %B DE %Y').upcase} :  {:tipo=>"String", :valor=>""}
+       #param["P_SALA_SESION"]=(@sesion.horario)? {:tipo=>"String", :valor=>@sesion.horario.sala.descripcion} :  {:tipo=>"String", :valor=>""}
+       #param["P_HORA_SESION"]=(@sesion.horario)? {:tipo=>"String", :valor=>@sesion.hora_completa} : {:tipo=>"String", :valor=>""}
        param["P_SOLICITANTES"]=(@comparecencia.solicitantes) ? {:tipo=>"String", :valor=>@comparecencia.solicitantes} : {:tipo=>"String", :valor=>""}
        param["P_INVOLUCRADOS"]=(@comparecencia.involucrados) ? {:tipo=>"String", :valor=>@comparecencia.involucrados} : {:tipo=>"String", :valor=>""}
        if File.exists?(REPORTS_DIR + "/reserva_sesion.jasper")
@@ -153,11 +153,12 @@ class ComparecenciasController < ApplicationController
         param["P_CONOCIMIENTO"]={:tipo=>"String", :valor=>conocimiento}
         param["P_DATOS"]={:tipo=>"String", :valor=>clean_string(@comparecencia.datos)}
         param["P_ASUNTO"]={:tipo=>"String", :valor=>(@comparecencia.asunto).gsub(/\$/, '\$')}
+        param["P_ASUNTO"]={:tipo=>"String", :valor=>clean_string(@comparecencia.asunto)}
         param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
         param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=>@solicitante.tipopersona.descripcion}
         param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@solicitante.referencia_domiciliaria)}
         #--- params only for moral person ---
-        param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>@solicitante.apoderado_legal}
+        param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.apoderado_legal)}
         param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.razon_social)}
         if File.exists?(REPORTS_DIR + "/comparecencia.jasper")
           (@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
@@ -315,5 +316,25 @@ class ComparecenciasController < ApplicationController
     end
 
   end
+
+     def change_to_orientacion
+       @comparecencia = Comparecencia.find(params[:id])
+       @tramite = @comparecencia.tramite
+       #@margen =  (120 * 60.0) # 120 Minutos
+       @margen = ((60 * 60) * 24) * 7
+       if Time.now < (@comparecencia.created_at + @margen) || (Time.now < (@comparecencia.updated_at + @margen))
+          @participantes = @comparecencia.participantes
+          # start destroy #
+          @participantes.each do |p| p.destroy end
+          @comparecencia.destroy
+          @tramite.undo_status
+          @tramite.update_estatus!("no-compar",current_user)
+          flash[:notice] = "Registro actualizado correctamente"
+          redirect_to :action => "list_by_user"
+       else
+          flash[:notice] = "No se pudo eliminar, tiene hasta 7 días después de concluir"
+          redirect_to :action => "list_by_user"
+       end
+     end
 
 end

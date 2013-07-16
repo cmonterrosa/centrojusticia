@@ -132,6 +132,9 @@ class TramitesController < ApplicationController
                return  render(:partial => 'firma_invitaciones', :layout => "oficial")
             when "invi-proc"
                 redirect_to :action => "show", :controller => "invitaciones", :id=> @tramite
+            #### Admision de tramite ####
+            when "tram-admi"
+              return  render(:partial => 'admitir_tramite', :layout => "oficial")
             else
               update_tramite_model
          end

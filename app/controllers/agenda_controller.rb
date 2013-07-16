@@ -2,7 +2,7 @@ class AgendaController < ApplicationController
   layout 'oficial_fancy'
   #require_role [:controlagenda, :admindireccion], :for => [:new_sesion]
   #require_role [:controlagenda, :especialistas, :lecturaagenda, :admindireccion], :for => [:management, :search_sesiones, :calendario]
-  require_role [:controlagenda, :lecturaagenda, :especialistas, :admindireccion]
+  require_role [:controlagenda, :lecturaagenda, :especialistas, :admindireccion, :direccion]
 
 
 
@@ -82,6 +82,7 @@ class AgendaController < ApplicationController
 
   def daily_show
     @origin=params[:origin] if params[:origin]
+    @type = params[:type] if params[:type]
     if params[:year] =~ /^\d{4}$/ && params[:month] =~ /^\d{1,2}$/ && params[:day] =~ /^\d{1,2}$/
        @fecha = DateTime.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
        @before = @fecha.yesterday

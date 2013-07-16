@@ -7,6 +7,12 @@ class EstadisticasController < ApplicationController
 
      end
 
+    def select_grafica_noatencion
+     @title = "Seleccione el rango de fechas"
+     @action = "grafica_noatencion"
+     return render(:partial => 'select_date_range', :layout => 'only_jquery')
+    end
+
     def select_grafica_orientaciones_especialistas
      @title = "Seleccione el rango de fechas"
      @action = "grafica_orientaciones_especialistas"
@@ -122,6 +128,49 @@ class EstadisticasController < ApplicationController
       g.sort
       send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list.png")
  end
+
+
+ def grafica_noatencion
+ g = Gruff::Bar.new
+      g.title = "Orientaciones"
+      g.no_data_message = "No existe información"
+      g.add_color("#E00CF7")
+      g.add_color("#1BFB02") # Verde Fuerte
+      g.add_color("#B3FF00")
+      g.add_color("#0037FF")
+      g.add_color("#2CF8EE")
+      g.add_color("#EABFFE") # Moradito claro
+      g.add_color("#F5F83C") #Amarillo
+      g.add_color("#FD24A3") #Rosa Mexicano
+      g.add_color("#FD242F") # Rojo
+      g.add_color("#AFD2FE") # Celeste
+      g.add_color("#C1F7BB") # verde Pistache
+      g.x_axis_label = "No atencion"
+      
+    if params[:fecha_inicio] && params[:fecha_fin]
+       params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+       @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+    end
+    if @inicio && @fin
+       especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+       @tramites = Tramite.find(:all, :conditions => ["created_at between ? AND ?", @inicio, @fin])
+       @justificacion = Justificacion.find_by_descripcion("ESPECIALISTA NO DA ATENCIÓN")
+       g.title = "Total de no atenciones"
+            especialistas.each do |especialista|
+            total_noatenciones = Historia.count(:especialista_id, :conditions => ["tramite_id in (?) AND justificacion_id = ? AND especialista_id = ?", @tramites.map{|t|t.id}, @justificacion.id, especialista.id.to_i])
+              if total_noatenciones > 0
+                g.data("#{especialista.nombre}", [total_noatenciones])
+              end
+            end
+      #@historias = Historia.find(:all, :conditions => ["tramite_id in (?) AND justificacion_id = ? AND especialista_id IS NOT NULL", @tramites.map{|t|t.id}, @justificacion.id ])
+    else
+      flash[:notice] = "Parámetros insuficientes, verifique"
+      redirect_to :action => "atenciones_no_brindadas"
+    end
+      g.sort
+      send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list.png")
+end
+
 
 
 

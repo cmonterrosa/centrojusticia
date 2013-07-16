@@ -211,10 +211,40 @@ class AdminController < ApplicationController
    redirect_to :action => "show_users_by_area"
  end
 
+ ######### INICIA ADMINISTRACION DE HORARIOS DE SESIONES ###########
+
  def show_horarios_sesiones
    @salas = Sala.find(:all, :order=> "descripcion")
    @horarios = Horario.find(:all, :order => "hora,minutos")
    @token= generate_token
+ end
+
+ def new_or_edit_horario_sesion
+   @horario = Horario.find(params[:id]) if params[:id]
+   @horario ||= Horario.new
+ end
+
+ def save_horario_sesion
+     @horario = Horario.find(params[:id]) if params[:id]
+     @horario_anterior = Horario.new(@horario.attributes) if @horario
+     @horario ||= Horario.new
+
+     @horario.update_attributes(params[:horario])
+     if @horario.save
+        ##### UPDATE IF EXISTS WITH THE OLD SCHEDULE ###
+        if @horario_anterior
+           @sesiones = Sesion.find(:all, :conditions => ["hora = ? AND minutos = ? AND sala_id = ?", @horario_anterior.hora, @horario_anterior.minutos, @horario_anterior.sala_id])
+           @sesiones.each do |s|
+             s.update_attributes!(:hora => @horario.hora, :minutos => @horario.minutos, :sala_id => @horario.sala_id)
+           end
+        end
+
+        flash[:notice] = "Horario y sesiones actualizadas correctamente"
+        redirect_to :action => "show_horarios_sesiones"
+     else
+        flash[:notice] = "No se pudo actualizar, verifique"
+        render :action => "new_or_edit_horario_sesion"
+     end
  end
 
  def edit_user

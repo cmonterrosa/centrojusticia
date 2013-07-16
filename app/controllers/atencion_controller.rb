@@ -1,6 +1,6 @@
 class AtencionController < ApplicationController
-  require_role [:atencionpublico, :subdireccion, :direccion]
-
+  require_role [:atencionpublico, :subdireccion, :direccion, :oficinasubdireccion]
+ 
   def index
     
   end

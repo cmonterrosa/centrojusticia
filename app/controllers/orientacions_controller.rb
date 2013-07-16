@@ -15,7 +15,7 @@ class OrientacionsController < ApplicationController
     @orientaciones = Orientacion.find(:all,
                                        :select => "o.*",
                                        :joins => "o, tramites t, estatus e",
-                                       :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?)", @user.id, ['tram-reas', 'tram-inic']],
+                                       :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?)", @user.id, ['tram-reas', 'tram-inic', 'orie-conf']],
                                        :order => "o.fechahora")
 
   end
@@ -65,7 +65,8 @@ class OrientacionsController < ApplicationController
      #@todos_especialistas = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles.sort{|p1,p2| p1.puntuacion <=> p2.puntuacion}
      @todos_especialistas = seleccionar_especialistas
      @especialista_inicial = @orientacion.especialista
-     @justificaciones = Justificacion.find(:all, :conditions => ["descripcion = ?", "ESPECIALISTA NO DA ATENCIÓN"])
+     #@justificaciones = Justificacion.find(:all, :conditions => ["descripcion = ?", "ESPECIALISTA NO DA ATENCIÓN"])
+     @justificaciones = Justificacion.find(:all, :conditions => ["descripcion IN (?)", ["ESPECIALISTA NO DA ATENCIÓN", "ESPECIALISTA EN ORIENTACION"]])
      if !@todos_especialistas.empty? && @todos_especialistas.include?(@orientacion.especialista)
       @especialista_nuevo = @todos_especialistas.at(@todos_especialistas.index(@orientacion.especialista) + 1)
        unless @especialista_nuevo
@@ -84,7 +85,7 @@ class OrientacionsController < ApplicationController
    end
 
    def save_reasignacion
-      #@historia = Historia.find(:first, :conditions => ["tramite_id = ?", @orientacion.tramite_id], :order => "created_at DESC")
+     #@historia = Historia.find(:first, :conditions => ["tramite_id = ?", @orientacion.tramite_id], :order => "created_at DESC")
      @orientacion = Orientacion.find(params[:id])
      @tramite = @orientacion.tramite
      @especialista_inicial = User.find(params[:ei])
@@ -190,7 +191,7 @@ class OrientacionsController < ApplicationController
             if @tramite
                 @orientacion = Orientacion.find_by_tramite_id(@tramite.id)
                 @user = User.find_by_login(params[:login])
-                @orientacion.especialista_id = @user
+                @orientacion.especialista_id = @user.id
                 @text = (@orientacion.save && @tramite.update_estatus!("orie-conf", current_user)) ? ("Confirmado exitosamente por #{@user.nombre_completo}") : ("No se pudo confirmar, intente de nuevo")
                 return render(:partial => 'success_confirmation', :layout => "only_jquery")
             end

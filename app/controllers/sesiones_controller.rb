@@ -4,8 +4,8 @@ class SesionesController < ApplicationController
     #require_role "admin", :only => [:save, :edit]
     #require_role [:especialistas, :admindireccion], :for => [:new, :list_by_user, :list_by_tramite]
     #require_role [:controlagenda, :admindireccion], :for => [:new_with_date]
-
-    require_role [:controlagenda, :admindireccion, :especialistas]
+    require_role [:lecturaagenda, :admindireccion, :especialistas, :direccion]
+    require_role [:controlagenda, :admindireccion], :for => [:reprogramar, :new_with_date, :cancel]
 
   def list_by_tramite
     @tramite = Tramite.find(params[:id])
@@ -89,7 +89,9 @@ class SesionesController < ApplicationController
     @sesion.fecha = @fecha
     @sesion.horario = @horario
     @fecha_hora_sesion = (@sesion.start_at) ? @sesion.start_at : nil
-    @especialistas = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion)
+    #@especialistas = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion)
+    @mediadores =  Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones_funcion(@fecha_hora_sesion, "mediador")
+    @comediadores = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones_funcion(@fecha_hora_sesion, "comediador")
 
 
     if current_user.has_role?("admindireccion")
@@ -152,8 +154,8 @@ class SesionesController < ApplicationController
      if    @mediador && @comediador && @sesion.save
            ############### REGISTRAMOS AUSENCIA DE ESPECIALISTAS ##################
             @situacion = Situacion.find_by_descripcion("EN SESION")
-            @rango_inicial =  10/(24 * 60.0) # 10 Minutos
-            @rango_final = 70/(24 * 60.0) # 1 Hora y veinte (80 minutos)
+            @rango_inicial =  5/(24 * 60.0) # 5 Minutos
+            @rango_final = 65/(24 * 60.0) # 1 Hora y cinco (65 minutos)
             @fecha_inicio = @sesion.start_at - @rango_inicial
             @fecha_fin = @sesion.start_at + @rango_final
             @autorizo = (current_user) ? current_user.id : session["user_id"]
@@ -345,9 +347,14 @@ class SesionesController < ApplicationController
              if @sesion.num_tramite
               @especialista = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?", @sesion.mediador_id, "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}%"])
               @comediador = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?",  @sesion.comediador_id, "COMEDIADOR EN SESION, EXP. #{@sesion.num_tramite}%"])
+              @margen =  2/(24 * 60.0)
+              @ensesion = Situacion.find_by_descripcion("EN SESION")
+              @especialista ||= Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at + @margen).strftime("%y-%m-%d %H:%M:%S"), @sesion.mediador_id, @ensesion.id]) if @sesion.start_at
+              @comediador ||= Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at + @margen).strftime("%y-%m-%d %H:%M:%S"), @sesion.comediador_id, @ensesion.id]) if @sesion.start_at
              end
 
-            if @sesion.destroy
+            #if @sesion.destroy
+            if @sesion.cancel?(current_user)
               @especialista.destroy if @especialista
               @comediador.destroy if @comediador
               flash[:notice] = "Sesión cancelada correctamente, notificación enviada a especialistas.."
