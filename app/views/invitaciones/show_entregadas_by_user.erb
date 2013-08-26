@@ -1,0 +1,37 @@
+<%=link_to "Invitaciones sin entregar", :action => "list_by_user"%> | <%=link_to "Invitaciones entregadas", :action => "show_entregadas_by_user"%><br /><br/>
+
+<%if @invitaciones%>
+<table class="table1" width="85%">
+    <thead>
+         <!-- Titulos -->
+         <tr>
+            <th>Número de expediente</th>
+            <th scope="col" abbr="Starter">Participante</th>
+            <th scope="col" abbr="Starter">Fecha de sesión</th>
+            <th scope="col" abbr="Starter">Fecha de entrega</th>
+            <th scope="col" abbr="Starter">Cuadrante</th>
+            <th scope="col" abbr="Starter" colspan="2">&nbsp</th>
+         </tr>
+    </thead>
+
+    <tbody>
+        <%@invitaciones.each do |invitacion|%>
+          <tr>
+            <td><%=h (invitacion.tramite_id) ? (link_to "#{Tramite.find(invitacion.tramite_id).numero_expediente}", :action => "show", :controller => "tramites", :id => invitacion.tramite_id, :target => "_blank") : ""%></td>
+            <td><%=h (invitacion.participante) ? invitacion.participante.nombre_completo : "----"%></td>
+            <td><%=h (invitacion.sesion.start_at)? invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---"%></td>
+            <td><%=h (invitacion.fecha_hora_entrega)? (invitacion.fecha_hora_entrega.strftime("%d de %B de %Y / %H:%M")) : "---"%></td>
+            <td><%=h (invitacion.cuadrante) ? (invitacion.cuadrante) : "---"%></td>
+             <%if invitacion.signed?%>
+              <td><%=link_to 'Imprimir', {:action => "generar", :id => invitacion.id, :p => invitacion.participante_id }, :title => "Imprimir invitaciones de trámite", :class => 'boton'%></td>
+            <%end%>
+          <!-- detalle -->
+          <td><%=link_to 'Detalle', {:action => "show", :id => invitacion}, :title => "Detalle de invitación", :class => 'boton'%></td>
+          </tr>
+        <%end%>
+    </tbody>
+</table>
+
+<%else%>
+  <h3> No existe información</h3><br />
+<%end%>

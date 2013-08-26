@@ -1,0 +1,43 @@
+  <!-- Imagen principal -->
+    <tr>
+      <td colspan="2">
+        <table width="100%" border="0">
+           <tr>
+            <td width="100%" colspan="2">
+              <%=link_to image_tag("pjech/banner-super.jpg", :border => 0), {:controller => "home" }, :title => "INICIO"%> <!-- , :size => "1250x130" -->
+            </td>
+           </tr>
+         </table>
+      </td>
+    </tr>
+
+    <tr>
+        <td align="left" class="Estilo3"> <!-- color vino #791E16 -->
+          <%if logged_in?%>
+            <div class ="loginlabels" style="color: #666666; font-size: 13px;">
+              <!--
+                  <a href="/home/index" title="Inicio del sistema"><img src="/images/iconos/house_2.png" width="36" height="36" alt="inicio "/></a>
+              -->
+              &nbsp;
+              Usuario: <%=link_to "#{current_user.login} / #{current_user.subdireccion.descripcion}",  {:controller => "customs", :action => "profile"}, :title => current_user.nombre_completo, :style => "color: #d33934; font-size: 13px;"%>
+            </div>
+          <%end%>
+        </td>
+        <td height="20" valign="top" align="center"> <!-- color rojo #d33934 -->
+          <%if logged_in?%>
+              <!-- barra de busqueda-->
+              <!--
+                <form action ="/tramites/search" id="search">
+                  <input id="searchField" type="text" name="q" placeholder="Folio o nombre completo" />
+                  <input id="searchSubmit" type="submit" value="" />
+                </form>
+              -->
+              <div class ="imagehover">
+                  <%=link_to 'MI PERFIL',  {:controller => "customs", :action => "profile"}, :title => "Datos personales y perfiles a los que perteneces"%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <%=link_to 'MI ACTIVIDAD',  {:controller => "customs", :action => "activity"}, :title => "Mi actividad"%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <%=link_to 'CERRAR SESIÓN', {:action => "destroy", :controller=>"sessions"}, :title => "¿Desea salir del sistema?"%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                
+              </div>
+          <%end%>
+        </td>
+    </tr>

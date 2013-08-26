@@ -1,0 +1,61 @@
+<table width="65%" border="0" cellspacing="0">
+  <tr align="center">
+    <td align="right" width="35%"><%=image_tag("pjech/logo_rojo.png", :border => 0, :size => "118×154", :alt => "PJECH")%></td>
+    <td align="left" width="65%"><%=image_tag("pjech/barra_tipo_atencion.png", :border => 0, :alt => "PJECH")%></td>
+  </tr>
+</table>
+<br /><br />
+<table width="90%" border="0" cellspacing="0" cellpadding="0">
+    <tr align="center">
+        <!-- Catalogo -->
+        <td><%=link_to image_tag('tipo_atencion/atencion_personal.png', :size => "128x128", :size => "128x128", :mouseover => "tipo_atencion/atencion_personal_2.png") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Atención personal"%></td
+
+        <!-- Listado  -->
+        <%if current_user.has_role?("admin") || current_user.has_role?("direccion") || current_user.has_role?("admindireccion")%>
+           <td><%=link_to image_tag('tipo_atencion/tramite_extraordinario.png', :size => "128x128", :mouseover => "tipo_atencion/tramite_extraordinario_2.png") , {:action => "index", :controller => "extraordinaria"}, :title => "Atención extraordinaria"%></td
+        <%end%>
+
+        <!-- Por escrito -->
+        <%if current_user.has_role?("admin") || current_user.has_role?("direccion") || current_user.has_role?("oficinasubdireccion")%>
+          <td><%=link_to image_tag('tipo_atencion/atencion_escrito.png',  :size => "128x128", :mouseover => "tipo_atencion/atencion_escrito_2.png") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito"%></td>
+        <%end%>
+
+        <!-- Por telefono -->
+        <td><%=link_to image_tag('tipo_atencion/atencion_telefono.png', :size => "128x128",  :mouseover => "tipo_atencion/atencion_telefono_2.png") , {:action => "por_telefono_index", :controller => "atencion"}, :title => "Atención por correo electrónico"%></td>
+
+        <!-- Por correo electrónico -->
+        <td><%=link_to image_tag('tipo_atencion/atencion_correo.png',  :size => "128x128", :mouseover => "tipo_atencion/atencion_correo_2.png") , {:action => "por_correo_index", :controller => "atencion"}, :title => "Atención por correo electrónico", :class => "fancybox fancybox.iframe"%></td>
+
+        <!-- Atención convenios -->
+        <%if Time.now.hour > 15%>
+         <td><%=link_to image_tag('tipo_atencion/tramite_extraordinario.png',  :size => "128x128", :mouseover => "tipo_atencion/tramite_extraordinario_2.png") , {:action => "new_or_edit", :controller => "orientacions", :t => "extra"}, :title => "Atención con personal extraordinario"%></td>
+        <%end%>
+
+
+  </tr>
+
+  <!-- TITULOS -->
+  <tr align="center">
+    <td class="menu">Atención Personal</td>
+
+    <%if current_user.has_role?("admin") || current_user.has_role?("direccion") || current_user.has_role?("admindireccion")%>
+        <td class="menu">Atenciones extraordinarias</td>
+    <%end%>
+
+     <%if current_user.has_role?("admin") || current_user.has_role?("direccion") || current_user.has_role?("oficinasubdireccion")%>
+      <td class="menu">Por escrito</td>
+     <%end%>
+
+     <td class="menu">Por teléfono</td>
+     <td class="menu">Por correo electrónico</td>
+
+     <%if Time.now.hour > 15%>
+        <td class="menu">Iniciar trámite con personal extraordinario</td>
+     <%end%>
+
+  </tr>
+</table>
+<br/>
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
+
+

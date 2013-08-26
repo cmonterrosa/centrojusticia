@@ -1,0 +1,20 @@
+<tr width="90%">
+    <td colspan="2" valign="top" align="center">
+      <%if flash[:notice]%>
+        <div class="notice">
+            <%= flash[:notice] %>
+        </div>
+      <%else%>
+        <p></p>
+      <%end%>
+      <%=yield%>
+    </td>
+</tr>
+
+<!-- espacios en blanco -->
+<tr>
+    <td colspan="2">&nbsp;</td>
+</tr>
+<tr>
+    <td colspan="2">&nbsp;</td>
+</tr>

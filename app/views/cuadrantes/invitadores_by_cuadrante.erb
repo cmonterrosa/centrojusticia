@@ -1,0 +1,43 @@
+<h1>Invitadores asignados al cuadrante: <%=@cuadrante.descripcion%></h1>
+
+
+
+
+<table width="50%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <tr style="background-color:gray; color:white">
+      <th width="50%">NOMBRE COMPLETO</th>
+      <th width="20%">&nbsp;</th>
+    </tr>
+
+<%clase=1%>
+<% @invitadores_cuadrante.each do |invitador| %>
+    <tr class="d<%=invert_class(clase)%>">
+    <td width="50%"><%=h invitador.nombre_completo %></td>
+    <td style="vertical-align: middle;"><%=h (link_to 'Quitar', {:action => "quit_invitador", :cuadrante => @cuadrante, :id => invitador}, :confirm => '¿Esta seguro que quiere quitarlo de ese cuadrante?', :method => :delete, :class => 'boton' )%></td>
+  </tr>
+  <%clase = invert_class(clase)%>
+<% end %>
+</table>
+
+<br />
+
+
+
+<!----- AGREGAMOS USUARIO --->
+<h3>Selecciona al usuario</h3>
+<br />
+
+<% form_tag :action => 'add_invitador', :cuadrante =>@cuadrante do -%>
+<table  class="botones">
+  <tr class="botones">
+     <th class="botones">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+     <th><%= collection_select("user", "user_id", @todos_invitadores, :id, :nombre_completo, :prompt => '>> Seleccione usuario')    %></th>
+    <th class="botones"><%= submit_tag "Agregar", :onclick => "return comprobar();" %></th>
+  </tr>
+</table>
+<% end %>
+
+
+
+
+<br /><br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "cuadrantes"%><br />

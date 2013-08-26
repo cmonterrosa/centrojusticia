@@ -1,0 +1,20 @@
+  <!-- Participantes del trámite -->
+  <% if @tramite.comparecencia %>
+    <%unless @tramite.comparecencia.participantes.empty?%>
+      <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+        <tr style="background-color:gray; color:white">
+          <th colspan="2">
+            Participantes
+          </th>
+        </tr>
+
+        <%clase=0%>
+        <% @tramite.comparecencia.participantes.each do |participante|%>
+          <tr class="d<%=invert_class(clase)%>">
+            <td align="center"><%=link_to "#{participante.nombre_completo}", :action => "show", :controller => "participantes", :id => participante%></td>
+          </tr>
+          <%clase = invert_class(clase)%>
+        <%end%>
+      </table><br /><br />
+    <%end%>
+  <%end%>

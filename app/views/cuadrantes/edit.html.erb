@@ -1,0 +1,16 @@
+<h1>Editing cuadrante</h1>
+
+<% form_for(@cuadrante) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :descripcion %><br />
+    <%= f.text_field :descripcion %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @cuadrante %> |
+<%= link_to 'Back', cuadrantes_path %>

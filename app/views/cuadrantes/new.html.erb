@@ -1,0 +1,15 @@
+<h1>Nuevo cuadrante</h1>
+
+<% form_for(@cuadrante) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :descripcion %><br />
+    <%= f.text_field :descripcion %>
+  </p>
+  <p>
+    <%= f.submit 'Guardar' %>
+  </p>
+<% end %>
+
+<%= link_to 'Atrás', cuadrantes_path %>
