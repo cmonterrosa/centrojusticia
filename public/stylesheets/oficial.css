@@ -2,9 +2,18 @@
 a img {
         border: 0;
 }
-.titulo {font-size: 18px; font-weight: bold; font-family: Arial, Helvetica, sans-serif; color: #666666;}
+.titulo {
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    background-color: #d33934;
+}
+
 .Session {font-size: 24px; font-weight: bold; font-family: Arial, Helvetica, sans-serif; color: #FFF; }
-.subtitulo {font-size: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #666666; }
+/*.subtitulo {font-size: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #666666; }*/
+.subtitulo {font-size: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; color: black; }
+
 .pregunta {font-size: 12px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #666666; }
 .Estilo4 {font-size: 11px; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #666666; }
 .Estilo5 {font-size: 11px; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #333333; }
@@ -65,8 +74,9 @@ a:link {
 }
 
 .titulocalendario {
-    font-family: "Trebuchet MS", sans-serif;
-    font-size: 18px; color: #791E16;
+    /*font-family: "Trebuchet MS", sans-serif;*/
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 18px; color: #d33934;
     font-weight: bold;
     text-decoration:none;
     text-shadow:1px 1px 0px #ffffff;
@@ -220,7 +230,7 @@ table.table1{
 }
 
 /* Firma de Invitaciones */
-  table.firmaInvitacion { font-size:20px; border:10px solid RoyalBlue;-webkit-border-radius:13px;-moz-border-radius:13px;-ms-border-radius:13px;-o-border-radius:13px;border-radius:13px; }
+  table.firmaInvitacion { background-color: #ffffff; font-size:20px; border:10px solid #d33934;-webkit-border-radius:13px;-moz-border-radius:13px;-ms-border-radius:13px;-o-border-radius:13px;border-radius:13px; }
   table.firmaInvitacion td, table.firmaInvitacoin th { border-bottom:1px dotted black;padding:5px; }
 
 
@@ -230,4 +240,24 @@ table.table1{
 	color: navy;
 	padding-top: 10px;
 	padding-bottom: 3px;
+}
+
+/* Menu principal con colores */
+.imagehover {
+    /*font-family: Verdana, Geneva, sans-serif;*/
+    font-family: "Times New Roman",Georgia,Serif;
+    font-size: 14px;
+    color: #666666;
+    font-weight: bold;
+}
+
+.imagehover a {
+ font-family: Verdana, Geneva, sans-serif;
+ font-size: 14px;
+ color: #666666;
+ font-weight: bold;
+}
+.imagehover a:hover {
+color: #ffffff;
+background-color:#d33934;
 }
