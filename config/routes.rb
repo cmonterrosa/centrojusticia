@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :cuadrantes, :only => [:index, :new, :create, :edit, :show]
+
+
   map.logout '/logout', :controller => 'sessions', :action => 'destroy'
   map.login '/login', :controller => 'sessions', :action => 'new'
   map.register '/register', :controller => 'users', :action => 'create'
@@ -7,6 +10,7 @@ ActionController::Routing::Routes.draw do |map|
   map.resources :users
   map.resource :session
   map.resource :admins
+
 
   #--- new users only from admin --
   map.connect 'users/:new_from_admin', :controller => 'users', :action => 'new_from_admin'
