@@ -19,7 +19,7 @@
         <td style="vertical-align: middle;"><%=comparecencia.tramite.estatu.descripcion%></td>
 
         <!-- Convertir en orientacion -->
-        <%@margen =  (120 * 60.0) # 120 Minutos%>
+        <%@margen =  (10080 * 60.0) # 7 Dias%>
         <%if (Time.now < (comparecencia.created_at + @margen)) || (Time.now < (comparecencia.updated_at + @margen))%>
           <td style="vertical-align: middle;"><%=link_to "Cambiar a orientación", {:controller => "comparecencias", :action => "change_to_orientacion", :id => comparecencia}, :class => 'boton'%></td>
         <%end%>

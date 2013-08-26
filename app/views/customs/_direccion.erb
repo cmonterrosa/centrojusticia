@@ -1,6 +1,7 @@
 <%= render :partial => "barra_superior"%>
 
-<table width="85%" border="0" cellspacing="0" cellpadding="0">
+
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
       <td>
         <a href="/tramites" title="Trámites">
@@ -8,8 +9,8 @@
         </a>
       </td>
 
-      
-      <td>
+
+       <td>
          <a href="/orientacions/show_especialistas_disponibles" title="Especialistas disponibles">
            <img src="/images/iconos/personal.png" width="128" height="128" alt="especialistas" />
          </a>
@@ -20,7 +21,17 @@
            <img src="/images/iconos/noatencionbrindada.png" width="128" height="128" alt="atencion no brindada" />
          </a>
         </td>
-      
+  </tr>
+  <tr align="center">
+     <td class="menu" align="center">Trámites</td>
+     <td class="menu" align="center">Especialistas disponibles</td>
+     <td class="menu" align="center">Atención no brindada</td>
+  </tr>
+  <tr>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+  <tr align="center">
        <td>
          <a href="/admin/show_users" title="Administración de Personal">
            <img src="/images/iconos/perfiles2.png" width="128" height="128" alt="rh" />
@@ -29,7 +40,7 @@
 
        <td>
         <a href="/agenda/management" title="Calendario">
-          <img src="/images/iconos/agenda3.png" width="128" height="128" alt="calendario" />
+          <img src="/images/iconos/calendario.png" width="128" height="128" alt="agenda" />
         </a>
        </td>
 
@@ -38,16 +49,11 @@
            <img src="/images/iconos/estadisticas2.png" width="128" height="128" alt="estadisticas" />
          </a>
        </td>
-
-
-
   </tr>
-  <tr align="center">
-   <td class="menu" align="center">Trámites</td>
-   <td class="menu" align="center">Especialistas disponibles</td>
-   <td class="menu" align="center">Atención no brindada</td>
-   <td class="menu" align="center">Control de Personal</td>
-   <td class="menu" align="center">Agenda</td>
-   <td class="menu" align="center">Estadísticas</td>
+
+  <tr>
+      <td class="menu" align="center">Control de Personal</td>
+      <td class="menu" align="center">Agenda</td>
+      <td class="menu" align="center">Estadísticas</td>
   </tr>
 </table>

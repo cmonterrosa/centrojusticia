@@ -107,6 +107,7 @@ class ComparecenciasController < ApplicationController
         #--- Values only for moral person
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
         param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>@involucrado.apoderado_legal}
+        (@comparecencia.tramite.numero_expediente) ? param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>@comparecencia.tramite.numero_expediente} : nil
         if File.exists?(REPORTS_DIR + "/involucrado.jasper")
           (@involucrado.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("involucrado_persona_moral", "involucrado_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("involucrado", "involucrado", param, output_type = 'pdf')
           #send_doc_jdbc("involucrado", "involucrado", param, output_type = 'pdf')
@@ -160,6 +161,7 @@ class ComparecenciasController < ApplicationController
         #--- params only for moral person ---
         param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.apoderado_legal)}
         param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.razon_social)}
+        (@comparecencia.tramite.numero_expediente) ? param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>@comparecencia.tramite.numero_expediente} : nil
         if File.exists?(REPORTS_DIR + "/comparecencia.jasper")
           (@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
           #send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
@@ -329,6 +331,7 @@ class ComparecenciasController < ApplicationController
           @comparecencia.destroy
           @tramite.undo_status
           @tramite.update_estatus!("no-compar",current_user)
+          @tramite.update_attributes!(:folio_expediente => nil)
           flash[:notice] = "Registro actualizado correctamente"
           redirect_to :action => "list_by_user"
        else

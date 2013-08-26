@@ -1,5 +1,6 @@
 class Invitacion < ActiveRecord::Base
   belongs_to :sesion
+  belongs_to :participante
 
   def signed?
     (self.sesion.signed_at)? (return true) : (return false)
@@ -8,6 +9,11 @@ class Invitacion < ActiveRecord::Base
   def especialista
     return User.find(Sesion.find(self.sesion_id).mediador_id)
   end
+
+  def comediador
+    return User.find(Sesion.find(self.sesion_id).comediador_id)
+  end
+
 
   def subdireccion
     return Subdireccion.find(User.find(self.user_id).subdireccion_id)
@@ -25,8 +31,7 @@ class Invitacion < ActiveRecord::Base
    end
 
    def articulo_esp
-    articulo = (Sesion.find(self.sesion_id).mediador.sexo == "M") ? "el" : "la"
-    return articulo
+    return (Sesion.find(self.sesion_id).mediador.sexo == "M") ? "el" : "la"
    end
 
    def fecha_sesion
@@ -39,5 +44,7 @@ class Invitacion < ActiveRecord::Base
      return User.find(self.invitador_id) if self.invitador_id
      return nil
    end
+
+
 
 end

@@ -34,82 +34,18 @@
 </head>
 
 <body>
-  <table width="1250px" border="0" align="center" cellspacing="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; text-align: center; opacity:0.9;
-  filter:alpha(opacity=90); background: url('/images/pjech/fondo-total.jpg'); background-repeat: no-repeat; background-repeat: repeat-y;/* For IE8 and earlier */" >
-    <!-- header -->
-    <tr>
-      <td colspan="2">
-        <table width="100%" border="0" cellspacing="1">
-           <tr>
-            <td width="90%">
-              <%=image_tag("pjech/banner-super.jpg", :border => 0, :size => "1250x130")%>
-            </td>
-           </tr>
-         </table>
-      </td>
-    </tr>
-   <!-- termina header #F8A74B -->
-  <tr>
-      <td align="left" bgcolor="#791E16" class="Estilo3">
-        <!-- <if session["nombre_completo"]> -->
-        <%if logged_in?%>
-        <div class ="loginlabels">
-          <a href="/home/index" title="Inicio del sistema"><img src="/images/iconos/house_2.png" width="42" height="42" alt="inicio "/></a>
-          Usuario:  <%=current_user.login%> / <%=current_user.subdireccion.descripcion%>
-        </div>
-        <%end%>
-      </td>
-      <td height="20" valign="top" bgcolor="#791E16" align="right">
-        <%if logged_in?%>
-            <!-- barra de busqueda-->
-            <form action ="/tramites/search" id="search">
-              <input id="searchField" type="text" name="q" placeholder="Folio o nombre completo" />
-              <input id="searchSubmit" type="submit" value="" />
-            </form>
-            <div class ="loginlayout">
-              <%=link_to 'Mi Perfil',  {:controller => "customs", :action => "profile"}, :title => "Datos personales y perfiles a los que perteneces", :style => "font-size: 12px; color: #FFFFFF;"%> |
-              <%=link_to 'Mi Actividad',  {:controller => "customs", :action => "activity"}, :title => "Mi actividad", :style => "font-size: 12px; color: #FFFFFF;"%> |
-              <%=link_to 'Cerrar sesión', {:action => "destroy", :controller=>"sessions"}, :title => "¿Desea salir del sistema?", :style => "font-size: 12px; color: #FFFFFF;"%>
-            </div>
-        <%end%>
-      </td>
-  </tr>
+  <table width="100%" border="0" align="center" cellspacing="0" style="BORDER-RIGHT: #cccccc 0px solid; BORDER-TOP: #cccccc 0px solid; BORDER-LEFT: #cccccc 0px solid; BORDER-BOTTOM: #cccccc 0px solid; text-align: center; opacity:0.9;
+  filter:alpha(opacity=10); background: url('/images/pjech/fondo-total.jpg'); background-repeat: repeat; background-repeat: repeat;/* For IE8 and earlier */" >
+  
+  <!-- header -->
+  <%= render :partial => "layouts/header"%>
 
   <!-- contenido principal -->
+  <%= render :partial => "layouts/content"%>
 
-    <tr>
-    <td colspan="2" valign="top" align="center">
-      <%if flash[:notice]%>
-        <div class="notice">
-            <%= flash[:notice] %>
-        </div>
-      <%else%>
-        <p></p>
-      <%end%>
-      <%=yield%>
-    </td>
-    </tr>
-  
-  <tr>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  
-  <tr>
-    <td  colspan="2">
-      <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #791E16">
-          <tr><td>&nbsp;</td></tr>
-          <tr>
-          <td align="center" style="font-size: 13px; font-family: Georgia, 'Times New Roman', serif; color: white; text-shadow: black 0.1em 0.1em 0.2em">
-            http://ceja.poderjudicialchiapas.gob.mx
-          </td>
-         </tr>
-          <tr>
-            <td><input type="hidden" id="ffKeyTrap"/></td>
-          </tr>
-         <tr><td>&nbsp;</td></tr>
-      </table>
-    </td>
-  </tr>
+  <!--footer -->
+  <%= render :partial => "layouts/footer"%>
+
 </table>
 </body>
 </html>

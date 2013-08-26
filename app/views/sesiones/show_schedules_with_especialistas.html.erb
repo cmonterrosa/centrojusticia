@@ -11,6 +11,10 @@
     <td><%=text_field_tag "sesion_fecha", "#{@fecha.strftime('%Y/%m/%d')}"%></td>
     <td><%= check_box_tag 'sesion_notificacion', @notificacion%></td>
     <td><%=h (@sesion.tiposesion) ? (@sesion.tiposesion.descripcion) : @tiposesion.descripcion%></td>
+    <td>
+      <%=hidden_field_tag 'sesion_mediador_id', @mediador.id%>
+      <%=hidden_field_tag 'sesion_comediador_id', @comediador.id%>
+    </td>
  </tr>
 
  <tr align="center">

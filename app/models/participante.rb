@@ -3,6 +3,8 @@ class Participante < ActiveRecord::Base
   belongs_to :municipio
   belongs_to :user
   belongs_to :tipopersona
+  belongs_to :cuadrante
+  has_many :invitacions
 
   #def before_save
     #self.paterno.upcase! if self.paterno
@@ -21,7 +23,6 @@ class Participante < ActiveRecord::Base
   end
 
   def nombre_completo
-    #"#{self.paterno} #{self.materno} #{self.nombre}"
     "#{self.nombre} #{self.paterno} #{self.materno}"
   end
 
@@ -55,7 +56,11 @@ class Participante < ActiveRecord::Base
       age = (today.year - user.year) -1
     end
     age
-end
+  end
+
+   def numero_expediente
+     (self.folio_expediente) ?  "#{self.folio_expediente.to_s.rjust(4, '0')}/#{self.anio}" : nil
+   end
 
 
 

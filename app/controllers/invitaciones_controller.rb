@@ -1,5 +1,7 @@
 include SendDocHelper
 class InvitacionesController < ApplicationController
+  require_role [:direccion, :subdireccion, :invitadores]
+
   def index
   end
 
@@ -17,10 +19,12 @@ class InvitacionesController < ApplicationController
        @involucrado = Participante.find(params[:p]) if params[:p]
        @involucrado ||= Participante.find(:first,
                       :conditions => ["perfil = 'INVOLUCRADO' AND comparecencia_id = ?", Comparecencia.find_by_tramite_id(@tramite).id])
-
+       @tramite = @invitacion.sesion.tramite
+       return false unless @involucrado
        # Timestamp for printing for a invitador
-       if current_user.id == @invitacion.invitador_id
-         update_tramite_model(@invitacion.sesion.tramite) if @invitacion.printed_at.nil?
+       if current_user.has_role?("invitadores")
+         #update_tramite_model(@invitacion.sesion.tramite) if @invitacion.printed_at.nil? && !@invitacion.sesion.tramite.estatus.clave == "invi-razo"
+         @tramite.update_estatus!("invi-proc",current_user) if @invitacion.printed_at.nil?
          @invitacion.update_attributes!(:printed_at => Time.now) if @invitacion.printed_at.nil?
        end
 
@@ -31,8 +35,15 @@ class InvitacionesController < ApplicationController
        #param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>"Lic. Amauri Palacios Aquino"}
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>@invitacion.especialista.nombre_completo}
        #param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>"Rodrigo Domínguez Moscoso"}
-       param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@invitacion.subdireccion.titular}
-       #param["P_ARTICULO"]={:tipo=>"String", :valor=>"la"}
+       
+       if current_user.has_role?("direccion")
+          d = Subdireccion.find_by_cargo("Director General")
+          param["P_FIRMANTE"]={:tipo=>"String", :valor=>d.titular}
+          param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo}
+       else
+          param["P_FIRMANTE"]={:tipo=>"String", :valor=>@invitacion.subdireccion.titular}
+          param["P_CARGO"]={:tipo=>"String", :valor=>@invitacion.subdireccion.cargo}
+       end
        param["P_ARTICULO"]={:tipo=>"String", :valor=>@invitacion.articulo}
        #param["P_LUGAR"]={:tipo=>"String", :valor=>"Tuxtla Gutiérrez, Chiapas;"}
        param["P_LUGAR"]={:tipo=>"String", :valor=>"#{@invitacion.subdireccion.municipio.descripcion}, CHIAPAS;"}
@@ -77,16 +88,22 @@ class InvitacionesController < ApplicationController
   end
 
   def list_by_user
-     @invitaciones = Invitacion.find(:all, :conditions => ["invitador_id = ?", current_user.id])
+    @cuadrantes = current_user.cuadrantes
+    @invitaciones = Invitacion.find(:all, :select => "invitacions.*, cu.descripcion as cuadrante, t.id as tramite_id",
+                                    :joins => ["invitacions,participantes p, cuadrantes cu, sesions s, tramites t, estatus e"],
+                                    :conditions => ["invitacions.participante_id=p.id AND p.cuadrante_id=cu.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ? AND cu.id in (?)", "invi-firm", @cuadrantes.map{|x|x.id}],
+                                    :order => "cu.descripcion")
   end
 
   def razonar
     @invitacion = Invitacion.find(params[:id])
-    if @invitacion && (@invitacion.invitador_id == current_user.id || current_user.has_role?(Role.find_by_name("admin")))
+    @invitadores = Role.find_by_name("invitadores").users
+
+    #if @invitacion && (@invitacion.invitador_id == current_user.id || current_user.has_role?(Role.find_by_name("admin")))
         
-    else
-      render :text => "No tiene privilegios de razonar la invitación o no existe"
-    end
+    #else
+     # render :text => "No tiene privilegios de razonar la invitación o no existe"
+    #end
 
   end
 
@@ -118,8 +135,15 @@ class InvitacionesController < ApplicationController
 
 
   def menu_print
-    @invitacion = Invitacion.find(params[:id])
-    @participantes = @invitacion.sesion.tramite.comparecencia.participantes
+    #@invitacion = Invitacion.find(params[:id])
+    #@participantes = @invitacion.sesion.tramite.comparecencia.participantes
+    
+       @cuadrantes = current_user.cuadrantes
+       @participantes = Participante.find(:all, :select => "t.id as tramite_id, t.anio, t.folio_expediente, s.signed_at, invitacions.id as invitacion_id, participantes.*, cu.descripcion as cuadrante",
+                                    :joins => ["participantes, invitacions invitacions, sesions s, tramites t, comparecencias c, cuadrantes cu"],
+                                    :conditions => ["invitacions.sesion_id=s.id AND s.tramite_id=t.id AND c.tramite_id=t.id AND 
+                                                     c.id=participantes.comparecencia_id AND participantes.cuadrante_id=cu.id AND participantes.cuadrante_id IN (?)", @cuadrantes.map{|x|x.id}],
+                                    :order => "s.fecha, s.hora, s.minutos")
   end
 
   def show
@@ -129,6 +153,15 @@ class InvitacionesController < ApplicationController
       flash[:notice] = "No se encontro invitacion"
       redirect_to :action => "list_by_user"
     end
+  end
+
+  def show_entregadas_by_user
+    @cuadrantes = current_user.cuadrantes
+    @invitaciones = Invitacion.find(:all, :select => "invitacions.*, cu.descripcion as cuadrante, t.id as tramite_id",
+                                    :joins => ["invitacions,participantes p, cuadrantes cu, sesions s, tramites t, estatus e"],
+                                    :conditions => ["invitacions.participante_id=p.id AND p.cuadrante_id=cu.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ? AND invitacions.invitador_id = ?", "invi-razo", current_user.id],
+                                    :order => "cu.descripcion")
+    
   end
 
 end

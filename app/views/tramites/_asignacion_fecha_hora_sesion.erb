@@ -1,4 +1,4 @@
-<h3>Asignación de fecha y hora de sesión</h3>
+<h3>Asignación de fecha/hora/sala de sesión</h3>
 
 <div id="scroll">
       <table class="sample" width="70%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
@@ -33,6 +33,10 @@
 </div><br /><br /><br />
 
 
+<%@sesion = Sesion.find(:first, :conditions => ["tramite_id = ? AND cancel IS NULL", @tramite.id])%>
+<%=link_to "Asignar", :action => "asignar_horario", :controller => "sesiones", :id => @sesion.id, :mediador_id => @sesion.mediador_id, :comediador_id => @sesion.comediador_id%>
+
+
 <div id="scroll">
 <% form_tag :action => 'update_estatus', :id =>@tramite do -%>
 <table class="sample" width="50%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
@@ -40,11 +44,7 @@
           <th colspan="2">Fecha/Hora de inicio de sesión:</th>
           <td><%= text_field :sesion, :start_at %></td>
       </tr>
-      <tr style="background-color:gray; color:white">
-          <th colspan="2">Descripción:</th>
-          <td><%= text_field :sesion, :descripcion %></td>
-      </tr>
-
+      
       <tr>
         <th>
           <th class="boton"><%= submit_tag "Guardar", :onclick => "return comprobar();" %></th>

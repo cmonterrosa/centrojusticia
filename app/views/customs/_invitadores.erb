@@ -1,24 +1,44 @@
-<h3 style="color:#104E8B; font-family: Helvetica;">Invitador: <%=@usuario.nombre_completo%></h3>
-<table width="70%" border="0" cellspacing="0" cellpadding="0">
+<%= render :partial => "barra_superior"%>
+
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
+      <td>
+        <a href="/atencion" title="Trámites">
+          <img src="/images/iconos/tramites.png" width="128" height="128" alt="tramites" />
+        </a>
+      </td>
+
+      <!-- Listado de trámites -->
+       <td>
+            <a href="/tramites/list" title="Trámites">
+              <img src="/images/iconos/seguimiento.png" width="128" height="128" alt="Trámites" />
+            </a>
+       </td>
+
+       <!-- Agenda -->
+       <%if current_user.has_role?("lecturaagenda")%>
+       <td>
+         <a href="/agenda/calendario" title="Control de la agenda">
+           <img src="/images/iconos/calendario.png" width="128" height="128" alt="Control de la agenda" />
+         </a>
+       </td>
+       <%end%>
+
+       <!-- Invitaciones -->
        <td>
         <a href="/invitaciones/list_by_user" title="Invitaciones">
           <img src="/images/iconos/addressbook.png" width="128" height="128" alt="invitaciones" />
         </a>
        </td>
 
-       <td>
-        <a href="/customs/calendario" title="Calendario">
-          <img src="/images/iconos/agenda3.png" width="128" height="128" alt="calendario" />
-        </a>
-       </td>
-  </tr>
 
+  </tr>
   <tr align="center">
-    <td class="menu">Sesiones</td>
-    <td class="menu">Calendario</td>
+    <td class="menu">Iniciar Trámite</td>
+    <td class="menu">Listado de trámites</td>
+    <%if current_user.has_role?("lecturaagenda")%>
+      <td class="menu">Lectura de Agenda</td>
+    <%end%>
+      <td class="menu">Invitaciones</td>
   </tr>
 </table>
-<br/>
-<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
-

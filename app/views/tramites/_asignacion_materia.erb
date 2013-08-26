@@ -1,4 +1,48 @@
-<h3>Asignación de materia</h3>
+<h3>Calificación de trámite</h3>
+
+
+<script>
+
+  window.onload = function() {
+    inicializar();
+  }
+
+  function inicializar(){
+    b = document.getElementById("tramite_materia_id");
+    b.disabled=true;
+  }
+
+  function alertaChecked(){
+        b = document.getElementById("asignacion_materia");
+   	 if (b[1].checked == true)
+           {
+             alert("Tramite procedente");
+             b[0].disabled = false;
+             n = document.getElementById("tramite_noprocedente_id")
+             n.disabled = true;
+             b[3].disabled = false;
+             b[4].disabled = false;
+             b[5].disabled = false;
+             b[6].disabled = false;
+             spinner = document.getElementById("spinner");
+             spinner.style.display = "none";
+           }
+          else
+            {
+             alert("Tramite no procedente");
+             b[0].disabled = true;
+             n = document.getElementById("tramite_noprocedente_id")
+             n.disabled = false;
+             b[3].disabled = true;
+             b[4].disabled = true;
+             b[5].disabled = true;
+             b[6].disabled = true;
+            }
+
+  }
+</script>
+
+
 
 <!-- ficha -->
 <%= render :partial => "ficha"%>
@@ -6,20 +50,68 @@
 
 
 <div id="scroll">
-<% form_tag :action => 'update_estatus', :id =>@tramite do -%>
+<!--< form_tag :action => 'update_estatus', :id =>@tramite, :html_options => {:id => "miformulario"} do -%>-->
+
+  <% form_for :tramite, @tramite, :url => { :action => "update_estatus", :id => @tramite }, :html => {:id => "asignacion_materia"} do |f| -%>
+
 <table class="sample" width="50%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr>
+          <th colspan="2">
+            ¿Es procedente? <%= f.check_box "procedente", :onchange => "alertaChecked();"%>
+          </th>
+      </tr>
+
+      
       <tr style="background-color:gray; color:white">
+          <th colspan="2">
+              Motivo por el cual no es procedente:
+          </th>
+          <td>
+            <%= f. collection_select("noprocedente_id", Noprocedente.all, :id, :descripcion, :prompt => '>> Seleccione una opción')%>
+          </td>
+      </tr>
+      
+
+       <tr>
+          <th colspan="2" style="background-color:gray; color:white">
+              Objeto de la solicitud
+          </th>
+          <td>
+            <%= f.text_field "objeto_solicitud", :disabled => true, :size => 50%>
+          </td>
+      </tr>
+      <tr>
+          <th colspan="2" style="background-color:gray; color:white">
+              Observaciones generales
+          </th>
+          <td>
+            <%= f.text_area "observaciones_generales", :size => "40x10", :disabled => true%>
+          </td>
+      </tr>
+
+      <tr>
+          <th colspan="2" style="background-color:gray; color:white">
+              Documentación anexa
+          </th>
+          <td>
+            <%= f.text_area "documentacion_anexa", :size => "40x5", :disabled => true%>
+          </td>
+      </tr>
+
+
+
+     <tr style="background-color:gray; color:white">
           <th colspan="2">
               Materia
           </th>
           <td>
-            <%= collection_select("tramite", "materia_id", Materia.all, :id, :descripcion, :prompt => '>> Seleccione una opción')%>
+            <%= f. collection_select("materia_id", Materia.all, :id, :descripcion, :prompt => '>> Seleccione una opción', :disabled => true)%>
           </td>
       </tr>
 
       <tr>
         <th>
-          <th class="boton"><%= submit_tag "Agregar", :onclick => "return comprobar();" %></th>
+          <th class="boton"><%= f.submit "Agregar"%></th>
         </th>
       </tr>
   </table>

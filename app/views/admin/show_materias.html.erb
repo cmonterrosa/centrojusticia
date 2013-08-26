@@ -6,18 +6,18 @@
        <td style="vertical-align: middle;">NP</td>
        <td style="vertical-align: middle;">Descripción</td>
     </tr>
+    <%contador=1%>
+    <%clase=0%>
     <%@materias.each do |materia|%>
-    <tr class="d1">
-     <td style="vertical-align: middle;"><%=materia.id%></td>
+     <tr align="left" class="d<%=invert_class(clase)%>">
+     <td style="vertical-align: middle;"><%=h contador%></td>
      <td style="vertical-align: middle;"><%=link_to "#{materia.descripcion}", {:action => "members_by_materia", :id => materia}, :class => 'boton'  -%></td>
     </tr>
+    <%clase = invert_class(clase)%>
+    <%contador+=1%>
     <%end%>
   </table>
 </div>
 
 
-
-
-
-
-<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />
+<br /><br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />

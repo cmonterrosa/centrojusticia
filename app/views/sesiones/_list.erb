@@ -15,7 +15,9 @@
        <td style="vertical-align: middle;"> <%=h(sesion.mediador ? sesion.mediador.nombre_completo : "---")%></td>
        <td style="vertical-align: middle;"> <%=h(sesion.comediador ? sesion.comediador.nombre_completo : "---")%></td>
        <td style="vertical-align: middle;"> <%=h(sesion.estatus_sesion ? sesion.estatus_sesion.descripcion : "---")%></td>
-       <td style="vertical-align: middle;"><%=link_to "Cambiar fecha", {:action => "change_schedule", :id => sesion}, :class => 'boton', :title => "Reprogramar horario de sesión"%></td>
+       <%if sesion.mediador_id && sesion.comediador_id%>
+        <td style="vertical-align: middle;"><%=link_to "Cambiar fecha", {:action => "asignar_horario", :id => sesion, :mediador_id => sesion.mediador_id, :comediador_id => sesion.comediador_id}, :class => 'boton', :title => "Reprogramar horario de sesión"%></td>
+       <%end%>
        <td style="vertical-align: middle;"><%=link_to "Cancelar sesión", {:action => "cancel", :id => sesion}, :class => 'boton', :title => "Cancelar sesión"%></td>
     </tr>
     <%end%>

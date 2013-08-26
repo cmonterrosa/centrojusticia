@@ -123,11 +123,22 @@ class TramitesController < ApplicationController
                     return render(:partial => 'no_asignacion_especialista', :layout => "oficial")
                 end
             when "fech-asig" #---- asignación de fecha y hora de sesión ----
-                return render(:partial => 'asignacion_fecha_hora_sesion', :layout => "oficial")
-            when "invi-firm"
+                 @sesion = Sesion.find(:first, :conditions => ["tramite_id = ? AND cancel IS NULL", @tramite.id])
+                 if @sesion
+                    redirect_to :action => "asignar_horario", :controller => "sesiones", :id => @sesion.id, :mediador_id => @sesion.mediador_id, :comediador_id => @sesion.comediador_id
+                 else
+                    redirect_to :action => "list"
+                 end
+
+            when "camb-sesi"  ######## Cambio de fecha de sesion #####
+                 @sesion = Sesion.find(:first, :conditions => ["tramite_id = ? AND cancel IS NULL", @tramite.id])
+                 (@sesion) ? ( redirect_to :action => "asignar_horario", :controller => "sesiones", :id => @sesion.id, :mediador_id => @sesion.mediador_id, :comediador_id => @sesion.comediador_id, :title => "reasignacion") : (redirect_to :action => "list")
+                 
+             when "invi-firm"
                @sesion = Sesion.find(:first, :conditions => ["tramite_id = ? AND signed_at is NULL", @tramite.id], :order => "fecha DESC")
                @invitacion = Invitacion.find_by_sesion_id(@sesion.id)
-               @invitacion ||= Invitacion.create(:user_id => current_user.id, :sesion_id => @sesion.id)
+               @participante = (@tramite.comparecencia.participantes) ? @tramite.comparecencia.participantes.first : nil
+               @invitacion ||= Invitacion.create(:user_id => current_user.id, :sesion_id => @sesion.id, :participante_id => @participante.id ) if @participante
                @role = Role.find_by_name("invitadores")
                return  render(:partial => 'firma_invitaciones', :layout => "oficial")
             when "invi-proc"
@@ -135,25 +146,43 @@ class TramitesController < ApplicationController
             #### Admision de tramite ####
             when "tram-admi"
               return  render(:partial => 'admitir_tramite', :layout => "oficial")
+            ### Invitaciones razonadas ###
+            when "invi-razo"
+              redirect_to :controller => "invitaciones", :action => "list_by_user"
             else
               update_tramite_model
          end
       else
 
       if params.has_key?(:tramite)
+         @primera_asignacion_materia = (@tramite.materia_id) ? false : true
          @tramite.update_attributes(params[:tramite])
-         update_tramite_model if @tramite.save
+         @tramite.procedente=true if params[:tramite]["procedente"] == 1
+         unless @tramite.procedente
+              @tramite.update_estatus!("tram-noad",current_user)
+              flash[:notice] = "Registro actualizado correctamente"
+              redirect_to :action => "list"
+         else
+               if @tramite.save && @primera_asignacion_materia
+                update_tramite_model
+               else
+                redirect_to :action => "list"
+               end
+         end
+         
       elsif params.has_key?(:sesion)
          @sesion = Sesion.find(:first, :conditions => ["tramite_id = ?", params[:id]])
          (@sesion) ? @sesion.update_attributes(params[:sesion]) : @sesion = Sesion.new(params[:sesion])
-         @tramite = @sesion.tramite = Tramite.find(params[:id])
+         @tramite = Tramite.find(params[:id])
+         @sesion.tramite_id = @tramite.id if @tramite
          @sesion.num_tramite = @tramite.folio_inverso
+         @sesion.generate_clave unless @sesion.clave
          if @sesion && @sesion.comediador_id && @sesion.mediador_id
             if @sesion.save
-               update_tramite_model if @sesion.save
-               NotificationsMailer.deliver_sesion_created("mediador", @sesion)
-               NotificationsMailer.deliver_sesion_created("comediador", @sesion)
-               flash[:notice] = "Especialista y comediador notificados vía correo electrónico"
+               update_tramite_model #if @sesion.save
+               #NotificationsMailer.deliver_sesion_created("mediador", @sesion)
+               #NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+               flash[:notice] = "Especialista y comediador notificados asignados"
              else
               flash[:notice] = "No se pudo guardar el registro, verifique"
               redirect_to :action => "list"
@@ -164,14 +193,27 @@ class TramitesController < ApplicationController
          end
       
       #--- firma de invitaciones --
+
       elsif params.has_key?(:infosesion)
         @tramite = Tramite.find(params[:id])
         @invitacion = Invitacion.find(params[:invitacion]) if params[:invitacion]
+        @sesion = @invitacion.sesion
         #@invitacion.invitador_id = User.find(params[:infosesion_invitador]).id if params[:infosesion_invitador]
+        ############# obtenemos a las personas que se les va a generar invitacion ##########
+        ids=[]
+        params.keys.each do |x|
+          ids << x if x=~ /^\d{1,4}$/
+        end
+        Participante.find(ids).each do |p|
+          invitacion = Invitacion.find_by_participante_id(p.id)
+          invitacion ||= Invitacion.new(:user_id => current_user.id, :sesion_id => @sesion.id, :participante_id => p.id )
+          invitacion.save
+        end
         @invitacion.sesion.signed_at = Time.now
         @invitacion.sesion.signer_id = current_user.id
         @invitacion.save && @invitacion.sesion.save
-        update_tramite_model
+        flash[:notice] = ( @tramite.update_estatus!("invi-firm", current_user)) ? "Registro actualizado correctamente" :  "No se pudo guardar, verifique"
+        redirect_to :action => "list"
       else
         flash[:notice] = "No se pudo cambiar el estatus, verifique"
          redirect_to :action => "list"
@@ -225,20 +267,46 @@ class TramitesController < ApplicationController
   end
 
   def filtro_nombre
-    if params[:search_nombre]
-      if params[:search_nombre].size > 4
-        @nombre = params[:search_nombre]
-        @tramites = Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ? OR o.paterno like ?", "#{@nombre}%",  "#{@nombre}%"], :order => "t.fechahora DESC")
-        @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ? OR o.paterno like ?", "#{@nombre.upcase}%",  "#{@nombre.upcase}%"], :order => "t.fechahora DESC")
-        #@tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "created_at DESC") if @estatu
-      else
-        return render(:partial => 'noresults', :layout => false) if request.xhr?
+      if params[:search_nombre]
+        if params[:search_nombre].size > 5
+            @nombre = params[:search_nombre]
+            @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ?", "#{@nombre.upcase}%"], :order => "t.fechahora DESC")
+            @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
+            return render(:partial => 'listajaxbasic', :layout => false) if request.xhr?
+        end
       end
-    end
-    @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
-    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
-    return render(:partial => 'listajaxbasic', :layout => false) if request.xhr?
+      render :text => ""
   end
+
+
+
+   def filtro_paterno
+    if params[:search_paterno]
+      if params[:search_paterno].size > 5
+        @paterno = params[:search_paterno]
+        @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.paterno like ?", "#{@paterno.upcase}%"], :order => "t.fechahora DESC")
+        @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
+        #@tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
+        return render(:partial => 'listajaxbasic', :layout => false) if request.xhr?
+      end
+      render :text => ""
+    end
+   end
+
+    def filtro_numero_expediente
+    if params[:search_numero_expediente]
+      if params[:search_numero_expediente].size > 5 && params[:search_numero_expediente] =~ /^\d{1,4}\/\d{4}$/
+        folio, anio = params[:search_numero_expediente].split("/")
+        @tramites = Tramite.find(:all, :conditions => ["anio = ? AND folio_expediente = ?", anio, folio])
+        #@tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.paterno like ?", "#{@paterno.upcase}%"], :order => "t.fechahora DESC")
+        @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
+        #@tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
+        return render(:partial => 'listajaxbasic', :layout => false) if request.xhr?
+      end
+      render :text => ""
+    end
+   end
+
 
   def get_comediador
     @tramite =  Tramite.find(session["tramite_id"])
@@ -262,6 +330,11 @@ class TramitesController < ApplicationController
        flash[:notice] = "Registro actualizado correctamente"
        redirect_to :action => "list_by_user", :controller => "orientacions"
     end
+  end
+
+  def change_materia
+    @tramite = Tramite.find(params[:id])
+    return render(:partial => 'asignacion_materia', :layout => "oficial")
   end
 
 protected

@@ -39,7 +39,7 @@ class AdminController < ApplicationController
 
   #--- administración de flujo de peticiones
   def flujo
-    @flujos = Flujo.all
+    @flujos = Flujo.find(:all, :order => "orden")
     @estatus = Estatu.all
     @users = Role.all
   end

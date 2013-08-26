@@ -9,7 +9,7 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="6">DATOS PERSONALES</td>
+          <td align="center" colspan="8">DATOS PERSONALES</td>
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center"></td>
@@ -48,11 +48,13 @@
           <td align="center">Municipio</td>
           <td align="center">Domicilio</td>
           <td align="center">Referencias</td>
+          <td align="center">Cuadrante</td>
         </tr>
         <tr>
           <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true%></td>
           <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x10"%></td>
+          <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
         </tr>
       </table></td>
     </tr>
@@ -61,7 +63,7 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5" >DATOS DE LOCALIZACION</td>
+          <td align="center" colspan="4" >DATOS DE LOCALIZACION</td>
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center">Teléfono Particular</td>

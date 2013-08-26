@@ -38,11 +38,13 @@
           <td align="center">Municipio</td>
           <td align="center">Domicilio</td>
           <td align="center">Referencias Domiciliarias</td>
+          <td align="center">Cuadrante</td>
         </tr>
         <tr>
           <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true%></td>
           <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x10"%></td>
+          <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
         </tr>
       </table></td>
     </tr>

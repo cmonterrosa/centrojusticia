@@ -4,7 +4,7 @@ class SesionesController < ApplicationController
     #require_role "admin", :only => [:save, :edit]
     #require_role [:especialistas, :admindireccion], :for => [:new, :list_by_user, :list_by_tramite]
     #require_role [:controlagenda, :admindireccion], :for => [:new_with_date]
-    require_role [:lecturaagenda, :admindireccion, :especialistas, :direccion]
+    require_role [:lecturaagenda, :admindireccion, :especialistas, :direccion, :asignahorario]
     require_role [:controlagenda, :admindireccion], :for => [:reprogramar, :new_with_date, :cancel]
 
   def list_by_tramite
@@ -17,6 +17,7 @@ class SesionesController < ApplicationController
       flash[:notice] = "No se pudo encontrar sesion, verifique"
       redirect_to :controller => "home"
     else
+      @title = (params[:title]) ? "Resignación de horario" : "Asignación de horario"
       @mediador = User.find(params[:mediador_id])
       @comediador = User.find(params[:comediador_id])
       @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
@@ -308,6 +309,10 @@ class SesionesController < ApplicationController
            if params[:notificacion] == "true"
              NotificationsMailer.deliver_sesion_updated("mediador", @sesion)
              NotificationsMailer.deliver_sesion_updated("comediador", @sesion)
+           end
+           ############ Cambiamos status ##############
+           if @sesion.tramite
+              (Estatu.find(@sesion.tramite.estatu_id).clave === ("fech-asig")) ?  @sesion.tramite.update_estatus!("camb-sesi", current_user) :  @sesion.tramite.update_estatus!("fech-asig", current_user)
            end
            flash[:notice] = "Hora de sesión actualizada correctamente"
         end

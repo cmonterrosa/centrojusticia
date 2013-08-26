@@ -8,11 +8,20 @@
                });
 </script>
 
+
+
+
 <!-- contenido -->
 <div id="divlista">
+
+  <p align="center">
+    Total de registros encontrados: <%=@tramites.size%>
+  </p>
+
     <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
-          <th style="vertical-align: middle;" align="center">Folio T</th>
+          <th style="vertical-align: middle;" align="center">Folio</th>
+          <th style="vertical-align: middle;" align="center">Carpeta de Atención</th>
           <th style="vertical-align: middle;" align="center">Solicitante</th>
           <th style="vertical-align: middle;" align="center">Fecha/Hora inicial</th>
           <th style="vertical-align: middle;" align="center"><%=h "Estatus"%></th>
@@ -24,12 +33,20 @@
     <%solo_orientacion = Estatu.find_by_clave("no-compar")%>
     <%comparecencia_concluida = Estatu.find_by_clave("comp-conc")%>
     <%tramite_reasignado = Estatu.find_by_clave("tram-reas")%>
+    <%materia_asignada = Estatu.find_by_clave("mate-asig")%>
 
     <%@tramites.each do |tramite|%>
     <tr class="d<%=invert_class(clase)%>">
        <td style="vertical-align: middle;"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
+       <td style="vertical-align: middle;"><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></td>
        <td style="vertical-align: middle;"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
-       <td style="vertical-align: middle;"><%=h (tramite.fechahora) ? tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "-----"%></td>
+       
+       <td style="vertical-align: middle;"><%=link_to image_tag("iconos/fecha.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
+
+       <!--
+       <td style="vertical-align: middle;"><=h (tramite.fechahora) ? tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "-----"%></td>
+       -->
+
        <td style="vertical-align: middle;"><%=tramite.estatus%></td>
        <!-- siguiente estatus -->
        <%ids = []%>
@@ -80,8 +97,13 @@
         <%end%>
 
         <!-- Mostrar o modificar número de expediente -->
-        <%if (tramite.estatu_id ==comparecencia_concluida.id && current_user.has_role?("captura"))%>
+        <%if (tramite.estatu_id ==comparecencia_concluida.id && (current_user.has_role?("captura") || current_user.has_role?("jefeatencionpublico")))%>
           <td style="vertical-align: middle;"><%=h (link_to "Núm Expediente", {:controller => "tramites", :action => "show_numero_expediente", :id => tramite.id}, :class => 'boton') %></td>
+        <%end%>
+
+        <!-- Modificar asignacion de materia -->
+        <%if (tramite.estatu_id == materia_asignada.id) && current_user.has_role?("convenios") && (Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id = ? and user_id = ?", tramite.id, materia_asignada.id, current_user.id ]))%>
+             <td style="vertical-align: middle;"><%=h (link_to "Cambiar materia", {:controller => "tramites", :action => "change_materia", :id => tramite.id}, :class => 'boton') %></td>
         <%end%>
 
         <!-- resumen general -->
@@ -109,3 +131,23 @@
         :action => 'filtro_nombre'},
         :update => 'divlista',
         :with => "search_nombre"%>
+
+
+  <%= observe_field :search_paterno,
+        :frequency => 0.36,
+        :before => "Element.show('spinner')",
+        :success => "Element.hide('spinner')",
+        :url => {:controller => 'tramites',
+        :action => 'filtro_paterno'},
+        :update => 'divlista',
+        :with => "search_paterno"%>
+
+
+  <%= observe_field :search_numero_expediente,
+        :frequency => 0.36,
+        :before => "Element.show('spinner')",
+        :success => "Element.hide('spinner')",
+        :url => {:controller => 'tramites',
+        :action => 'filtro_numero_expediente'},
+        :update => 'divlista',
+        :with => "search_numero_expediente"%>

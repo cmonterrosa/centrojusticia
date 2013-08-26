@@ -1,26 +1,54 @@
+<div class="titulocalendario">
+  <p>
+    Firma de invitaciones
+  </p>
+</div>
+
 <!-- ficha -->
 <%= render :partial => "ficha"%>
 
 
-<%if @sesion%>
-  <%if @sesion.start_at%>
-  <!-- vistazo de la invitacion -->
-  <div id="invitacion_pdf">
-  <object data="/invitaciones/generar/<%=@invitacion.id%>" type="application/pdf" width="900" height="800">
-      <p>Si no aparece el plugin para visualizar el pdf.
-        <a href="/invitaciones/generar/<%=@invitacion.id%>" target="_blank">Haga click aquí para descargarlo en una nueva ventana.</a>
-      </p>
-    </object>
-  </div>
 
-  <br /><br />
+<!-- seleccion de participantes  -->
+ <% form_tag :action => 'update_estatus', :id =>@tramite, :invitacion => @invitacion do -%>
+ 
+  <% if @tramite.comparecencia %>
+    <%unless @tramite.comparecencia.participantes.empty?%>
+      <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+        <tr class="titulo" style="background-color:#d33934; color:white;">
+          <th colspan="4">
+            Participantes
+          </th>
+        </tr>
 
-  <!-- firma -->
+         <tr class="subtitulo" style="background-color:gray; color: white;">
+           <th>Generar</th>
+          <th>Nombre Completo</th>
+          <th>Sexo</th>
+          <th>Cuadrante</th>
+        </tr>
+
+  
+        <%clase=0%>
+        <% @tramite.comparecencia.participantes.each do |participante|%>
+          <tr class="d<%=invert_class(clase)%>">
+            <td align="center"><%=check_box_tag participante.id, true, true%></td>
+            <td align="center"><%=link_to "#{participante.nombre_completo}", :action => "show", :controller => "participantes", :id => participante%></td>
+            <td align="center"><%=h (participante.sexo == "M")? "Masculino" : "Femenino"%></td>
+            <td align="center"><%=h (participante.cuadrante)? participante.cuadrante.descripcion : "---"%></td>
+          </tr>
+          <%clase = invert_class(clase)%>
+        <%end%>
+      </table><br /><br />
+    <%end%>
+  <%end%>
+
+   <!-- firma -->
   <table class="firmaInvitacion" width="60%">
-    <% form_tag :action => 'update_estatus', :id =>@tramite, :invitacion => @invitacion do -%>
+
       <tr align="center" class="d1">
         <td>FIRMAR:</td>
-        <td bgcolor="#f3f3f3" align="left">
+        <td bgcolor="#ffffff" align="left">
              <%=check_box_tag 'infosesion', 'firma', false, :class => "firmaInvitacion"%>
         </td>
       </tr>
@@ -41,6 +69,23 @@
       </tr>
   <%end%>
   </table>
+
+
+
+
+
+<%if @sesion%>
+  <%if @sesion.start_at%>
+  <!-- vistazo de la invitacion -->
+  <div id="invitacion_pdf">
+  <object data="/invitaciones/generar/<%=@invitacion.id%>" type="application/pdf" width="900" height="800">
+      <p>Si no aparece el plugin para visualizar el pdf.
+        <a href="/invitaciones/generar/<%=@invitacion.id%>" target="_blank">Haga click aquí para descargarlo en una nueva ventana.</a>
+      </p>
+    </object>
+  </div>
+
+  <br /><br />
 
   <%else%>
     <h4>Aún no se ha asignado fecha y hora por parte del especialista</h4>

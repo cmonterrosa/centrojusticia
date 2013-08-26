@@ -1,16 +1,21 @@
 <h3>Flujo de datos</h3>
 
 <div id="scroll">
-      <table class="sample" width="70%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-                <tr align="center" class="d0">
-                  <td width="25%" bgcolor="#E8E8E8">Acción</td>
+      <table class="sample" width="80%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+                <tr style="background-color:gray; color:white">
+                  <td width="5%" bgcolor="#E8E8E8">Orden</td>
+                  <td width="20%" bgcolor="#E8E8E8">Acción</td>
                   <td width="25%" bgcolor="#E8E8E8">Estatus anterior</td>
                   <td width="25%" bgcolor="#E8E8E8">Estatus siguiente</td>
-                  <td width="25%" bgcolor="#E8E8E8">Perfil</td>
+                  <td width="20%" bgcolor="#E8E8E8">Perfil</td>
+                  <td width="5%" bgcolor="#E8E8E8">&nbsp;</td>
                 </tr>
             <!-- Registros -->
+             <%clase=0%>
               <% for flujo in @flujos %>
-               <tr align="center" class="d1">
+              <tr class="d<%=invert_class(clase)%>">
+                  <td><%=h flujo.orden%></td>
+
                   <td  bgcolor="#f3f3f3">
                       <%=flujo.descripcion%>
                   </td>
@@ -27,10 +32,8 @@
                   <td  bgcolor="#f3f3f3">
                       <%=link_to "Eliminar", {:action => "delete_flujo", :id => flujo}, :confirm => "¿Esta seguro que desea eliminarlo?", :method => :delete, :class => 'boton'%>
                   </td>
-                  
-
-
                 </tr>
+               <%clase = invert_class(clase)%>
               <%end%>
        </table>
 </div><br /><br /><br />
@@ -74,6 +77,17 @@
             <%= text_field "flujo", "descripcion", :required => true%>
           </td>
       </tr>
+
+       <!-- orden -->
+      <tr style="background-color:gray; color:white">
+          <th colspan="2">
+              Orden
+          </th>
+          <td>
+            <%= text_field "flujo", "orden", :required => true%>
+          </td>
+      </tr>
+
 
       <tr>
         <th>

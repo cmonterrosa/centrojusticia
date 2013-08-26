@@ -15,6 +15,7 @@ class User < ActiveRecord::Base
   # You may wish to modify it to suit your need
   has_and_belongs_to_many :roles
   has_and_belongs_to_many :materias
+  has_and_belongs_to_many :cuadrantes
   belongs_to :subdireccion
   belongs_to :situacion
   

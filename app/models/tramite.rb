@@ -4,11 +4,13 @@ class Tramite < ActiveRecord::Base
   belongs_to :materia
   belongs_to :user
   belongs_to :estatu
+  belongs_to :noprocedente
   has_one :orientacion
   has_one :comparecencia
   has_many :historias
   has_many :adjuntos
   has_many :sesions
+
 
   #---- Validaciones ----
   #validates_uniqueness_of :folio, :scope => :anio

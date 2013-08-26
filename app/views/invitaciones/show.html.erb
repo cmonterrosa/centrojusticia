@@ -14,7 +14,7 @@
       </tr>
     <tr class="d1">
       <td style="vertical-align: middle;"><b>Fecha de impresión de invitaciones:</b></td>
-      <td style="vertical-align: middle;"><%=h((@invitacion.printed_at) ? @invitacion.printed_at.strftime("%d de %B de %Y / %H:%M") : "No se ha impreso")%></td>
+      <td style="vertical-align: middle;"><%=h((@invitacion.printed_at) ? @invitacion.printed_at.strftime("%d de %B de %Y / %H:%M") : "")%></td>
     </tr>
 
     <tr class="d0">

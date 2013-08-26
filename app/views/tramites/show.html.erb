@@ -64,18 +64,63 @@
        <td style="vertical-align: middle;"><b>Teléfono:</b></td>
        <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.telefono : "---")%></td>
     </tr>
-
-    <!--- datos especificos -->
-    <%if @tramite.materia%>
-      <tr class="d1">
-         <td style="vertical-align: middle;"><b>Materia:</b></td>
-         <td style="vertical-align: middle;"><%=@tramite.materia.descripcion%></td>
-      </tr>
-    <%end%>
-
   </table>
   <br /><br />
 
+  <!-- Calificación de asunto -->
+ 
+    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th colspan="2">
+          Calificación de asunto:
+        </th>
+      </tr>
+
+       <tr class="d0">
+         <td style="vertical-align: middle;"><b>Procedente:</b></td>
+         <td style="vertical-align: middle;"><%=h (@tramite.procedente == true) ? "Procedente" : "No procedente"%></td>
+      </tr>
+
+      <%if @tramite.materia%>
+      <tr class="d1">
+         <td style="vertical-align: middle;"><b>Materia:</b></td>
+         <td style="vertical-align: middle;"><%=h  @tramite.materia.descripcion%></td>
+      </tr>
+      <%end%>
+
+      <%if @tramite.noprocedente%>
+        <tr class="d1">
+          <td style="vertical-align: middle;"><b>Motivo de no procedente:</b></td>
+          <td style="vertical-align: middle;"><%=h @tramite.noprocedente.descripcion%></td>
+        </tr>
+      <%end%>
+   
+      <!--- objeto de la solicitud -->
+      <%if @tramite.objeto_solicitud%>
+        <tr class="d0">
+          <td style="vertical-align: middle;"><b>Objeto de la solicitud:</b></td>
+          <td style="vertical-align: middle;"><%=h @tramite.objeto_solicitud%></td>
+        </tr>
+      <%end%>
+
+      <!--- observaciones generales -->
+      <%if @tramite.observaciones_generales%>
+        <tr class="d1">
+          <td style="vertical-align: middle;"><b>Observaciones generales:</b></td>
+          <td style="vertical-align: middle;"><%=h @tramite.observaciones_generales%></td>
+        </tr>
+      <%end%>
+      <!--- observaciones generales -->
+      <%if @tramite.documentacion_anexa%>
+        <tr class="d0">
+          <td style="vertical-align: middle;"><b>Documentación anexa:</b></td>
+          <td style="vertical-align: middle;"><%=h @tramite.documentacion_anexa%></td>
+        </tr>
+      <%end%>
+
+  </table>
+
+  <br /><br />
 
  <%if @comparecencia = @tramite.comparecencia%>
     <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
@@ -121,52 +166,14 @@
      <br /><br />
   <%end%>
 
-  <!-- Participantes del trámite -->
-  <% if @tramite.comparecencia %>
-    <%unless @tramite.comparecencia.participantes.empty?%>
-      <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-        <tr style="background-color:gray; color:white">
-          <th colspan="2">
-            Participantes
-          </th>
-        </tr>
+<!-- participantes -->
+<%= render :partial => "participantes"%>
 
-        <%clase=0%>
-        <% @tramite.comparecencia.participantes.each do |participante|%>
-          <tr class="d<%=invert_class(clase)%>">
-            <td align="center"><%=link_to "#{participante.nombre_completo}", :action => "show", :controller => "participantes", :id => participante%></td>
-          </tr>
-          <%clase = invert_class(clase)%>
-        <%end%>
-      </table><br /><br />
-    <%end%>
-  <%end%>
   
   <!-- ficha -->
 <%= render :partial => "historial"%>
 
-  <!-- Historial de estados-->
-  <!--
-  <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-     <tr style="background-color:gray; color:white">
-      <th colspan="2">
-        Historial
-      </th>
-     </tr>
-     <tr class="d0">
-        <td style="vertical-align: middle;"><b>Descripción</b></td>
-         <td style="vertical-align: middle;"<b>Fecha hora</b></td>
-     </tr>
-     <Historia.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "created_at").each do |row|%>
-       <tr class="d1">
-         <td style="vertical-align: middle;"><=row.estatu.descripcion%></td>
-         <td style="vertical-align: middle;"><=row.created_at.strftime("%Y-%m-%d %H:%M:%S")%></td>
-     </tr>
-     <end%>
-  </table><br /><br />
--->
-
-  <!-- Historial de sesiones-->
+<!-- Historial de sesiones-->
   <%if @tramite.sesions.size > 0%>
     <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">

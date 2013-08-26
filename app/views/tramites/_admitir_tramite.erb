@@ -1,3 +1,45 @@
+<script>
+
+  window.onload = function() {
+    inicializar();
+  }
+
+  function inicializar(){
+    if (document.getElementById("tramite_procedente").checked == false && document.getElementById("tramite_materia_id").value == "")
+    {
+      /* No es procedente */
+      document.getElementById("tramite_observaciones_generales").disabled = true;
+      document.getElementById("tramite_objeto_solicitud").disabled = true;
+      document.getElementById("tramite_materia_id").disabled = true;
+      document.getElementById("tramite_documentacion_anexa").disabled = true;
+    }
+    else
+      document.getElementById("tramite_noprocedente_id").disabled = true;
+  }
+
+  function alertaChecked(){
+        if (document.getElementById("tramite_procedente").checked == true)
+           {
+             /* Es procedente */
+            alert("Tramite procedente");
+            document.getElementById("tramite_observaciones_generales").disabled = false;
+            document.getElementById("tramite_objeto_solicitud").disabled = false;
+            document.getElementById("tramite_materia_id").disabled = false;
+            document.getElementById("tramite_documentacion_anexa").disabled = false;
+            document.getElementById("tramite_noprocedente_id").disabled = true;
+           }
+          else
+            {
+             alert("Tramite no procedente");
+             document.getElementById("tramite_observaciones_generales").disabled = true;
+             document.getElementById("tramite_objeto_solicitud").disabled = true;
+             document.getElementById("tramite_materia_id").disabled = true;
+             document.getElementById("tramite_documentacion_anexa").disabled = true;
+             document.getElementById("tramite_noprocedente_id").disabled = false;
+            }
+  }
+</script>
+
 <h3>Admisión de asunto</h3>
 
 <!-- ficha -->
@@ -11,24 +53,58 @@
 
 
 <div id="scroll">
-<% form_tag :action => 'update_estatus', :id =>@tramite, :type => "admitir" do -%>
-<table class="sample" width="50%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-      <tr style="background-color:gray; color:white">
-          <th colspan="2">
-              Materia
-          </th>
-          <!--
-          <td>
-            <= collection_select("tramite", "materia_id", Materia.all, :id, :descripcion, {:selected => @tramite.materia})%>
-          </td>
-          -->
+<!-- < form_tag :action => 'update_estatus', :id =>@tramite, :type => "admitir" do -%> -->
+<% form_for :tramite, @tramite, :url => { :action => "update_estatus", :id => @tramite, :type => "admitir" }, :html => {:id => "admision_tramite"} do |f| -%>
+
+
+<table class="sample" width="75%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+ 
+     <tr style="background-color:gray; color:white">
            <tr>
-              <td><%= select("tramite", "materia_id", Materia.all.collect {|p| [ p.descripcion, p.id ] }, { :include_blank => true }, {:selected => @tramite.materia})%></td>
+             <th>Procedente:</th>
+             <td><%= f.check_box("procedente" , :onchange => "alertaChecked();")%></td>
            </tr>
       </tr>
+
+      <tr style="background-color:gray; color:white">
+           <tr>
+             <th>Materia:</th>
+              <td><%= f.select("materia_id", Materia.all.collect {|p| [ p.descripcion, p.id ] }, { :include_blank => true }, {:selected => @tramite.materia})%></td>
+           </tr>
+      </tr>
+      <tr style="background-color:gray; color:white">
+         <th>
+             Objeto de la solicitud:
+         </th>
+         <td><%=f.text_field("objeto_solicitud", :size => 50)%></td>
+      </tr>
+
+       <tr style="background-color:gray; color:white">
+         <th>
+             Observaciones generales:
+         </th>
+         <td><%=f.text_area("observaciones_generales", :size => "40x10")%></td>
+      </tr>
+
+         <tr style="background-color:gray; color:white">
+         <th>
+             Documentación anexa:
+         </th>
+         <td><%=f.text_area("documentacion_anexa",  :size => "40x10")%></td>
+      </tr>
+
+       
+      
+      <tr style="background-color:gray; color:white">
+           <tr>
+             <th>Motivo improcedente:</th>
+              <td><%= f.select("noprocedente_id", Noprocedente.all.collect {|p| [ p.descripcion, p.id ] }, { :include_blank => true }, {:selected => @tramite.materia})%></td>
+           </tr>
+      </tr>
+      
       <tr>
         <th>
-          <th class="boton"><%= submit_tag "Admitir", :onclick => "return comprobar();" %></th>
+          <th class="boton" align="center" colspan="2"><%= f.submit "Actualizar registro"%></th>
         </th>
       </tr>
   </table>
@@ -36,4 +112,7 @@
 </div>
 
 
+
 <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />
+
+

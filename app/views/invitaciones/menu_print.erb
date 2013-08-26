@@ -2,12 +2,14 @@
 <h3>
   Menú de impresión
 </h3>
-<table class="table1">
+<table class="table1" width="90%">
     <thead>
          <!-- Titulos -->
          <tr>
+           <th scope="col" abbr="Starter">Número Exp</th>
             <th scope="col" abbr="Starter">Nombre completo</th>
             <th scope="col" abbr="Starter">Dirección</th>
+            <th scope="col" abbr="Starter">Cuadrante</th>
             <th scope="col" abbr="Starter" colspan="2">Acciones</th>
          </tr>
     </thead>
@@ -16,13 +18,16 @@
 
         <%@participantes.each do |participante|%>
           <tr>
+            <td><%=h (participante.folio_expediente) ? (link_to participante.numero_expediente, :controller => "tramites",  :action => "show", :id => participante.tramite_id) : "----"%></td>
             <td><%=h (participante.nombre_completo)? (participante.nombre_completo) : ("---")%></td>
             <td><%=h (participante.domicilio) ? (participante.domicilio) : ("----")%></td>
-            <%if @invitacion.signed?%>
-              <td>Firmada: <%=h @invitacion.sesion.signed_at.strftime("%Y-%m-%d %H:%M") %></td>
-             <td><%=link_to 'Imprimir', {:action => "generar", :id => @invitacion.id, :p => participante }, :title => "Imprimir invitaciones de trámite #{@invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
+            <td><%=h (participante.cuadrante) ? (participante.cuadrante.descripcion) : ("----")%></td>
+            <%if invitacion = Invitacion.find(participante.invitacion_id)%>
+              <td>Firmada: <%=h invitacion.sesion.signed_at.strftime("%Y-%m-%d %H:%M") %></td>
+             <td><%=link_to 'Imprimir', {:action => "generar", :id => participante.invitacion_id, :p => participante }, :title => "Imprimir invitaciones de trámite", :class => 'boton'%></td>
+             <td><%=link_to 'Razonar', {:action => "razonar", :id => participante.invitacion_id, :p => participante }, :title => "Imprimir invitaciones de trámite", :class => 'boton'%></td>
             <%else%>
-              <td><%=link_to 'No se puede imprimir por falta de firma', :title => "Imprimir invitacion de trámite #{invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
+              <td><%=link_to 'No se puede imprimir por falta de firma', :title => "Imprimir invitacion de trámite", :class => 'boton'%></td>
             <%end%>
           </tr>
         <%end%>

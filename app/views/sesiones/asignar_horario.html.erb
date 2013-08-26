@@ -1,13 +1,20 @@
-<h1>Asignar horario de sesión: <%=@sesion.clave%></h1>
+
+<h1><%=@title%>: <%=@sesion.clave%></h1>
 
 <% form_tag({:action => 'show_schedules_with_especialistas', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
  <table class="table1" >
   <tr align="center">
+    <%if @sesion.start_at%>
+        <th align="center">Fecha/hora Actual</th>
+    <%end%>
     <th align="center">Fecha</th>
     <th align="center">¿Notificar por correo electrónico?</th>
     <th align="center">Tipo de sesión</th>
   </tr>
  <tr align="center">
+    <%if @sesion.start_at%>
+        <td align="center"><%=@sesion.start_at.strftime("%d de %B de %Y")%>/<%=@sesion.hora_completa%></td>
+    <%end%>
     <td><%= text_field_tag "sesion_fecha" %></td>
     <td><%= check_box_tag 'sesion_notificacion', @notificacion%></td>
      <td><%= select_tag 'sesion_tiposesion_id', options_from_collection_for_select(Tiposesion.all, 'id', 'descripcion')%></td>

@@ -3,33 +3,53 @@
 
 <% form_for :invitacion, @invitacion, :url => { :action => "save", :id => @invitacion }, :html => {:id => "new_orientacion"} do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
-    <tr bgcolor="#CCCCCC" class="titulo">
+    <tr class="titulo">
       <td colspan="3" align="center" >RAZON DE INVITACIONES</td>
     </tr>
     <tr align="center">
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5">DATOS GENERALES</td>
+          <td align="center" colspan="5">DATOS GENERALES DE LA SESIÓN</td>
         </tr>
         <tr align=" justify" class="pregunta">
-          <td align="center">Expediente</td>
-          <td align="center">Fecha/hora de sesión</td>
+          <td align="center">Número de Expediente</td>
+          <td align="center">Fecha</td>
+          <td align="center">Hora</td>
           <td align="center">Sala</td>
-          <td align="center">Especialista / Correo electrónico</td>
         </tr>
         <tr>
-          <td align="center"><%=h  (@invitacion.sesion) ? @invitacion.sesion.tramite.folio_integrado : "---"%> </td>
-          <td align="center"><%=h  ((@invitacion.sesion) ? @invitacion.sesion.start_at.strftime("%Y-%m-%d %H:%M") : "---")%> </td>
+          <td align="center"><%=h  (@invitacion.sesion) ? @invitacion.sesion.tramite.numero_expediente : "---"%> </td>
+          <td align="center"><%=h  ((@invitacion.sesion) ? @invitacion.sesion.fecha : "---")%> </td>
+          <td align="center"><%=h  ((@invitacion.sesion) ? @invitacion.sesion.hora_completa : "---")%> </td>
           <td align="center"><%=h (@invitacion.sesion.sala_id) ? @invitacion.sesion.sala.descripcion : "---"%></td>
-          <td align="center"><%=h @invitacion.especialista.nombre_completo%> (<%=h @invitacion.especialista.email%>) </td>
         </tr>
-      </table></td>
+      </table>
+      </td>
     </tr>
 
-    <!-- Datos de entrega -->
+    <!-- DATOS DE ATENCION -->
+      <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="2">DATOS DE ESPECIALISTAS</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Especialista</td>
+          <td align="center">Comediador</td>
+        </tr>
+        <tr>
+           <td align="center"><%=h @invitacion.especialista.nombre_completo%> </td>
+           <td align="center"><%=h @invitacion.comediador.nombre_completo%> </td>
+        </tr>
+      </table>
+      </td>
+    </tr>
 
-        <tr align="center">
+
+    <!-- DATOS DE ENTREGA -->
+     <tr align="center">
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
@@ -41,7 +61,7 @@
           <td align="center">Fecha/hora de entrega</td>
         </tr>
         <tr>
-          <td align="center"><%=h  ((@invitacion.invitador_id) ? @invitacion.invitador.nombre_completo : "--") %> </td>
+          <td align="center"><%= f.select :invitador_id, @invitadores.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td align="center"><%=f.check_box :entregada%> </td>
           <td align="center"><%=f.datetime_select :fecha_hora_entrega, :start_year => 2011, :ampm => true%></td>
         </tr>
@@ -59,7 +79,7 @@
           <td align="center">Descripción</td>
         </tr>
         <tr>
-         <td align="center"><%= f.text_area :justificacion, :class => "text"%></td>
+         <td align="center"><%= f.text_area :justificacion, :class => "text", :size => "50x10"%></td>
         </tr>
       </table></td>
     </tr>
