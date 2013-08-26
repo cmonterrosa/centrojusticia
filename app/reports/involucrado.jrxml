@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="433"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -23,6 +23,7 @@
 	<parameter name="P_REFERENCIA_DOMICILIARIA" class="java.lang.String"/>
 	<parameter name="P_ESPECIALISTA" class="java.lang.String"/>
 	<parameter name="P_SOLICITANTE" class="java.lang.String"/>
+	<parameter name="P_EXPEDIENTE" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from users]]>
 	</queryString>
@@ -166,20 +167,6 @@
 			<line>
 				<reportElement x="3" y="81" width="555" height="1"/>
 			</line>
-			<staticText>
-				<reportElement style="Title" x="199" y="6" width="343" height="32"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Droid Serif" size="14" pdfFontName="Times-Bold"/>
-				</textElement>
-				<text><![CDATA[CENTRO ESTATAL DE JUSTICIA ALTERNATIVA]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="305" y="38" width="237" height="20"/>
-				<textElement textAlignment="Right">
-					<font fontName="Droid Serif" size="12" pdfFontName="Helvetica-BoldOblique"/>
-				</textElement>
-				<text><![CDATA[SUBDIRECCIÓN REGIONAL CENTRO]]></text>
-			</staticText>
 			<rectangle radius="10">
 				<reportElement x="22" y="263" width="522" height="76"/>
 			</rectangle>
@@ -294,6 +281,25 @@
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SOLICITANTE}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="10" y="10" width="521" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["CARPETA DE ATENCIÓN: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Title" x="189" y="28" width="343" height="32"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Droid Serif" size="14" pdfFontName="Times-Bold"/>
+				</textElement>
+				<text><![CDATA[CENTRO ESTATAL DE JUSTICIA ALTERNATIVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="295" y="60" width="237" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Droid Serif" size="12" pdfFontName="Helvetica-BoldOblique"/>
+				</textElement>
+				<text><![CDATA[SUBDIRECCIÓN REGIONAL CENTRO]]></text>
+			</staticText>
 		</band>
 	</title>
 	<pageHeader>

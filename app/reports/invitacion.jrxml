@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="211"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -18,6 +18,8 @@
 	<parameter name="P_SUBDIRECTOR" class="java.lang.String"/>
 	<parameter name="P_ARTICULO_ESP" class="java.lang.String"/>
 	<parameter name="P_APP_URL" class="java.lang.String"/>
+	<parameter name="P_FIRMANTE" class="java.lang.String"/>
+	<parameter name="P_CARGO" class="java.lang.String"/>
 	<queryString language="SQL">
 		<![CDATA[select * from users]]>
 	</queryString>
@@ -98,15 +100,8 @@
 				<textElement>
 					<font size="11" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECTOR}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FIRMANTE}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="51" y="625" width="100" height="16"/>
-				<textElement>
-					<font size="11" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Subdirector]]></text>
-			</staticText>
 			<textField>
 				<reportElement x="51" y="665" width="120" height="20"/>
 				<textElement>
@@ -149,6 +144,11 @@
 			<line>
 				<reportElement x="0" y="85" width="555" height="1"/>
 			</line>
+			<textField>
+				<reportElement x="51" y="625" width="247" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_CARGO}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>

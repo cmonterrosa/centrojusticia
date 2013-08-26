@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="constancia" language="groovy" pageWidth="792" pageHeight="612" orientation="Landscape" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="P_ESCUELA" class="java.lang.String"/>
+	<parameter name="P_UBICACION" class="java.lang.String"/>
+	<parameter name="P_CT" class="java.lang.String"/>
+	<parameter name="P_PATH" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from users]]>
+	</queryString>
+	<field name="login" class="java.lang.String"/>
+	<title>
+		<band height="572" splitType="Stretch">
+			<image vAlign="Bottom">
+				<reportElement x="0" y="0" width="752" height="572"/>
+				<imageExpression class="java.lang.String"><![CDATA["images/constancia.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="107" y="281" width="324" height="13"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_ESCUELA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="509" y="281" width="202" height="13"/>
+				<textElement verticalAlignment="Bottom">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_UBICACION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="125" y="300" width="90" height="13"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_CT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>
