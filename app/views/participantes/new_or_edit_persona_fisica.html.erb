@@ -1,3 +1,16 @@
+<script>
+
+
+  function verificar_rol(){
+        b = document.getElementById("participante_perfil");
+         if (b.value != "INVOLUCRADO" || b.value != "SOLICITANTE" )
+        {
+          alert("Primero seleccione si es involucrado o solicitante");
+          b.focus();
+        }
+   }
+</script>
+
 <% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id } do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
@@ -25,9 +38,9 @@
         <tr>
           <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%></td>
           <td align="center"><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción')%></td>
-          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
-          <td align="center"><%= f.text_field :materno, :onKeyPress => "return CharNum(event, 'letra');"%></td>
-          <td align="center"><%= f.text_field :nombre, :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
+          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :onchange => "verificar_rol();", :required => true%></td>
+          <td align="center"><%= f.text_field :materno, :onKeyPress => "return CharNum(event, 'letra');", :onchange => "verificar_rol();"%></td>
+          <td align="center"><%= f.text_field :nombre, :onKeyPress => "return CharNum(event, 'letra');", :onchange => "verificar_rol();", :required => true%></td>
           <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
           <td align="center"><%=f.date_select :fecha_nac, :start_year => 1928, :end_year => Time.now.year%></td>
           <td align="center">

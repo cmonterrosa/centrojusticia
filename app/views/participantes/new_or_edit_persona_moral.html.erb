@@ -1,3 +1,16 @@
+<script>
+
+
+  function verificar_rol(){
+        b = document.getElementById("participante_perfil");
+        if (b.value != "INVOLUCRADO" || b.value != "SOLICITANTE" )
+        {
+          alert("Primero seleccione si es involucrado o solicitante");
+          b.focus();
+        }
+   }
+</script>
+
 <% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id } do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
@@ -19,7 +32,7 @@
         <tr>
           <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%></td>
           <td align="center"><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción', :required => true)%></td>
-          <td align="center"><%= f.text_field :razon_social, :onKeyPress => "return CharNum(event, 'letra');",  :placeholder => "Es necesario capturarlo", :required => true%></td>
+          <td align="center"><%= f.text_field :razon_social, :onKeyPress => "return CharNum(event, 'letra');", :onchange => "verificar_rol();",  :placeholder => "Es necesario capturarlo", :required => true%></td>
           <td align="center"><%= f.text_field :apoderado_legal, :onKeyPress => "return CharNum(event, 'letra');",  :placeholder => "Solo capturar si existe"%></td>
         </tr>
       </table></td>
@@ -42,7 +55,7 @@
         </tr>
         <tr>
           <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
-          <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true%></td>
+          <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true, :onchange => "verificar_rol();"%></td>
           <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x10"%></td>
           <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
         </tr>
