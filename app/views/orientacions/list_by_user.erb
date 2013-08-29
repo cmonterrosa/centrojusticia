@@ -1,4 +1,14 @@
-<h4 style=" font-family:  Helvetica;">Mi lista de orientaciones pendientes de atender</h4>
+<div class="titulocalendario">
+  <p>
+    Mi lista de orientaciones pendientes de atención de los últimos 7 días
+  </p>
+</div>
+
+<p>
+  <%=link_to "Ver de los últimos 7 días", :action => "list_by_user"%> | <%=link_to "Ver todas", :action => "list_by_user", :type => "all"%> 
+</p>
+
+
 <%= render :partial => "list_by_user"%>
 <br />
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "customs"%><br />

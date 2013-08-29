@@ -12,12 +12,20 @@ class OrientacionsController < ApplicationController
     @user = current_user
     #@estatus = Estatu.find_by_clave("tram-inic")
     #@estatuses = Estatu.find(:all, :conditions => ["clave in (?)", ['tram-inic', 'tram-reas']])
-    @orientaciones = Orientacion.find(:all,
+
+    if (params[:type] == "all")
+       @orientaciones = Orientacion.find(:all,
                                        :select => "o.*",
                                        :joins => "o, tramites t, estatus e",
                                        :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?)", @user.id, ['tram-reas', 'tram-inic', 'orie-conf']],
                                        :order => "o.fechahora")
-
+    else
+       @orientaciones = Orientacion.find(:all,
+                                       :select => "o.*",
+                                       :joins => "o, tramites t, estatus e",
+                                       :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?) AND o.created_at > ? ", @user.id, ['tram-reas', 'tram-inic', 'orie-conf'], "#{(Time.now - (10080 * 60.0)).strftime('%Y-%m-%d %H:%M:%S')}" ],
+                                       :order => "o.fechahora")
+    end
   end
 
   def list_all
