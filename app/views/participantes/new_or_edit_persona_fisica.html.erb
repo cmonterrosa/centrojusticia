@@ -1,13 +1,8 @@
 <script>
-
-
   function verificar_rol(){
         b = document.getElementById("participante_perfil");
-         if (b.value != "INVOLUCRADO" || b.value != "SOLICITANTE" )
-        {
+        if(b.value == "")
           alert("Primero seleccione si es involucrado o solicitante");
-          b.focus();
-        }
    }
 </script>
 
@@ -120,7 +115,7 @@
         <table>
           <tr>
             <td>
-              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onClick="verificar_rol();"/>
             </td>
             <td>
               <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "comparecencias", :action => "new_or_edit", :id => @comparecencia.tramite-%>

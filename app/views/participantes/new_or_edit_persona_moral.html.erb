@@ -1,13 +1,8 @@
 <script>
-
-
   function verificar_rol(){
         b = document.getElementById("participante_perfil");
-        if (b.value != "INVOLUCRADO" || b.value != "SOLICITANTE" )
-        {
+        if(b.value == "")
           alert("Primero seleccione si es involucrado o solicitante");
-          b.focus();
-        }
    }
 </script>
 
