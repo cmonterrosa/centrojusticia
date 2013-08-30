@@ -1,0 +1,70 @@
+<%= error_messages_for :user %>
+ <div class="centered">
+        <table width="90%" align="center">
+          <tr>
+            <td class="titulocalendario">:. CANCELACIÓN .:</td>
+           </tr>
+
+          <!--espacio -->
+          <tr>
+            <th>&nbsp;</th>
+          </tr>
+
+          <!-- inicia form -->
+          <% form_for :tramite, @tramite, :url => { :action => "cancel", :id => @tramite} do |f| -%>
+
+           <tr>
+            <td class="titulocalendario">Número de expediente:</td>
+           </tr>
+           <tr>
+             <td><%=@tramite.numero_expediente%></td>
+           </tr>
+
+           <!-- Espacio -->
+            <tr>
+              <td>&nbsp;</td>
+            </tr>
+
+           <tr>
+            <td class="titulocalendario">Motivo de cancelación:</td>
+           </tr>
+           <tr>
+             <td> <%= f.select :motivo_cancelacion_id, MotivoCancelacion.all.collect{|a| [a.descripcion, a.id]}%></td>
+           </tr>
+
+               <!-- Espacio -->
+            <tr>
+              <td>&nbsp;</td>
+            </tr>
+
+           
+          
+
+
+
+
+          <tr>
+            <td class="titulocalendario">observaciones:</td>
+          </tr>
+          <tr>
+            <td>
+            <%= f.text_area :cancelacion_observaciones, :size => "50x4"%>
+            </td>
+          </tr>
+          
+          <!-- boton -->
+          <tr>
+           <td valign="bottom"><input title="inicio de sesión" alt="inicio de sesión" type="image"  src="/images/botones/btn_entrar.png"/></td>
+          </tr>
+        <%end%>
+      </table>
+    <table>
+      <tr>
+        <th>&nbsp;</th>
+      </tr>
+    </table>
+   </div>
+
+
+
+

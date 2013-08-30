@@ -1,6 +1,7 @@
 class TramitesController < ApplicationController
   layout 'oficial_fancy'
   before_filter :login_required
+  require_role [:cancelatramite, :direccion], :for => [:cancel]
   require_role [:especialistas, :subdireccion], :for => [:menu]
   require_role [:admin], :for => [:destroy]
 
@@ -11,6 +12,23 @@ class TramitesController < ApplicationController
   def show_numero_expediente
     if @tramite = Tramite.find(params[:id])
        @orientacion = Orientacion.find_by_tramite_id(@tramite.id)
+    end
+  end
+
+  ### CANCELACION ###
+
+  def cancel_form
+     @tramite = Tramite.find(params[:id])
+     return render(:partial => 'cancel', :layout => "only_jquery")
+  end
+
+  def cancel
+    if @tramite = Tramite.find(params[:id])
+       @tramite.update_attributes!(params[:tramite])
+       (@tramite.cancel(current_user))? flash[:notice] = "Trámite cancelado" : flash[:notice] = "No se pudo cancelar el trámite"
+       return render(:partial => 'success_cancel', :layout => "only_jquery")
+    else
+       return render(:partial => 'failed_cancel', :layout => "only_jquery")
     end
   end
 

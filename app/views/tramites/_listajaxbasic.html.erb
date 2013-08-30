@@ -34,6 +34,7 @@
     <%comparecencia_concluida = Estatu.find_by_clave("comp-conc")%>
     <%tramite_reasignado = Estatu.find_by_clave("tram-reas")%>
     <%materia_asignada = Estatu.find_by_clave("mate-asig")%>
+    
 
     <%@tramites.each do |tramite|%>
     <tr class="d<%=invert_class(clase)%>">
@@ -61,6 +62,12 @@
        <%end%>
 
         <%clase = invert_class(clase)%>
+
+        <!-- Cancelacion de tramites -->
+        <%if (tramite.estatu_id == comparecencia_concluida.id) && (current_user.has_role?("cancelatramite") || current_user.has_role?("direccion"))%>
+             <td style="vertical-align: middle;"><%=h (link_to "Cancelar", {:controller => "tramites", :action => "cancel_form", :id => tramite.id}, :confirm => "¿Esta seguro que desea cancelar el trámite?", :class => "fancybox fancybox.iframe") %></td>
+        <%end%>
+
             
         <!-- Reasignacion -->
         <%if current_user.has_role?("atencionpublico")%>
@@ -105,6 +112,8 @@
         <%if (tramite.estatu_id == materia_asignada.id) && current_user.has_role?("convenios") && (Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id = ? and user_id = ?", tramite.id, materia_asignada.id, current_user.id ]))%>
              <td style="vertical-align: middle;"><%=h (link_to "Cambiar materia", {:controller => "tramites", :action => "change_materia", :id => tramite.id}, :class => 'boton') %></td>
         <%end%>
+
+        
 
         <!-- resumen general -->
         <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :id => tramite}, :class => 'boton'  -%></td>

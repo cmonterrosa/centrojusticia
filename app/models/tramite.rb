@@ -103,6 +103,13 @@ class Tramite < ActiveRecord::Base
      (self.folio_expediente) ?  "#{self.folio_expediente.to_s.rjust(4, '0')}/#{self.anio}" : nil
    end
 
+   def cancel(usuario)
+        if usuario
+          self.fecha_fin = Time.now
+          (self.update_estatus!("tram-canc", usuario)) ? true : false
+        end
+   end
+
 
 
 end
