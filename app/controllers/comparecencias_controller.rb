@@ -188,7 +188,7 @@ class ComparecenciasController < ApplicationController
     @comparecencia.user = current_user
     if @comparecencia.save
        @tramite.generar_folio_expediente!
-      flash[:notice] = "Guardado correctamente"
+       flash[:notice] = "Guardado correctamente, Carpeta de Atencion: #{@tramite.numero_expediente}"
       #redirect_to :controller => "tramites", :action => "menu", :id => @tramite
        #render :action => "new_or_edit"
        redirect_to :action => "show", :id => @tramite
