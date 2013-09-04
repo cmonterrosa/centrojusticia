@@ -29,20 +29,38 @@ class ExtraordinariaController < ApplicationController
     @tramite.fechahora = @extraordinaria.fechahora
     @extraordinaria.tramite = @tramite
     @extraordinaria.especialista_id = User.find(params[:extraordinaria][:user_id]).id if params[:extraordinaria][:user_id] && params[:extraordinaria][:user_id].size > 0
-    if @extraordinaria.save && @tramite.save
-       @tramite.generar_folio_expediente!
-       @tramite.update_estatus!("tram-extr", current_user)
-        if @extraordinaria.notificacion
-           NotificationsMailer.deliver_tramite_created(@tramite, @extra.especialista) #sends the email
-           flash[:notice] = "Guardado correctamente y envío de notificación por email"
+      ####### Si se tecleo numero de expediente ############
+      if @extraordinaria.num_expediente =~ /^\d{1,4}\/\d{4}$/
+          ### checamos si existe ###
+          folio,anio = @extraordinaria.num_expediente.split("/")
+          @exists_tramite = Tramite.find(:first, :conditions => ["anio = ? AND folio_expediente = ?", anio, folio])
+          if @exists_tramite
+             @extraordinaria.tramite = @exists_tramite
+             @tramite.update_attributes!(:anio => anio, :folio => folio)
+             @save_num_expediente = false
+          end
         else
-          flash[:notice] = "Guardado correctamente, sin envío de notificación por email"
-        end
-        redirect_to :controller => "extraordinaria"
-    else
-      flash[:notice] = "No se pudo guardar, verifique"
-      render :action => "new_or_edit"
-    end
+           @tramite.generar_folio_expediente!
+           @save_num_expediente = true
+      end
+
+      #### Guardamos registro #####
+      msj = (@save_num_expediente)? "Guardado correctamente" : "Ya existe en el sistema"
+      if @extraordinaria.save && @tramite.save
+              @tramite.update_estatus!("tram-extr", current_user)
+              if @extraordinaria.notificacion
+                  NotificationsMailer.deliver_tramite_created(@tramite, @extra.especialista) #sends the email
+                  flash[:notice] = "Expediente: #{@tramite.numero_expediente} #{msj} y envío de notificación por email"
+              else
+                  flash[:notice] = "Expediente: #{@tramite.numero_expediente} #{msj}, sin envío de notificación por email"
+              end
+              redirect_to :controller => "extraordinaria"
+          else
+              flash[:notice] = "No se pudo guardar, verifique"
+              render :action => "new_or_edit"
+      end
+      
+     
   end
 
     def destroy
