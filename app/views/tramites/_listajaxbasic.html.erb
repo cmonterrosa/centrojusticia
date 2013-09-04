@@ -89,7 +89,7 @@
         <%end%>
 
         <!-- Eliminar si es inicio de tramite-->
-        <%if (tramite.estatu_id == tramite_iniciado_estatus.id && current_user.has_role?("admin"))%>
+        <%if (tramite.estatu_id == tramite_iniciado_estatus.id && (current_user.has_role?("captura")))%>
               <td style="vertical-align: middle;"><%=link_to "Eliminar", {:action => "destroy", :id => tramite}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
         <%end%>
 
@@ -112,8 +112,6 @@
         <%if (tramite.estatu_id == materia_asignada.id) && current_user.has_role?("convenios") && (Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id = ? and user_id = ?", tramite.id, materia_asignada.id, current_user.id ]))%>
              <td style="vertical-align: middle;"><%=h (link_to "Cambiar materia", {:controller => "tramites", :action => "change_materia", :id => tramite.id}, :class => 'boton') %></td>
         <%end%>
-
-        
 
         <!-- resumen general -->
         <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :id => tramite}, :class => 'boton'  -%></td>

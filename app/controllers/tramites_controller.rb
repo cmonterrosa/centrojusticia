@@ -3,7 +3,7 @@ class TramitesController < ApplicationController
   before_filter :login_required
   require_role [:cancelatramite, :direccion], :for => [:cancel]
   require_role [:especialistas, :subdireccion], :for => [:menu]
-  require_role [:admin], :for => [:destroy]
+  require_role [:admin, :captura], :for => [:destroy]
 
 
   def index
