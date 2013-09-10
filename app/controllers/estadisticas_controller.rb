@@ -223,6 +223,8 @@ end
       # --- Rango de edades ---
       # (1-15) (16-30) (31-45) (46-60) (Más de 60)
 
+      @total = Participante.count(:id, :conditions => "comparecencia_id is NOT NULL") * 1.0
+
       @today = Time.now
       @sum_1_15 = Participante.count(:fecha_nac, :conditions => ["fecha_nac < ? AND fecha_nac >= ?", @today, @today.years_ago(15)])
 
@@ -234,10 +236,10 @@ end
 
       # --- Datos --
       #g.data("de 1 a 15", [ @sum_1_15])
-      g.data("de 16 a 30", [ @sum_1_15 + @sum_16_30 ])
-      g.data("de 31 a 45", [ @sum_31_45])
-      g.data("de 46 a 60", [ @sum_46_60])
-      g.data("más de 60", [ @sum_60_mas])
+      g.data("de 16 a 30 (#{"%0.2f" %((@sum_1_15.to_i + @sum_16_30.to_i) / @total * 100.0)})%", [ @sum_1_15 + @sum_16_30 ])
+      g.data("de 31 a 45 (#{"%0.2f" %((@sum_16_30.to_i) / @total * 100.0) })%", [ @sum_31_45])
+      g.data("de 46 a 60 (#{"%0.2f" %((@sum_31_45.to_i) / @total * 100.0)})%", [ @sum_46_60])
+      g.data("más de 60 (#{"%0.2f" %((@sum_60_mas.to_i) / @total * 100.0) })%", [ @sum_60_mas])
       send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list.png")
    end
 
