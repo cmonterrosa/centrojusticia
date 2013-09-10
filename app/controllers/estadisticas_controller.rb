@@ -35,6 +35,11 @@ class EstadisticasController < ApplicationController
              #@orientaciones_mujeres = Orientacion.count(:sexo, :conditions => ["sexo = ? AND fechahora between ? AND ?", 'F', @inicio, @fin])
 
 
+             ## Procedencias de atenciones extraordinarfias
+
+             @procedencias = Procedencia.find_by_sql("select p.descripcion, count(extraordinarias.id) as numero_atenciones from extraordinarias extraordinarias inner join procedencias p  on extraordinarias.procedencia_id=p.id group by p.descripcion;")
+
+
 
              @orientaciones_hombres = Orientacion.count(:sexo, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.fechahora between ? AND ?) AND orientacions.sexo = ?", @inicio, @fin, 'M'])
              @orientaciones_mujeres = Orientacion.count(:sexo, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.fechahora between ? AND ?) AND orientacions.sexo = ?", @inicio, @fin, 'F'])
@@ -220,6 +225,7 @@ end
 
       @today = Time.now
       @sum_1_15 = Participante.count(:fecha_nac, :conditions => ["fecha_nac < ? AND fecha_nac >= ?", @today, @today.years_ago(15)])
+
       @sum_16_30 = Participante.count(:fecha_nac, :conditions => ["fecha_nac < ? AND fecha_nac >= ?", @today.years_ago(15), @today.years_ago(30)])
       @sum_31_45 = Participante.count(:fecha_nac, :conditions => ["fecha_nac < ? AND fecha_nac >= ?", @today.years_ago(30), @today.years_ago(45)])
       @sum_46_60 = Participante.count(:fecha_nac, :conditions => ["fecha_nac < ? AND fecha_nac >= ?", @today.years_ago(45), @today.years_ago(60)])
@@ -227,8 +233,8 @@ end
 
 
       # --- Datos --
-      g.data("de 1 a 15", [ @sum_1_15])
-      g.data("de 16 a 30", [ @sum_16_30])
+      #g.data("de 1 a 15", [ @sum_1_15])
+      g.data("de 16 a 30", [ @sum_1_15 + @sum_16_30 ])
       g.data("de 31 a 45", [ @sum_31_45])
       g.data("de 46 a 60", [ @sum_46_60])
       g.data("más de 60", [ @sum_60_mas])
@@ -249,12 +255,27 @@ end
   end
 
   def grafica_materia
-      g = Gruff::Pie.new
-      g.title = "Trámites por materia"
+      #g = Gruff::Pie.new
+      g = Gruff::Bar.new
+      g.title = "Asuntos por materia"
+      g.no_data_message = "No existe información"
+      g.add_color("#E00CF7")
+      g.add_color("#1BFB02") # Verde Fuerte
+      g.add_color("#B3FF00")
+      g.add_color("#0037FF")
+      g.additional_line_values
+      g.has_left_labels
+      g.x_axis_label = "TOTAL DEL AÑO 2013: #{Temporal.count(:id)} ASUNTOS"
       @materias = Materia.find(:all, :order => "descripcion")
       @materias.each do |materia|
-        g.data("#{materia.descripcion}", [Tramite.count(:id, :conditions => ["materia_id = ?", materia.id])])
+        #g.data("#{materia.descripcion}", [Tramite.count(:id, :conditions => ["materia_id = ?", materia.id])])
+        total = Temporal.count(:id, :conditions => ["materia_id = ?", materia.id])
+        if total > 0
+              g.data("#{materia.descripcion} (#{total})", [total])
+        end
+
       end
+       g.data("SIN ASIGNAR (#{Temporal.count(:id, :conditions => 'materia_id is NULL')})")
       send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list_by_materia.png")
   end
 
