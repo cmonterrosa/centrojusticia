@@ -35,10 +35,10 @@
 
   </tr>
   <tr align="center">
-    <td class="menu">Gráfica de Orientaciones</td>
-    <td class="menu">Gráfica por materia</td>
-    <td class="menu">Bitácora de Atención</td>
-    <td class="menu">Cargas de trabajo</td>
+    <td class="menu">Gráfica de Orientaciones &nbsp;<%=link_to image_tag('iconos/print.png'), {:action => "select_grafica_sesiones_especialistas"}, :title => "Imprimir" %></td>
+    <td class="menu">Gráfica por materia &nbsp;<%=link_to image_tag('iconos/print.png'), {:action => "grafica_materia"}, :title => "Imprimir" %></td>
+    <td class="menu">Bitácora de Atención &nbsp;<%=link_to image_tag('iconos/print.png'), {:action => "select_personas_atendidas"}, :title => "Imprimir" %></td>
+    <td class="menu">Cargas de trabajo &nbsp;<%=link_to image_tag('iconos/print.png'), {:action => "show_cargas_trabajo"}, :title => "Imprimir" %></td>
   </tr>
   <tr>
     <th>&nbsp;</th>
@@ -65,12 +65,12 @@
   </tr>
 
   <tr>
-    <td class="menu" align="center">Gráfica por sexo</td>
-    <td class="menu" align="center">Gráfica por rango de edad</td>
+    <td class="menu" align="center">Gráfica por sexo &nbsp;<%=link_to image_tag('iconos/print.png'), {:action => "grafica_atencion_sexo"} %></td>
+    <td class="menu" align="center">Gráfica por Rango de Edades &nbsp;<%=link_to image_tag('iconos/print.png'), {:action => "grafica_atencion_rango_edad"} %></td>
     <%if current_user.has_role?("direccion")%>
-      <td class="menu" align="center">Gráfica de no atención</td>
+      <td class="menu" align="center">Gráfica de no atención &nbsp;<%=link_to image_tag('iconos/print.png'), {:action => "select_grafica_noatencion"} %></td>
     <%end%>
-    <td class="menu" align="center">Estadísticas Generales</td>
+    <td class="menu" align="center">Estadísticas Generales &nbsp;<%=link_to image_tag('iconos/print.png'), {:action => "select_estadisticas_generales"} %></td>
   </tr>
 </table>
 
