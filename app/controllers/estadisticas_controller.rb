@@ -265,17 +265,18 @@ end
       g.add_color("#0037FF")
       g.additional_line_values
       g.has_left_labels
-      g.x_axis_label = "TOTAL DEL AÑO 2013: #{Temporal.count(:id)} ASUNTOS"
+      total_asuntos = Temporal.count(:id)
+      g.x_axis_label = "TOTAL DEL AÑO 2013: #{total_asuntos} ASUNTOS"
       @materias = Materia.find(:all, :order => "descripcion")
       @materias.each do |materia|
         #g.data("#{materia.descripcion}", [Tramite.count(:id, :conditions => ["materia_id = ?", materia.id])])
         total = Temporal.count(:id, :conditions => ["materia_id = ?", materia.id])
         if total > 0
-              g.data("#{materia.descripcion} (#{total})", [total])
+              g.data("#{materia.descripcion} (#{total}) - #{"%0.2f" % ((total / (total_asuntos * 1.0)) * 100.0)}%", [total])
         end
 
       end
-       g.data("SIN ASIGNAR (#{Temporal.count(:id, :conditions => 'materia_id is NULL')})")
+       g.data("SIN ASIGNAR (#{Temporal.count(:id, :conditions => 'materia_id is NULL')}) - #{"%0.2f" % ((Temporal.count(:id, :conditions => 'materia_id is NULL') / (total_asuntos * 1.0)) * 100.0)}%")
       send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list_by_materia.png")
   end
 
@@ -319,7 +320,8 @@ end
           return render(:partial => 'show_ausencias', :layout => 'oficial')
      end
   end
-  
+
+
 
 
 end
