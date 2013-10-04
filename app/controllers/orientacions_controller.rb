@@ -63,6 +63,10 @@ class OrientacionsController < ApplicationController
       @especialistas = seleccionar_especialistas
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
     end
+    if current_user.has_role?("direccion")
+      @especialistas << current_user
+    end
+
   end
 
 
@@ -195,7 +199,7 @@ class OrientacionsController < ApplicationController
      ### Verify the user logins and have the role ##########
      @tramite = Tramite.find(params[:tramite])
      if @user = User.find_by_login(params[:login])
-        if User.authenticate(params[:login], params[:password]) && (@user.has_role?("especialistas") || @user.has_role?("convenios"))
+        if User.authenticate(params[:login], params[:password]) && (@user.has_role?("especialistas") || @user.has_role?("convenios") || @user.has_role?("direccion"))
             if @tramite
                 @orientacion = Orientacion.find_by_tramite_id(@tramite.id)
                 @user = User.find_by_login(params[:login])

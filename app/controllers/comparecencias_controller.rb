@@ -1,7 +1,7 @@
 include SendDocHelper
 class ComparecenciasController < ApplicationController
   layout 'oficial_fancy'
-  require_role [:especialistas, :convenios, :oficinasubdireccion]
+  require_role [:especialistas, :convenios, :oficinasubdireccion, :direccion]
   
 
   def show

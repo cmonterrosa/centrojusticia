@@ -34,6 +34,7 @@
     <%comparecencia_concluida = Estatu.find_by_clave("comp-conc")%>
     <%tramite_reasignado = Estatu.find_by_clave("tram-reas")%>
     <%materia_asignada = Estatu.find_by_clave("mate-asig")%>
+    <%orientacion_confirmada = Estatu.find_by_clave("orie-conf")%>
     
 
     <%@tramites.each do |tramite|%>
@@ -77,15 +78,24 @@
         <%end%>
 
         <!-- Confirmación -->
-        <%if (current_user.has_role?("admin") || (current_user.has_role?("atencionpublico")) && tramite.fechahora.yday == Time.now.yday)%>
-          <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("atencionpublico")))%>
+        <%if (current_user.has_role?("admin") || current_user.has_role?("direccion") || (current_user.has_role?("atencionpublico")) && tramite.fechahora.yday == Time.now.yday)%>
+          <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("atencionpublico") || current_user.has_role?("direccion")))%>
             <td style="vertical-align: middle;"><%=h (link_to "Confirmar", {:controller => "orientacions", :action => "confirmar", :id => tramite.id}, :title => "Confirmar orientacion", :class => "fancybox fancybox.iframe") %></td>
           <%end%>
         <%end%>
 
         <!-- Edicion -->
         <%if (tramite.estatu_id == tramite_iniciado_estatus.id && tramite.user_id == current_user.id)%>
-          <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "orientacions", :action => "new_or_edit", :id => tramite.id}, :class => 'boton') %></td>
+           <!-- Levantara comparecencia si es director -->
+           <%if current_user.has_role?("direccion")%>
+              <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => tramite.id}, :class => 'boton') %></td>
+            <%end%>
+           <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "orientacions", :action => "new_or_edit", :id => tramite.id}, :class => 'boton') %></td>
+        <%end%>
+
+        <!-- Si la orientacion se confirmo y director o subdirector levantará comparencias -->
+        <%if (tramite.estatu_id == orientacion_confirmada.id && (current_user.has_role?("direccion") || current_user.has_role?("subdireccion")))%>
+             <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => tramite.id}, :class => 'boton') %></td>
         <%end%>
 
         <!-- Eliminar si es inicio de tramite-->
