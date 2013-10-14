@@ -35,6 +35,11 @@
           <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "extraordinaria", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
         <%end%>
 
+        <!-- Comparecencia -->
+        <%if (Comparecencia.find_by_tramite_id(e.tramite_id))%>
+          <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
+        <%end%>
+
         <!-- Eliminar si es inicio de tramite-->
         <%if (current_user.has_role?("admin"))%>
               <td style="vertical-align: middle;"><%=link_to "Eliminar", {:action => "destroy", :id => e.tramite}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
