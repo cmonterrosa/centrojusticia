@@ -2,7 +2,7 @@ class TramitesController < ApplicationController
   layout 'oficial_fancy'
   before_filter :login_required
   require_role [:cancelatramite, :direccion], :for => [:cancel]
-  require_role [:especialistas, :subdireccion], :for => [:menu]
+  require_role [:especialistas, :subdireccion, :direccion], :for => [:menu]
   require_role [:admin, :captura], :for => [:destroy]
 
 
@@ -173,15 +173,15 @@ class TramitesController < ApplicationController
       else
 
       if params.has_key?(:tramite)
-         @primera_asignacion_materia = (@tramite.materia_id) ? false : true
+         @primera_asignacion_materia = (@tramite.materia_id) ? true : false
          @tramite.update_attributes(params[:tramite])
-         @tramite.procedente=true if params[:tramite]["procedente"] == 1
+         @tramite.procedente=true if params[:tramite]["procedente"] == "1"
          unless @tramite.procedente
               @tramite.update_estatus!("tram-noad",current_user)
               flash[:notice] = "Registro actualizado correctamente"
               redirect_to :action => "list"
          else
-               if @tramite.save && @primera_asignacion_materia
+               if @tramite.save #&& @primera_asignacion_materia
                 update_tramite_model
                else
                 redirect_to :action => "list"
