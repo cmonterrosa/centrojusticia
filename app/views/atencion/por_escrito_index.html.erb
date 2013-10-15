@@ -36,7 +36,7 @@
         <%end%>
 
          <!-- Comparecencia -->
-        <%if (Comparecencia.find_by_tramite_id(e.tramite_id))%>
+        <%if (Comparecencia.find_by_tramite_id(e.id))%>
           <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
         <%end%>
 
