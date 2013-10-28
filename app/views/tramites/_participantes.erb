@@ -3,16 +3,31 @@
     <%unless @tramite.comparecencia.participantes.empty?%>
       <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
         <tr style="background-color:gray; color:white">
-          <th colspan="2">
+          <th colspan="5">
             Participantes
           </th>
         </tr>
 
         <%clase=0%>
-        <% @tramite.comparecencia.participantes.each do |participante|%>
+        <%contador=1%>
+
+        <%@comparecencia = @tramite.comparecencia%>
+        
+          <% @comparecencia.participantes.each do |participante| %>
+
+        <!-- # @tramite.comparecencia.participantes.each do |participante|%> -->
+        
           <tr class="d<%=invert_class(clase)%>">
-            <td align="center"><%=link_to "#{participante.nombre_completo}", :action => "show", :controller => "participantes", :id => participante%></td>
-          </tr>
+            <!-- Role -->
+            <td align="left"><%=h (participante.perfil) ? participante.perfil : "---"%></td>
+
+            <!-- tipo de persona -->
+            <td align="left">PERSONA <%=h participante.tipopersona.descripcion%></td>
+
+            <!-- Nombre o razón social -->
+            <%nombre = (participante.tipopersona.descripcion == 'MORAL') ? participante.razon_social : participante.nombre_completo %>
+            <td align="left" colspan="3"><%=link_to "#{nombre}", :action => "show", :controller => "participantes", :id => participante%></td>
+           </tr>
           <%clase = invert_class(clase)%>
         <%end%>
       </table><br /><br />
