@@ -48,7 +48,7 @@
           <td style="vertical-align: middle;"><%=contador%></td>
           <td style="vertical-align: middle;"><%=link_to "#{tramite.folio_integrado}", {:action => "show", :controller => "tramites", :id => tramite}, {:target => "_blank", :method => :delete}%></td>
           <td style="vertical-align: middle;"><%=h (tramite.orientacion.especialista) ? tramite.orientacion.especialista.nombre_completo : "---"%></td>
-          <td style="vertical-align: middle;"><%=h (tramite.orientacion.especialista.categoria) ? tramite.orientacion.especialista.categoria : "-----"%></td>
+          <td style="vertical-align: middle;"><%=h (tramite.orientacion.especialista) ? tramite.orientacion.especialista.categoria : "-----"%></td>
           <td style="vertical-align: middle;"><%=h tramite.fechahora.strftime("%d de %B de %Y - %H:%M:%S")%></td>
         </tr>
         <%contador+=1%>
