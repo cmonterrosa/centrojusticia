@@ -1,11 +1,18 @@
-== Bienvenidos al Sistema CEJA
-== Welcome to CEJA Information System
+== Sistema Informático de Gestión Operativa de Justicia Alternativa (Ámbar)
 
-El CEJA (Centro Estatal de Justicia Alternativa) es una institución pública dependiente del Poder Judicial del Estado
-de Chiapas y tiene como finalidad brindar y facilitar los medios alternativos para la solución de conflictos entre
-particulares y/o personas morales.
+El CEJA (Centro Estatal de Justicia Alternativa) es una institución pública que tiene como finalidad brindar y facilitar los medios alternativos para la solución de conflictos entre particulares y/o personas morales.
 
-El Sistema CEJA brinda la opción para administrar la atención y generar estadísticas y tendencias que permitan
-tomar las decisiones adecuadas.
+Este sistema informátocp sirve de referencia para agilizar y organizar la información referente a las actividades propias desarrolladas en el Centro Estatal de Justicia Alternativa, la aplicación fue construida a la medida y algunas de las característica son las siguientes:
+- Captura de Orientaciones al Público 
+- Distribución de Cargas de Trabajo de Especialistas para brindar orientación al público
+- Organización de Agenda a nivel de Especialista, Sala y Número de Expediente
+- Consulta de Bitácora de Expedientes
+- Impresión de comparecencias
+- Notificaciones vía correo electrónico para especialistas
+- Consulta de datos estadísticos
 
-Carlos Monterrosa (cmonterrosa at gmail.com) 2013
+Autor: Carlos Monterrosa López (cmonterrosa at gmail.com)
+Version: 0.1.0 (2013-12-11)
+Copyright: Copyright (c) 2013 Poder Judicial del Estado de Chiapas. Todos los derechos reservados.
+Licencia: GPL
+Website: http://www.poderjudicialchiapas.gob.mx
