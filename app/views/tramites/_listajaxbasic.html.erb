@@ -35,6 +35,8 @@
     <%tramite_reasignado = Estatu.find_by_clave("tram-reas")%>
     <%materia_asignada = Estatu.find_by_clave("mate-asig")%>
     <%orientacion_confirmada = Estatu.find_by_clave("orie-conf")%>
+    <%tramite_extraordinario = Estatu.find_by_clave("tram-extr")%>
+    
     
 
     <%@tramites.each do |tramite|%>
@@ -65,7 +67,7 @@
         <%clase = invert_class(clase)%>
 
         <!-- Cancelacion de tramites -->
-        <%if (tramite.estatu_id == comparecencia_concluida.id) && (current_user.has_role?("cancelatramite") || current_user.has_role?("direccion"))%>
+        <%if (tramite.estatu_id == comparecencia_concluida.id || tramite.estatu_id == tramite_extraordinario.id ) && (current_user.has_role?("cancelatramite") || current_user.has_role?("direccion"))%>
              <td style="vertical-align: middle;"><%=h (link_to "Cancelar", {:controller => "tramites", :action => "cancel_form", :id => tramite.id}, :confirm => "¿Esta seguro que desea cancelar el trámite?", :class => "fancybox fancybox.iframe") %></td>
         <%end%>
 
@@ -119,7 +121,7 @@
         <%end%>
 
         <!-- Modificar asignacion de materia -->
-        <%if (tramite.estatu_id == materia_asignada.id) && current_user.has_role?("convenios") && (Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id = ? and user_id = ?", tramite.id, materia_asignada.id, current_user.id ]))%>
+        <%if (tramite.estatu_id == materia_asignada.id) && (current_user.has_role?("convenios") || current_user.has_role?("asignamateria")) && (Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id = ? and user_id = ?", tramite.id, materia_asignada.id, current_user.id ]))%>
              <td style="vertical-align: middle;"><%=h (link_to "Cambiar materia", {:controller => "tramites", :action => "change_materia", :id => tramite.id}, :class => 'boton') %></td>
         <%end%>
 
