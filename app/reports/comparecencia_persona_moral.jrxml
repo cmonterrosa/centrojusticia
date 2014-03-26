@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="48"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -29,6 +29,7 @@
 	<parameter name="P_TIPO_PERSONA" class="java.lang.String"/>
 	<parameter name="P_RAZON_SOCIAL" class="java.lang.String"/>
 	<parameter name="P_APODERADO_LEGAL" class="java.lang.String"/>
+	<parameter name="P_EXPEDIENTE" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from users]]>
 	</queryString>
@@ -43,7 +44,7 @@
 				<reportElement key="INICIO" style="Detail" x="16" y="570" width="522" height="151"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="302" y="34" width="237" height="20"/>
+				<reportElement x="302" y="56" width="237" height="20"/>
 				<textElement textAlignment="Right">
 					<font fontName="Droid Serif" size="12" pdfFontName="Helvetica-BoldOblique"/>
 				</textElement>
@@ -92,7 +93,7 @@
 				<text><![CDATA[NOMBRE Y FIRMA DEL ESPECIALISTA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Title" x="196" y="2" width="343" height="32"/>
+				<reportElement style="Title" x="196" y="24" width="343" height="32"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Droid Serif" size="14" pdfFontName="Times-Bold"/>
 				</textElement>
@@ -323,6 +324,11 @@
 				</textElement>
 				<text><![CDATA[RAZÓN SOCIAL:]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="17" y="13" width="522" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["CARPETA DE ATENCIÓN: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
