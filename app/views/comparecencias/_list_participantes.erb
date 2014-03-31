@@ -32,7 +32,7 @@
 
 
                                 <%if participante.perfil=="SOLICITANTE"%>
-                                   <td> <%=button_to 'Imprimir acta', :action => "generar_pdf_acta_comparecencia", :controller => "comparecencias", :id => @comparecencia, :participante => participante%></td>
+                                   <td> <%=link_to 'Imprimir acta', {:action => "generar_pdf_acta_comparecencia", :controller => "comparecencias", :id => @comparecencia, :participante => participante}, :class => 'boton'%></td>
 
                                     <%sin_involucrados = Participante.count(:id, :conditions => ["comparecencia_id = ? AND perfil='INVOLUCRADO'", @comparecencia.id])%>
                                     <%if ((participante.observaciones) ? (participante.observaciones.size > 4 && sin_involucrados == 0) : nil )%>
