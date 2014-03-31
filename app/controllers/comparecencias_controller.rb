@@ -187,7 +187,7 @@ class ComparecenciasController < ApplicationController
       @comparecencia = Comparecencia.new(params[:comparecencia])
       @comparecencia.tramite = @tramite
     end
-    @comparecencia.user = current_user
+    @comparecencia.user = current_user unless @comparecencia.user
     if @comparecencia.save
        @tramite.generar_folio_expediente!
        flash[:notice] = "Guardado correctamente, Carpeta de Atencion: #{@tramite.numero_expediente}"
