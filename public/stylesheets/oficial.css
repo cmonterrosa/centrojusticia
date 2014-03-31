@@ -280,19 +280,23 @@ table.table1{
 /* Menu principal con colores */
 .imagehover {
     /*font-family: Verdana, Geneva, sans-serif;*/
-    font-family: "Times New Roman",Georgia,Serif;
-    font-size: 14px;
-    color: #666666;
+    font-family: Andale Mono, monospace;
+    color: orange;
+    font-size: 16px;
+    /*color: #666666;*/
     font-weight: bold;
 }
 
 .imagehover a {
- font-family: Verdana, Geneva, sans-serif;
- font-size: 14px;
- color: #666666;
+ /*font-family: Verdana, Geneva, sans-serif;*/
+ font-family: Andale Mono, monospace;
+ font-size: 16px;
+ /*color: #666666;*/
+ color: navy;
  font-weight: bold;
 }
 .imagehover a:hover {
 color: #ffffff;
-background-color:#d33934;
+color: red;
+/*background-color:#d33934;*/
 }
