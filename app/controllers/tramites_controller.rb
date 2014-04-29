@@ -2,7 +2,7 @@ class TramitesController < ApplicationController
   layout 'oficial_fancy'
   before_filter :login_required
   require_role [:cancelatramite, :direccion], :for => [:cancel]
-  require_role [:especialistas, :subdireccion, :direccion], :for => [:menu]
+  require_role [:especialistas, :subdireccion, :direccion, :convenios], :for => [:menu]
   require_role [:admin, :captura], :for => [:destroy]
 
 
@@ -153,10 +153,10 @@ class TramitesController < ApplicationController
                  (@sesion) ? ( redirect_to :action => "asignar_horario", :controller => "sesiones", :id => @sesion.id, :mediador_id => @sesion.mediador_id, :comediador_id => @sesion.comediador_id, :title => "reasignacion") : (redirect_to :action => "list")
                  
              when "invi-firm"
-               @sesion = Sesion.find(:first, :conditions => ["tramite_id = ? AND signed_at is NULL", @tramite.id], :order => "fecha DESC")
-               @invitacion = Invitacion.find_by_sesion_id(@sesion.id)
+               @sesion = Sesion.find(:first, :conditions => ["tramite_id = ?", @tramite.id], :order => "fecha DESC")
+               @invitacion = Invitacion.find_by_sesion_id(@sesion.id) if @sesion
                @participante = (@tramite.comparecencia.participantes) ? @tramite.comparecencia.participantes.first : nil
-               @invitacion ||= Invitacion.create(:user_id => current_user.id, :sesion_id => @sesion.id, :participante_id => @participante.id ) if @participante
+               @invitacion ||= Invitacion.create(:user_id => current_user.id, :sesion_id => @sesion.id, :participante_id => @participante.id ) if @participante && @sesion
                @role = Role.find_by_name("invitadores")
                return  render(:partial => 'firma_invitaciones', :layout => "oficial")
             when "invi-proc"
