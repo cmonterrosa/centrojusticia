@@ -36,11 +36,12 @@
             <%= collection_select("sesion", "tiposesion_id", @tipos_sesiones, :id, :descripcion, :prompt => '>> Seleccione una opción')%>
           </td>
       </tr>
+      <tr>
+        <th colspan="2">&nbsp;</th>
+      </tr>
 
       <tr>
-        <th>
-          <th class="boton"><%= submit_tag "Agregar", :onclick => "return comprobar();" %></th>
-        </th>
+        <td class="boton" colspan="2" align="center"><%= submit_tag "GUARDAR REGISTRO", :onclick => "return comprobar();" %></td>
       </tr>
   </table>
 <% end %>
