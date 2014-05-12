@@ -363,7 +363,7 @@
 			<textField>
 				<reportElement x="272" y="53" width="266" height="20"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" isBold="true" isItalic="true"/>
+					<font fontName="Arial" size="11" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECCION}]]></textFieldExpression>
 			</textField>
