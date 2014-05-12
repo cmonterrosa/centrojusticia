@@ -1,83 +1,51 @@
 <div id="divlista">
   <!-- mediador -->
-  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
-      <th colspan="7">
-        Asignado como mediador
+      <th colspan="5">
+        Sesiones activas asignadas como <%=@descripcion%>
+      </th>
+      <th colspan="2">
+        <%if @sesiones%>
+          Total de registros: <%=@sesiones.size%>
+        <%end%>
       </th>
      </tr>
 
     <tr class="d0">
         <td style="vertical-align: middle;"></td>
-        <td style="vertical-align: middle;">Fecha/Hora</td>
-        <td style="vertical-align: middle;">Tipo</td>
-        <td style="vertical-align: middle;">Especialista</td>
-        <td style="vertical-align: middle;">Comediador</td>
-        <td style="vertical-align: middle;" colspan="2">Detalle / Folio </td>
+        <td style="vertical-align: middle;"><b>Expediente</b></td>
+        <td style="vertical-align: middle;"><b>Fecha/Hora</b></td>
+        <td style="vertical-align: middle;"><b>Tipo</b></td>
+        <td style="vertical-align: middle;"><b>Especialista</b></td>
+        <td style="vertical-align: middle;"><b>Comediador</b></td>
+        <td style="vertical-align: middle;"><b>Estatus</b></td>
     </tr>
-    <%@sesiones_mediador.each do |sesion|%>
-    <tr>
-        <%if sesion.concluida == true%>
-          <td style="vertical-align: middle;"><%=image_tag("iconos/true.png", :border =>0)%></td>
-        <%else%>
-          <td style="vertical-align: middle;"><%=image_tag("iconos/false.png", :border =>0)%></td>
-        <%end%>
-       <td style="vertical-align: middle;"><%=h(sesion.start_at ? sesion.start_at.strftime("%Y-%m-%d %H:%M:%S") : (link_to "Asignar horario",{:action => "asignar_horario", :id => sesion, :mediador_id=> sesion.mediador_id, :comediador_id => sesion.comediador_id}, :class => 'boton'))%></td>
-       <td style="vertical-align: middle;"><%=h (sesion.tiposesion) ? sesion.tiposesion.descripcion : "---"%></td>
-       <td style="vertical-align: middle;"><b><%=h (sesion.mediador) ? sesion.mediador.nombre_completo : "---"%></b></td>
-       <td style="vertical-align: middle;"><%=h (sesion.comediador) ? sesion.comediador.nombre_completo : "---"%></td>
+    <%clase=0%>
+    <%@sesiones.each do |sesion|%>
+      <tr class="d<%=invert_class(clase)%>">
+          <%if sesion.concluida == true%>
+            <td style="vertical-align: middle;"><%=image_tag("iconos/true.png", :border =>0)%></td>
+          <%else%>
+            <td style="vertical-align: middle;"><%=image_tag("iconos/false.png", :border =>0)%></td>
+          <%end%>
+          <td style="vertical-align: middle;"><%=h (sesion.tramite)? sesion.tramite.numero_expediente : "---"%></td>
+          <td style="vertical-align: middle;"><%=h(sesion.start_at ? (sesion.start_at.strftime("%d de %B de %Y") + " " +  sesion.hora_completa) : (link_to "Asignar horario",{:action => "asignar_horario", :id => sesion, :mediador_id=> sesion.mediador_id, :comediador_id => sesion.comediador_id}, :class => 'boton'))%></td>
+          <td style="vertical-align: middle;"><%=h (sesion.tiposesion) ? sesion.tiposesion.descripcion : "---"%></td>
+          <td style="vertical-align: middle;"><b><%=h (sesion.mediador) ? sesion.mediador.nombre_completo : "---"%></b></td>
+          <td style="vertical-align: middle;"><b><%=h (sesion.comediador) ? sesion.comediador.nombre_completo : "---"%></b></td>
        
-       <!-- Verificamos que la invitacion este entregada para capturar bitácora -->
-       <%if sesion.invitacion && sesion.invitacion.entregada%>
-        <td style="vertical-align: middle;"><%=link_to "Bitácora", {:action => "bitacora", :id => sesion}, :class => 'boton'%></td>
-       <%else%>
-        <td style="vertical-align: middle;">Invitación no entregada</td>
-       <%end%>
-
-       <td style="vertical-align: middle;"><%=link_to "#{sesion.tramite.folio_integrado}", {:action => "show", :controller => "tramites", :id => sesion.tramite.id}, :class => 'boton', :target => "_blank"%></td>
-    </tr>
-    <%end%>
-  </table><br /><br />
-
-  <!-- comediador -->
-  <!-- mediador -->
-  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-     <tr style="background-color:gray; color:white">
-      <th colspan="7">
-        Asignado como comediador
-      </th>
-     </tr>
-
-    <tr class="d0">
-        <td style="vertical-align: middle;"></td>
-        <td style="vertical-align: middle;">Fecha/Hora</td>
-        <td style="vertical-align: middle;">Descripción</td>
-        <td style="vertical-align: middle;">Especialista</td>
-        <td style="vertical-align: middle;">Comediador</td>
-        <td style="vertical-align: middle;" colspan="2">Detalle / Folio</td>
-    </tr>
-    <%@sesiones_comediador.each do |sesion|%>
-    <tr>
-      <%if sesion.concluida== true%>
-          <td style="vertical-align: middle;"><%=image_tag("iconos/true.png", :border =>0)%></td>
-        <%else%>
-          <td style="vertical-align: middle;"><%=image_tag("iconos/false.png", :border =>0)%></td>
-        <%end%>
-       <td style="vertical-align: middle;"><%=h(sesion.start_at ? sesion.start_at.strftime("%Y-%m-%d %H:%M:%S") : "---")%></td>
-       <td style="vertical-align: middle;"><%=h (sesion.tiposesion) ? sesion.tiposesion.descripcion : "---"%></td>
-       <td style="vertical-align: middle;"><%=h (sesion.mediador) ? sesion.mediador.nombre_completo : "---"%></td>
-       <td style="vertical-align: middle;"><b><%=h (sesion.comediador) ? sesion.comediador.nombre_completo : "---"%></b></td>
-    
           <!-- Verificamos que la invitacion este entregada para capturar bitácora -->
-       <%if sesion.invitacion && sesion.invitacion.entregada%>
-        <td style="vertical-align: middle;"><%=link_to "Bitácora", {:action => "bitacora", :id => sesion}, :class => 'boton'%></td>
-       <%else%>
-        <td style="vertical-align: middle;">Invitación no entregada</td>
-       <%end%>
-
-         <td style="vertical-align: middle;"><%=link_to "#{sesion.tramite.folio_integrado}", {:action => "show", :controller => "tramites", :id => sesion.tramite.id}, :class => 'boton', :target => "_blank"%></td>
-
-    </tr>
+          <%if sesion.invitacion && sesion.invitacion.fecha_hora_entrega%>
+            <td style="vertical-align: middle;"><%=link_to "Bitácora", {:action => "bitacora", :id => sesion}, :class => 'boton'%></td>
+          <%else%>
+            <td style="vertical-align: middle;">Invitación no entregada</td>
+          <%end%>
+      <%clase = invert_class(clase)%>
+      </tr>
     <%end%>
-  </table><br /><br />
+  </table>
 </div>
+  <br /><br />
+
+

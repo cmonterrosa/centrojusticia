@@ -50,6 +50,25 @@
        </tr>
      <%end%>
   </table><br /><br />
+
+
+  <!-- Si es invitador mostramos los cuadrantes -->
+  <%if current_user.has_role?("invitadores")%>
+    <table width="40%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th>
+          Cuadrantes
+        </th>
+     </tr>
+
+     <%current_user.cuadrantes.each do |cuadrante|%>
+       <tr class="d0" align="center">
+         <td style="vertical-align: middle;"><%=cuadrante.descripcion%></td>
+       </tr>
+     <%end%>
+  </table><br /><br />
+  <%end%>
+
 </div>
 
 

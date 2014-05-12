@@ -20,7 +20,7 @@
         </tr>
         <tr>
           <td align="center"><%=h  (@invitacion.sesion) ? @invitacion.sesion.tramite.numero_expediente : "---"%> </td>
-          <td align="center"><%=h  ((@invitacion.sesion) ? @invitacion.sesion.fecha : "---")%> </td>
+          <td align="center"><%=h  ((@invitacion.sesion) ? @invitacion.sesion.fecha.strftime('%d de %B de %Y') : "---")%> </td>
           <td align="center"><%=h  ((@invitacion.sesion) ? @invitacion.sesion.hora_completa : "---")%> </td>
           <td align="center"><%=h (@invitacion.sesion.sala_id) ? @invitacion.sesion.sala.descripcion : "---"%></td>
         </tr>

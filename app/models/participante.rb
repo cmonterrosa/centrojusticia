@@ -23,8 +23,13 @@ class Participante < ActiveRecord::Base
   end
 
   def nombre_completo
-    "#{self.nombre} #{self.paterno} #{self.materno}"
+    if self.nombre.nil? && self.paterno.nil? && self.materno.nil?
+      "#{self.razon_social}"
+    else
+      "#{self.nombre} #{self.paterno} #{self.materno}"
+    end
   end
+   
 
   def edad
     if self.fecha_nac
