@@ -8,6 +8,26 @@
 <%= render :partial => "ficha"%>
 
 
+<!-- vistazo de la invitacion -->
+<%if @sesion && @invitacion%>
+  <%if @sesion.start_at%>
+    <div id="invitacion_pdf">
+    <object data="/invitaciones/generar/<%=@invitacion.id%>" type="application/pdf" width="900" height="800">
+        <p>Si no aparece el plugin para visualizar el pdf.
+          <a href="/invitaciones/generar/<%=@invitacion.id%>" target="_blank">Haga click aquí para descargarlo en una nueva ventana.</a>
+        </p>
+    </object>
+    </div>
+  <br /><br />
+  <%else%>
+    <h4>Aún no se ha asignado fecha y hora por parte del especialista</h4>
+  <%end%>
+<%end%>
+
+<br />
+
+
+
 
 <!-- seleccion de participantes  -->
  <% form_tag :action => 'update_estatus', :id =>@tramite, :invitacion => @invitacion do -%>
@@ -69,29 +89,6 @@
       </tr>
   <%end%>
   </table>
-
-
-
-
-
-<%if @sesion%>
-  <%if @sesion.start_at%>
-  <!-- vistazo de la invitacion -->
-  <div id="invitacion_pdf">
-  <object data="/invitaciones/generar/<%=@invitacion.id%>" type="application/pdf" width="900" height="800">
-      <p>Si no aparece el plugin para visualizar el pdf.
-        <a href="/invitaciones/generar/<%=@invitacion.id%>" target="_blank">Haga click aquí para descargarlo en una nueva ventana.</a>
-      </p>
-    </object>
-  </div>
-
-  <br /><br />
-
-  <%else%>
-    <h4>Aún no se ha asignado fecha y hora por parte del especialista</h4>
-  <%end%>
-
-<%end%>
 
 
 <br />

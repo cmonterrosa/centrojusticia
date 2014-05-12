@@ -1,43 +1,66 @@
 <h3>Calificación de trámite</h3>
 
 
-<script>
+<script type="text/javascript">
 
   window.onload = function() {
     inicializar();
   }
 
   function inicializar(){
-    b = document.getElementById("tramite_materia_id");
-    b.disabled=true;
-  }
-
-  function alertaChecked(){
-        b = document.getElementById("asignacion_materia");
-   	 if (b[1].checked == true)
+    if (document.getElementById("tramite_procedente").checked)
            {
-             alert("Tramite procedente");
-             b[0].disabled = false;
-             n = document.getElementById("tramite_noprocedente_id")
-             n.disabled = true;
-             b[3].disabled = false;
-             b[4].disabled = false;
-             b[5].disabled = false;
-             b[6].disabled = false;
+             // Tramite procedente
+             document.getElementById("tramite_noprocedente_id").disabled = true;
+             document.getElementById("tramite_objeto_solicitud").disabled = false;
+             document.getElementById("tramite_observaciones_generales").disabled = false;
+             document.getElementById("tramite_documentacion_anexa").disabled = false;
+             document.getElementById("tramite_materia_id").disabled = false;
              spinner = document.getElementById("spinner");
              spinner.style.display = "none";
            }
           else
+
             {
-             alert("Tramite no procedente");
-             b[0].disabled = true;
-             n = document.getElementById("tramite_noprocedente_id")
-             n.disabled = false;
-             b[3].disabled = true;
-             b[4].disabled = true;
-             b[5].disabled = true;
-             b[6].disabled = true;
+             // Tramite no procedente
+             document.getElementById("tramite_noprocedente_id").disabled = false;
+             document.getElementById("tramite_objeto_solicitud").disabled = true;
+             document.getElementById("tramite_observaciones_generales").disabled = true;
+             document.getElementById("tramite_documentacion_anexa").disabled = true;
+             document.getElementById("tramite_materia_id").disabled = true;
+             spinner = document.getElementById("spinner");
+             spinner.style.display = "none";
             }
+
+   }
+
+  function alertaChecked(){
+      if (document.getElementById("tramite_procedente").checked)
+           {
+             // Tramite procedente
+             document.getElementById("tramite_noprocedente_id").disabled = true;
+             document.getElementById("tramite_objeto_solicitud").disabled = false;
+             document.getElementById("tramite_observaciones_generales").disabled = false;
+             document.getElementById("tramite_documentacion_anexa").disabled = false;
+             document.getElementById("tramite_materia_id").disabled = false;
+             spinner = document.getElementById("spinner");
+             spinner.style.display = "none";
+             alert("Trámite procedente");
+           }
+          else
+
+            {
+             // Tramite no procedente
+             document.getElementById("tramite_noprocedente_id").disabled = false;
+             document.getElementById("tramite_objeto_solicitud").disabled = true;
+             document.getElementById("tramite_observaciones_generales").disabled = true;
+             document.getElementById("tramite_documentacion_anexa").disabled = true;
+             document.getElementById("tramite_materia_id").disabled = true;
+             spinner = document.getElementById("spinner");
+             spinner.style.display = "none";
+              alert("Trámite no procedente");
+            }
+
 
   }
 </script>
@@ -111,7 +134,7 @@
 
       <tr>
         <th>
-          <th class="boton"><%= f.submit "Agregar"%></th>
+          <th class="boton" style="text-align: center;"><%= f.submit "GUARDAR REGISTRO DE ASIGNACIÓN DE MATERIA"%></th>
         </th>
       </tr>
   </table>

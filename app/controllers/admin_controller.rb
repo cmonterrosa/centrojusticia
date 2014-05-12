@@ -163,6 +163,7 @@ class AdminController < ApplicationController
     @token = generate_token
   end
 
+
 # -- termina modulo de administracion de usuarios ----
 
 #--- listado de usuarios por area ---
@@ -258,6 +259,7 @@ class AdminController < ApplicationController
     @user = User.find(params[:id])
     @user.update_attributes(params[:user])
     @user.activated_at ||= Time.now
+    @user.subdireccion = Subdireccion.find(params[:user][:subdireccion_id]) if params[:user][:subdireccion_id]
     @user.activo=true
     success = @user && @user.save
     if success && @user.errors.empty?

@@ -1,6 +1,15 @@
 <h4 style=" font-family:  Helvetica;">Listado de sesiones asignadas al especialista: <%=current_user.nombre_completo%></h4>
+<table class="sample">
+  <tr>
+    <th align="center">
+      <%=link_to "Asignadas como especialista", :action => "list_by_user", :activas => 1%> | <%=link_to "Asignadas como comediador", :action => "list_by_user", :activas => 0%> | <%=link_to "Todas", :action => "list_by_user"%>
+    </th>
+  </tr>
+</table>
+
+
 <p>
-  <%=link_to "Activas", :action => "list_by_user", :activas => 1%> | <%=link_to "Cerradas", :action => "list_by_user", :activas => 0%> | <%=link_to "Todas", :action => "list_by_user"%>
+  <%=link_to "Activas", :action => "list_by_user", :activas => 1%> | <%=link_to "Cerradas o Vencidas", :action => "list_by_user", :activas => 0%> | <%=link_to "Todas", :action => "list_by_user"%>
 </p>
 <%= render :partial => "list_by_user"%>
 <br />

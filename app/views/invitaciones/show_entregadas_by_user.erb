@@ -1,4 +1,12 @@
+<div class="titulocalendario">
+  <p>Mis invitaciones entregadas</p>
+</div>
+
+
 <%=link_to "Invitaciones sin entregar", :action => "list_by_user"%> | <%=link_to "Invitaciones entregadas", :action => "show_entregadas_by_user"%><br /><br/>
+
+
+
 
 <%if @invitaciones%>
 <table class="table1" width="85%">
@@ -17,7 +25,11 @@
     <tbody>
         <%@invitaciones.each do |invitacion|%>
           <tr>
-            <td><%=h (invitacion.tramite_id) ? (link_to "#{Tramite.find(invitacion.tramite_id).numero_expediente}", :action => "show", :controller => "tramites", :id => invitacion.tramite_id, :target => "_blank") : ""%></td>
+            
+            
+            <td><%=h (invitacion.sesion_id) ? (link_to "#{Tramite.find(invitacion.sesion.tramite.id).numero_expediente}", :action => "show", :controller => "tramites", :id => invitacion.sesion.tramite.id, :target => "_blank") : ""%></td>
+
+
             <td><%=h (invitacion.participante) ? invitacion.participante.nombre_completo : "----"%></td>
             <td><%=h (invitacion.sesion.start_at)? invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---"%></td>
             <td><%=h (invitacion.fecha_hora_entrega)? (invitacion.fecha_hora_entrega.strftime("%d de %B de %Y / %H:%M")) : "---"%></td>
