@@ -157,7 +157,7 @@
 			<staticText>
 				<reportElement style="Title" x="196" y="21" width="343" height="32"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font fontName="Arial" size="14" pdfFontName="Times-Bold"/>
+					<font fontName="Arial" size="14" pdfFontName="Helvetica"/>
 				</textElement>
 				<text><![CDATA[CENTRO ESTATAL DE JUSTICIA ALTERNATIVA]]></text>
 			</staticText>
@@ -357,13 +357,15 @@
 			</textField>
 			<textField>
 				<reportElement x="17" y="4" width="521" height="20"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" pdfFontName="Helvetica"/>
+				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["CARPETA DE ATENCIÓN: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="272" y="53" width="266" height="20"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="11" isBold="true" isItalic="true" pdfFontName="Helvetica-BoldOblique"/>
+					<font fontName="Arial" size="11" isBold="true" isItalic="true" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECCION}]]></textFieldExpression>
 			</textField>
