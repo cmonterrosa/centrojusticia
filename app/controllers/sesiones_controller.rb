@@ -36,8 +36,13 @@ class SesionesController < ApplicationController
             @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida = 1", current_user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
       end
     end
-    @sesiones_mediador ||= Sesion.find(:all, :conditions => ["mediador_id = ?", current_user.id], :order => "fecha, hora, minutos, created_at")
-    @sesiones_comediador ||= Sesion.find(:all, :conditions => ["comediador_id = ?",current_user.id], :order => "fecha, hora, minutos, created_at")
+    #@sesiones_mediador ||= Sesion.find(:all, :conditions => ["mediador_id = ?", current_user.id], :order => "fecha, hora, minutos, created_at")
+    #@sesiones_comediador ||= Sesion.find(:all, :conditions => ["comediador_id = ?",current_user.id], :order => "fecha, hora, minutos, created_at")
+    #@sesiones ||= @sesiones_mediador
+
+    render :partial => 'list_by_user_menu', :layout => 'oficial'
+
+
   end
 
   def list_by_fecha
@@ -407,4 +412,29 @@ class SesionesController < ApplicationController
        return render(:partial => 'format_no_valid', :layout => false) if request.xhr?
    end
  end
+
+  #################################################################################
+  #--- ajax actions for show sesiones asignadas como especialista y comediador --
+  ##################################################################################
+
+  def list_by_user_especialista
+    #render :text => "<h3>Asignados como especialista</h3>"
+    @descripcion = "Especialista"
+    @sesiones = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1 AND fecha >= ?", current_user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos, created_at", :limit => 60)
+    return render(:partial => 'list_by_user', :layout => false)
+  end
+
+  def list_by_user_comediador
+    @descripcion = "Comediador"
+    @sesiones = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida != 1 AND fecha >= ?", current_user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos, created_at", :limit => 60)
+    return render(:partial => 'list_by_user', :layout => false)
+  end
+
+  def list_by_user_all
+    @descripcion = "Ambos, Todas las sesiones"
+    @sesiones = Sesion.find(:all, :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND concluida != 1 AND fecha < ?", current_user.id, current_user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos")
+    return render(:partial => 'list_by_user', :layout => false)
+  end
+
+
 end

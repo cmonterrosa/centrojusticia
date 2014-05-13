@@ -1,0 +1,63 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+
+<div class="titulocalendario">
+  <p>Mis sesiones</p>
+</div>
+
+<table width="70%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+
+      <td>
+          <%=link_to_remote image_tag('iconos/mediadorx.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/mediadorx_2.png"), :update => "divcontenido",
+          :url => { :action => "list_by_user_especialista"},
+          :before => "Element.show('spinner')",
+          :complete => "Element.hide('spinner')",
+          :html => {:title => "Asignadas como especialista"}%>
+      </td>
+
+      <td>
+           <%=link_to_remote image_tag('iconos/comediadorx.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/comediadorx_2.png"), :update => "divcontenido",
+            :url => { :action => "list_by_user_comediador"},
+            :before => "Element.show('spinner')",
+            :complete => "Element.hide('spinner')",
+            :html => {:title => "Asignadas como comediador"}%>
+      </td>
+
+      <td>
+           <%=link_to_remote image_tag('iconos/historicox.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/historicox_2.png"), :update => "divcontenido",
+            :url => { :action => "list_by_user_all"},
+            :before => "Element.show('spinner')",
+            :complete => "Element.hide('spinner')",
+            :html => {:title => "Histórico de sesiones"}%>
+      </td>
+   </tr>
+  <tr align="center">
+   <td class="menu" align="center">Activas como especialista</td>
+   <td class="menu" align="center">Activas como comediador</td>
+    <td class="menu" align="center">Históricas</td>
+  </tr>
+</table>
+
+<!-- spinner -->
+<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" /><br />
+
+<!-- contenido -->
+<div id="divcontenido">
+
+</div>
+
+
+
+
+<br/>
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
+

@@ -4,13 +4,19 @@
   <tr align="center">
    <td>
         <a href="/orientacions/list_by_user" title="Orientaciones">
-          <img src="/images/iconos/orientaciones2.png" width="128" height="128" alt="orientaciones" />
+          <img src="/images/iconos/orientaciones_dos.png" width="128" height="128" alt="orientaciones" />
         </a>
        </td>
 
        <td>
         <a href="/comparecencias/list_by_user" title="Comparecencias">
           <img src="/images/iconos/comparecencias.png" width="128" height="128" alt="comparecencias" />
+        </a>
+       </td>
+
+        <td>
+        <a href="/sesiones/list_by_user" title="Sesiones">
+          <img src="/images/iconos/sesiones.png" width="128" height="128" alt="Sesiones" />
         </a>
        </td>
 
@@ -26,6 +32,7 @@
   <tr align="center">
    <td class="menu" align="center">Orientaciones</td>
    <td class="menu" align="center">Comparecencias</td>
+   <td class="menu" align="center">Sesiones</td>
    <%if current_user.has_role?("lecturaagenda")%>
       <td class="menu" align="center">Mi agenda</td>
    <%end%>

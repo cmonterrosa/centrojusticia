@@ -21,12 +21,21 @@ class InvitacionesController < ApplicationController
                       :conditions => ["perfil = 'INVOLUCRADO' AND comparecencia_id = ?", Comparecencia.find_by_tramite_id(@tramite).id])
        @tramite = @invitacion.sesion.tramite
        return false unless @involucrado
+
        # Timestamp for printing for a invitador
        if current_user.has_role?("invitadores")
          #update_tramite_model(@invitacion.sesion.tramite) if @invitacion.printed_at.nil? && !@invitacion.sesion.tramite.estatus.clave == "invi-razo"
          @tramite.update_estatus!("invi-proc",current_user) if @invitacion.printed_at.nil?
          @invitacion.update_attributes!(:printed_at => Time.now) if @invitacion.printed_at.nil?
        end
+
+       ## Timestamp for director role ##
+       # si el director manda a imprimir desde listado de invitaciones
+        if current_user.has_role?("direccion") || current_user.has_role?("subdireccion")
+          if params[:token]
+            @invitacion.update_attributes!(:printed_at => Time.now)  if params[:token] == "h9jqwo8h7s"
+          end
+        end
 
        #-- Parametros
        param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
@@ -118,6 +127,7 @@ class InvitacionesController < ApplicationController
       anio, mes, dia, hora, minutos = params[:invitacion]["fecha_hora_entrega(1i)"],  params[:invitacion]["fecha_hora_entrega(2i)"],  params[:invitacion]["fecha_hora_entrega(3i)"], params[:invitacion]["fecha_hora_entrega(4i)"], params[:invitacion]["fecha_hora_entrega(5i)"]
       date = DateTime.civil(anio.to_i,mes.to_i,dia.to_i,hora.to_i, minutos.to_i)
       @invitacion.fecha_hora_entrega ||= date if date
+      @invitacion.invitador_id ||= params[:invitacion][:invitador_id] if params[:invitacion][:invitador_id]
       if @invitacion.save
         # Actualizamos status
         # Si se cambia la hora por primera vez
@@ -161,7 +171,23 @@ class InvitacionesController < ApplicationController
                                     :joins => ["invitacions,participantes p, cuadrantes cu, sesions s, tramites t, estatus e"],
                                     :conditions => ["invitacions.participante_id=p.id AND p.cuadrante_id=cu.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ? AND invitacions.invitador_id = ?", "invi-razo", current_user.id],
                                     :order => "cu.descripcion")
-    
+
+    #@invitaciones = Invitacion.find(:all, :conditions => ["entregada = ? AND invitador_id = ?", true, current_user.id], :order => "fecha_hora_entrega DESC")
   end
+
+
+  def notificar_entrega_personal
+    @invitacion = Invitacion.find(params[:id])
+    @invitacion.entregada = true
+    @invitacion.fecha_hora_entrega = Time.now
+    @invitacion.invitador_id = current_user.id
+    if @invitacion.save
+       @tramite = @invitacion.sesion.tramite
+       @tramite.update_estatus!("invi-pers",current_user) if @tramite
+       flash[:notice] = "Se actualizo registro correctamente"
+       redirect_to :action => "list_by_tramite", :id=> @tramite
+    end
+  end
+
 
 end

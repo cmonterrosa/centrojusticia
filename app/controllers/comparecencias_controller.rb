@@ -23,6 +23,7 @@ class ComparecenciasController < ApplicationController
        param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
        param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
        param["P_PRESIDENTE"]={:tipo=>"String", :valor=>MAGISTRADO_PRESIDENTE}
+       param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
        param["P_FECHA_CAPTURA"]={:tipo=>"String", :valor=>@sesion.created_at}
        param["P_SOLICITANTE"]=(@comparecencia.solicitante) ? {:tipo=>"String", :valor=>@comparecencia.solicitante.nombre_completo} : {:tipo=>"String", :valor=>""}
        param["P_ESPECIALISTA"]=(@comparecencia.user_id) ? {:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo} : {:tipo=>"String", :valor=>""}
@@ -55,6 +56,7 @@ class ComparecenciasController < ApplicationController
          param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
          #-- Parametros
          param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+         param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
          param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}
          param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
          param["P_OBSERVACIONES"]={:tipo=>"String", :valor=>clean_string(@solicitante.observaciones)}
@@ -87,7 +89,7 @@ class ComparecenciasController < ApplicationController
        #param["P_DOMICILIO"]={:tipo=>"String", :valor=>@involucrado.domicilio}
 
        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio)}
-      
+       param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
 
        param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@involucrado.telefono_particular}
        param["P_TELEFONO_TRABAJO"]={:tipo=>"String", :valor=>@involucrado.telefono_celular_aux}
@@ -133,6 +135,7 @@ class ComparecenciasController < ApplicationController
         param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
         #-- Parametros
         param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+        param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
         #param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d/%m/%Y').upcase}"}
         @comparecencia.procedencia ? param["P_PROCEDENCIA"]={:tipo=>"String", :valor=>@comparecencia.procedencia.upcase} : param["P_PROCEDENCIA"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
