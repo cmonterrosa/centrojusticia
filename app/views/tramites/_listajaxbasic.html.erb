@@ -80,7 +80,7 @@
         <%end%>
 
         <!-- Confirmación -->
-        <%if (current_user.has_role?("admin") || current_user.has_role?("direccion") || (current_user.has_role?("atencionpublico")) && tramite.fechahora.yday == Time.now.yday)%>
+        <%if (current_user.has_role?("admin") || current_user.has_role?("direccion") || (current_user.has_role?("atencionpublico")) && tramite.fechahora.year == Time.now.year)%>
           <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("atencionpublico") || current_user.has_role?("direccion")))%>
             <td style="vertical-align: middle;"><%=h (link_to "Confirmar", {:controller => "orientacions", :action => "confirmar", :id => tramite.id}, :title => "Confirmar orientacion", :class => "fancybox fancybox.iframe") %></td>
           <%end%>
