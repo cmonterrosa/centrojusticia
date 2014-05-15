@@ -29,7 +29,15 @@
        <td style="vertical-align: middle;"><b>Especialista para orientación:</b></td>
        <td style="vertical-align: middle;"> <%=h(@tramite.orientacion.especialista ? @tramite.orientacion.especialista.nombre_completo : "No existe información")%></td>
     </tr>
-   <%end%>
+   
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b>Fecha/hora que se llevó a cabo la orientación:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@tramite.orientacion.fechahora ? @tramite.orientacion.fechahora : "No existe información")%></td>
+    </tr>
+
+
+
+    <%end%>
 
     <tr class="d1">
        <td style="vertical-align: middle;"><b>Solicitante:</b></td>
