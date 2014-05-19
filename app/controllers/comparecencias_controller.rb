@@ -80,6 +80,7 @@ class ComparecenciasController < ApplicationController
        param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
        #-- Parametros
        param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+       param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
        param["P_NOMBRE_INVOLUCRADO"]={:tipo=>"String", :valor=>@involucrado.nombre_completo}
        if @involucrado.edad
         (@involucrado.edad > 0) ? param["P_EDAD"]={:tipo=>"String", :valor=>"#{@involucrado.edad} AÑOS"} : param["P_EDAD"]={:tipo=>"String", :valor=>""}
@@ -89,8 +90,6 @@ class ComparecenciasController < ApplicationController
        #param["P_DOMICILIO"]={:tipo=>"String", :valor=>@involucrado.domicilio}
 
        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio)}
-       param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
-
        param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@involucrado.telefono_particular}
        param["P_TELEFONO_TRABAJO"]={:tipo=>"String", :valor=>@involucrado.telefono_celular_aux}
        param["P_TELEFONO_CELULAR"]={:tipo=>"String", :valor=>@involucrado.telefono_celular}
