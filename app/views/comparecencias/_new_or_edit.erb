@@ -1,3 +1,9 @@
+<script language="javascript">
+window.onload = function() {
+ habilitar_datos();
+}
+</script>
+
 <% form_for :comparecencia, @comparecencia, :url => { :action => "save", :tramite => @comparecencia.tramite } do |f| -%>
 
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
@@ -14,13 +20,12 @@
           <td align="center">Fecha/hora</td>
           <td align="center">Procedencia</td>
           <td align="center">Carácter con el que comparece</td>
-          <td align="center">Hora(s) de preferencia</td>
         </tr>
         <tr>
           <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
-          <td align="center"><%= f.text_field :procedencia, :class => "text"%></td>
-          <td align="center"><%= f.text_field :caracter, :class => "text"%></td>
-          <td align="center"><%= f.text_field :hora_preferencia, :class => "text", :placeholder=> "Ej. 13-15"%></td>
+          <td align="center"><%= f.text_field :procedencia, :class => "text", :size => "50"%></td>
+          <td align="center"><%= f.text_field :caracter, :class => "text", :size => "80"%></td>
+          
           <!--
           <td align="center"><= f.select(:hora_preferencia, 1..24, :prompt => 'Seleccione una opción')%></td>
           -->
@@ -35,15 +40,14 @@
           <td align="center" colspan="4" ></td>
         </tr>
         <tr align=" justify" class="pregunta">
-           <td align="center">Día(s) de preferencia</td>
+          <td align="center">Hora(s) de preferencia</td>
+          <td align="center">Día(s) de preferencia</td>
           <td align="center">¿Es del conocimiento de alguna autoridad?</td>
         </tr>
         <tr>
-          <!--
-            <td align="center"><= f.select :dia_preferencia, DIAS_ATENCION.map{|dia| [dia[1], dia[0]]}, :prompt => 'Seleccione una opción' %> </td>
-          -->
+          <td align="center"><%= f.text_field :hora_preferencia, :class => "text", :placeholder=> "Ej. 13-15"%></td>
           <td align="center"><%= f.text_field :dia_preferencia, :class => "text", :placeholder => "Ej. Lunes, Martes"%></td>
-          <td align="center"><%=f.check_box :conocimiento%></td>
+          <td align="center"><%=f.check_box :conocimiento, :onclick => "habilitar_datos();"%></td>
           
           <!--
           <td align="center"><= f.text_field :observaciones, :class => "text"%></td>
@@ -63,8 +67,9 @@
           <td align="center">Anote la descripción del asunto</td>
        </tr>
         <tr>
-          <td align="center"><%= f.text_area :datos, :class => "text"%></td>
-          <td align="center"><%= f.text_area :asunto,  :required => true%></td>
+          <%enable = (@comparecencia.conocimiento) ? false : true%>
+          <td align="center"><%= f.text_area :datos, :class => "text", :size => "50x8", :disabled => enable%></td>
+          <td align="center"><%= f.text_area :asunto,  :required => true, :size => "60x15"%></td>
         </tr>
       </table></td>
      </tr>

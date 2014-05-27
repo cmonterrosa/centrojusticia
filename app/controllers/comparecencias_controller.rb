@@ -206,13 +206,16 @@ class ComparecenciasController < ApplicationController
 
   def list_by_user
     @user = current_user
-    @estatus = Estatu.find_by_clave("comp-conc")
-    @comparecencias = Comparecencia.find(:all,
-                                       :select => ["c.*"],
-                                       :joins => ["c, tramites t"],
-                                       :conditions => ["c.tramite_id = t.id AND c.user_id = ? AND t.estatu_id = ?", @user.id, @estatus.id],
-                                       :order => "c.fechahora")
+    @comparecencias = Comparecencia.find(:all, :conditions => ["user_id = ?", current_user], :order => "updated_at DESC").paginate(:page => params[:page], :per_page => 25)
+
+#    @comparecencias = Comparecencia.find(:all,
+#                                       :select => ["c.*"],
+#                                       :joins => ["c, tramites t"],
+#                                       :conditions => ["c.tramite_id = t.id AND c.user_id = ? AND t.estatu_id = ?", @user.id, @estatus.id],
+#                                       :order => "c.fechahora")
+#
   end
+
 
 
   #--- ajax actions --

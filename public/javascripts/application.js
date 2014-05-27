@@ -398,3 +398,22 @@ $j('#movimiento_fecha_fin').datetimepicker({
 //   }
 //});
 //});
+
+
+/* Habilita datos de expedientes en comparecencias */
+
+
+
+  function habilitar_datos(){
+      if (document.getElementById("comparecencia_conocimiento").checked == true)
+        {
+          /* No es procedente */
+          document.getElementById("comparecencia_datos").disabled = false;
+
+        }
+      else
+        {
+        document.getElementById("comparecencia_datos").disabled = true;
+        }
+  }
+

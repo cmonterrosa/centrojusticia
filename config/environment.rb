@@ -1,5 +1,7 @@
 # Be sure to restart your server when you modify this file
 
+require 'will_paginate'
+
 # Specifies gem version of Rails to use when vendor/rails is not present
 RAILS_GEM_VERSION = '2.3.11' unless defined? RAILS_GEM_VERSION
 
@@ -19,6 +21,8 @@ Rails::Initializer.run do |config|
   # config.gem "hpricot", :version => '0.6', :source => "http://code.whytheluckystiff.net"
   # config.gem "sqlite3-ruby", :lib => "sqlite3"
   # config.gem "aws-s3", :lib => "aws/s3"
+
+  
     
 
   # Only load the plugins named here, in the order given (default is alphabetical).
@@ -47,4 +51,5 @@ Rails::Initializer.run do |config|
   # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
   # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}')]
   config.i18n.default_locale = :esMX
+  #config.gem 'will_paginate', :version => '~> 2.3.16'
 end
