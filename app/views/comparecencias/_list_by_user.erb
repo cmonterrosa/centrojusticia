@@ -16,7 +16,7 @@
     <%@comparecencias.each do |comparecencia|%>
      <tr class="d<%=invert_class(clase)%>">
         <td style="vertical-align: middle;"><%=h counter%></td>
-        <td style="vertical-align: middle;"><%=h (comparecencia.tramite) ? comparecencia.tramite.numero_expediente : "--"%></td>
+        <td style="vertical-align: middle;"><b><%=h (comparecencia.tramite) ? comparecencia.tramite.numero_expediente : "--"%></b></td>
         <td style="vertical-align: middle;"><%=comparecencia.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
         <!--
         <td style="vertical-align: middle;"><=comparecencia.tramite.orientacion.solicitante%></td>
@@ -29,20 +29,27 @@
           <%=participantes.join(", ")%>
         </td>
 
-        <!--
-        <td style="vertical-align: middle;"><=comparecencia.caracter%></td>
-        <td style="vertical-align: middle;"><=comparecencia.tramite.estatu.descripcion%></td>
-        -->
+        
 
-        <!-- Convertir en orientacion -->
-        <%@margen =  (10080 * 60.0) # 7 Dias%>
-        <%if (Time.now < (comparecencia.created_at + @margen)) || (Time.now < (comparecencia.updated_at + @margen))%>
-          <td style="vertical-align: middle;"><%=link_to "Cambiar a orientación", {:controller => "comparecencias", :action => "change_to_orientacion", :id => comparecencia}, :class => 'boton'%></td>
+        <%materia_asignada = Estatu.find_by_clave("mate-asig")%>
+        <%if comparecencia.tramite%>
+          <% if comparecencia.tramite.estatu_id == materia_asignada.id%>
+            <td style="vertical-align: middle;">&nbsp;</td>
+            <td style="vertical-align: middle;">MATERIA ASIGNADA</td>
+            <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :controller => "tramites", :id => comparecencia.tramite}, :class => 'boton'%></td>
+          <%else%>
+
+            <!-- Convertir en orientacion -->
+            <%@margen =  (10080 * 60.0) # 7 Dias%>
+            <%if (Time.now < (comparecencia.created_at + @margen)) || (Time.now < (comparecencia.updated_at + @margen))%>
+                <td style="vertical-align: middle;"><%=link_to "Cambiar a orientación", {:controller => "comparecencias", :action => "change_to_orientacion", :id => comparecencia}, :class => 'boton', :confirm => "¿Esá seguro que desea cambiar a orientación, no podrá deshacer la acción?"%></td>
+            <%end%>
+            <td style="vertical-align: middle;"><%=link_to "Trámite", {:controller => "tramites", :action => "menu", :id => comparecencia.tramite}, :class => 'boton'%></td>
+            <td style="vertical-align: middle;"><%=link_to "Editar",{:controller => "comparecencias", :action => "new_or_edit", :id => comparecencia.tramite}, :class => 'boton'%></td>
+            <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :controller => "tramites", :id => comparecencia.tramite}, :class => 'boton'%></td>
+          <%end%>
         <%end%>
 
-        <td style="vertical-align: middle;"><%=link_to "Trámite", {:controller => "tramites", :action => "menu", :id => comparecencia.tramite}, :class => 'boton'%></td>
-        <td style="vertical-align: middle;"><%=link_to "Editar",{:controller => "comparecencias", :action => "new_or_edit", :id => comparecencia.tramite}, :class => 'boton'%></td>
-        <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :controller => "tramites", :id => comparecencia.tramite}, :class => 'boton'%></td>
       </tr>
        <%clase = invert_class(clase)%>
        <%counter+=1%>
