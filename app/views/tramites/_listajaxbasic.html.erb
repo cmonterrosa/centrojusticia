@@ -18,14 +18,14 @@
     Total de registros encontrados: <%=@tramites.size%>
   </p>
 
-    <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-size:11px;">
       <tr style="background-color:gray; color:white">
           <th style="vertical-align: middle;" align="center">Folio</th>
           <th style="vertical-align: middle;" align="center">Carpeta de Atención</th>
-          <th style="vertical-align: middle;" align="center">Solicitante</th>
-          <th style="vertical-align: middle;" align="center">Fecha/Hora inicial</th>
+          <th style="vertical-align: middle;" align="center">Nombre del Solicitante</th>
+          <th style="vertical-align: middle;" align="center">FH</th>
           <th style="vertical-align: middle;" align="center"><%=h "Estatus"%></th>
-          <th style="vertical-align: middle;" colspan="5" align="center">Acciones</th>
+          <th style="vertical-align: middle;" colspan="7" align="center">Acciones</th>
       </tr>
     <%clase=1%>
 
@@ -38,13 +38,20 @@
     <%tramite_extraordinario = Estatu.find_by_clave("tram-extr")%>
     
     
-
+    <%contador=1%>
     <%@tramites.each do |tramite|%>
     <tr class="d<%=invert_class(clase)%>">
+       <!-- folio -->
+
+       <!--
+          <folio = (@tramites.current_page.to_i > 1 )? "#{contador + (@tramites.per_page.to_i * (@tramites.current_page.to_i - 1))}" : "#{contador}"%>
+       -->
+
        <td style="vertical-align: middle;"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
+       <%contador+=1%>
+       
        <td style="vertical-align: middle;"><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></td>
        <td style="vertical-align: middle;"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
-       
        <td style="vertical-align: middle;"><%=link_to image_tag("iconos/fecha.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
 
        <!--
@@ -131,6 +138,19 @@
     <%end%>
   </table>
 </div>
+
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @tramites %>
+          </div>
+          <%= will_paginate @tramites %>
+        </div>
+      </td>
+    </tr>
+</table>
 
 <img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
   <%= observe_field :estatu_id,

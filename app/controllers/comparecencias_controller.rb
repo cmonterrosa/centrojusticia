@@ -206,7 +206,7 @@ class ComparecenciasController < ApplicationController
 
   def list_by_user
     @user = current_user
-    @comparecencias = Comparecencia.find(:all, :conditions => ["user_id = ?", current_user], :order => "updated_at DESC LIMIT 50")
+    @comparecencias = Comparecencia.find(:all, :conditions => ["user_id = ?", current_user], :order => "updated_at DESC").paginate(:page => params[:page], :per_page => 25)
 
 #    @comparecencias = Comparecencia.find(:all,
 #                                       :select => ["c.*"],
