@@ -36,6 +36,7 @@
           <% if comparecencia.tramite.estatu_id == materia_asignada.id%>
             <td style="vertical-align: middle;">&nbsp;</td>
             <td style="vertical-align: middle;">MATERIA ASIGNADA</td>
+            <td style="vertical-align: middle;"><%=link_to "Editar",{:controller => "comparecencias", :action => "new_or_edit", :id => comparecencia.tramite}, :class => 'boton'%></td>
             <td style="vertical-align: middle;"><%=link_to "Resumen", {:action => "show", :controller => "tramites", :id => comparecencia.tramite}, :class => 'boton'%></td>
           <%else%>
 
