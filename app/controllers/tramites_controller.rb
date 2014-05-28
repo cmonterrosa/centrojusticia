@@ -289,7 +289,7 @@ class TramitesController < ApplicationController
       if params[:search_nombre]
         if params[:search_nombre].size > 5
             @nombre = params[:search_nombre]
-            @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ?", "#{@nombre.upcase}%"], :order => "t.fechahora DESC")
+            @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.nombre like ?", "#{@nombre.upcase}%"], :order => "t.fechahora DESC").paginate(:page => params[:page], :per_page => 25)
             @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
             return render(:partial => 'listajaxbasic', :layout => false) if request.xhr?
         end
@@ -303,7 +303,7 @@ class TramitesController < ApplicationController
     if params[:search_paterno]
       if params[:search_paterno].size > 5
         @paterno = params[:search_paterno]
-        @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.paterno like ?", "#{@paterno.upcase}%"], :order => "t.fechahora DESC")
+        @tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.paterno like ?", "#{@paterno.upcase}%"], :order => "t.fechahora DESC").paginate(:page => params[:page], :per_page => 25)
         @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
         #@tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
         return render(:partial => 'listajaxbasic', :layout => false) if request.xhr?
@@ -316,7 +316,7 @@ class TramitesController < ApplicationController
     if params[:search_numero_expediente]
       if params[:search_numero_expediente].size > 5 && params[:search_numero_expediente] =~ /^\d{1,4}\/\d{4}$/
         folio, anio = params[:search_numero_expediente].split("/")
-        @tramites = Tramite.find(:all, :conditions => ["anio = ? AND folio_expediente = ?", anio, folio])
+        @tramites = Tramite.find(:all, :conditions => ["anio = ? AND folio_expediente = ?", anio, folio]).paginate(:page => params[:page], :per_page => 25)
         #@tramites ||= Tramite.find(:all, :select => "t.*", :joins => "t, orientacions o", :conditions => ["t.id = o.tramite_id AND o.paterno like ?", "#{@paterno.upcase}%"], :order => "t.fechahora DESC")
         @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
         #@tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "created_at DESC")
