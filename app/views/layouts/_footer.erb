@@ -10,8 +10,14 @@
           </tr>
           <tr>
           <td align="center" style="font-size: 10px; font-family: arial, sans-serif; color: #666666;">
-            Calle Candoquis número 290, esquina con Avenida Pino, Fraccionamiento el Bosque, C.P. 29047,
-            Tuxtla Gutiérrez, Chiapas.
+
+            <%
+              pie_pagina_default="Calle Candoquis número 290, esquina con Avenida Pino, Fraccionamiento el Bosque, C.P. 29047,
+              Tuxtla Gutiérrez, Chiapas."
+              max_id_conf = Configuracion.maximum(:id)
+              @pie_pagina = (Configuracion.find(max_id_conf)) ? Configuracion.find(max_id_conf).pie_pagina : pie_pagina_default
+            %>
+            <%=h @pie_pagina%>
           </td>
          </tr>
           <tr>

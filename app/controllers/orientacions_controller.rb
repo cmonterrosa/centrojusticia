@@ -222,7 +222,11 @@ protected
 
    def seleccionar_especialistas
       norm_date = Date.today
-      limite = DateTime.parse("#{Time.now.year}-#{Time.now.month}-#{Time.now.day} 15:55:00")
+      ### Leemos configuracion de cambio de turno ###
+      max_id_conf = Configuracion.maximum(:id)
+      @hora_cambio_turno = (Configuracion.find(max_id_conf)) ? Configuracion.find(max_id_conf).hora_cambio_turno : "20:00:00"
+      
+      limite = DateTime.parse("#{Time.now.year}-#{Time.now.month}-#{Time.now.day} #{@hora_cambio_turno}")
       ahora = Time.parse("#{norm_date} #{DateTime.now.strftime "%H:%M:%S"}")
       hora_limite = Time.parse("#{norm_date} #{limite.strftime "%H:%M:%S"}")
       especialistas = (ahora >= hora_limite) ? Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_vespertinos : Role.find_by_name("ESPECIALISTAS").usuarios_disponibles
