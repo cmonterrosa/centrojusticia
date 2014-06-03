@@ -1,20 +1,4 @@
 esMX:
-  will_paginate:
-    previous_label: "&#8592; Ant"
-    next_label: "Sig &#8594;"
-    page_gap: "&hellip;"
-    page_entries_info:
-      single_page:
-        zero:  "No %{model} found"
-        one:   "Mostrando 1 %{model}"
-        other: "Mostrando todos(as) %{count} %{model}"
-      single_page_html:
-        zero:  "No %{model} encontrado"
-        one:   "Mostrando <b>1</b> %{model}"
-        other: "Mostrando <b>todos(as)&nbsp;%{count}</b> %{model}"
-
-      multi_page: "Mostrando %{model} %{from} - %{to} de %{count} en total"
-      multi_page_html: "Mostrando <b>%{from}&nbsp;-&nbsp;%{to}</b> %{model} de <b>%{count}</b>"
   date:
     abbr_day_names:
     - dom
@@ -216,7 +200,22 @@ esMX:
   activemodel:
     errors:
       <<: *errors
+  will_paginate:
+    previous_label: "&#8592; Ant"
+    next_label: "Sig &#8594;"
+    page_gap: "&hellip;"
+    page_entries_info:
+      single_page:
+        zero:  "No %{model} found"
+        one:   "Mostrando 1 %{model}"
+        other: "Mostrando todos(as) %{count} %{model}"
+      single_page_html:
+        zero:  "No %{model} encontrado"
+        one:   "Mostrando <b>1</b> %{model}"
+        other: "Mostrando <b>todos(as)&nbsp;%{count}</b> %{model}"
+
+      multi_page: "Mostrando %{model} %{from} - %{to} de %{count} en total"
+      multi_page_html: "Mostrando <b>%{from}&nbsp;-&nbsp;%{to}</b> %{model} de <b>%{count}</b>"
   activerecord:
     errors:
       <<: *errors
-  
