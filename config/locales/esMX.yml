@@ -219,4 +219,3 @@ esMX:
   activerecord:
     errors:
       <<: *errors
-  
