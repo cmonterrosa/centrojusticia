@@ -40,7 +40,11 @@ Rails::Initializer.run do |config|
 
 
     #--- for save sesions ----
+<<<<<<< HEAD
   #config.action_controller.session_store = :active_record_store
+=======
+    #config.action_controller.session_store = :active_record_store
+>>>>>>> 60c5bd00cc67305a4c4e22bb48097ae8f9df400e
 
 
   # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.

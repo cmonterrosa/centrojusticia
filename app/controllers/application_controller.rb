@@ -13,8 +13,12 @@ class ApplicationController < ActionController::Base
 
   layout 'oficial', :except => :autenticacion
 
-  Date::MONTHNAMES = [nil, "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
- 
+  #----------- Cambio de idioma de las fechas --------------------
+  Date::MONTHNAMES = [nil] + %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre)
+  Date::DAYNAMES = %w(Domingo Lunes Martes Miercoles Jueves Viernes Sábado)
+  Date::ABBR_MONTHNAMES = [nil] + %w(ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic)
+  Date::ABBR_DAYNAMES = %w(Dom Lun Mar Mie Jue Vie Sab)
+
   # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
