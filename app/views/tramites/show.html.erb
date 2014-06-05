@@ -28,7 +28,7 @@
       <%if User.find_by_id(@tramite.orientacion.especialista_id)%>
         <tr class="d0">
           <td style="vertical-align: middle;"><b>Especialista para orientación:</b></td>
-          <td style="vertical-align: middle;"> <%=h(User.find(@tramite.orientacion.especialista_id) ? User.find(@tramite.orientacion.especialista_id) : "No existe información")%></td>
+          <td style="vertical-align: middle;"> <%=h(User.find(@tramite.orientacion.especialista_id) ? User.find(@tramite.orientacion.especialista_id).nombre_completo : "No existe información")%></td>
         </tr>
       <%end%>
    <%end%>
