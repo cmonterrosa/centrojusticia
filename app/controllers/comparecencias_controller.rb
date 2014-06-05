@@ -106,7 +106,9 @@ class ComparecenciasController < ApplicationController
        (@involucrado.tipopersona) ?  param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=>@involucrado.tipopersona.descripcion} :  param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=> "" }
        (@involucrado.tipopersona.descripcion == "MORAL" && @involucrado.razon_social) ?  param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=>@involucrado.razon_social.upcase} :  param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=> " "}
         #--- Values only for moral person
-        param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
+        #
+        param["P_FECHA"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora)}"}
+        #param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
         #param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d/%m/%Y').upcase}"}
         param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>@involucrado.apoderado_legal}
         (@comparecencia.tramite.numero_expediente) ? param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>@comparecencia.tramite.numero_expediente} : nil
@@ -135,8 +137,13 @@ class ComparecenciasController < ApplicationController
         #-- Parametros
         param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
         param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
-        param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
+
+        ##### Fecha ####
+
+        param["P_FECHA"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora)}"}
+#       param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
         #param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d/%m/%Y').upcase}"}
+
         @comparecencia.procedencia ? param["P_PROCEDENCIA"]={:tipo=>"String", :valor=>@comparecencia.procedencia.upcase} : param["P_PROCEDENCIA"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
         (@solicitante.tipopersona.descripcion == "MORAL") ?  param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.apoderado_legal} :  param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}
         #param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}

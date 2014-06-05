@@ -13,13 +13,8 @@ class ApplicationController < ActionController::Base
 
   layout 'oficial', :except => :autenticacion
 
-  #----------- Cambio de idioma de las fechas --------------------
-  Date::MONTHNAMES = [nil] + %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre)
-  Date::DAYNAMES = %w(Domingo Lunes Martes Miercoles Jueves Viernes Sábado)
-  Date::ABBR_MONTHNAMES = [nil] + %w(ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic)
-  Date::ABBR_DAYNAMES = %w(Dom Lun Mar Mie Jue Vie Sab)
 
-  # Scrub sensitive parameters from your log
+ # Scrub sensitive parameters from your log
   # filter_parameter_logging :password
 
 #  # General method to render a 404
@@ -41,6 +36,13 @@ class ApplicationController < ActionController::Base
 
  def clean_string(string)
    (string) ? (return string.to_s.gsub(/\$/, '\$').gsub(/\"/, '\"')) : (return "")
+ end
+
+ def fecha_string(date=Time.now)
+    meses = %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre)
+    dia,mes,anio = date.strftime("%d"), date.strftime("%m"), date.strftime("%Y")
+    mes = meses[(mes.to_i - 1)]
+    return "#{dia} de #{mes} de #{anio}".upcase
  end
 
  
