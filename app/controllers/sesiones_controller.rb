@@ -26,14 +26,15 @@ class SesionesController < ApplicationController
    end
 
   def list_by_user
+    @user = (params[:id])? User.find(params[:id]) : current_user
     if params[:activas]
       case params[:activas].to_i
         when 1
-            @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1", current_user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
-            @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida !=1",current_user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
+            @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1", @user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
+            @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida !=1", @user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
         when 0
-            @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida = 1", current_user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
-            @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida = 1", current_user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
+            @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida = 1", @user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
+            @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida = 1", @user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
       end
     end
     #@sesiones_mediador ||= Sesion.find(:all, :conditions => ["mediador_id = ?", current_user.id], :order => "fecha, hora, minutos, created_at")
@@ -420,19 +421,22 @@ class SesionesController < ApplicationController
   def list_by_user_especialista
     #render :text => "<h3>Asignados como especialista</h3>"
     @descripcion = "Especialista"
-    @sesiones = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1 AND fecha >= ?", current_user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos, created_at", :limit => 60)
+    @user = (params[:id])? User.find(params[:id]) : current_user
+    @sesiones = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1 AND fecha >= ?", @user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos, created_at", :limit => 60)
     return render(:partial => 'list_by_user', :layout => false)
   end
 
   def list_by_user_comediador
     @descripcion = "Comediador"
-    @sesiones = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida != 1 AND fecha >= ?", current_user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos, created_at", :limit => 60)
+    @user = (params[:id])? User.find(params[:id]) : current_user
+    @sesiones = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida != 1 AND fecha >= ?", @user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos, created_at", :limit => 60)
     return render(:partial => 'list_by_user', :layout => false)
   end
 
   def list_by_user_all
     @descripcion = "Ambos, Todas las sesiones"
-    @sesiones = Sesion.find(:all, :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND concluida != 1 AND fecha < ?", current_user.id, current_user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos")
+    @user = (params[:id])? User.find(params[:id]) : current_user
+    @sesiones = Sesion.find(:all, :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND concluida != 1 AND fecha < ?", @user.id, @user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos")
     return render(:partial => 'list_by_user', :layout => false)
   end
 

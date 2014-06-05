@@ -297,12 +297,10 @@ def permission_show
 end
 
  def add_permission_user
-    unless validate_token(params[:t]) && @user = User.find(params[:id])
       @user = User.find(params[:id])
-      @situaciones = Situacion.find(:all, :conditions => ["descripcion != 'DISPONIBLE'"])
+      @situaciones = Situacion.find(:all, :conditions => ["descripcion not in (?)", ["DISPONIBLE", "EN SESION"]])
       @movimiento = Movimiento.new
       @movimiento.user_id = @user.id if @user
-    end
  end
 
 
@@ -357,6 +355,12 @@ end
        render :action => "redit_permission"
      end
    end
+ end
+
+ def show_sesiones_by_user
+   @user = User.find(params[:id])
+   @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1", @user.id], :order => "fecha, hora, minutos, created_at")
+   @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida !=1",@user.id], :order => "fecha, hora, minutos, created_at")
  end
 
  ########### REPORTE DE ATENCIONES NO BRINDADAS ######

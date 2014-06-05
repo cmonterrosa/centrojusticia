@@ -1,3 +1,15 @@
+<%if @tramite.estatu.clave == "tram-canc"%>
+  <div class="titulocalendario">
+    <h2>TRAMITE CANCELADO</h2>
+    <%if @tramite.motivo_cancelacion_id%>
+    <p>
+      <h4>Motivo: <%=h (MotivoCancelacion.find( @tramite.motivo_cancelacion_id)) ? MotivoCancelacion.find( @tramite.motivo_cancelacion_id).descripcion : "-----"%></h4>
+      <h4>Observaciones: <%=h (@tramite.cancelacion_observaciones) ? @tramite.cancelacion_observaciones : "----"%></h4>
+    </p>
+    <%end%>
+   </div>
+<%end%>
+
 <div class="titulocalendario">
   <p>Resumen General</p>
   <p>Folio: <%=link_to @tramite.folio_integrado, :action => "menu", :id => @tramite%></p>

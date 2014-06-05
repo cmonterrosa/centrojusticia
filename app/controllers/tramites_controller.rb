@@ -278,10 +278,9 @@ class TramitesController < ApplicationController
   def filtro_estatus
     if params[:estatu_id].size > 0
       @estatu = Estatu.find(params[:estatu_id])
-      @tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "fechahora DESC") if @estatu
+      @tramites = Tramite.find(:all, :conditions => ["estatu_id = ?", @estatu.id], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 25) if @estatu
     end
-     @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
-     @tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC")
+     @tramites ||= Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 25)
     return render(:partial => 'listajaxbasic', :layout => false) if request.xhr?
   end
 

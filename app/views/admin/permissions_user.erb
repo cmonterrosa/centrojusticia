@@ -4,7 +4,7 @@
 
 
 <div class="titulocalendario">
-  <p>Permisos del empleado</p>
+  <p>Ausencias del empleado</p>
   <p><%=@user.nombre_completo%></p>
 </div>
 
@@ -42,8 +42,13 @@
     <!-- Historico de movimientos -->
     <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr>
+       <%if @user.has_role?("especialistas")%>
+          <th colspan="2" align="center">
+            <%=link_to "REGISTRAR NUEVA SESION PARA ESPECIALISTA", {:action => "daily_show", :controller => "agenda", :day => Time.now.day, :month=>Time.now.month, :year => Time.now.year, :origin => "agenda"}, :class => 'boton', :title => "Capturar nueva sesión"%>
+          </th>
+       <%end%>
        <th colspan="2" align="center">
-          <%=link_to "Nuevo Cambio de Estatus", {:action => "add_permission_user", :controller => "admin", :id => @user, :t => generate_token}, :class => 'boton', :title => "Capturar nuevo registro"%>
+          <%=link_to "REGISTRAR NUEVA AUSENCIA", {:action => "add_permission_user", :controller => "admin", :id => @user, :t => generate_token}, :class => 'boton', :title => "Capturar nuevo registro"%>
        </th>
      </tr>
     </table>

@@ -43,14 +43,20 @@
       <td style="vertical-align: middle;"><%=h(user.login)%></td>
       <td style="vertical-align: middle;"><%=h(user.nombre_completo)%></td>
       <td style="vertical-align: middle;"><%=h (user.estatus_actual) ? user.estatus_actual : "----"%></td>
-      <%if current_user.has_role?("admin")%>
+      <%if current_user.has_role?("admindireccion")%>
         <td style="vertical-align: middle;"><%=link_to "Editar", {:action => "edit_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
+        <%if user.has_role?("especialistas")%>
+          <td style="vertical-align: middle;"><%=link_to "Histórico de Sesiones", {:action => "list_by_user", :controller => "sesiones", :id => user}, :class => 'boton'%></td>
+        <%else%>
+          <td style="vertical-align: middle;">&nbsp;</td>
+        <%end%>
       <%end%>
       <!--
       <td style="vertical-align: middle;"><=link_to "Estatus", {:action => "situacion_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
       -->
+
       <%unless user.has_role?("admin") || user.has_role?("direccion")%>
-        <td style="vertical-align: middle;"><%=link_to "Histórico de Estatus", {:action => "permissions_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
+        <td style="vertical-align: middle;"><%=link_to "Histórico de Ausencias", {:action => "permissions_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
         <!--
         <td style="vertical-align: middle;"><=link_to "Estadísticas", {:action => "statistics_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
         -->
