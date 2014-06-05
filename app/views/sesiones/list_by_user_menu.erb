@@ -10,7 +10,7 @@
 
 
 <div class="titulocalendario">
-  <p>Mis sesiones</p>
+  <p>SESIONES DE: <%=@user.nombre_completo%></p>
 </div>
 
 <table width="70%" border="0" cellspacing="0" cellpadding="0">
@@ -18,7 +18,7 @@
 
       <td>
           <%=link_to_remote image_tag('iconos/mediadorx.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/mediadorx_2.png"), :update => "divcontenido",
-          :url => { :action => "list_by_user_especialista"},
+          :url => { :action => "list_by_user_especialista", :id => @user},
           :before => "Element.show('spinner')",
           :complete => "Element.hide('spinner')",
           :html => {:title => "Asignadas como especialista"}%>
@@ -26,7 +26,7 @@
 
       <td>
            <%=link_to_remote image_tag('iconos/comediadorx.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/comediadorx_2.png"), :update => "divcontenido",
-            :url => { :action => "list_by_user_comediador"},
+            :url => { :action => "list_by_user_comediador", :id => @user},
             :before => "Element.show('spinner')",
             :complete => "Element.hide('spinner')",
             :html => {:title => "Asignadas como comediador"}%>
@@ -34,7 +34,7 @@
 
       <td>
            <%=link_to_remote image_tag('iconos/historicox.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/historicox_2.png"), :update => "divcontenido",
-            :url => { :action => "list_by_user_comediador"},
+            :url => { :action => "list_by_user_comediador", :id => @user},
             :before => "Element.show('spinner')",
             :complete => "Element.hide('spinner')",
             :html => {:title => "Histórico de sesiones"}%>

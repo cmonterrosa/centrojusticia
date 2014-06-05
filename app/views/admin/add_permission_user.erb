@@ -19,7 +19,7 @@
         </tr>
         <tr>
           <td align="center"><%=h (@user.situacion) ? @user.situacion.descripcion : "---"%></td>
-          <td align="center"><%= f.select :situacion_id, Situacion.find(:all, :conditions => ["descripcion != 'DISPONIBLE'"]).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+          <td align="center"><%= f.select :situacion_id, @situaciones.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td align="center"><%= f.text_field :fecha_inicio,  :required => true%></td>
           <td align="center"><%= f.text_field :fecha_fin,  :required => true%></td>
         </tr>
