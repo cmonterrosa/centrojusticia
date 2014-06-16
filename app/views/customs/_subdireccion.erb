@@ -8,19 +8,22 @@
          </a>
        </td>
 
-       <!--
+        <td>
+           <%=link_to image_tag('iconos_estadisticos/bitacora_atencion.png', :size => "128x128", :mouseover => "iconos_estadisticos/bitacora_atencion_2.png") , {:controller => "estadisticas", :action => "select_personas_atendidas"}, :title => "Bitácora de atención"%>
+        </td>
+
        <td>
          <a href="/agenda/calendario" title="Control de la agenda">
            <img src="/images/iconos/calendario.png" width="128" height="128" alt="apoyos" />
          </a>
        </td>
-       -->
+       
   </tr>
   <tr align="center">
    <td class="menu" align="center">Trámites</td>
-    <!--
-    <td class="menu" align="center">Agenda</td>
-    -->
+   <td class="menu" align="center">Bitácora de atención</td>
+   <td class="menu" align="center">Agenda</td>
+    
   </tr>
   
   <!-- espacio -->

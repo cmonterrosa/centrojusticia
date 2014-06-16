@@ -3,6 +3,9 @@ require 'gruff'
 class EstadisticasController < ApplicationController
   layout 'oficial_fancy'
 
+  require_role [:admin, :direccion, :subdireccion]
+  
+
      def index
 
      end

@@ -22,6 +22,8 @@
 <br />
 
 
-
-<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "estadisticas"%><br />
-
+<%if current_user.has_role?("direccion")%>
+  <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "estadisticas"%><br />
+<%else%>
+  <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
+<%end%>
