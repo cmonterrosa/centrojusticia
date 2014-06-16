@@ -7,7 +7,7 @@ class CreateComparecencias < ActiveRecord::Migration
       t.integer :hora_preferencia
       t.integer :dia_preferencia
       t.boolean :conocimiento
-      t.string :datos, :limit => 60
+      t.string :datos, :limit => 180
       t.text :asunto, :limit => 512
       t.string :observaciones
       #--relaciones con otras tablas
