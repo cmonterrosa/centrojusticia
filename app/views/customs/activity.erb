@@ -1,8 +1,13 @@
-<h4 style=" font-family:  Helvetica;">Usuario: <%=@usuario.nombre_completo%></h4>
+<div class="titulocalendario">
+  <p>
+    <%=@usuario.nombre_completo%>
+  </p>
+</div>
+
 
 
 <div id="divlista">
-  <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
       <th colspan="2">
         Mi actividad
@@ -33,5 +38,37 @@
 </table>
 </div>
 
-  <br /><br />
+
+
+<!-- Mis ausencias futuras -->
+
+<%unless @actividades.empty?%>
+    <br /><br />
+    <div id="divlista">
+        <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+            <tr style="background-color:gray; color:white">
+              <th colspan="3">
+                Actividades/ausencias programadas
+              </th>
+            </tr>
+
+            <tr class="d0">
+              <th>Tipo</th>
+              <th>Fecha inicio</th>
+              <th>Fecha fin</th>
+            </tr>
+            <%clase=1%>
+            <%@actividades.each do |a|%>
+            <tr class="<%=h "d#{clase}"%>">
+                <td style="vertical-align: middle;"><%=h a.situacion.descripcion%></td>
+                <td style="vertical-align: middle;"><%=h a.fecha_inicio.strftime("%d de %B de %Y / %H:%M")%></td>
+                <td style="vertical-align: middle;"><%=h a.fecha_fin.strftime("%d de %B de %Y / %H:%M")%></td>
+            </tr>
+              <%clase = invert_class(clase)%>
+            <%end%>
+        </table>
+     </div>
+  <%end%>
+
+<br /><br />
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
