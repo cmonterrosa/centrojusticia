@@ -16,11 +16,16 @@
     <!-- validaciones -->
     <%=javascript_include_tag "validaciones"%>
 
+    
+
     <%= stylesheet_link_tag "login-box"%>
     <%= stylesheet_link_tag "oficial"%>
     <%= stylesheet_link_tag "bt"%>
     <%= stylesheet_link_tag "search"%>
     <%= stylesheet_link_tag "calendario"%>
+
+    <!-- Paginate -->
+    <%= stylesheet_link_tag "paginate/style.css" %>
 
     <title>Centro Estatal de Justicia Alternativa</title>
 
@@ -34,8 +39,8 @@
 </head>
 
 <body>
-  <table width="100%" border="0" align="center" cellspacing="0" style="BORDER-RIGHT: #cccccc 0px solid; BORDER-TOP: #cccccc 0px solid; BORDER-LEFT: #cccccc 0px solid; BORDER-BOTTOM: #cccccc 0px solid; text-align: center; opacity:0.9;
-  filter:alpha(opacity=10); background: url('/images/pjech/fondo-total.jpg'); background-repeat: repeat; background-repeat: repeat;/* For IE8 and earlier */" >
+  <table width="90%" border="0" align="center" cellspacing="0" style="BORDER-RIGHT: #cccccc 0px solid; BORDER-TOP: #cccccc 0px solid; BORDER-LEFT: #cccccc 0px solid; BORDER-BOTTOM: #cccccc 0px solid; text-align: center; opacity:0.9;
+  filter:alpha(opacity=10); background-color: #fffaea; background-repeat: repeat; background-repeat: repeat;/* For IE8 and earlier */" >
   
   <!-- header -->
   <%= render :partial => "layouts/header"%>
