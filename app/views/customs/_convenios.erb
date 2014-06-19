@@ -14,6 +14,12 @@
         </a>
        </td>
 
+        <%if current_user.has_role?("bitacora")%>
+        <td>
+           <%=link_to image_tag('iconos_estadisticos/bitacora_atencion.png', :size => "128x128", :mouseover => "iconos_estadisticos/bitacora_atencion_2.png") , {:controller => "estadisticas", :action => "select_personas_atendidas"}, :title => "Bitácora de atención"%>
+        </td>
+        <%end%>
+
        <!-- Listado de trámites -->
         <td>
             <a href="/tramites/list" title="Trámites">
@@ -32,6 +38,9 @@
   <tr align="center">
     <td class="menu">Orientaciones</td>
     <td class="menu">Comparecencias</td>
+    <%if current_user.has_role?("bitacora")%>
+        <td class="menu">Bitácora de atención</td>
+    <%end%>
     <td class="menu">Listado de trámites</td>
     <!-- <td class="menu">Biblioteca</td> -->
   </tr>

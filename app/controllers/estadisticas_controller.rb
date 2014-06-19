@@ -1,9 +1,11 @@
 require 'rubygems'
 require 'gruff'
+require 'fastercsv'
+
 class EstadisticasController < ApplicationController
   layout 'oficial_fancy'
 
-  require_role [:admin, :direccion, :subdireccion]
+  require_role [:admin, :direccion, :subdireccion, :bitacora]
   
 
      def index
@@ -294,7 +296,39 @@ end
     params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
     @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
     #@tramites = Tramite.find(:all, :conditions => ["created_at between ? AND ?",@inicio, @fin], :order => "created_at")
-     @tramites = Tramite.find(:all, :select => "tramites.*", :joins => "tramites, orientacions orientacions, estatus e", :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin])
+     @tramites = Tramite.find(:all, 
+                              :select => "tramites.*",
+                              :joins => "tramites, orientacions orientacions, estatus e",
+                              :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar', 'tram-escr') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
+                              :order => ["tramites.anio DESC, tramites.folio_expediente DESC, tramites.fechahora"])
+  end
+
+  
+  ###### DESCARGA DE BITACORA ######
+
+  def download_bitacora
+    params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+    @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+    @tramites = Tramite.find(:all,
+                              :select => "tramites.*",
+                              :joins => "tramites, orientacions orientacions, estatus e",
+                              :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar', 'tram-escr') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
+                              :order => ["tramites.anio DESC, tramites.folio_expediente DESC, tramites.fechahora"])
+    
+    csv_string = FasterCSV.generate do |csv|
+      csv << ["NP", "NUMERO_TRAMITE", "NUMERO_EXPEDIENTE", "ESPECIALISTA",       "CATEGORIA",          "FECHA_HORA"]
+      np=1
+      @tramites.each do |t|
+         especialista = (t.orientacion.especialista) ? t.orientacion.especialista.nombre_completo : "Por Escrito"
+         categoria = (t.orientacion.especialista) ? t.orientacion.especialista.categoria : "-----"
+         fecha_hora = t.fechahora.strftime("%d de %B de %Y - %H:%M:%S")
+         csv << [ np, t.folio_integrado, t.numero_expediente,  especialista, categoria, fecha_hora]
+         np+=1 
+      end
+    end
+  send_data csv_string, type => "text/plain",
+    :filename => "bitacora_#{Time.now.strftime("%d-%m-%Y_%I%M_%p")}.csv",
+    :disposition => "attachment"
   end
 
   def show_cargas_trabajo
