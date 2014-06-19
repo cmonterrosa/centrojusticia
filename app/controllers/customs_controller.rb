@@ -43,6 +43,7 @@ class CustomsController < ApplicationController
 
   def activity
     @usuario = current_user
+    @actividades = Movimiento.find(:all, :conditions => ["user_id = ? AND fecha_inicio > ?", current_user.id, Time.now], :order => "fecha_inicio DESC")
   end
 
   def edit

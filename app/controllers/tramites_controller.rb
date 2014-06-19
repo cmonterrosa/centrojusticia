@@ -2,7 +2,7 @@ class TramitesController < ApplicationController
   layout 'oficial_fancy'
   before_filter :login_required
   require_role [:cancelatramite, :direccion], :for => [:cancel]
-  require_role [:especialistas, :subdireccion, :direccion, :convenios], :for => [:menu]
+  require_role [:especialistas, :subdireccion, :direccion, :convenios, :asignahorario], :for => [:menu]
   require_role [:admin], :for => [:destroy]
 
 
@@ -48,7 +48,9 @@ class TramitesController < ApplicationController
     @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
     #@tramites = (params[:t] == "all") ? Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC") : Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC LIMIT 35")
     #@all = true if params[:t] == "all"
-    @tramites =  Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 25)
+    #@tramites =  Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "anio DESC, folio_expediente DESC, fechahora DESC").paginate(:page => params[:page], :per_page => 25)
+    @tramites = (current_user.has_role?("atencionpublico"))? Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 25) : Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "anio DESC, folio_expediente DESC, fechahora DESC").paginate(:page => params[:page], :per_page => 25)
+
   end
 
   def show
@@ -134,9 +136,12 @@ class TramitesController < ApplicationController
                ##--- asignacion de especialista --
                session["tramite_id"] = @tramite.id
                @fecha_hora_sesion = (Sesion.find_by_tramite_id(@tramite.id)) ? Sesion.find_by_tramite_id(@tramite.id).start_at : nil
+               @especialistas = (@fecha_hora_sesion) ? Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion) :  Role.find_by_name("ESPECIALISTAS").users
                @tipos_sesiones = Tiposesion.find(:all)
+               @new_st = params[:new_st]
                #if !(@users = @tramite.materia.users).empty?
-                if !(@users = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion)).empty?
+               #if !(@users = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion)).empty?
+               if !(@users = @especialistas).empty?
                     return render(:partial => 'asignacion_especialista', :layout => "oficial")
                 else
                     return render(:partial => 'no_asignacion_especialista', :layout => "oficial")
@@ -329,7 +334,7 @@ class TramitesController < ApplicationController
   def get_comediador
     @tramite =  Tramite.find(session["tramite_id"])
     @fecha_hora_sesion = (Sesion.find_by_tramite_id(@tramite.id)) ? Sesion.find_by_tramite_id(@tramite.id).start_at : nil
-    @users = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion)
+    @users = (@fecha_hora_sesion) ? Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion) :  Role.find_by_name("ESPECIALISTAS").users
     @users.delete(User.find(params[:sesion_mediador_id]))
     return render(:partial => 'comediadores', :layout => false) if request.xhr?
   end

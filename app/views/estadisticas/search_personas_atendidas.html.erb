@@ -32,6 +32,11 @@
       </p>
   <%end%>
 </div>
+
+<div>
+  <p align="center"><%=link_to "Descargar archivo de Excel", :action => "download_bitacora", :fecha_inicio => @inicio, :fecha_fin => @fin%></p>
+</div>
+
 <div id="divlista">
   <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
