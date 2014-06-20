@@ -110,7 +110,7 @@ class ComparecenciasController < ApplicationController
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora)}"}
         #param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
         #param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d/%m/%Y').upcase}"}
-        param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>@involucrado.apoderado_legal}
+        param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>clean_string(@involucrado.apoderado_legal)}
         (@comparecencia.tramite.numero_expediente) ? param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>@comparecencia.tramite.numero_expediente} : nil
         if File.exists?(REPORTS_DIR + "/involucrado.jasper")
           (@involucrado.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("involucrado_persona_moral", "involucrado_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("involucrado", "involucrado", param, output_type = 'pdf')
