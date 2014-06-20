@@ -200,6 +200,10 @@ esMX:
   activemodel:
     errors:
       <<: *errors
+  activerecord:
+    errors:
+      <<: *errors
+
   will_paginate:
     previous_label: "&#8592; Ant"
     next_label: "Sig &#8594;"
@@ -216,6 +220,3 @@ esMX:
 
       multi_page: "Mostrando %{model} %{from} - %{to} de %{count} en total"
       multi_page_html: "Mostrando <b>%{from}&nbsp;-&nbsp;%{to}</b> %{model} de <b>%{count}</b>"
-  activerecord:
-    errors:
-      <<: *errors
