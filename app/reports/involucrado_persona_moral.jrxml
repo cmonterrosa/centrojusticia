@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="0"/>
 	<style name="Title" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -239,9 +239,9 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_RAZON_SOCIAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="129" y="182" width="405" height="20"/>
+				<reportElement mode="Transparent" x="129" y="182" width="405" height="34"/>
 				<textElement>
-					<font fontName="Arial" size="11" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Arial" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_APODERADO_LEGAL}]]></textFieldExpression>
 			</textField>
@@ -267,9 +267,9 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["CARPETA DE ATENCIÓN: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="367" y="54" width="175" height="20"/>
+				<reportElement x="230" y="54" width="312" height="20"/>
 				<textElement textAlignment="Center">
-					<font fontName="Arial" size="11" isBold="true" isItalic="true"/>
+					<font fontName="Arial" size="10" isBold="true" isItalic="true"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECCION}]]></textFieldExpression>
 			</textField>
