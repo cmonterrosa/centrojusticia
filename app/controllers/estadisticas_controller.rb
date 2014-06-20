@@ -5,7 +5,7 @@ require 'fastercsv'
 class EstadisticasController < ApplicationController
   layout 'oficial_fancy'
 
-  require_role [:admin, :direccion, :subdireccion, :bitacora]
+  require_role [:admin, :direccion, :subdireccion, :bitacora, :admindireccion]
   
 
      def index
