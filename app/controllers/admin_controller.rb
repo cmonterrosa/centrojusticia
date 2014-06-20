@@ -1,9 +1,10 @@
 class AdminController < ApplicationController
   #before_filter :login_required
    #require_role :admin#, :except => [:index]
-   require_role [:direccion,:admindireccion]
-  #require_role :direccion, :only => [:show_users, :situacion_user, :statistics_user, :permissions_user, :permission_show, :add_permission_user, :permissions_index, :save_permission  ]
+   require_role [:direccion, :admindireccion]
+   #require_role :direccion, :only => [:show_users, :situacion_user, :statistics_user, :permissions_user, :permission_show, :add_permission_user, :permissions_index, :save_permission  ]
    require_role :admin, :only => [:save_user, :add_user]
+
   def new_area
     
   end
@@ -286,9 +287,8 @@ class AdminController < ApplicationController
  end
 
 def permissions_user
-   if validate_token(params[:t]) && @user = User.find(params[:id])
-      @user = User.find(params[:id])
-      @movimientos = Movimiento.find(:all, :conditions => ["user_id = ?", @user.id], :order => "fecha_inicio,fecha_fin")
+   if @user = User.find(params[:id])
+      @movimientos = Movimiento.find(:all, :conditions => ["user_id = ?", @user.id], :order => "fecha_inicio DESC,fecha_fin DESC").paginate(:page => params[:page], :per_page => 25)
    end
 end
 
