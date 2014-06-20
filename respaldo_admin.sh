@@ -11,6 +11,9 @@ tablas=(
      'horarios' 
      'justificacions' 
      'salas'
+     'flujos'
+     'roles'
+     'roles_users'
      'situacions' 
      'subdireccions' 
      'users')

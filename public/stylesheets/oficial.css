@@ -5,7 +5,9 @@ a img {
 .titulo {
     font-size: 18px;
     font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
+    /*font-family: Arial, Helvetica, sans-serif;*/
+    font-family : geneva, arial, helvetica, sans-serif;
+
     color: white;
     background-color: #d33934;
 }
@@ -26,6 +28,7 @@ a img {
 }
 body {
 	background-color: #E8E8E8;
+       font-family: Verdana, Geneva, sans-serif;
 }
 
 h1{
