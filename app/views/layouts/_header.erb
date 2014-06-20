@@ -32,7 +32,9 @@
                   <input id="searchSubmit" type="submit" value="" />
                 </form>
               -->
-              <div class ="imagehover">
+
+              <div class ="imagehover" style="text-align: right;">
+
                   <%=link_to 'MI PERFIL',  {:controller => "customs", :action => "profile"}, :title => "Datos personales y perfiles a los que perteneces"%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <%=link_to 'MI ACTIVIDAD',  {:controller => "customs", :action => "activity"}, :title => "Mi actividad"%>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <%=link_to 'CERRAR SESIÓN', {:action => "destroy", :controller=>"sessions"}, :title => "¿Desea salir del sistema?"%> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
