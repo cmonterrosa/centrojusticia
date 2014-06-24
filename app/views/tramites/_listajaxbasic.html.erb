@@ -41,24 +41,12 @@
     <%contador=1%>
     <%@tramites.each do |tramite|%>
     <tr class="d<%=invert_class(clase)%>">
-       <!-- folio -->
+       <td style="vertical-align: middle;" width="5%"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
+       <td style="vertical-align: middle;" width="5%"><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></td>
+       <td style="vertical-align: middle;" width="30%"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
+       <td style="vertical-align: middle;" width="5%"><%=link_to image_tag("iconos/fecha.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
+       <td style="vertical-align: middle;" width="15%"><%=tramite.estatus%></td>
 
-       <!--
-          <folio = (@tramites.current_page.to_i > 1 )? "#{contador + (@tramites.per_page.to_i * (@tramites.current_page.to_i - 1))}" : "#{contador}"%>
-       -->
-
-       <td style="vertical-align: middle;"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
-       <%contador+=1%>
-       
-       <td style="vertical-align: middle;"><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></td>
-       <td style="vertical-align: middle;"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
-       <td style="vertical-align: middle;"><%=link_to image_tag("iconos/fecha.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
-
-       <!--
-       <td style="vertical-align: middle;"><=h (tramite.fechahora) ? tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "-----"%></td>
-       -->
-
-       <td style="vertical-align: middle;"><%=tramite.estatus%></td>
        <!-- siguiente estatus -->
        <%ids = []%>
        <%current_user.roles.each do |role| ids << role.id end%>

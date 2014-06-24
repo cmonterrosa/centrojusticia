@@ -1,11 +1,11 @@
 <!-- layout de ficha -->
 <div id="scroll">
-      <table class="ficha" width="80%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <table class="ficha" width="90%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
                 <tr align="center" class="d0">
                   <td width="20%">Número de expediente</td>
                   <td width="40%" bgcolor="#E8E8E8">Solicitante</td>
-                  <td width="20%" bgcolor="#E8E8E8">Fecha Reservada</td>
-                  <td width="20%" bgcolor="#E8E8E8">Materia</td>
+                  <td width="30%" bgcolor="#E8E8E8">Fecha Reservada / Tipo de Sesión</td>
+                  <td width="10%" bgcolor="#E8E8E8">Materia</td>
                 </tr>
                 <!-- Registros -->
                 <tr align="center" class="d1">
@@ -18,7 +18,7 @@
                   <!-- Si tiene fecha reservada -->
                   <%if @sesion = Sesion.find_by_tramite_id(@tramite)%>
                     <%if @sesion.start_at%>
-                      <td bgcolor="#f3f3f3"><%=@sesion.start_at.strftime('%d de %B de %Y')%> (<%=@sesion.hora_completa%>) </td>
+                      <td bgcolor="#f3f3f3"><%=@sesion.start_at.strftime('%d de %B de %Y')%> (<%=@sesion.hora_completa%>) / <%=@sesion.tiposesion.descripcion%> &nbsp; <%=link_to "Eliminar reservacion", :action => "destroy_reserva", :controller => "sesiones", :id =>  @sesion, :tramite => @tramite, :new_st => @new_st%> </td>
                     <%else%>
                       <td bgcolor="#f3f3f3">&nbsp;</td>
                     <%end%>
