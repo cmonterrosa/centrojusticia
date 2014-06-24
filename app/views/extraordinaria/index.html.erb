@@ -21,6 +21,7 @@
     <%clase=1%>
 
 
+    <%tramite_iniciado_por_escrito=Estatu.find_by_clave("tram-escr")%>
     <%@extraordinarias.each do |e|%>
     <tr class="d<%=invert_class(clase)%>">
        <td style="vertical-align: middle;"><%=h (e.procedencia) ? e.procedencia.descripcion : "----"%></td>
@@ -41,7 +42,8 @@
         <%end%>
 
         <!-- Eliminar si es inicio de tramite-->
-        <%if (current_user.has_role?("admin"))%>
+
+        <%if (current_user.has_role?("admin") || e.tramite.estatus == tramite_iniciado_por_escrito)%>
               <td style="vertical-align: middle;"><%=link_to "Eliminar", {:action => "destroy", :id => e.tramite}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
         <%end%>
 
@@ -51,3 +53,19 @@
     <%end%>
   </table>
 </div>
+<br />
+<div>
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @extraordinarias %>
+          </div>
+          <%= will_paginate @extraordinarias %>
+        </div>
+      </td>
+    </tr>
+</table>
+</div>
+

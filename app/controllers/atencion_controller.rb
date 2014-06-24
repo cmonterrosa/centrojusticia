@@ -16,7 +16,8 @@ class AtencionController < ApplicationController
 
   ####### ATENCION POR ESCRITO #########
   def por_escrito_index
-      @tramites_por_escrito = Atencion.find_by_descripcion("POR ESCRITO").tramites
+      #@tramites_por_escrito = Atencion.find_by_descripcion("POR ESCRITO").tramites.paginate(:page => params[:page], :per_page => 15)
+      @tramites_por_escrito = Tramite.find(:all, :conditions => ["atencion_id = ?", Atencion.find_by_descripcion("POR ESCRITO").id], :order => "created_at DESC").paginate(:page => params[:page], :per_page => 15)
   end
 
 

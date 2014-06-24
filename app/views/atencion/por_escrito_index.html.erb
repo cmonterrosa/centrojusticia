@@ -20,7 +20,7 @@
       </tr>
     <%clase=1%>
 
-
+    <%tramite_iniciado_por_escrito=Estatu.find_by_clave("tram-escr")%>
     <%@tramites_por_escrito.each do |e|%>
     <tr class="d<%=invert_class(clase)%>">
       <td style="vertical-align: middle;"><%=h (Orientacion.find_by_tramite_id(e.id)) ? Orientacion.find_by_tramite_id(e.id).solicitante : "----"%></td>
@@ -41,8 +41,8 @@
         <%end%>
 
         <!-- Eliminar si es inicio de tramite-->
-        <%if (current_user.has_role?("jefeatencionpublico"))%>
-              <td style="vertical-align: middle;"><%=link_to "Eliminar", {:controller => "tramites", :action => "destroy", :id => e.id}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
+        <%if (current_user.has_role?("jefeatencionpublico") || e.estatu_id == tramite_iniciado_por_escrito.id)%>
+              <td style="vertical-align: middle;"><%=link_to "Eliminar", {:controller => "tramites", :action => "destroy", :id => e.id}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton', :style => "background-color: red; text-color: white;" -%></td>
         <%end%>
 
         <!-- resumen general -->
@@ -52,6 +52,22 @@
   </table>
 </div>
 
+
+
+<div>
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @tramites_por_escrito %>
+          </div>
+          <%= will_paginate @tramites_por_escrito %>
+        </div>
+      </td>
+    </tr>
+</table>
+</div>
 
 <br/>
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "atencion", :action => "index"%><br />

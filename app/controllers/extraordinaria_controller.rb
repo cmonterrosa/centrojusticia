@@ -3,7 +3,7 @@ class ExtraordinariaController < ApplicationController
      require_role :admin, :only => [:destroy]
 
     def index
-      @extraordinarias = Extraordinaria.find(:all, :order => "fechahora DESC")
+      @extraordinarias = Extraordinaria.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 15)
     end
 
     def new_or_edit
