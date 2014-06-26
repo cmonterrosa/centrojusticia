@@ -121,13 +121,43 @@ class User < ActiveRecord::Base
       num_orientaciones_periodo(seven_days_ago, now)
   end
 
+  def num_orientaciones_desde_inicio_semana
+    now = DateTime.parse(Time.now.strftime("%Y-%m-%d") + " 08:00")
+    dia_semana = Time.now.wday
+
+    case dia_semana
+    when 1
+      inicio_semana = now
+      fin_semana = DateTime.parse((now + 5).strftime("%Y-%m-%d") + " 20:00")
+    when 2
+      inicio_semana = (now -1 )
+      fin_semana = DateTime.parse((now + 4).strftime("%Y-%m-%d") + " 20:00")
+    when 3
+      inicio_semana = (now - 2)
+      fin_semana = DateTime.parse((now + 3).strftime("%Y-%m-%d") + " 20:00")
+    when 4
+      inicio_semana = (now - 3)
+      fin_semana = DateTime.parse((now + 2).strftime("%Y-%m-%d") + " 20:00")
+    when 5
+      inicio_semana = (now - 4)
+      fin_semana = DateTime.parse((now + 1).strftime("%Y-%m-%d") + " 20:00")
+    else
+      inicio_semana = (now - 5)
+      fin_semana = DateTime.parse((now).strftime("%Y-%m-%d") + " 20:00")
+    end
+    return num_orientaciones_periodo(inicio_semana,fin_semana)
+  end
+
   def num_orientaciones_dos_dias
     now = Date.today + 1
     two_days_ago = (now - 2)
     num_orientaciones_periodo(two_days_ago, now)
   end
-
   def puntuacion
+    return (num_orientaciones_desde_inicio_semana)
+  end
+
+  def puntuacion_anterior
     dos_dias = num_orientaciones_dos_dias
     semana = num_orientaciones_por_semana
     return (dos_dias + (semana * 0.01))
