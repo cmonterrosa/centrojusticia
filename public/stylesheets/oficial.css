@@ -28,7 +28,7 @@ a img {
 }
 body {
 	background-color: #E8E8E8;
-       font-family: Verdana, Geneva, sans-serif;
+        font-family: Verdana, Geneva, sans-serif;
 }
 
 h1{
@@ -419,4 +419,27 @@ color: red;
 .flickr_pagination .previous_page, .flickr_pagination .next_page { border-width: 2px; }
 .flickr_pagination .previous_page { margin-right: 1em; }
 .flickr_pagination .next_page {  margin-left: 1em; }
+
+
+/* Botones de admitir y guardar */
+
+.admitir {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 18px;
+    background-color: #CC3300;
+    color: white;
+    border: 2px solid #dddddd;
+    font-weight: bold;
+
+}
+
+.admitir a {
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 18px;
+    background-color: orange;
+    color: white;
+    border: 2px solid #dddddd;
+    font-weight: bold;
+}
+
 
