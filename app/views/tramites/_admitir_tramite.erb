@@ -57,7 +57,7 @@
 <% form_for :tramite, @tramite, :url => { :action => "update_estatus", :id => @tramite, :type => "admitir" }, :html => {:id => "admision_tramite"} do |f| -%>
 
 
-<table class="sample" width="75%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+<table class="sample" width="60%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
  
      <tr style="background-color:gray; color:white">
            <tr>
@@ -76,21 +76,21 @@
          <th>
              Objeto de la solicitud:
          </th>
-         <td><%=f.text_field("objeto_solicitud", :size => 50)%></td>
+         <td><%=f.text_field("objeto_solicitud", :size => 80)%></td>
       </tr>
 
        <tr style="background-color:gray; color:white">
          <th>
              Observaciones generales:
          </th>
-         <td><%=f.text_area("observaciones_generales", :size => "40x10")%></td>
+         <td><%=f.text_area("observaciones_generales", :size => "80x5")%></td>
       </tr>
 
          <tr style="background-color:gray; color:white">
          <th>
              Documentación anexa:
          </th>
-         <td><%=f.text_area("documentacion_anexa",  :size => "40x10")%></td>
+         <td><%=f.text_area("documentacion_anexa",  :size => "80x5")%></td>
       </tr>
 
        
@@ -104,7 +104,7 @@
       
       <tr>
         <th>
-          <th class="boton" align="center" colspan="2"><%= f.submit "GUARDAR Y ADMITIR"%></th>
+          <th class="boton" align="center" colspan="2"><%= f.submit "GUARDAR Y ADMITIR", :class => "admitir"%></th>
         </th>
       </tr>
   </table>

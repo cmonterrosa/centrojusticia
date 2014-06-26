@@ -41,11 +41,11 @@
     <%contador=1%>
     <%@tramites.each do |tramite|%>
     <tr class="d<%=invert_class(clase)%>">
-       <td style="vertical-align: middle;" width="5%"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
-       <td style="vertical-align: middle;" width="5%"><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></td>
-       <td style="vertical-align: middle;" width="30%"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
-       <td style="vertical-align: middle;" width="5%"><%=link_to image_tag("iconos/fecha.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
-       <td style="vertical-align: middle;" width="15%"><%=tramite.estatus%></td>
+       <td style="vertical-align: middle;" width="4%"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
+       <td style="vertical-align: middle;" width="4%"><b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b></td>
+       <td style="vertical-align: middle;" width="25%"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
+       <td style="vertical-align: middle;" width="4%"><%=link_to image_tag("iconos/fecha.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
+       <td style="vertical-align: middle;" width="14%"><%=tramite.estatus%></td>
 
        <!-- siguiente estatus -->
        <%ids = []%>
