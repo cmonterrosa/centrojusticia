@@ -144,6 +144,12 @@ class User < ActiveRecord::Base
       return numero_orientaciones
   end
 
+   def disponible?(date=Time.now)
+        fecha = (date) ? date.strftime('%Y-%m-%d %H:%M:%S') : Time.now.strftime('%Y-%m-%d %H:%M:%S')
+        u = User.count(:id, :conditions => ["id = ? AND id not in (select user_id as id from movimientos where ('#{fecha}' BETWEEN fecha_inicio AND fecha_fin))", self.id])
+        return ((u > 0)? true : false)
+   end
+
     protected
       def make_activation_code
             self.activation_code = self.class.make_token

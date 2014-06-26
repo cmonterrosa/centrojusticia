@@ -26,9 +26,40 @@
       <td style="vertical-align: middle;"><b>Fecha de entrega:</b></td>
       <td style="vertical-align: middle;"><%=h((@invitacion.fecha_hora_entrega) ? @invitacion.fecha_hora_entrega.strftime("%d de %B de %Y / %H:%M") : "No se ha entregado")%></td>
     </tr>
-    </table><br /><br />
+
+    <tr class="d1">
+      <td style="vertical-align: middle;"><b>Entregada por:</b></td>
+      <td style="vertical-align: middle;"><%=h((@invitacion.invitador_id) ? User.find(@invitacion.invitador_id).nombre_completo : "---")%></td>
+    </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Cuadrante:</b></td>
+      <td style="vertical-align: middle;"><%=h((@invitacion.participante.cuadrante_id) ? Cuadrante.find(@invitacion.participante.cuadrante_id) : "---")%></td>
+    </tr>
+
+
+ </table>
+
+
+<br /><br />
+
+
+     <!-- detalle de la justificacion -->
+    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+       <th colspan="2">
+           Justificación
+       </th>
+     </tr>
+
+      <tr class="d0">
+        <th colspan="2"><%=text_area(:invitacion, :justificacion, :size => "90x10", :disabled => 'disabled')%></th>
+      </tr>
+     </table>
+
 <%end%>
 
+ <br />
  <!-- Detalle de la sesión-->
   <%if @invitacion.sesion%>
     <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
@@ -45,25 +76,19 @@
        </tr>
 
        <!-- fecha de inicio -->
-       <tr class="d0">
+       <tr class="d1">
           <td style="vertical-align: middle;"><b>Fecha/hora de inicio</b></td>
           <td style="vertical-align: middle;"><%=h(@invitacion.sesion.start_at ? @invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---")%></td>
        </tr>
 
-
       <tr class="d0">
-          <td style="vertical-align: middle;"><b>Descripción</b></td>
-          <td style="vertical-align: middle;"><b>Fecha/hora inicio</b></td>
-          <td style="vertical-align: middle;"><b>Especialista</b></td>
-          <td style="vertical-align: middle;"><b>Comediador</b></td>
+        <td style="vertical-align: middle;"><b>Especialista</b></td>
+        <td style="vertical-align: middle;"><%=h(@invitacion.sesion.mediador ? @invitacion.sesion.mediador.nombre_completo : "---")%></td>
       </tr>
-
-        <tr class="d1">
-          <td style="vertical-align: middle;"><%=h(@invitacion.sesion.tiposesion_id ? @invitacion.sesion.tiposesion.descripcion : "---")%></td>
-          <td style="vertical-align: middle;"><%=h(@invitacion.sesion.start_at ? @invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---")%></td>
-          <td style="vertical-align: middle;"><%=h(@invitacion.sesion.mediador ? @invitacion.sesion.mediador.nombre_completo : "---")%></td>
-          <td style="vertical-align: middle;"><%=h(@invitacion.sesion.comediador ? @invitacion.sesion.comediador.nombre_completo : "---")%></td>
-        </tr>
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b>Comediador</b></td>
+        <td style="vertical-align: middle;"><%=h(@invitacion.sesion.comediador ? @invitacion.sesion.comediador.nombre_completo : "---")%></td>
+      </tr>
 
   </table><br /><br />
   <%end%>
@@ -111,16 +136,16 @@
 
     <!-- Participantes del trámite -->
   <% if @tramite.comparecencia %>
-    <%unless @tramite.comparecencia.participantes.empty?%>
+    
       <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
         <tr style="background-color:gray; color:white">
           <th colspan="2">
-            Participante / Domicilio
+            Datos del participante
           </th>
         </tr>
 
         <%clase=0%>
-        <% @tramite.comparecencia.participantes.each do |participante|%>
+        <% if participante = Participante.find(@invitacion.participante_id)%>
           <tr class="d<%=invert_class(clase)%>">
             <td align="center">
                 <%=link_to "#{participante.nombre_completo}", :action => "show", :controller => "participantes", :id => participante%>
@@ -132,24 +157,10 @@
           <%clase = invert_class(clase)%>
         <%end%>
       </table><br /><br />
-    <%end%>
+   
   <%end%>
 
 
-
-    <!-- detalle de la justificacion -->
-    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-     <tr style="background-color:gray; color:white">
-       <th colspan="2">
-           Justificación
-       </th>
-     </tr>
-
-      <tr class="d0">
-        <th colspan="2"><%=text_area(:invitacion, :justificacion, :size => "90x10", :disabled => 'disabled')%></th>
-      </tr>
-     </table>
-     <br /><br />
 
 
 

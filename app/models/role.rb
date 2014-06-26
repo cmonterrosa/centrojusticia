@@ -13,6 +13,13 @@ class Role < ActiveRecord::Base
 
   end
 
+  ##### TODOS LOS USUARIOS CON CIERTO ROLE ######
+  def todos_usuarios
+    return User.find_by_sql("SELECT users.* from users inner join roles_users ru on users.id=ru.user_id 
+                             INNER JOIN roles r on ru.role_id=r.id
+                             WHERE r.name='#{self.name}'")
+  end
+
   def usuarios_disponibles_vespertinos(date=Time.now)
     ############## SOLO MUESTRA A LOS QUE TIENEN GUARDIA ##################
     return User.find_by_sql("SELECT users.* from users

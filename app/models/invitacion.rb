@@ -26,7 +26,7 @@ class Invitacion < ActiveRecord::Base
 
    def articulo
     o = orientacion
-    articulo = (o.sexo == 'M') ? "del" : "de la"
+    articulo = (o.sexo == 'M') ? "el" : "la"
     return articulo
    end
 

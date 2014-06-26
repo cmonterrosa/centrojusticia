@@ -50,10 +50,14 @@ class Tramite < ActiveRecord::Base
     @history = Historia.new(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id ) if @estatus
     #### Verificamos si existe un estatus superior #####
     tiene_historia = Historia.find(:all, :conditions => ["tramite_id = ? AND estatu_id = ?", self.id, @estatus.id])
-    if @history.save
-      #---- actualizacion del registro principal --
-      self.update_attributes!(:estatu_id => @estatus.id) if tiene_historia.empty?
-      return true
+    unless self.estatu_id == @estatus.id
+      if @history.save
+        #---- actualizacion del registro principal --
+        self.update_attributes!(:estatu_id => @estatus.id) if tiene_historia.empty?
+        return true
+      end
+    else
+      return false
     end
   end
 

@@ -1,0 +1,44 @@
+<div class="titulocalendario">
+  <p>
+    Asignar invitador
+  </p>
+</div>
+
+
+<%=render :partial => "participantes/show"%>
+
+
+<br />
+
+
+<div id="scroll">
+<!-- < form_tag :action => 'update_estatus', :id =>@tramite, :type => "admitir" do -%> -->
+<% form_for :invitacion, @invitacion, :url => { :action => "save_asignacion", :id => @invitacion, :tramite => @tramite}, :html => {:id => "asignacion_invitador"} do |f| -%>
+
+
+<table class="sample" width="75%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+
+      <tr style="background-color:gray; color:white">
+           <tr>
+             <th>Invitador:</th>
+              <td><%= f.select("invitador_id", @invitadores.collect {|p| [ p.nombre_completo, p.id ] }, { :include_blank => true }, {:selected => @invitacion.invitador})%></td>
+           </tr>
+      </tr>
+      
+      <tr style="background-color:gray; color:white">
+         <th>
+             Observaciones generales:
+         </th>
+         <td><%=f.text_area("observaciones", :size => "60x10")%></td>
+      </tr>
+      <tr>
+        <th>
+          <th class="boton" align="center" colspan="2"><%= f.submit "ASIGNAR"%></th>
+        </th>
+      </tr>
+  </table>
+<% end %>
+</div>
+
+
+<br /><br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />

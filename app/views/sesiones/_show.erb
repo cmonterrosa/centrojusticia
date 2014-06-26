@@ -1,34 +1,20 @@
-
-<% if current_user.has_role?("controlagenda") || current_user.has_role?("admindireccion")%>
-<!-- Acciones -->
-<table width="70%" border="0" cellspacing="0" cellpadding="0">
+<table width="60%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
-
-       <!-- Por reeprogramar con los mismos especialistas -->
-      
-       <!-- ################ EN FASE DE CONSTRUCCION #############
-      <td><=link_to image_tag('iconos/horarios.png',  :size => "64x64", :mouseover => "iconos/horarios.png") , {:action => "reprogramar", :controller => "sesiones", :id => @sesion}, :title => "Reprogramar sesión"%></td>
-
-      <td>
-        <a href="/sesiones/change_sesion_data/<=h @sesion.id%>/?t=<=h @token%>" title="Reprogramar horario de sesión">
-         <img src="/images/iconos/horarios.png" width="64" height="64" alt="tramites" />
-        </a>
-      </td>
-
-      <td>
-        <a href="/sesiones/edit/<=h @sesion.id%>/?t=<=h @token%>" title="Editar datos de la sesión">
-         <img src="/images/iconos/edit.png" width="64" height="64" alt="tramites" />
-        </a>
-      </td>
-       -->
-
-      <td>
+    <!-- Cancelacion -->
+    <%if current_user.has_role?("asignahorario") || current_user.has_role?("controlagenda") || current_user.has_role?("admindireccion")%>
+       <td>
           <%= link_to image_tag("iconos/cancel.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post %><br />
-      </td>
+       </td>
+    <%end%>
+
+    <%#*<!-- Reprogramar -->%>
+    <%#if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
+        <%#*<td>%>
+          <%#= link_to image_tag("iconos/edit.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "edit", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post %><br />
+        <%#*</td>%>
+    <%#end%>
   </tr>
 </table>
-<%end%>
-
 
 <!-- Mostramos icono de bitácora si es mediador o comediador -->
 
@@ -109,4 +95,5 @@
         <td style="vertical-align: middle; width: 70%;"><%=@sesion.resultado%></td>
      </tr>
 
-   </table><br />
+   </table>
+<br />

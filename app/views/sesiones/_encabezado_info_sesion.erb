@@ -1,0 +1,37 @@
+<h1><%=@title%>:</h1>
+
+
+<!-- layout de info de preferencia -->
+<div id="scroll">
+      <table class="table1">
+                <tr align="center">
+                  <th width="20%">Número de expediente</th>
+                  <th width="40%">Solicitante</th>
+                  <%if @sesion.start_at%>
+                    <th>Fecha/hora asignada</th>
+                  <%end%>
+                  <th width="30%">Día(s) de preferencia:</th>
+                  <th width="10%">Hora de preferencia:</th>
+                </tr>
+                <!-- Registros -->
+                <tr align="center">
+                  <td>
+                      <%numero_expediente = (@sesion.tramite) ? @sesion.tramite.numero_expediente : "---"%>
+                      <%@tramite = @sesion.tramite%>
+                      <%@comparecencia = Comparecencia.find_by_tramite_id(@tramite.id) if @tramite%>
+                      <%=link_to "#{numero_expediente}", {:action => "show", :id => @tramite}, :target => "_blank"%>
+                  </td>
+                  <td><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
+
+                  <%if @sesion.start_at%>
+                    <td><%=@sesion.fecha%> / <%=@sesion.hora_completa%></td>
+                  <%end%>
+                  <td>
+                    <div id="materia"><%=h(@comparecencia ? @comparecencia.dia_preferencia : "No existe información")%></div>
+                  </td>
+                  <td>
+                    <div id="materia2"><%=h(@comparecencia ? @comparecencia.hora_preferencia : "No existe información")%></div>
+                  </td>
+                </tr>
+        </table>
+</div><br />

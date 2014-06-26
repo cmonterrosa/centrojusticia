@@ -15,6 +15,16 @@
             </a>
        </td>
 
+
+       <%if current_user.has_role?("controlinvitaciones")%>
+        <td>
+          <a href="/invitaciones/show_all" title="Invitaciones">
+            <img src="/images/iconos/invitaciones.png" width="128" height="128" alt="invitaciones" />
+          </a>
+        </td>
+       <%end%>
+
+
        <!-- Agenda -->
        <%if current_user.has_role?("lecturaagenda")%>
        <td>
@@ -36,6 +46,11 @@
   <tr align="center">
     <td class="menu">Iniciar Trámite</td>
     <td class="menu">Listado de trámites</td>
+
+     <%if current_user.has_role?("controlinvitaciones")%>
+       <td class="menu">Control de Invitaciones</td>
+     <%end%>
+
     <%if current_user.has_role?("lecturaagenda")%>
       <td class="menu">Lectura de Agenda</td>
     <%end%>

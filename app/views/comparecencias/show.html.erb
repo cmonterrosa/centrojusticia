@@ -33,7 +33,7 @@
             :html => {:title => "Participantes"}%>
         </td>
 
-        <%if current_user.has_role?("lecturaagenda")%>
+        <%if current_user.has_role?("lecturaagenda") && HABILITADO_RESERVA_SESION%>
          <td>
            <%=link_to image_tag('iconos/horarios2.png', :size => "128x128") , {:action => "show_schedules", :id => @comparecencia.tramite}, :title => "seleccion de horario", :class => "fancybox fancybox.iframe"%>
          </td>

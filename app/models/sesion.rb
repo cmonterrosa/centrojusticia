@@ -71,9 +71,9 @@ class Sesion < ActiveRecord::Base
 
    def hora_completa
     case self.hora
-    when (1..12)
+    when (1..11)
       return "#{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} AM"
-    when (13..24)
+    when (12..24)
       return "#{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} PM"
     end
   end
@@ -83,5 +83,35 @@ class Sesion < ActiveRecord::Base
     self.cancel_user = user.id if user
     self.save
   end
+
+  def fecha_sugerida(especialista=nil,comediador=nil)
+    ### Por regla buscamos tres dias hacia adelante ####
+    @horarios = Horario.find(:all, :conditions => ["activo = true"], :order => "hora,minutos")
+    especialista = User.find(especialista) if especialista
+    comediador = User.find(comediador) if comediador
+    
+    ###-------- iteracion por dias ------  #######
+     (10..30).each do |dia|
+      puts dia
+      @fecha = Time.now + (((60 * 60) * 24) * dia)
+        ## Verifico si no es sabado o domingo ###
+        if (1..5).include?(@fecha.wday)
+            ### Empiezo a buscar en los horarios ####
+            @horarios.each do |h|
+                fecha_sesion = DateTime.civil(@fecha.year, @fecha.month, @fecha.day, h.hora, h.minutos)
+                 if especialista && comediador
+                   ### Si esta libre ####
+                   puts "Buscando fecha.."
+                   if (especialista.disponible?(fecha_sesion) && comediador.disponible?(fecha_sesion))
+                     self.horario = h
+                     self.fecha = fecha_sesion
+                     return fecha_sesion
+                   end
+                 end
+            end
+        end
+     end
+     return nil
+    end
 
 end

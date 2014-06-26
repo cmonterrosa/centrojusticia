@@ -1,0 +1,77 @@
+<!-- template for show schedules -->
+
+<% if @noweekend %>
+
+<div class="titulocalendario">
+  <p>
+    Seleccione un horario
+  </p>
+  <p>
+    <%if @fecha%>
+      <%=h day_of_the_week(@fecha.strftime("%u").to_i)%>, <%=(@fecha.strftime("%d de %B de %Y")).upcase%>&nbsp;
+    <%end%>
+  </p>
+</div>
+
+
+<table class="table1">
+    <thead>
+         <!-- Nombre de las salas -->
+         <tr>
+            <%@salas.each do |sala|%>
+                <th scope="col" abbr="Starter"><%=sala.descripcion%></th>
+            <%end%>
+         </tr>
+    </thead>
+    <!-- Recorremos los horarios -->
+    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :notificacion => @notificacion, :tiposesion => @tiposesion}, :multipart => true, :remote => true ) do -%>
+          <tbody>
+              <%@backgrounds_colors = colors_to_days%>
+              <% @horarios_disponibles.each do |horario| %>
+                            <tr>
+
+                                <%@salas.each do |sala|%>
+                                    <%if h = Horario.find(:first, :conditions => ["sala_id = ? and hora=? and minutos=? and activo=1", sala.id, horario.hora, horario.minutos])%>
+                                        <%sesion = Sesion.find(:first, :conditions => ["cancel IS NULL AND activa = 1 AND fecha = ? AND hora = ? AND minutos = ? AND ((mediador_id = ? OR comediador_id = ?) OR (mediador_id = ? OR comediador_id = ?))", @fecha, horario.hora, horario.minutos, @mediador.id, @mediador.id, @comediador.id, @comediador.id])%>
+                                        <%fecha = DateTime.civil(@fecha.year, @fecha.month, @fecha.day, horario.hora, horario.minutos)%>
+
+                                        <%if sesion.nil? && @mediador.disponible?(fecha) && @comediador.disponible?(fecha) %>
+                                           <td style="background-color: #D7F2FF;">
+                                              <%=  radio_button_tag("horario", h.id)%><span style="font-weight:bold; color: black;"><%= h.hora_completa %></span>
+                                           </td>
+                                        <%else%>
+                                           <%background=(sesion)? @backgrounds_colors[sesion.tiposesion_id - 1] : "gray"%>
+                                           <td style="background-color: <%=h background%>">
+                                              <%=  radio_button_tag "horario", h.id, false, :disabled => true%><%= h.hora_completa %>
+                                           </td>
+                                        <%end%>
+
+                                    <%else%>
+                                      <th scope="row"> </th>
+                                    <%end%>
+                                <%end%>
+                              </tr>
+                <%end%>
+
+
+           <tr align="center">
+                <th colspan="<%=h @salas.size%>">&nbsp;</th>
+              </tr>
+
+              <tr align="center">
+                <th colspan="<%=h @salas.size%>"><%= submit_tag "GUARDAR REGISTRO"%></th>
+              </tr>
+
+            </tbody>
+         <%end%>
+</table>
+
+<%else%>
+
+<div class="titulocalendario">
+  <p>
+    <%=(@fecha.strftime("%d de %B de %Y")).upcase%> no es una fecha válida
+  </p>
+</div>
+
+<%end%>

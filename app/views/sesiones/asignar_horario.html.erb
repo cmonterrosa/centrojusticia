@@ -1,23 +1,20 @@
+<%=render :partial => "encabezado_info_sesion"%>
 
-<h1><%=@title%>: <%=@sesion.clave%></h1>
 
 <% form_tag({:action => 'show_schedules_with_especialistas', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
  <table class="table1" >
   <tr align="center">
-    <%if @sesion.start_at%>
-        <th align="center">Fecha/hora Actual</th>
-    <%end%>
+    <th align="center">Fecha/hora Sugerido</th>
     <th align="center">Fecha</th>
     <th align="center">¿Notificar por correo electrónico?</th>
     <th align="center">Tipo de sesión</th>
   </tr>
  <tr align="center">
-    <%if @sesion.start_at%>
-        <td align="center"><%=@sesion.start_at.strftime("%d de %B de %Y")%>/<%=@sesion.hora_completa%></td>
-    <%end%>
-    <td><%= text_field_tag "sesion_fecha" %></td>
+   <td><%=h @sesion_hora_sugerida = (@sesion.fecha_sugerida(@sesion.mediador,@sesion.comediador)) ? @sesion.start_at.strftime("%d de %B de %Y - %H:%M") : nil%><%@default_selected = (@sesion_hora_sugerida) ? true : false %>&nbsp;<%= check_box_tag 'sesion_hora_sugerida', @default_selected, @default_selected, :onchange => "enable_dates();"%></td>
+       <%(@fecha = (@sesion.start_at)? @sesion.start_at.strftime("%Y/%m/%d") : nil)%>
+    <td><%= text_field_tag "sesion_fecha", @fecha%></td>
     <td><%= check_box_tag 'sesion_notificacion', @notificacion%></td>
-     <td><%= select_tag 'sesion_tiposesion_id', options_from_collection_for_select(Tiposesion.all, 'id', 'descripcion')%></td>
+    <td><%= select_tag 'sesion_tiposesion_id', options_from_collection_for_select(Tiposesion.all, 'id', 'descripcion')%></td>
  </tr>
 
  <tr align="center">
@@ -26,8 +23,8 @@
    <th></th>
  </tr>
  <tr align="center">
-    <td><%= select_tag 'sesion_mediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @sesion.mediador.id)%></td>
-    <td><%= select_tag 'sesion_comediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @sesion.comediador.id)%></td>
+    <td><%= select_tag 'sesion_mediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @mediador.id)%></td>
+    <td><%= select_tag 'sesion_comediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @comediador.id)%></td>
     <td><%= submit_tag "Buscar horarios", :onclick => "enable_especialistas();"%></td>
  </tr>
   </table>
@@ -46,12 +43,27 @@
       window.onload=function(){
         document.getElementById("sesion_mediador_id").disabled = true;
         document.getElementById("sesion_comediador_id").disabled = true;
+        enable_dates ();
       };
 
-      function enable_especialistas (){
+      function enable_especialistas ()
+      {
         document.getElementById("sesion_mediador_id").disabled = false;
         document.getElementById("sesion_comediador_id").disabled = false;
       };
+
+      function enable_dates ()
+      {
+        if (document.getElementById("sesion_hora_sugerida").checked == false)
+          {
+           alert("Habilitamos fechas");
+           //document.getElementById("sesion_fecha").disabled = false;
+          }
+        else
+           {
+            //document.getElementById("sesion_fecha").disabled = true;
+           }
+      }
 
 
 </script>

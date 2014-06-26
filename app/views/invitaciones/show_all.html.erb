@@ -1,0 +1,16 @@
+<div class="titulocalendario">
+  <p>
+    Invitaciones pendientes de entregar
+  </p>
+</div>
+
+
+<p>
+   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "show_all"}, :title => "Recargar"%>
+</p>
+
+
+<!-- contenido -->
+<%=render :partial => "list"%>
+
+<br /><br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
