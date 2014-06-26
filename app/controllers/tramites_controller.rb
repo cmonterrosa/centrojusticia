@@ -120,33 +120,36 @@ class TramitesController < ApplicationController
       end
   end
 
- #---- actualización de estatus ----
+
+ ######### ACTUALIZACION DE ESTATUS ###############
   def update_estatus
     @tramite = Tramite.find(params[:id])
     #---- excepciones -----
       if params[:new_st]
         case Estatu.find(params[:new_st]).clave
             when "comp-conc" 
-              ##--- levantar comparecencia --
-              redirect_to :action => "new_or_edit", :controller => "comparecencias", :id => @tramite
-            when "mate-asig" 
-              ##--- asignacion de materia --
-              return render(:partial => 'asignacion_materia', :layout => "oficial")
-            when "espe-asig" 
-               ##--- asignacion de especialista --
-               session["tramite_id"] = @tramite.id
-               @fecha_hora_sesion = (Sesion.find_by_tramite_id(@tramite.id)) ? Sesion.find_by_tramite_id(@tramite.id).start_at : nil
-               @especialistas = (@fecha_hora_sesion) ? Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion) :  Role.find_by_name("ESPECIALISTAS").users
-               @tipos_sesiones = Tiposesion.find(:all)
-               @new_st = params[:new_st]
-               #if !(@users = @tramite.materia.users).empty?
-               #if !(@users = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion)).empty?
-               if !(@users = @especialistas).empty?
+                ##--- LEVANTAR COMPARECENCIAS --
+                redirect_to :action => "new_or_edit", :controller => "comparecencias", :id => @tramite
+
+            when "mate-asig"
+                ##--- ASIGNACION DE MATERIA --
+                return render(:partial => 'asignacion_materia', :layout => "oficial")
+
+            when "espe-asig"
+                ##--- ASIGNACION DE ESPECIALISTA --
+                session["tramite_id"] = @tramite.id
+                @fecha_hora_sesion = (Sesion.find_by_tramite_id(@tramite.id)) ? Sesion.find_by_tramite_id(@tramite.id).start_at : nil
+                @especialistas = (@fecha_hora_sesion) ? Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion) :  Role.find_by_name("ESPECIALISTAS").users
+                @tipos_sesiones = Tiposesion.find(:all)
+                @new_st = params[:new_st]
+                if !(@users = @especialistas).empty?
                     return render(:partial => 'asignacion_especialista', :layout => "oficial")
                 else
                     return render(:partial => 'no_asignacion_especialista', :layout => "oficial")
                 end
-            when "fech-asig" #---- asignación de fecha y hora de sesión ----
+
+            when "fech-asig"
+                 ##---- ASIGNACION DE FECHA Y HORA DE SESION ----
                  @sesion = Sesion.find(:first, :conditions => ["tramite_id = ? AND cancel IS NULL", @tramite.id])
                  if @sesion
                     redirect_to :action => "asignar_horario", :controller => "sesiones", :id => @sesion.id, :mediador_id => @sesion.mediador_id, :comediador_id => @sesion.comediador_id
@@ -154,93 +157,102 @@ class TramitesController < ApplicationController
                     redirect_to :action => "list"
                  end
 
-            when "camb-sesi"  ######## Cambio de fecha de sesion #####
+            when "camb-sesi"  
+                 ### --- CAMBIO DE FECHA DE SESIÓN -------
                  @sesion = Sesion.find(:first, :conditions => ["tramite_id = ? AND cancel IS NULL", @tramite.id])
                  (@sesion) ? ( redirect_to :action => "asignar_horario", :controller => "sesiones", :id => @sesion.id, :mediador_id => @sesion.mediador_id, :comediador_id => @sesion.comediador_id, :title => "reasignacion") : (redirect_to :action => "list")
                  
-             when "invi-firm"
-               @sesion = Sesion.find(:first, :conditions => ["tramite_id = ?", @tramite.id], :order => "fecha DESC")
-               @invitacion = Invitacion.find_by_sesion_id(@sesion.id) if @sesion
-               @participante = (@tramite.comparecencia.participantes) ? @tramite.comparecencia.participantes.first : nil
-               @invitacion ||= Invitacion.create(:user_id => current_user.id, :sesion_id => @sesion.id, :participante_id => @participante.id ) if @participante && @sesion
-               @role = Role.find_by_name("invitadores")
-               return  render(:partial => 'firma_invitaciones', :layout => "oficial")
+            when "invi-firm"
+                @sesion = Sesion.find(:first, :conditions => ["tramite_id = ?", @tramite.id], :order => "fecha DESC")
+                @invitacion = Invitacion.find_by_sesion_id(@sesion.id) if @sesion
+                @participante = (@tramite.comparecencia.participantes) ? @tramite.comparecencia.participantes.first : nil
+                @invitacion ||= Invitacion.create(:user_id => current_user.id, :sesion_id => @sesion.id, :participante_id => @participante.id ) if @participante && @sesion
+                @role = Role.find_by_name("invitadores")
+                return  render(:partial => 'firma_invitaciones', :layout => "oficial")
+
             when "invi-proc"
                 redirect_to :action => "show", :controller => "invitaciones", :id=> @tramite
-            #### Admision de tramite ####
+                
             when "tram-admi"
-              return  render(:partial => 'admitir_tramite', :layout => "oficial")
-            ### Invitaciones razonadas ###
+                #### -- ADMISION DE TRAMITE ----
+                return  render(:partial => 'admitir_tramite', :layout => "oficial")
+                update_tramite_model
+
             when "invi-razo"
-              redirect_to :controller => "invitaciones", :action => "list_by_user"
+                ##---- INVITACIONES RAZONADAS ----
+                redirect_to :controller => "invitaciones", :action => "list_by_user"
+
             else
-              update_tramite_model
+                update_tramite_model
          end
       else
 
       if params.has_key?(:tramite)
-         @primera_asignacion_materia = (@tramite.materia_id) ? true : false
-         @tramite.update_attributes(params[:tramite])
-         @tramite.procedente=true if params[:tramite]["procedente"] == "1"
-         unless @tramite.procedente
-              @tramite.update_estatus!("tram-noad",current_user)
-              flash[:notice] = "Registro actualizado correctamente"
-              redirect_to :action => "list"
-         else
-               if @tramite.save #&& @primera_asignacion_materia
-                update_tramite_model
-               else
+          @primera_asignacion_materia = (@tramite.materia_id) ? true : false
+          @tramite.update_attributes(params[:tramite])
+          @tramite.procedente=true if params[:tramite]["procedente"] == "1"
+          unless @tramite.procedente
+                @tramite.update_estatus!("tram-noad",current_user)
+                flash[:notice] = "Registro actualizado correctamente"
                 redirect_to :action => "list"
+          else
+               if @tramite.save #&& @primera_asignacion_materia
+                  e= Estatu.find_by_clave("espe-asig") if current_user.has_role?("subdireccion")
+                  (params[:type] == "admitir" && e) ?  update_tramite_model("update_estatus", {:id => @tramite.id, :new_st => e.id,  }) : update_tramite_model
+               else
+                  redirect_to :action => "list"
                end
-         end
+          end
          
       elsif params.has_key?(:sesion)
-         @sesion = Sesion.find(:first, :conditions => ["tramite_id = ?", params[:id]])
-         (@sesion) ? @sesion.update_attributes(params[:sesion]) : @sesion = Sesion.new(params[:sesion])
-         @tramite = Tramite.find(params[:id])
-         @sesion.tramite_id = @tramite.id if @tramite
-         @sesion.num_tramite = @tramite.folio_inverso
-         @sesion.generate_clave unless @sesion.clave
-         if @sesion && @sesion.comediador_id && @sesion.mediador_id
-            if @sesion.save
-               update_tramite_model #if @sesion.save
-               #NotificationsMailer.deliver_sesion_created("mediador", @sesion)
-               #NotificationsMailer.deliver_sesion_created("comediador", @sesion)
-               flash[:notice] = "Especialista y comediador notificados asignados"
-             else
-              flash[:notice] = "No se pudo guardar el registro, verifique"
-              redirect_to :action => "list"
-            end
-         else
-            flash[:notice] = "Información incompleta, verifique"
-            redirect_to :action => "list"
-         end
-      
-      #--- firma de invitaciones --
+          @sesion = Sesion.find(:first, :conditions => ["tramite_id = ?", params[:id]])
+          (@sesion) ? @sesion.update_attributes(params[:sesion]) : @sesion = Sesion.new(params[:sesion])
+          @tramite = Tramite.find(params[:id])
+          @sesion.tramite_id = @tramite.id if @tramite
+          @sesion.num_tramite = @tramite.folio_inverso
+          @sesion.generate_clave unless @sesion.clave
+          if @sesion && @sesion.comediador_id && @sesion.mediador_id
+              if @sesion.save
+                 e= Estatu.find_by_clave("fech-asig") if current_user.has_role?("subdireccion")
+                 (params[:type] == "asignar" && e) ?  update_tramite_model("update_estatus", {:id => @tramite.id, :new_st => e.id,  }) : update_tramite_model
 
+                #update_tramite_model #if @sesion.save
+                #NotificationsMailer.deliver_sesion_created("mediador", @sesion)
+                #NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+                flash[:notice] = "Especialista y comediador notificados asignados"
+              else
+                flash[:notice] = "No se pudo guardar el registro, verifique"
+                redirect_to :action => "list"
+              end
+          else
+              flash[:notice] = "Información incompleta, verifique"
+              redirect_to :action => "list"
+          end
+      
+       #--- firma de invitaciones --
       elsif params.has_key?(:infosesion)
-        @tramite = Tramite.find(params[:id])
-        @invitacion = Invitacion.find(params[:invitacion]) if params[:invitacion]
-        @sesion = @invitacion.sesion
-        #@invitacion.invitador_id = User.find(params[:infosesion_invitador]).id if params[:infosesion_invitador]
-        ############# obtenemos a las personas que se les va a generar invitacion ##########
-        ids=[]
-        params.keys.each do |x|
-          ids << x if x=~ /^\d{1,4}$/
-        end
-        Participante.find(ids).each do |p|
-          invitacion = Invitacion.find_by_participante_id(p.id)
-          invitacion ||= Invitacion.new(:user_id => current_user.id, :sesion_id => @sesion.id, :participante_id => p.id )
-          invitacion.save
-        end
-        @invitacion.sesion.signed_at = Time.now
-        @invitacion.sesion.signer_id = current_user.id
-        @invitacion.save && @invitacion.sesion.save
-        flash[:notice] = ( @tramite.update_estatus!("invi-firm", current_user)) ? "Registro actualizado correctamente" :  "No se pudo guardar, verifique"
-        redirect_to :action => "list"
+          @tramite = Tramite.find(params[:id])
+          @invitacion = Invitacion.find(params[:invitacion]) if params[:invitacion]
+          @sesion = @invitacion.sesion
+          #@invitacion.invitador_id = User.find(params[:infosesion_invitador]).id if params[:infosesion_invitador]
+          ############# obtenemos a las personas que se les va a generar invitacion ##########
+          ids=[]
+          params.keys.each do |x|
+            ids << x if x=~ /^\d{1,4}$/
+          end
+          Participante.find(ids).each do |p|
+            invitacion = Invitacion.find_by_participante_id(p.id)
+            invitacion ||= Invitacion.new(:user_id => current_user.id, :sesion_id => @sesion.id, :participante_id => p.id )
+            invitacion.save
+          end
+          @invitacion.sesion.signed_at = Time.now
+          @invitacion.sesion.signer_id = current_user.id
+          @invitacion.save && @invitacion.sesion.save
+          flash[:notice] = ( @tramite.update_estatus!("invi-firm", current_user)) ? "Registro actualizado correctamente" :  "No se pudo guardar, verifique"
+          redirect_to :action => "list"
       else
-        flash[:notice] = "No se pudo cambiar el estatus, verifique"
-         redirect_to :action => "list"
+          flash[:notice] = "No se pudo cambiar el estatus, verifique"
+          redirect_to :action => "list"
       end
    end
  end
@@ -367,9 +379,10 @@ protected
     folio ||= maximo+1
   end
 
-  def update_tramite_model
+  def update_tramite_model(action=nil, params={})
     flash[:notice] = (@tramite.update_flujo_estatus!(current_user)) ? "Registro actualizado correctamente" :  "No se pudo guardar, verifique"
-    redirect_to :action => "list"
+    url=(action && !params.empty?)? "/tramites/#{action}?#{params.to_param}" : {:action => "list"}
+    redirect_to url
   end
 
 end

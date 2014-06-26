@@ -6,6 +6,7 @@ class SesionesController < ApplicationController
     #require_role [:controlagenda, :admindireccion], :for => [:new_with_date]
     require_role [:lecturaagenda, :admindireccion, :especialistas, :direccion, :asignahorario]
     require_role [:controlagenda, :admindireccion], :for => [:reprogramar, :new_with_date, :cancel]
+    require_role [:asignahorario, :subdireccion], :for => [:list_by_tramite]
 
   def list_by_tramite
     @tramite = Tramite.find(params[:id])
@@ -438,6 +439,14 @@ class SesionesController < ApplicationController
     @user = (params[:id])? User.find(params[:id]) : current_user
     @sesiones = Sesion.find(:all, :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND concluida != 1 AND fecha < ?", @user.id, @user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos")
     return render(:partial => 'list_by_user', :layout => false)
+  end
+
+  def destroy_reserva
+    @sesion = Sesion.find(params[:id])
+    if @sesion.tiposesion.descripcion == "RESERVA DE SESION" || @sesion.tiposesion.descripcion == "ORIENTACION CONJUNTA"
+       flash[:notice] = (@sesion.destroy) ? "Reserva de sesión eliminada" : "No se pudo eliminar, verifique"
+    end
+    redirect_to :controller => "tramites", :action => "update_estatus", :id => params[:tramite], :new_st => params[:new_st]
   end
 
 

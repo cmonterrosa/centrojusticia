@@ -2,7 +2,7 @@ class AgendaController < ApplicationController
   layout 'oficial_fancy'
   #require_role [:controlagenda, :admindireccion], :for => [:new_sesion]
   #require_role [:controlagenda, :especialistas, :lecturaagenda, :admindireccion], :for => [:management, :search_sesiones, :calendario]
-  require_role [:controlagenda, :lecturaagenda, :especialistas, :admindireccion, :direccion]
+  require_role [:controlagenda, :lecturaagenda, :especialistas, :admindireccion, :direccion, :asignahorario]
 
 
 
@@ -12,7 +12,8 @@ class AgendaController < ApplicationController
 
   def management
      @sesion = Sesion.new
-     @sesiones = Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos")
+     #@sesiones = Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos")
+     @sesiones = Sesion.find_by_sql("select s.id, s.horario_id, s.fecha from sesions s inner join horarios h  on s.horario_id=h.id LIMIT 50")
      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
      @title = "Control de agenda"
   end

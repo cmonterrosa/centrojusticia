@@ -14,7 +14,14 @@ class ApplicationController < ActionController::Base
   # Security functions
   include Security
 
+  
   layout 'oficial', :except => :autenticacion
+
+  #----------- Cambio de idioma de las fechas --------------------
+  Date::MONTHNAMES = [nil] + %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre)
+  Date::DAYNAMES = %w(Domingo Lunes Martes Miercoles Jueves Viernes Sábado)
+  Date::ABBR_MONTHNAMES = [nil] + %w(ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic)
+  Date::ABBR_DAYNAMES = %w(Dom Lun Mar Mie Jue Vie Sab)
 
 
  # Scrub sensitive parameters from your log
@@ -47,6 +54,7 @@ class ApplicationController < ActionController::Base
     mes = meses[(mes.to_i - 1)]
     return "#{dia} de #{mes} de #{anio}".upcase
  end
+
 
  
 
