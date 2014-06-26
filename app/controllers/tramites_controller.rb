@@ -142,7 +142,7 @@ class TramitesController < ApplicationController
                 @especialistas = (@fecha_hora_sesion) ? Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion) :  Role.find_by_name("ESPECIALISTAS").users
                 @tipos_sesiones = Tiposesion.find(:all)
                 @new_st = params[:new_st]
-                if !(@users = @especialistas).empty?
+                if !(@users = @especialistas.sort{|p1,p2| p1.nombre_completo <=> p2.nombre_completo}).empty?
                     return render(:partial => 'asignacion_especialista', :layout => "oficial")
                 else
                     return render(:partial => 'no_asignacion_especialista', :layout => "oficial")
@@ -348,6 +348,7 @@ class TramitesController < ApplicationController
     @fecha_hora_sesion = (Sesion.find_by_tramite_id(@tramite.id)) ? Sesion.find_by_tramite_id(@tramite.id).start_at : nil
     @users = (@fecha_hora_sesion) ? Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion) :  Role.find_by_name("ESPECIALISTAS").users
     #@users.delete(User.find(params[:sesion_mediador_id]))
+    @users = @user.sort{|p1,p2| p1.nombre_completo <=> p2.nombre_completo}
     return render(:partial => 'comediadores', :layout => false) if request.xhr?
   end
 
