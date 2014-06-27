@@ -2,15 +2,19 @@
 
 
 <div id="scroll">
-      <table class="sample" width="70%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <table class="sample" width="60%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
                 <tr align="center" class="d0">
-                  <td width="30%" bgcolor="#E8E8E8">USUARIO</td>
-                  <td width="50%" bgcolor="#E8E8E8">NOMBRE COMPLETO</td>
-                  <td width="20%" bgcolor="#E8E8E8" colspan="3">ACCIÓN</td>
+                  <td width="5%" bgcolor="#E8E8E8">NP</td>
+                  <td width="15%" bgcolor="#E8E8E8">USUARIO</td>
+                  <td width="40%" bgcolor="#E8E8E8">NOMBRE COMPLETO</td>
+                  <td width="40%" bgcolor="#E8E8E8" colspan="3">ACCIÓN</td>
                 </tr>
             <!-- Registros -->
-            <% for usuario in @role.users %>
+            <%contador=1%>
+            <% for usuario in @role.users.sort{|p1,p2| p1.nombre_completo <=> p2.nombre_completo} %>
                <tr align="center" class="d1">
+                 <td  bgcolor="#f3f3f3"><%=h contador%></td>
+
                   <td  bgcolor="#f3f3f3">
                       <%=usuario.login%>
                   </td>
@@ -21,6 +25,7 @@
                       <%= button_to 'Quitar', { :action => 'delete_user', :controller => "admin", :id => usuario, :role => @role}, :confirm => '¿Esta seguro?', :method => :post %>
                   </td>
                 </tr>
+                <%contador+=1%>
               <%end%>
        </table>
 </div><br /><br /><br />
