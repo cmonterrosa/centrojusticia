@@ -348,7 +348,7 @@ class TramitesController < ApplicationController
     @fecha_hora_sesion = (Sesion.find_by_tramite_id(@tramite.id)) ? Sesion.find_by_tramite_id(@tramite.id).start_at : nil
     @users = (@fecha_hora_sesion) ? Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion) :  Role.find_by_name("ESPECIALISTAS").users
     #@users.delete(User.find(params[:sesion_mediador_id]))
-    @users = @user.sort{|p1,p2| p1.nombre_completo <=> p2.nombre_completo}
+    @users = @users.sort{|p1,p2| p1.nombre_completo <=> p2.nombre_completo}
     return render(:partial => 'comediadores', :layout => false) if request.xhr?
   end
 
