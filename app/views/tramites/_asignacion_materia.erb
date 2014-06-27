@@ -11,25 +11,25 @@
     if (document.getElementById("tramite_procedente").checked)
            {
              // Tramite procedente
-             document.getElementById("tramite_noprocedente_id").disabled = true;
-             document.getElementById("tramite_objeto_solicitud").disabled = false;
-             document.getElementById("tramite_observaciones_generales").disabled = false;
-             document.getElementById("tramite_documentacion_anexa").disabled = false;
-             document.getElementById("tramite_materia_id").disabled = false;
-             spinner = document.getElementById("spinner");
-             spinner.style.display = "none";
+             <%#*document.getElementById("tramite_noprocedente_id").disabled = true;%>
+             <%#*document.getElementById("tramite_objeto_solicitud").disabled = false;%>
+             <%#*document.getElementById("tramite_observaciones_generales").disabled = false;%>
+             <%#*document.getElementById("tramite_documentacion_anexa").disabled = false;%>
+             <%#*document.getElementById("tramite_materia_id").disabled = false;%>
+             <%#*spinner = document.getElementById("spinner");%>
+             <%#*spinner.style.display = "none";%>
            }
           else
 
             {
              // Tramite no procedente
-             document.getElementById("tramite_noprocedente_id").disabled = false;
-             document.getElementById("tramite_objeto_solicitud").disabled = true;
-             document.getElementById("tramite_observaciones_generales").disabled = true;
-             document.getElementById("tramite_documentacion_anexa").disabled = true;
-             document.getElementById("tramite_materia_id").disabled = true;
-             spinner = document.getElementById("spinner");
-             spinner.style.display = "none";
+             <%#*document.getElementById("tramite_noprocedente_id").disabled = false;%>
+             <%#*document.getElementById("tramite_objeto_solicitud").disabled = true;%>
+             <%#*document.getElementById("tramite_observaciones_generales").disabled = true;%>
+             <%#*document.getElementById("tramite_documentacion_anexa").disabled = true;%>
+             <%#*document.getElementById("tramite_materia_id").disabled = true;%>
+             <%#*spinner = document.getElementById("spinner");%>
+             <%#*spinner.style.display = "none";%>
             }
 
    }
@@ -39,12 +39,12 @@
            {
              // Tramite procedente
              document.getElementById("tramite_noprocedente_id").disabled = true;
-             document.getElementById("tramite_objeto_solicitud").disabled = false;
-             document.getElementById("tramite_observaciones_generales").disabled = false;
-             document.getElementById("tramite_documentacion_anexa").disabled = false;
-             document.getElementById("tramite_materia_id").disabled = false;
-             spinner = document.getElementById("spinner");
-             spinner.style.display = "none";
+             <%#*document.getElementById("tramite_objeto_solicitud").disabled = false;%>
+             <%#*document.getElementById("tramite_observaciones_generales").disabled = false;%>
+             <%#*document.getElementById("tramite_documentacion_anexa").disabled = false;%>
+             <%#*document.getElementById("tramite_materia_id").disabled = false;%>
+             <%#*spinner = document.getElementById("spinner");%>
+             <%#*spinner.style.display = "none";%>
              alert("Trámite procedente");
            }
           else
@@ -52,12 +52,12 @@
             {
              // Tramite no procedente
              document.getElementById("tramite_noprocedente_id").disabled = false;
-             document.getElementById("tramite_objeto_solicitud").disabled = true;
-             document.getElementById("tramite_observaciones_generales").disabled = true;
-             document.getElementById("tramite_documentacion_anexa").disabled = true;
-             document.getElementById("tramite_materia_id").disabled = true;
-             spinner = document.getElementById("spinner");
-             spinner.style.display = "none";
+             <%#*document.getElementById("tramite_objeto_solicitud").disabled = true;%>
+             <%#*document.getElementById("tramite_observaciones_generales").disabled = true;%>
+             <%#*document.getElementById("tramite_documentacion_anexa").disabled = true;%>
+             <%#*document.getElementById("tramite_materia_id").disabled = true;%>
+             <%#*spinner = document.getElementById("spinner");%>
+             <%#*spinner.style.display = "none";%>
               alert("Trámite no procedente");
             }
 
@@ -100,7 +100,7 @@
               Objeto de la solicitud
           </th>
           <td>
-            <%= f.text_field "objeto_solicitud", :disabled => true, :size => 75%>
+            <%= f.text_field "objeto_solicitud", :size => 75%>
           </td>
       </tr>
       <tr>
@@ -108,7 +108,7 @@
               Observaciones generales
           </th>
           <td>
-            <%= f.text_area "observaciones_generales", :size => "75x7", :disabled => true%>
+            <%= f.text_area "observaciones_generales", :size => "75x7"%>
           </td>
       </tr>
 
@@ -117,7 +117,7 @@
               Documentación anexa
           </th>
           <td>
-            <%= f.text_area "documentacion_anexa", :size => "75x7", :disabled => true%>
+            <%= f.text_area "documentacion_anexa", :size => "75x7"%>
           </td>
       </tr>
 
