@@ -171,7 +171,25 @@ class TramitesController < ApplicationController
                 return  render(:partial => 'firma_invitaciones', :layout => "oficial")
 
             when "invi-proc"
-                redirect_to :action => "show", :controller => "invitaciones", :id=> @tramite
+                @sesion = Sesion.find(:first, :conditions => ["tramite_id = ?", @tramite.id], :order => "fecha DESC")
+                ###-- Buscamos a los participantes para generarles su invitacion ####
+                @participantes = Participante.find(:all, :conditions => ["comparecencia_id = ?", @tramite.comparecencia])
+                if !@participantes.empty? && current_user.has_role?("subdireccion")
+                  @participantes.each do |p|
+                    invitacion = Invitacion.find(:first, :conditions => ["participante_id = ? AND sesion_id = ?", p.id, @sesion.id])
+                    invitacion ||= Invitacion.new
+                    invitacion.sesion ||= @sesion
+                    invitacion.participante_id ||= p.id
+                    invitacion.user_id ||= current_user.id
+                    invitacion.save
+                  end
+                  @sesion.signed_at = Time.now
+                  @sesion.signer_id = current_user.id
+                  @sesion.save
+                  update_tramite_model
+                else
+                  redirect_to :action => "show", :controller => "invitaciones", :id=> @tramite
+                end
                 
             when "tram-admi"
                 #### -- ADMISION DE TRAMITE ----
@@ -212,6 +230,7 @@ class TramitesController < ApplicationController
           @sesion.num_tramite = @tramite.folio_inverso
           @sesion.generate_clave unless @sesion.clave
           if @sesion && @sesion.comediador_id && @sesion.mediador_id
+              @sesion.activa = true
               if @sesion.save
                  e= Estatu.find_by_clave("fech-asig") if current_user.has_role?("subdireccion")
                  (params[:type] == "asignar" && e) ?  update_tramite_model("update_estatus", {:id => @tramite.id, :new_st => e.id,  }) : update_tramite_model
