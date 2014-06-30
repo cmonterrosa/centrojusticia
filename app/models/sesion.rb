@@ -1,3 +1,4 @@
+require 'date'
 class Sesion < ActiveRecord::Base
   belongs_to :tramite
   belongs_to :horario
@@ -91,17 +92,18 @@ class Sesion < ActiveRecord::Base
     comediador = User.find(comediador) if comediador
     
     ###-------- iteracion por dias ------  #######
-     (10..30).each do |dia|
+     (0..30).each do |dia|
       puts dia
-      @fecha = Time.now + (((60 * 60) * 24) * dia)
+      @fecha = (dias_habiles(DateTime.now, 10) + (dia))
         ## Verifico si no es sabado o domingo ###
+        contador_dias=1
         if (1..5).include?(@fecha.wday)
             ### Empiezo a buscar en los horarios ####
             @horarios.each do |h|
                 fecha_sesion = DateTime.civil(@fecha.year, @fecha.month, @fecha.day, h.hora, h.minutos)
                  if especialista && comediador
                    ### Si esta libre ####
-                   puts "Buscando fecha.."
+                   puts "Buscando fecha dia:#{contador_dias}"
                    if (especialista.disponible?(fecha_sesion) && comediador.disponible?(fecha_sesion))
                      self.horario = h
                      self.fecha = fecha_sesion
@@ -109,9 +111,66 @@ class Sesion < ActiveRecord::Base
                    end
                  end
             end
+            contador_dias+=1
         end
      end
      return nil
     end
+
+
+
+  
+
+  def dias_habiles(fecha=DateTime.now, total_dias=nil)
+    total_dias = (total_dias) ? total_dias : 10
+    habiles=0
+    fecha_final=fecha
+    while habiles < total_dias  do
+      unless inhabil?(fecha + habiles)
+         puts("dia habil : #{fecha + habiles}" )
+         habiles +=1
+         fecha_final = (fecha + habiles)
+      else
+         fecha+=1
+      end
+    end
+    return fecha_final
+  end
+
+  def inhabil?(date=Time.now)
+    inhabil = ((1..5)===date.wday) ? false : true
+    if inhabil
+       return true
+    else
+       if Festivo.find(:first, :conditions => ["? between fecha_inicio and fecha_fin", date])
+         return true
+       else
+         return false
+       end
+    end
+  end
+
+
+def diez_dias_habiles(fecha=DateTime.now)
+    now = DateTime.parse(fecha.strftime("%Y-%m-%d") + " 00:01")
+    case now.wday
+    when 1
+      fecha = DateTime.parse((now + 11).strftime("%Y-%m-%d") + " 00:00")
+    when 2
+      fecha = DateTime.parse((now + 12).strftime("%Y-%m-%d") + " 00:00")
+    when 3
+      fecha = DateTime.parse((now + 13).strftime("%Y-%m-%d") + " 00:00")
+    when 4
+      fecha = DateTime.parse((now + 14).strftime("%Y-%m-%d") + " 00:00")
+    when 5
+      fecha = DateTime.parse((now + 15).strftime("%Y-%m-%d") + " 00:00")
+    when 6
+      fecha = DateTime.parse((now + 16).strftime("%Y-%m-%d") + " 00:00")
+    else
+      fecha = DateTime.parse((now + 17).strftime("%Y-%m-%d") + " 00:00")
+    end
+    puts fecha.strftime("%d/%m/%Y")
+    return fecha
+  end
 
 end
