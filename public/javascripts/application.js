@@ -335,6 +335,28 @@ $j('#movimiento_fecha_fin').datetimepicker({
 });
 });
 
+$(function() {
+$j('#festivo_fecha_inicio').datetimepicker({
+      timeFormat: 'h:m',
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: true
+});
+});
+
+$(function() {
+$j('#festivo_fecha_fin').datetimepicker({
+      timeFormat: 'h:m',
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: true
+});
+});
+
 
 
 //$(function() {
