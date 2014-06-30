@@ -28,7 +28,7 @@
   </div><br />
 
 <!-- From monday to friday -->
-  <%if (1..5) === @fecha.strftime("%w").to_i%>
+  <%unless inhabil?(@fecha)%>
    <table class="table1" border=1 width=90% style='table-layout:fixed'>
       <thead>
           <tr>

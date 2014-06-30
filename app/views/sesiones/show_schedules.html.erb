@@ -72,7 +72,7 @@
                                 <%@salas.each do |sala|%>
                                     <%if h = Horario.find(:first, :conditions => ["sala_id = ? and hora=? and minutos=? and activo=1", sala.id, horario.hora, horario.minutos])%>
                                         <%sesion = Sesion.find(:first, :conditions => ["activa = 1 AND fecha = ? AND hora = ? AND minutos = ? AND ((mediador_id = ? OR comediador_id = ?) OR (mediador_id = ? OR comediador_id = ?))", @fecha, horario.hora, horario.minutos, @mediador.id, @mediador.id, @comediador.id, @comediador.id])%>
-                                        <%if sesion.nil?%>
+                                        <%if sesion.nil? && sala.libre?(h.id, @fecha)%>
                                            <td align="center">
                                               <%=  radio_button_tag("horario", h.id)%><%= h.hora_completa %>
                                            </td>

@@ -10,7 +10,7 @@
     <th align="center">Tipo de sesión</th>
   </tr>
  <tr align="center">
-   <td><%=h @sesion_hora_sugerida = (@sesion.fecha_sugerida(@sesion.mediador,@sesion.comediador)) ? @sesion.start_at.strftime("%d de %B de %Y - %H:%M") : nil%><%@default_selected = (@sesion_hora_sugerida) ? true : false %>&nbsp;<%= check_box_tag 'sesion_hora_sugerida', @default_selected, @default_selected, :onchange => "enable_dates();"%></td>
+   <td><%=h @sesion_hora_sugerida = (@sesion.fecha_sugerida(@sesion.mediador,@sesion.comediador)) ? ("#{day_of_the_week(@sesion.start_at.strftime("%u").to_i)}, #{@sesion.start_at.strftime("%d de %B de %Y - %H:%M").upcase}") : nil%><%@default_selected = (@sesion_hora_sugerida) ? true : false %>&nbsp;<%= check_box_tag 'sesion_hora_sugerida', @default_selected, @default_selected, :onchange => "enable_dates();"%></td>
        <%(@fecha = (@sesion.start_at)? @sesion.start_at.strftime("%Y/%m/%d") : nil)%>
     <td><%= text_field_tag "sesion_fecha", @fecha%></td>
     <td><%= check_box_tag 'sesion_notificacion', @notificacion%></td>
