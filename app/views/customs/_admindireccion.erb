@@ -1,6 +1,6 @@
 <%= render :partial => "barra_superior"%>
 
-<table width="75%" border="0" cellspacing="0" cellpadding="0">
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
    
        <!-- Administración de personal -->
@@ -11,15 +11,29 @@
   
        <!-- Agenda -->
        <td><%=link_to image_tag('iconos/calendario.png',  :size => "128x128", :mouseover => "iconos/calendario.png") , {:action => "calendario", :controller => "agenda"}, :title => "Agenda"%></td>
-
-       <!-- listado de trámites -->
-       <td><%=link_to image_tag('iconos/seguimiento.png',  :size => "128x128", :mouseover => "iconos/seguimiento.png") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></td>
-
-  </tr>
+</tr>
   <tr align="center">
     <td class="menu" align="center">Administración de Usuarios</td>
     <td class="menu" align="center">Ausencias de personal</td>
     <td class="menu" align="center">Agenda</td>
+ </tr>
+
+ <tr>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
+  </tr>
+
+<tr align="center">
+         <!-- listado de trámites -->
+       <td><%=link_to image_tag('iconos/seguimiento.png',  :size => "128x128", :mouseover => "iconos/seguimiento.png") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></td>
+
+       <!-- Administración de días inhabiles -->
+       <td><%=link_to image_tag('iconos/festivos.png',  :size => "128x128", :mouseover => "iconos/festivos.png") , {:action => "festivos", :controller => "admin"}, :title => "Control de días inhábiles"%></td>
+
+  </tr>
+
+  <tr align="center">
     <td class="menu" align="center">Listado de Trámites</td>
+    <td class="menu" align="center">Días inhábiles</td>
   </tr>
 </table>

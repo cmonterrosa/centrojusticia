@@ -1,0 +1,28 @@
+<div class="titulocalendario">
+  Vacaciones, días festivos o inhábiles
+</div>
+
+
+<!-- contenido -->
+<div id="divlista">
+    <table width="70%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <tr class="d0">
+       <td style="vertical-align: middle;">Fecha Inicio</td>
+       <td style="vertical-align: middle;">Fecha Fin</td>
+       <td style="vertical-align: middle;">Descripción</td>
+       <td style="vertical-align: middle;">&nbsp;</td>
+    </tr>
+    <%@festivos.each do |f|%>
+    <tr class="d1">
+     <td style="vertical-align: middle;"><%=f.fecha_inicio.strftime("%d de %B de %Y - %H:%M")%></td>
+     <td style="vertical-align: middle;"><%=f.fecha_fin.strftime("%d de %B de %Y - %H:%M")%></td>
+     <td style="vertical-align: middle;"><%=f.descripcion%></td>
+     <td style="vertical-align: middle;"><%=link_to "Eliminar",{:action => "destroy_festivo", :id => f},  :confirm => '¿Esta seguro que desea eliminar el registro?', :class => 'boton'%></td>
+    </tr>
+    <%end%>
+  </table>
+</div>
+
+
+<br /><%=link_to "Capturar día", {:action => "new_festivo", :controller => "admin"}, :class => 'boton'  -%>
+<br /><br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
