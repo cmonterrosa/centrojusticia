@@ -386,6 +386,41 @@ end
     end
   end
 
+  ##################################################
+  ###      DIAS FESTIVOS O INHABILES
+  #################################################
+
+  def festivos
+    @festivos = Festivo.find(:all, :order => ["fecha_inicio DESC"])
+  end
+
+  def new_festivo
+    @festivo = Festivo.new
+    @user = current_user
+  end
+
+  def save_festivo
+    @festivo = Festivo.new(params[:festivo])
+    if @festivo.save
+      flash[:notice] = "Registro guardado correctamente"
+      redirect_to :action => "festivos", :controller => "admin"
+    else
+      render :action => "festivo"
+    end
+  end
+
+  def destroy_festivo
+    @festivo = Festivo.find(params[:id])
+    if @festivo.destroy
+      flash[:notice] = "Registro eliminado correctamente"
+      redirect_to :controller => "admin", :action => "festivos"
+    else
+      render :action => "festivo"
+    end
+
+  end
+
+
 
 
 end
