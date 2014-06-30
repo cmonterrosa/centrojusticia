@@ -16,7 +16,7 @@ class InvitacionesController < ApplicationController
      #@invitaciones = Invitacion.find(:all, :conditions => ["entregada IS NULL and participante_id IS NOT NULL"], :order => ["created_at DESC"])
      @invitaciones = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
                                     :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
-                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ?", "invi-firm"],
+                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?)", ["invi-firm", "invi-proc"]],
                                     :order => "t.anio DESC, t.folio_expediente DESC")
 
   end
