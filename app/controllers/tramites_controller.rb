@@ -216,7 +216,7 @@ class TramitesController < ApplicationController
           else
                if @tramite.save #&& @primera_asignacion_materia
                   @e= Estatu.find_by_clave("espe-asig") if current_user.has_role?("subdireccion")
-                  @e ||= Estatu.find_by_clave("tram-admi") if current_user.has_role?("convenios")
+                  @e ||= Estatu.find_by_clave("mate-asig") if current_user.has_role?("convenios")
                   (params[:type] == "admitir" && @e) ?  update_tramite_model("update_estatus", {:id => @tramite.id, :new_st => @e.id,  }) : update_tramite_model
                else
                   redirect_to :action => "list"
