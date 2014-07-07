@@ -215,8 +215,9 @@ class TramitesController < ApplicationController
                 redirect_to :action => "list"
           else
                if @tramite.save #&& @primera_asignacion_materia
-                  e= Estatu.find_by_clave("espe-asig") if current_user.has_role?("subdireccion")
-                  (params[:type] == "admitir" && e) ?  update_tramite_model("update_estatus", {:id => @tramite.id, :new_st => e.id,  }) : update_tramite_model
+                  @e= Estatu.find_by_clave("espe-asig") if current_user.has_role?("subdireccion")
+                  @e ||= Estatu.find_by_clave("tram-admi") if current_user.has_role?("convenios")
+                  (params[:type] == "admitir" && @e) ?  update_tramite_model("update_estatus", {:id => @tramite.id, :new_st => @e.id,  }) : update_tramite_model
                else
                   redirect_to :action => "list"
                end
@@ -232,8 +233,8 @@ class TramitesController < ApplicationController
           if @sesion && @sesion.comediador_id && @sesion.mediador_id
               @sesion.activa = true
               if @sesion.save
-                 e= Estatu.find_by_clave("fech-asig") if current_user.has_role?("subdireccion")
-                 (params[:type] == "asignar" && e) ?  update_tramite_model("update_estatus", {:id => @tramite.id, :new_st => e.id,  }) : update_tramite_model
+                 @e= Estatu.find_by_clave("fech-asig") if current_user.has_role?("subdireccion")
+                 (params[:type] == "asignar" && @e) ?  update_tramite_model("update_estatus", {:id => @tramite.id, :new_st => @e.id,  }) : update_tramite_model
 
                 #update_tramite_model #if @sesion.save
                 #NotificationsMailer.deliver_sesion_created("mediador", @sesion)
@@ -400,7 +401,7 @@ protected
   end
 
   def update_tramite_model(action=nil, params={})
-    flash[:notice] = (@tramite.update_flujo_estatus!(current_user)) ? "Registro actualizado correctamente" :  "No se pudo guardar, verifique"
+    flash[:notice] = (@tramite.update_flujo_estatus!(current_user, @e)) ? "Registro actualizado correctamente" :  "No se pudo guardar, verifique"
     url=(action && !params.empty?)? "/tramites/#{action}?#{params.to_param}" : {:action => "list"}
     redirect_to url
   end
