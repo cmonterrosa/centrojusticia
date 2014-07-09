@@ -186,6 +186,7 @@ class TramitesController < ApplicationController
                   @sesion.signed_at = Time.now
                   @sesion.signer_id = current_user.id
                   @sesion.save
+                  @e ||= Estatu.find_by_clave("invi-proc")
                   update_tramite_model
                 else
                   redirect_to :action => "show", :controller => "invitaciones", :id=> @tramite
