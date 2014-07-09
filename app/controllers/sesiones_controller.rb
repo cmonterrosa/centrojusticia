@@ -4,9 +4,9 @@ class SesionesController < ApplicationController
     #require_role "admin", :only => [:save, :edit]
     #require_role [:especialistas, :admindireccion], :for => [:new, :list_by_user, :list_by_tramite]
     #require_role [:controlagenda, :admindireccion], :for => [:new_with_date]
-    require_role [:lecturaagenda, :admindireccion, :especialistas, :direccion, :asignahorario]
     require_role [:controlagenda, :admindireccion], :for => [:reprogramar, :new_with_date, :cancel]
     require_role [:asignahorario, :subdireccion], :for => [:list_by_tramite]
+    require_role [:lecturaagenda, :admindireccion, :especialistas, :direccion, :asignahorario]
 
   def list_by_tramite
     @tramite = Tramite.find(params[:id])
@@ -31,11 +31,11 @@ class SesionesController < ApplicationController
     if params[:activas]
       case params[:activas].to_i
         when 1
-            @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1", @user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
-            @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida !=1", @user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
+            @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1", @user.id], :order => "fecha, hora, minutos, created_at").paginate(:page => params[:page], :per_page => 25)
+            @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida !=1", @user.id], :order => "fecha, hora, minutos, created_at").paginate(:page => params[:page], :per_page => 25)
         when 0
-            @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida = 1", @user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
-            @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida = 1", @user.id], :order => "fecha, hora, minutos, created_at", :limit => 20)
+            @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida = 1", @user.id], :order => "fecha, hora, minutos, created_at").paginate(:page => params[:page], :per_page => 25)
+            @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida = 1", @user.id], :order => "fecha, hora, minutos, created_at").paginate(:page => params[:page], :per_page => 25)
       end
     end
     #@sesiones_mediador ||= Sesion.find(:all, :conditions => ["mediador_id = ?", current_user.id], :order => "fecha, hora, minutos, created_at")
@@ -319,12 +319,18 @@ class SesionesController < ApplicationController
            end
            ############ Cambiamos status ##############
            if @sesion.tramite
-              (Estatu.find(@sesion.tramite.estatu_id).clave === ("fech-asig")) ?  @sesion.tramite.update_estatus!("camb-sesi", current_user) :  @sesion.tramite.update_estatus!("fech-asig", current_user)
+              (@sesion.tramite.has_estatus?("fecha-asig")) ?  @sesion.tramite.update_estatus!("camb-sesi", current_user) :  @sesion.tramite.update_estatus!("fech-asig", current_user)
            end
            flash[:notice] = "Hora de sesión actualizada correctamente"
         end
     end
-     redirect_to :action => "show", :id => @sesion, :user => current_user.id
+     if current_user.has_role?("subdireccion")
+         estatus = Estatu.find_by_clave("invi-proc")
+         redirect_to :action => "update_estatus", :controller => "tramites", :new_st => estatus.id, :id => @sesion.tramite
+     else
+        redirect_to :action => "show", :id => @sesion, :user => current_user.id
+     end
+    
   end
 
 
@@ -423,21 +429,21 @@ class SesionesController < ApplicationController
     #render :text => "<h3>Asignados como especialista</h3>"
     @descripcion = "Especialista"
     @user = (params[:id])? User.find(params[:id]) : current_user
-    @sesiones = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1 AND fecha >= ?", @user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos, created_at", :limit => 60)
+    @sesiones = Sesion.find(:all, :conditions => ["mediador_id = ? AND concluida != 1 AND fecha >= ?", @user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos, created_at").paginate(:page => params[:page], :per_page => 25)
     return render(:partial => 'list_by_user', :layout => false)
   end
 
   def list_by_user_comediador
     @descripcion = "Comediador"
     @user = (params[:id])? User.find(params[:id]) : current_user
-    @sesiones = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida != 1 AND fecha >= ?", @user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos, created_at", :limit => 60)
+    @sesiones = Sesion.find(:all, :conditions => ["comediador_id = ? AND concluida != 1 AND fecha >= ?", @user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos, created_at").paginate(:page => params[:page], :per_page => 25)
     return render(:partial => 'list_by_user', :layout => false)
   end
 
   def list_by_user_all
     @descripcion = "Ambos, Todas las sesiones"
     @user = (params[:id])? User.find(params[:id]) : current_user
-    @sesiones = Sesion.find(:all, :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND concluida != 1 AND fecha < ?", @user.id, @user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos")
+    @sesiones = Sesion.find(:all, :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND concluida != 1 AND fecha < ?", @user.id, @user.id, Time.now.strftime("%Y-%m-%d")], :order => "fecha, hora, minutos").paginate(:page => params[:page], :per_page => 25)
     return render(:partial => 'list_by_user', :layout => false)
   end
 
@@ -447,6 +453,12 @@ class SesionesController < ApplicationController
        flash[:notice] = (@sesion.destroy) ? "Reserva de sesión eliminada" : "No se pudo eliminar, verifique"
     end
     redirect_to :controller => "tramites", :action => "update_estatus", :id => params[:tramite], :new_st => params[:new_st]
+  end
+
+  ####### MANAGEMENT (CANCELACION, REPROGRAMACION Y OBSERVACIONES) ###########
+
+  def management
+    @sesion = Sesion.find(params[:id])
   end
 
 
