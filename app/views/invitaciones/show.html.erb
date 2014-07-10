@@ -34,7 +34,7 @@
 
     <tr class="d0">
       <td style="vertical-align: middle;"><b>Cuadrante:</b></td>
-      <td style="vertical-align: middle;"><%=h((@invitacion.participante.cuadrante_id) ? Cuadrante.find(@invitacion.participante.cuadrante_id) : "---")%></td>
+      <td style="vertical-align: middle;"><%=h((@invitacion.participante.cuadrante_id) ? Cuadrante.find(@invitacion.participante.cuadrante_id).descripcion : "---")%></td>
     </tr>
 
 

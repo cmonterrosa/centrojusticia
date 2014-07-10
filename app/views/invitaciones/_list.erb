@@ -4,7 +4,7 @@
 <%end%>
 
 <%if @invitaciones%>
-<table class="table1" width="90%">
+<table class="table1" width="80%" style="text-align: left;">
     <thead>
          <!-- Titulos -->
          <tr>
@@ -48,7 +48,7 @@
           <td><%=link_to 'Detalle', {:action => "show", :id => invitacion}, :title => "Detalle de invitación", :class => 'boton'%></td>
 
           <%if current_user.has_role?("controlinvitaciones")%>
-            <td><%=link_to "Asignar", :action => "asignar_invitador", :id => invitacion%></td>
+            <td><%=link_to "Asignar", {:action => "asignar_invitador", :id => invitacion}, :title => "Asignar la invitación", :class => 'boton'%></td>
           <%end%>
 
 
@@ -56,6 +56,22 @@
         <%end%>
     </tbody>
 </table>
+
+<%unless @invitaciones.empty?%>
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @invitaciones %>
+          </div>
+          <%= will_paginate @invitaciones %>
+        </div>
+      </td>
+    </tr>
+</table>
+<%end%>
+
 
 <%else%>
   <h3> No existe información</h3><br />

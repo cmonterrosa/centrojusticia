@@ -12,15 +12,20 @@ class InvitacionesController < ApplicationController
   end
 
 
+  ###### LISTADOS DE INVITACIONES #######
+
+
   def show_all
      #@invitaciones = Invitacion.find(:all, :conditions => ["entregada IS NULL and participante_id IS NOT NULL"], :order => ["created_at DESC"])
      @invitaciones = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
                                     :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
                                     :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?)", ["invi-firm", "invi-proc"]],
-                                    :order => "t.anio DESC, t.folio_expediente DESC")
+                                    :order => "t.anio DESC, t.folio_expediente DESC").paginate(:page => params[:page], :per_page => 15)
 
   end
 
+
+ ######## ASIGNACION DE INVITADOR #######
 
   def asignar_invitador
     @invitacion = Invitacion.find(params[:id])
@@ -43,6 +48,8 @@ class InvitacionesController < ApplicationController
     end
   end
 
+
+  ############# IMPRESION DE PDF ############
 
   def generar
     @invitacion = Invitacion.find(params[:id])
@@ -147,32 +154,32 @@ class InvitacionesController < ApplicationController
   def list_by_tramite
     @tramite = Tramite.find(params[:id])
     @sesiones = Sesion.find(:all, :conditions => ["tramite_id = ?", @tramite.id])
-    @invitaciones= (@sesiones.empty?)? nil :  Invitacion.find(:all, :conditions => ["sesion_id in (?)", @sesiones.collect{|s| s.id}])
+    @invitaciones= (@sesiones.empty?)? nil :  Invitacion.find(:all, :conditions => ["sesion_id in (?)", @sesiones.collect{|s| s.id}]).paginate(:page => params[:page], :per_page => 15)
   end
 
   def list_by_user
     @cuadrantes = current_user.cuadrantes
-    @invitaciones_cuadrantes = Invitacion.find(:all, :select => "invitacions.*, cu.descripcion as cuadrante, t.id as tramite_id",
+    @invitaciones_cuadrantes = Invitacion.find(:all, :select => "invitacions.*, cu.descripcion as cuadrante, t.id as tramite_id, s.fecha as fecha_sesion",
                                     :joins => ["invitacions,participantes p, cuadrantes cu, sesions s, tramites t, estatus e"],
                                     :conditions => ["invitacions.participante_id=p.id AND p.cuadrante_id=cu.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND cu.id in (?)", ["invi-firm", "invi-proc"], @cuadrantes.map{|x|x.id}],
                                     :order => "cu.descripcion")
-    @invitaciones_asignadas = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
+    @invitaciones_asignadas =  Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id as cuadrante, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at, s.fecha as fecha_sesion",
                                     :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
                                     :conditions => ["invitador_id = ? AND invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ?", current_user.id, "invi-proc"],
                                     :order => "t.anio DESC, t.folio_expediente DESC")
     @invitaciones = @invitaciones_cuadrantes + @invitaciones_asignadas
+    @invitaciones.sort{|p1, p2| p1.fecha_sesion <=> p2.fecha_sesion}
+    @invitaciones = @invitaciones.paginate(:page => params[:page], :per_page => 15)
   end
 
   def razonar
     @invitacion = Invitacion.find(params[:id])
     @invitadores = Role.find_by_name("invitadores").users
-
     #if @invitacion && (@invitacion.invitador_id == current_user.id || current_user.has_role?(Role.find_by_name("admin")))
         
     #else
      # render :text => "No tiene privilegios de razonar la invitación o no existe"
     #end
-
   end
 
 

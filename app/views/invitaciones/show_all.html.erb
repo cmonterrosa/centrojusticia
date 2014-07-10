@@ -1,14 +1,18 @@
 <div class="titulocalendario">
   <p>
-    Invitaciones pendientes de entregar
+    Control de Invitaciones
   </p>
 </div>
-
 
 <p>
    <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "show_all"}, :title => "Recargar"%>
 </p>
 
+
+<p align="center">
+  <%=link_to "Invitaciones pendientes de entregar", {:action => "show_pendientes"}, :title => "Invitaciones que no han sido entregadas", :class => 'boton'%>
+  <%=link_to "Invitaciones entregadas", {:action => "show_entregadas"}, :title => "Invitaciones que ya fueron razonadas", :class => 'boton'%>
+</p>
 
 <!-- contenido -->
 <%=render :partial => "list"%>
