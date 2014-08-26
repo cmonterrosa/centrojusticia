@@ -1,0 +1,76 @@
+/* 
+    Document   : kolaval
+    Created on : 25/08/2014, 10:10:30 AM
+    Author     : cmonterrosa
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+@font-face {
+	font-family: "Nexa Light";
+	src: url('/NexaLight.otf');
+}
+
+@font-face {
+	font-family: "Nexa Bold";
+	font-weight: bold;
+	src: url('/NexaBold.otf');
+}
+
+
+/* INICIO DE SESION */
+
+.LineaHorizontalVerde {
+    position:relative;
+    height:1px;
+    background: #019595;
+    color: #019595;
+    overflow:hidden;
+    width:600%;
+    margin-left: -100%;
+}
+
+.TituloInicioSesion{
+    font-family: "Nexa Light";
+    font-size: 16px;
+    color: #019595;
+    height: 40px;
+    text-align: center;
+    vertical-align: center;
+}
+
+.TextBoxInicioSesion{
+    font-family: "Nexa Light";
+    width: 250px;
+    height: 33px;
+    text-align: center;
+    font-size: 12px;
+    border-style: solid;
+    border-color: #019595;
+}
+
+
+.BotonEntrar {
+	background-color: #019595;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: "Nexa Light";
+	font-size:16px;
+	padding:10px 66px;
+	text-decoration: none;
+        text-transform: uppercase;
+}
+.BotonEntrar:hover {
+	background-color: #019595;
+}
+.BotonEntrar:active {
+	position:relative;
+	top:1px;
+}
+
