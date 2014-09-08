@@ -3,8 +3,8 @@
 </div>
 
   <!-- Filtro -->
-  <table width="70%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-    <tr style="background-color:#d33934; color:white">
+  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <tr style="background-color:#019595; color:white">
       <th colspan="4" align="center">FILTROS (Seleccione sólo uno a la vez)</th>
     </tr>
     
@@ -13,11 +13,10 @@
       <th align="center"> <b>Apellido Paterno del solicitante</b></th>
       
     </tr>
-    <tr>
-      <th align="center"><%= text_field :search, :numero_expediente, :placeholder => "formato XXXX/#{Time.now.year}"%></th>
-      <th align="center"><%= text_field :search, :paterno, :placeholder => "Escriba el ap. paterno", :size => "40"%></th>
-     </tr>
-
+        <tr>
+          <th align="center"><%= text_field :search, :numero_expediente, :placeholder => "formato XXXX/#{Time.now.year}"%></th>
+          <th align="center"><%= text_field :search, :paterno, :placeholder => "Escriba el ap. paterno", :size => "40"%></th>
+      </tr>
 
     <tr style="background-color:gray; color:white">
       <th align="center"> <b>Nombre(s) del solicitante</b></th>
@@ -28,7 +27,8 @@
       <th align="center"><%= text_field :search, :nombre, :placeholder => "Escriba el nombre", :size => "40"%></th>
       <th align="center"><%= select :estatu, :id, Estatu.find(@estatus_unicos).collect{|a| [a.descripcion, a.id]}, :prompt => 'Todos los estatus'%></th>
     </tr>
-  </table><br />
+  </table>
+  <br />
 
 <p>
    <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "list"}, :title => "Recargar"%>

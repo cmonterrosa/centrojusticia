@@ -18,13 +18,13 @@
 
 
 <div id="divlista">
-  <!--
+  
   <p>
-    <= link_to image_tag("iconos/pdf.png", :border =>0) , :action => "pdf", :controller => "tramites", :id => @tramite%>
+    <%= link_to image_tag("iconos/pdf.png", :border =>0) , { :action => "show_pdf", :controller => "tramites", :id => "#{@tramite.id}.pdf" }, :html => { :target => "_blank"} %>
   </p>
-  -->
+  
 
-  <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
       <th colspan="2">
         Datos generales
@@ -86,13 +86,13 @@
        <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.telefono : "---")%></td>
     </tr>
   </table>
-  <br /><br />
+  <br />
 
   <!-- Calificación de asunto -->
 
 
     <%if @tramite.materia%>
-      <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
         <tr style="background-color:gray; color:white">
           <th colspan="2">
             Calificación de asunto:
@@ -143,10 +143,10 @@
       </table>
   <%end%>
 
-  <br /><br />
+  <br />
 
  <%if @comparecencia = @tramite.comparecencia%>
-    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
         <th colspan="2">
           Datos de la comparecencia
@@ -172,10 +172,10 @@
         <td style="vertical-align: middle;"><b>Día/hora de preferencia:</b></td>
         <td style="vertical-align: middle;"><%=@comparecencia.dia_preferencia%> / <%=@comparecencia.hora_preferencia%></td>
       </tr>
-    </table><br /><br />
+    </table><br />
 
     <!-- detalle del asunto -->
-    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
        <th colspan="2">
            Detalle del asunto
@@ -183,7 +183,9 @@
      </tr>
 
       <tr class="d0">
-        <th colspan="2"><%=text_area(:comparecencia, :asunto, :size => "90x10", :disabled => 'disabled')%></th>
+        <th colspan="2">
+          <%=h @comparecencia.asunto%>
+        </th>
       </tr>
      </table>
      <br /><br />
@@ -198,7 +200,7 @@
 
 <!-- Historial de sesiones-->
   <%if @tramite.sesions.size > 0%>
-    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
         <th colspan="5">
           Detalle de sesiones
@@ -226,7 +228,7 @@
 
 
   <!-- Documentacion anexa -->
-    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
        <th colspan="2">
            Documentación Anexa

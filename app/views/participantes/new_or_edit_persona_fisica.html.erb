@@ -7,9 +7,9 @@
 </script>
 
 <% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id } do |f| -%>
-  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+  <table width="80%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" >PERSONA FÍSICA</td>
+      <td colspan="4" align="center" >PERSONA FÍSICA</td>
     </tr>
 
     <!-- datos personales -->
@@ -17,40 +17,40 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="8">DATOS PERSONALES</td>
+          <td align="center" colspan="4">DATOS PERSONALES</td>
         </tr>
         <tr align=" justify" class="pregunta">
-          <td align="center"></td>
-          <td align="center">Rol</td>
-          <td align="center">Paterno</td>
-          <td align="center">Materno</td>
-          <td align="center">Nombre(s)</td>
-          <td align="center">Sexo</td>
-          <td align="center">Fecha de Nacimiento</td>
-          <td align="center">Edad</td>
-
+            <td align="center">Rol</td>
+            <td align="center">Paterno</td>
+            <td align="center">Materno</td>
+            <td align="center">Nombre(s)</td>
         </tr>
         <tr>
-          <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%></td>
-          <td align="center"><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción')%></td>
+          <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción')%></td>
           <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :onchange => "verificar_rol();", :required => true%></td>
           <td align="center"><%= f.text_field :materno, :onKeyPress => "return CharNum(event, 'letra');", :onchange => "verificar_rol();"%></td>
           <td align="center"><%= f.text_field :nombre, :onKeyPress => "return CharNum(event, 'letra');", :onchange => "verificar_rol();", :required => true%></td>
-          <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
-          <td align="center"><%=f.date_select :fecha_nac, :start_year => 1928, :end_year => Time.now.year%></td>
-          <td align="center">
-            <%= f.select(:anio_nac,  hash_of_years)%>
-          </td>
-
         </tr>
-      </table></td>
+
+        <tr align=" justify" class="pregunta">
+          <td align="center">Sexo</td>
+          <td align="center" colspan="2">Fecha de Nacimiento</td>
+          <td align="center">Edad</td>
+        </tr>
+        <tr>
+          <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
+          <td align="center" colspan="2"><%=f.date_select :fecha_nac, :start_year => 1925, :end_year => Time.now.year%></td>
+          <td align="center"><%= f.select(:anio_nac,  hash_of_years)%></td>
+        </tr>
+      </table>
+     </td>
     </tr>
     <!-- segunda barra inferior -->
     <tr align="center">
       <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5" >DATOS DE UBICACIÓN</td>
+          <td align="center" colspan="4">DATOS DE UBICACIÓN</td>
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center">Municipio</td>
@@ -69,9 +69,9 @@
 
     <tr align="center">
       <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4" >DATOS DE LOCALIZACION</td>
+          <td align="center" colspan="4">DATOS DE LOCALIZACIÓN</td>
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center">Teléfono Particular</td>
@@ -83,7 +83,7 @@
           <td align="center"><%= f.text_field :telefono_particular,  :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
           <td align="center"><%= f.text_field :telefono_celular,  :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
           <td align="center"><%= f.text_field :telefono_celular_aux, :onKeyPress => "return CharNum(event, 'numero');", :size => 20, :placeholder => "Capturar solo si existe"%></td>
-          <td align="center"><%= f.text_field :correo%></td>
+          <td align="center"><%= f.text_field :correo, :placeholder => "Capturar solo si tiene"%></td>
         </tr>
       </table></td>
     </tr>
@@ -91,23 +91,24 @@
     <!-- Observaciones -->
     <tr align="center">
       <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5" >DATOS ADICIONALES</td>
+          <td align="center" colspan="4">DATOS ADICIONALES</td>
         </tr>
         <tr align=" justify" class="pregunta">
-          <td align="center">Observaciones y/o documentos que exhibe</td>
+          <td align="center" colspan="4">Observaciones y/o documentos que exhibe</td>
         </tr>
         <tr>
-            <td align="center"><%= f.text_area :observaciones, :onkeydown => "textCounter(document.getElementById('participante_observaciones'),385);", :onkeyup => "textCounter(document.getElementById('participante_observaciones'),500);"%></td>
+            <td align="center" colspan="4"><%= f.text_area :observaciones, :size => "100x5", :onkeydown => "textCounter(document.getElementById('participante_observaciones'),385);", :onkeyup => "textCounter(document.getElementById('participante_observaciones'),500);"%></td>
         </tr>
-      </table></td>
+      </table>
+      </td>
     </tr>
 
 
     <!-- espacio -->
     <tr>
-      <td colspan="3"><hr /></td>
+      <td colspan="4"><hr /></td>
     </tr>
     <!-- FOOTER -->
     <tr>

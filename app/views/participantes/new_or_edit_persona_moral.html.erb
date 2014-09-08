@@ -7,7 +7,7 @@
 </script>
 
 <% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id } do |f| -%>
-  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+  <table width="80%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="3" align="center" >PERSONA MORAL</td>
     </tr>
@@ -16,7 +16,7 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5">DATOS DE PROCEDENCIA</td>
+          <td align="center" colspan="4">DATOS DE PROCEDENCIA</td>
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center"></td>
@@ -39,29 +39,30 @@
     <tr align="center">
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5" >DATOS DE UBICACIÓN</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">Municipio</td>
-          <td align="center">Domicilio</td>
-          <td align="center">Referencias Domiciliarias</td>
-          <td align="center">Cuadrante</td>
-        </tr>
-        <tr>
-          <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
-          <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true, :onchange => "verificar_rol();"%></td>
-          <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x10"%></td>
-          <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
-        </tr>
-      </table></td>
+          <tr bgcolor="#E8E8E8" class="subtitulo">
+            <td align="center" colspan="4" >DATOS DE UBICACIÓN</td>
+          </tr>
+          <tr align=" justify" class="pregunta">
+            <td align="center">Municipio</td>
+            <td align="center">Domicilio</td>
+            <td align="center">Referencias Domiciliarias</td>
+            <td align="center">Cuadrante</td>
+          </tr>
+          <tr>
+            <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+            <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true, :onchange => "verificar_rol();"%></td>
+            <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x10"%></td>
+            <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+          </tr>
+      </table>
+      </td>
     </tr>
 
     <tr align="center">
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5" >DATOS DE LOCALIZACION</td>
+          <td align="center" colspan="4" >DATOS DE LOCALIZACION</td>
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center">Teléfono Particular</td>
@@ -75,7 +76,8 @@
           <td align="center"><%= f.text_field :telefono_celular_aux,  :onKeyPress => "return CharNum(event, 'numero');", :size => 20, :placeholder => "Capturar solo si existe"%></td>
           <td align="center"><%= f.text_field :correo%></td>
         </tr>
-      </table></td>
+      </table>
+      </td>
     </tr>
 
     <!-- Observaciones -->
@@ -83,15 +85,16 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5" >DATOS ADICIONALES</td>
+          <td align="center" colspan="4" >DATOS ADICIONALES</td>
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center">Observaciones y/o documentos que exhibe</td>
         </tr>
         <tr>
-            <td align="center"><%= f.text_area :observaciones%></td>
+            <td align="center"><%= f.text_area :observaciones, :size => "100x5"%></td>
         </tr>
-      </table></td>
+      </table>
+      </td>
     </tr>
 
 

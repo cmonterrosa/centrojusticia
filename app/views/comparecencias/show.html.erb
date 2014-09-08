@@ -44,7 +44,7 @@
    <td class="menu" align="center">Información General</td>
     <%if @comparecencia%>
       <td class="menu" align="center">Participantes</td>
-      <%if current_user.has_role?("lecturaagenda")%>
+      <%if current_user.has_role?("lecturaagenda") && HABILITADO_RESERVA_SESION%>
         <td class="menu" align="center">Selección de horario</td>
       <%end%>
     <%end%>

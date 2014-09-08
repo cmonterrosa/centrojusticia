@@ -19,17 +19,20 @@ window.onload = function() {
         <tr align=" justify" class="pregunta">
           <td align="center">Fecha/hora</td>
           <td align="center">Procedencia</td>
-          <td align="center">Carácter con el que comparece</td>
         </tr>
         <tr>
           <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
           <td align="center"><%= f.text_field :procedencia, :class => "text", :size => "50"%></td>
-          <td align="center"><%= f.text_field :caracter, :class => "text", :size => "80"%></td>
-          
-          <!--
-          <td align="center"><= f.select(:hora_preferencia, 1..24, :prompt => 'Seleccione una opción')%></td>
-          -->
-         </tr>
+        </tr>
+
+        <tr align=" justify" class="pregunta">
+          <td align="center" colspan="4">Carácter con el que comparece</td>
+        </tr>
+        <tr>
+          <td align="center" colspan="4"><%= f.text_field :caracter, :class => "text", :size => "80"%></td>
+        </tr>
+
+
       </table></td>
     </tr>
     <!-- segunda barra inferior -->

@@ -1,5 +1,32 @@
 <%= render :partial => "barra_superior"%>
 
+
+<table width="60%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+
+       <!-- Tramites -->
+      <td><%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%></td>
+
+       <!-- Agenda -->
+       <td><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></td>
+
+      <!-- Estadistica -->
+      <td><%=link_to image_tag('kolaval/ico-estadistica.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-estadistica.jpg") , {:action => "index", :controller => "estadisticas"}, :title => "Estadística"%></td>
+
+       <!-- Cuadrantes -->
+      <td><%=link_to image_tag('kolaval/ico-cuadrantes.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-cuadrantes.jpg") , {:action => "index", :controller => "cuadrantes"}, :title => "Cuadrantes"%></td>
+
+       <!-- Administración -->
+      <td><%=link_to image_tag('kolaval/ico-administracion.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-administracion.jpg") , {:action => "index", :controller => "admin"}, :title => "Admin"%></td>
+   </tr>
+</table>
+
+
+
+
+<!--
+
+
 <table width="50%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
       <td>
@@ -14,7 +41,6 @@
          </a>
        </td>
 
-       <!-- cuadrantes -->
        <td>
          <a href="/cuadrantes" title="Cuadrantes">
            <img src="/images/iconos/mapa_chiapas.png" width="128" height="128" alt="apoyos" />
@@ -50,3 +76,4 @@
   </tr>
 </table>
 
+-->
