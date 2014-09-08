@@ -74,3 +74,156 @@
 	top:1px;
 }
 
+
+/* Layout principal */
+
+.TextBoxMenu{
+    font-family: "Nexa Light";
+    width: 167px;
+    height: 16px;
+    text-align: center;
+    font-size: 12px;
+    border-style: solid;
+    border-color: #019595;
+    text-decoration: none;
+    margin: 0 auto;
+   padding-top: 12px;
+    color: #019595;
+}
+
+
+.TextBoxMenu a{
+    font-family: "Nexa Light";
+    color: #019595;
+     text-align: center;
+}
+
+
+.TextBoxMenu a:hover{
+    font-family: "Nexa Light";
+    width: 167px;
+    height: 16px;
+    text-align: center;
+    font-size: 12px;
+    color: #019595;
+   margin: 0 auto;
+   padding-top: 12px;
+}
+
+.CaptionNombreUsuario{
+    font-family: "Nexa Light";
+    font-size: 16px;
+    color: #019595;
+    height: 28px;
+    text-align: left;
+    padding-top: 12px;
+}
+
+.CaptionNombreUsuario a{
+    font-family: "Nexa Light";
+    font-size: 16px;
+    color: #019595;
+}
+
+.CaptionNombreUsuario a:hover{
+    font-family: "Nexa Light";
+    font-size: 16px;
+    color: #019595;
+    height: 28px;
+    text-align: left;
+    padding-top: 12px;
+}
+
+
+.TituloSubdireccion {
+    font-family: "Nexa Light";
+    background-color: #019595;
+    text-align: center;
+    color: #ffffff;
+    width: 373px;
+    height: 29px;
+    padding-top: 12px;
+    margin: 2px 0px 0 584px
+}
+
+.TituloMenuIconos {
+    font-family: "Nexa Light";
+    background-color: #019595;
+    text-align: center;
+    color: #ffffff;
+    width: 150px;
+    height: 29px;
+    padding-top: 12px;
+    margin: 2px 0px 0 184px
+}
+
+
+/* Tablas */
+.TablaKolaval100 {
+    width:100%;
+    font-family: "Nexa Light";
+    text-align: center;
+    font-size: 16px;
+    border:0;
+    BORDER-RIGHT: #cccccc 1px solid;
+    BORDER-TOP: #cccccc 1px solid;
+    BORDER-LEFT: #cccccc 1px solid;
+    BORDER-BOTTOM: #cccccc 1px solid;
+}
+
+
+/* Select */
+
+
+/* The CSS */
+select {
+    padding:3px;
+    margin: 0;
+/*    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    -webkit-box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;
+    -moz-box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;
+    box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;*/
+    background: #F5FFFF;
+/*    color:#888;*/
+    color: #424242;
+    border:none;
+    outline:none;
+    display: inline-block;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    cursor:pointer;
+    font-family: "Nexa Bold";
+}
+
+/* Targetting Webkit browsers only. FF will show the dropdown arrow with so much padding. */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    select {padding-right:18px}
+}
+
+label {position:relative}
+label:after {
+    content:'<>';
+    font:11px "Consolas", monospace;
+    color:#aaa;
+    -webkit-transform:rotate(90deg);
+    -moz-transform:rotate(90deg);
+    -ms-transform:rotate(90deg);
+    transform:rotate(90deg);
+    right:8px; top:2px;
+    padding:0 0 2px;
+    border-bottom:1px solid #ddd;
+    position:absolute;
+    pointer-events:none;
+}
+label:before {
+    content:'';
+    right:6px; top:0px;
+    width:20px; height:20px;
+    background:#f8f8f8;
+    position:absolute;
+    pointer-events:none;
+    display:block;
+}
