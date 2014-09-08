@@ -1,5 +1,7 @@
+#!/bin/env ruby
+# encoding: utf-8
 class TramitesController < ApplicationController
-  layout 'oficial_fancy'
+  layout :set_layout
   before_filter :login_required
   require_role [:cancelatramite, :direccion], :for => [:cancel]
   require_role [:especialistas, :subdireccion, :direccion, :convenios, :asignahorario], :for => [:menu]
@@ -54,9 +56,24 @@ class TramitesController < ApplicationController
   end
 
   def show
-    unless @tramite=Tramite.find(params[:id])
+    if params[:id] && params[:id] =~/^\d{1,6}$/
+    unless @tramite=Tramite.find(:first, :conditions => ["id = ?", params[:id]])
       flash[:notice] = "No se encontro trámite, verifique"
       redirect_back_or_default('/')
+    end
+    else
+      redirect_back_or_default('/')
+    end
+  end
+
+  def show_pdf
+      if params[:id] && params[:id] =~/^\d{1,6}$/
+        unless @tramite=Tramite.find(:first, :conditions => ["id = ?", params[:id]])
+          flash[:notice] = "No se encontro trámite, verifique"
+          redirect_back_or_default('/')
+        end
+    else
+        redirect_back_or_default('/')
     end
   end
 
@@ -394,6 +411,7 @@ class TramitesController < ApplicationController
     return render(:partial => 'asignacion_materia', :layout => "oficial")
   end
 
+
 protected
   def generar_folio(anio)
     maximo=  Tramite.maximum(:folio, :conditions => ["anio = ?", anio])
@@ -405,6 +423,13 @@ protected
     flash[:notice] = (@tramite.update_flujo_estatus!(current_user, @e)) ? "Registro actualizado correctamente" :  "No se pudo guardar, verifique"
     url=(action && !params.empty?)? "/tramites/#{action}?#{params.to_param}" : {:action => "list"}
     redirect_to url
+  end
+
+  #### REPORTE PDF #####
+
+  
+  def set_layout
+    (action_name == 'show_pdf')? 'pdf' : 'kolaval'
   end
 
 end

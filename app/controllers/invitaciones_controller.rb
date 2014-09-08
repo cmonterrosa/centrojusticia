@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 include SendDocHelper
 class InvitacionesController < ApplicationController
   require_role [:direccion, :subdireccion, :invitadores, :controlinvitaciones]

@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 # Filters added to this controller apply to all controllers in the application.
 # Likewise, all the methods added will be available for all controllers.
 require 'will_paginate'
@@ -15,7 +17,7 @@ class ApplicationController < ActionController::Base
   include Security
 
   
-  layout 'oficial', :except => :autenticacion
+  layout 'kolaval'#, :except => :autenticacion
 
   #----------- Cambio de idioma de las fechas --------------------
   Date::MONTHNAMES = [nil] + %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre)

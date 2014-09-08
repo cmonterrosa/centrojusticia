@@ -1,3 +1,6 @@
+#!/bin/env ruby
+# encoding: utf-8
+
 class SesionesController < ApplicationController
    #before_filter :login_required
    #layout 'oficial', :except => "select_schedule"

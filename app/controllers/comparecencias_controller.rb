@@ -1,6 +1,8 @@
+#!/bin/env ruby
+# encoding: utf-8
 include SendDocHelper
 class ComparecenciasController < ApplicationController
-  layout 'oficial_fancy'
+  layout 'kolaval'
   require_role [:especialistas, :convenios, :oficinasubdireccion, :direccion]
   
 

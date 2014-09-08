@@ -1,11 +1,12 @@
 class CustomsController < ApplicationController
   before_filter :login_required
+  
 
 
   def index
     @usuario=current_user
     if @usuario.has_role?(:admin)
-        return render(:partial => 'admin', :layout => "oficial")
+        return render(:partial => 'adminnew', :layout => "oficial")
     elsif @usuario.has_role?(:direccion)
         return render(:partial => 'direccion', :layout => "oficial")
     elsif @usuario.has_role?(:admindireccion)

@@ -1,5 +1,7 @@
+#!/bin/env ruby
+# encoding: utf-8
 class AgendaController < ApplicationController
-  layout 'oficial_fancy'
+  layout 'kolaval'
   #require_role [:controlagenda, :admindireccion], :for => [:new_sesion]
   #require_role [:controlagenda, :especialistas, :lecturaagenda, :admindireccion], :for => [:management, :search_sesiones, :calendario]
   require_role [:controlagenda, :lecturaagenda, :especialistas, :admindireccion, :direccion, :asignahorario]

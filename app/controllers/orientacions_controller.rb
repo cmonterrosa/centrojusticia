@@ -1,3 +1,6 @@
+#!/bin/env ruby
+# encoding: utf-8
+
 require 'date'
 class OrientacionsController < ApplicationController
   require_role [:atencionpublico, :subdireccion, :direccion], :for => [:new_or_edit, :save]

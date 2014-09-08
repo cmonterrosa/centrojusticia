@@ -1,9 +1,11 @@
+#!/bin/env ruby
+# encoding: utf-8
 require 'rubygems'
 require 'gruff'
 require 'fastercsv'
 
 class EstadisticasController < ApplicationController
-  layout 'oficial_fancy'
+  layout 'kolaval'
 
   require_role [:admin, :direccion, :subdireccion, :bitacora, :admindireccion]
   

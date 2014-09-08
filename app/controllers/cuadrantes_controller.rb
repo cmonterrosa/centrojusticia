@@ -1,7 +1,9 @@
+#!/bin/env ruby
+# encoding: utf-8
 class CuadrantesController < ApplicationController
   # GET /cuadrantes
   # GET /cuadrantes.xml
-  layout 'oficial_fancy'
+  layout 'kolaval'
   require_role [:jefeatencionpublico, :direccion, :subdireccion]
 
   def index

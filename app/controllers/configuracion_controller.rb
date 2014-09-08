@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 class ConfiguracionController < ApplicationController
 
   def index

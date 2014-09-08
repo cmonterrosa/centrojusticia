@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 class ExtraordinariaController < ApplicationController
      require_role [:direccion,:admindireccion,:oficinasubdireccion]
      require_role :admin, :only => [:destroy]

@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 class AdminController < ApplicationController
   #before_filter :login_required
    #require_role :admin#, :except => [:index]
