@@ -70,7 +70,7 @@ function AddCss(){
 var l=CreateEl("link");
 l.setAttribute("type","text/css");
 l.setAttribute("rel","stylesheet");
-l.setAttribute("href", "bt.css");
+l.setAttribute("href", "/stylesheets/bt.css");
 l.setAttribute("media","screen");
 document.getElementsByTagName("head")[0].appendChild(l);
 }
