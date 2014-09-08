@@ -1,0 +1,268 @@
+<style type="text/css">
+  /* Estilo para las tablas */
+table.sample {
+	border: 6px inset #8B8378;
+	-moz-border-radius: 6px;
+        font-family: "Open Sans";
+        font-size: 13px;
+        margin-left:auto;
+        margin-right:auto;
+}
+table.sample td {
+	border: 0px solid black;
+	padding: 0.2em 2ex 0.2em 2ex;
+	color: black;
+}
+table.sample tr.d0 td {
+	background-color: #e8f4f4;
+}
+table.sample tr.d1 td {
+	background-color: #FEFEF2;
+}
+table.sample td.d0 {
+	background-color: #FCF6CF;
+}
+table.sample td.d2 {
+	background-color: #FF8C00;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas */
+table.sample td.d0 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas de error */
+table.sample td.d99 {
+	background-color: #FF9900;
+}
+
+
+</style>
+
+<%if @tramite.estatu.clave == "tram-canc"%>
+  <div class="titulocalendario">
+    <h2>TRAMITE CANCELADO</h2>
+    <%if @tramite.motivo_cancelacion_id%>
+    <p>
+      <h4>Motivo: <%=h (MotivoCancelacion.find( @tramite.motivo_cancelacion_id)) ? MotivoCancelacion.find( @tramite.motivo_cancelacion_id).descripcion : "-----"%></h4>
+      <h4>Observaciones: <%=h (@tramite.cancelacion_observaciones) ? @tramite.cancelacion_observaciones : "----"%></h4>
+    </p>
+    <%end%>
+   </div>
+<%end%>
+
+<div class="titulocalendario">
+  <p>Resumen General</p>
+  <p>Folio: <%=link_to @tramite.folio_integrado, :action => "menu", :id => @tramite%></p>
+  <p>Número de expediente: <%=h (@tramite.numero_expediente) ? (@tramite.numero_expediente) : "----"%></p>
+</div>
+
+
+<div id="divlista">
+  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="2">
+        Datos generales
+      </th>
+     </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Trámite iniciado por:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@tramite.user_id ? User.find(@tramite.user_id).nombre_completo : "No existe información")%></td>
+    </tr>
+
+   <%if @tramite.orientacion%>
+   
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b>Fecha/hora que se llevó a cabo la orientación:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@tramite.orientacion.fechahora ? @tramite.orientacion.fechahora.strftime("%Y-%m-%d %H:%M") : "No existe información")%></td>
+    </tr>
+
+
+      <%if User.find_by_id(@tramite.orientacion.especialista_id)%>
+        <tr class="d0">
+          <td style="vertical-align: middle;"><b>Especialista para orientación:</b></td>
+          <td style="vertical-align: middle;"> <%=h(User.find(@tramite.orientacion.especialista_id) ? User.find(@tramite.orientacion.especialista_id).nombre_completo : "No existe información")%></td>
+        </tr>
+      <%end%>
+   <%end%>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Solicitante:</b></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "No existe información")%></td>
+    </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Observaciones:</b></td>
+      <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.observaciones : "No existe información")%></td>
+    </tr>
+
+    
+    <!-- Datos de ubicacion -->
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Correo electrónico:</b></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.correo : "---")%></td>
+
+    </tr>
+    <tr class="d0">
+      <td style="vertical-align: middle;"><b>Dirección:</b></td>
+      <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.direccion : "---")%></td>
+    </tr>
+
+    <%if @tramite.orientacion%>
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Municipio:</b></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion.municipio ? @tramite.orientacion.municipio.descripcion : "---")%></td>
+    </tr>
+    <%end%>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b>Teléfono:</b></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.telefono : "---")%></td>
+    </tr>
+  </table>
+  <br />
+
+  <!-- Calificación de asunto -->
+
+
+    <%if @tramite.materia%>
+      <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+        <tr style="background-color:gray; color:white">
+          <th colspan="2">
+            Calificación de asunto:
+          </th>
+        </tr>
+
+        <tr class="d0">
+           <td style="vertical-align: middle;"><b>Procedente:</b></td>
+          <td style="vertical-align: middle;"><%=h (@tramite.procedente == true) ? "Procedente" : "No procedente"%></td>
+        </tr>
+
+        <%if @tramite.materia%>
+          <tr class="d1">
+            <td style="vertical-align: middle;"><b>Materia:</b></td>
+            <td style="vertical-align: middle;"><%=h  @tramite.materia.descripcion%></td>
+          </tr>
+        <%end%>
+
+        <%if @tramite.noprocedente%>
+          <tr class="d1">
+            <td style="vertical-align: middle;"><b>Motivo de no procedente:</b></td>
+            <td style="vertical-align: middle;"><%=h @tramite.noprocedente.descripcion%></td>
+          </tr>
+        <%end%>
+   
+        <!--- objeto de la solicitud -->
+        <%if @tramite.objeto_solicitud%>
+          <tr class="d0">
+            <td style="vertical-align: middle;"><b>Objeto de la solicitud:</b></td>
+            <td style="vertical-align: middle;"><%=h @tramite.objeto_solicitud%></td>
+          </tr>
+        <%end%>
+
+        <!--- observaciones generales -->
+        <%if @tramite.observaciones_generales%>
+          <tr class="d1">
+            <td style="vertical-align: middle;"><b>Observaciones generales:</b></td>
+            <td style="vertical-align: middle;"><%=h @tramite.observaciones_generales%></td>
+          </tr>
+        <%end%>
+        <!--- observaciones generales -->
+        <%if @tramite.documentacion_anexa%>
+          <tr class="d0">
+            <td style="vertical-align: middle;"><b>Documentación anexa:</b></td>
+            <td style="vertical-align: middle;"><%=h @tramite.documentacion_anexa%></td>
+          </tr>
+        <%end%>
+      </table>
+  <%end%>
+
+  <br />
+
+ <%if @comparecencia = @tramite.comparecencia%>
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th colspan="2">
+          Datos de la comparecencia
+        </th>
+      </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Procedencia:</b></td>
+        <td style="vertical-align: middle;"><%=@comparecencia.procedencia%></td>
+      </tr>
+
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b>Carácter con el que compadece:</b></td>
+        <td style="vertical-align: middle;"><%=@comparecencia.caracter%></td>
+      </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Datos:</b></td>
+        <td style="vertical-align: middle;"><%=h (@comparecencia.datos)? @comparecencia.datos : "No existe información"%></td>
+      </tr>
+
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b>Día/hora de preferencia:</b></td>
+        <td style="vertical-align: middle;"><%=@comparecencia.dia_preferencia%> / <%=@comparecencia.hora_preferencia%></td>
+      </tr>
+    </table><br />
+
+    <!-- detalle del asunto -->
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+       <th colspan="2">
+           Detalle del asunto
+       </th>
+     </tr>
+
+      <tr class="d0">
+        <th colspan="2">
+           <%=h @comparecencia.asunto%>
+        </th>
+      </tr>
+     </table>
+     <br />
+  <%end%>
+
+<!-- participantes -->
+<%= render :partial => "participantes"%>
+
+  
+  <!-- ficha -->
+<%= render :partial => "historial"%>
+
+<!-- Historial de sesiones-->
+  <%if @tramite.sesions.size > 0%>
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th colspan="5">
+          Detalle de sesiones
+        </th>
+      </tr>
+      <tr class="d0">
+          <td style="vertical-align: middle;"><b>Id</b></td>
+          <td style="vertical-align: middle;"><b>Descripción</b></td>
+          <td style="vertical-align: middle;"><b>Fecha/hora inicio</b></td>
+          <td style="vertical-align: middle;"><b>Especialista</b></td>
+          <td style="vertical-align: middle;"><b>Comediador</b></td>
+      </tr>
+      <%Sesion.find(:all, :conditions => ["tramite_id = ?", @tramite.id]).each do |row|%>
+        <tr class="d1">
+          <td style="vertical-align: middle;"><%=h (row.clave) ? row.clave : "---"%></td>
+          <td style="vertical-align: middle;"><%=h(row.tiposesion_id ? row.tiposesion.descripcion : "---")%></td>
+          <td style="vertical-align: middle;"><%=h(row.start_at ? row.start_at.strftime("%Y-%m-%d %H:%M:%S") : "---")%></td>
+          <td style="vertical-align: middle;"><%=h(row.mediador ? row.mediador.nombre_completo : "---")%></td>
+          <td style="vertical-align: middle;"><%=h(row.comediador ? row.comediador.nombre_completo : "---")%></td>
+        </tr>
+     <%end%>
+  </table><br /><br />
+  <%end%>
+</div>
