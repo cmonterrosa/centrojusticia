@@ -1,3 +1,21 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/opensans.woff);
+}
+
+@font-face {
+	font-family: "Nexa Light";
+	src: url('/NexaLight.otf');
+}
+
+@font-face {
+	font-family: "Nexa Bold";
+	font-weight: bold;
+	src: url('/NexaBold.otf');
+}
+
 
 #login-box {
 	width:333px;
@@ -66,8 +84,8 @@
 table.sample {
 	border: 6px inset #8B8378;
 	-moz-border-radius: 6px;
-        FONT-FAMILY: Verdana;
-        font-size: 12px;
+        font-family: "Open Sans";
+        font-size: 13px;
         margin-left:auto;
         margin-right:auto;
 }
@@ -77,7 +95,7 @@ table.sample td {
 	color: black;
 }
 table.sample tr.d0 td {
-	background-color: #FCF6CF;
+	background-color: #e8f4f4;
 }
 table.sample tr.d1 td {
 	background-color: #FEFEF2;

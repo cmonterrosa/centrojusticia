@@ -2,21 +2,42 @@
 a img {
         border: 0;
 }
+
+
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: url(/opensans.woff);
+}
+
+@font-face {
+	font-family: "Nexa Light";
+	src: url('/NexaLight.otf');
+}
+
+@font-face {
+	font-family: "Nexa Bold";
+	font-weight: bold;
+	src: url('/NexaBold.otf');
+}
+
 .titulo {
     font-size: 18px;
+    height: 32px;
     font-weight: bold;
-    /*font-family: Arial, Helvetica, sans-serif;*/
-    font-family : geneva, arial, helvetica, sans-serif;
-
+    font-family: "Open Sans";
+    text-align: center;
     color: white;
-    background-color: #d33934;
+    background-color: #019595;
 }
 
 .Session {font-size: 24px; font-weight: bold; font-family: Arial, Helvetica, sans-serif; color: #FFF; }
 /*.subtitulo {font-size: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #666666; }*/
-.subtitulo {font-size: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; color: black; }
+.subtitulo {font-size: 15px; font-family: "Open Sans"; color: black; text-align: center;}
 
-.pregunta {font-size: 12px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #666666; }
+.pregunta {font-size: 14px; font-family: "Open Sans"; color: #666666; }
 .Estilo4 {font-size: 11px; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #666666; }
 .Estilo5 {font-size: 11px; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #333333; }
 .menu {font-size: 14px; ; font-family: Verdana, Geneva, sans-serif; color: #666666; }
@@ -28,21 +49,23 @@ a img {
 }
 body {
 	background-color: #E8E8E8;
-        font-family: Verdana, Geneva, sans-serif;
+/*        font-family: "Open Sans";*/
+        font-family: 'Open Sans', sans-serif;
+        letter-spacing: 0.0525em;
 }
 
 h1{
     font-size: 18px;
-    font-family: Verdana, Geneva, sans-serif;
+    font-family: "Open Sans";
     color: #F68934;
 }
 a {
-	font-family: Verdana, Geneva, sans-serif;
+/*	font-family: "Open Sans";*/
 	font-size: 12px;
 	color: #666;
 }
 a:visited {
-	color: #666;
+/*	color: #666;*/
 	text-decoration: none;
 }
 a:hover {
@@ -55,7 +78,9 @@ a:active {
 }
 a:link {
 	text-decoration: none;
+/*        font-family: "Open Sans";*/
 }
+
 .Estilo11 {font-family: sans-serif; font-size: 10px;}
 .Estilo26 {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; color: #FFFFFF; font-weight: bold; }
 .Estilo12 {font-size: 16px; font-weight: bold; font-family: Arial, Helvetica, sans-serif; color: #666666; }
@@ -78,11 +103,12 @@ a:link {
 
 .titulocalendario {
     /*font-family: "Trebuchet MS", sans-serif;*/
-    font-family: Verdana, Geneva, sans-serif;
-    font-size: 18px; color: #d33934;
-    font-weight: bold;
+/*     font-family: "Nexa Bold";*/
+    font-family: 'Open Sans', sans-serif;
+    font-size: 19px; color: #019595;
     text-decoration:none;
     text-shadow:1px 1px 0px #ffffff;
+    text-align: center;
 }
 
 #scroll{
@@ -110,23 +136,24 @@ a.boton {
 	-moz-box-shadow: 0px 1px 0px 0px #fff6af;
 	-webkit-box-shadow: 0px 1px 0px 0px #fff6af;
 	box-shadow: 0px 1px 0px 0px #fff6af;
-	background-color:#ffec64;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #ffaa22;
+	background-color: #ffffff;
+	-moz-border-radius:1px;
+	-webkit-border-radius:1px;
+	border-radius:2px;
+	border:1px solid #019595;
 	display:inline-block;
 	cursor:pointer;
-	color:#333333;
-	font-family:arial;
-	font-size:11px;
-	font-weight:bold;
-	padding:6px 24px;
+	color: #019595;
+	font-family: "Open Sans";
+        text-align: center;
+	font-size:13px;
+	padding:6px 22px;
 	text-decoration:none;
-	text-shadow:0px 1px 0px #ffee66;
+	text-shadow:0px 0px 0px #ffee66;
 }
 a.boton:hover {
-	background-color:#ffab23;
+	background-color:#019595;
+        color: #ffffff;
 }
 a.boton:active {
 	position:relative;
@@ -134,43 +161,6 @@ a.boton:active {
 }
 
 
-
-
-
-
-/* Clase de boton anterior */
-/*
-a.boton {
-	-moz-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #ffffff;
-	box-shadow:inset 0px 1px 0px 0px #ffffff;
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #ededed), color-stop(1, #dfdfdf) );
-	background:-moz-linear-gradient( center top, #ededed 5%, #dfdfdf 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ededed', endColorstr='#dfdfdf');
-	background-color:#ededed;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:40px;
-	border:1px solid #dcdcdc;
-	display:inline-block;
-	color:#777777;
-	font-family:arial;
-	font-size:12px;
-	font-weight:bold;
-	padding:6px 24px;
-	text-decoration:none;
-	text-shadow:1px 1px 0px #ffffff;
-}.classname:hover {
-	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #dfdfdf), color-stop(1, #ededed) );
-	background:-moz-linear-gradient( center top, #dfdfdf 5%, #ededed 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#dfdfdf', endColorstr='#ededed');
-	background-color:#dfdfdf;
-}.classname:active {
-	position:relative;
-	top:1px;
-}
-
-*/
 
 /* notificaciones */
 
@@ -197,8 +187,8 @@ a.boton {
 /* Estilo para tabla con gradiente */
 
 table.table1{
-    font-family: "Trebuchet MS", sans-serif;
-    font-size: 16px;
+    font-family: 'Open Sans';
+    font-size: 15px;
     font-weight: bold;
     line-height: 1.4em;
     font-style: normal;
@@ -207,10 +197,10 @@ table.table1{
 .table1 thead th{
     padding:15px;
     color:#fff;
-    text-shadow:1px 1px 1px #568F23;
-    border:1px solid #510C0C;
-    border-bottom:3px solid #510C0C;
-    background-image: linear-gradient(bottom, rgb(133,29,10) 41%, rgb(112,51,10) 71%);
+    text-shadow:1px 1px 1px #019595;
+    border:1px solid #019595;
+    border-bottom:3px solid #019595;
+/*    background-image: linear-gradient(bottom, rgb(133,29,10) 41%, rgb(112,51,10) 71%);
     background-image: -o-linear-gradient(bottom, rgb(133,29,10) 41%, rgb(112,51,10) 71%);
     background-image: -moz-linear-gradient(bottom, rgb(133,29,10) 41%, rgb(112,51,10) 71%);
     background-image: -webkit-linear-gradient(bottom, rgb(133,29,10) 41%, rgb(112,51,10) 71%);
@@ -221,7 +211,8 @@ table.table1{
 	left top,
 	color-stop(0.41, rgb(133,29,10)),
 	color-stop(0.71, rgb(112,51,10))
-);
+);*/
+    background-color: #019595;
     border-top-left-radius:5px;
     border-top-right-radius:5px;
 }
