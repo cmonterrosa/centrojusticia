@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Kolaval - Centro Estatal de Justicia Alternativa</title>
+  <%= stylesheet_link_tag "oficial"%>
+  <%= stylesheet_link_tag "kolaval_login"%>
+  <%= stylesheet_link_tag "kolaval_main"%>
+
+  
+
+   <%= javascript_include_tag 'prototype'%>
+   <%= javascript_include_tag 'BubbleTooltips' %>
+
+   
+
+    <!-- apis para datepicker de calendario -->
+    <%= stylesheet_link_tag "jquery-ui.css", "application" %>
+    <%= javascript_include_tag "jquery-ui.min", "application" %>
+    <%=javascript_include_tag "datetimepicker"%>
+    <%=javascript_include_tag "datepicker_es"%>
+
+    <!-- Add jQuery library -->
+    <%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
+
+    <!-- validaciones -->
+    <%=javascript_include_tag "validaciones"%>
+
+    <%= stylesheet_link_tag "login-box"%>
+    <%= stylesheet_link_tag "oficial"%>
+    <%= stylesheet_link_tag "bt"%>
+    <%= stylesheet_link_tag "search"%>
+    <%= stylesheet_link_tag "calendario"%>
+
+    <!-- Paginate -->
+    <%= stylesheet_link_tag "paginate/style.css" %>
+
+   <!-- Add jQuery library-->
+   <%=javascript_include_tag 'fancybox/jquery-ui.min.js'%>
+
+    
+    <!-- Add mousewheel plugin (this is optional) -->
+    <%=javascript_include_tag "fancybox/jquery.mousewheel-3.0.6.pack.js"%>
+
+    <!-- Add fancyBox main JS and CSS files -->
+    <%=javascript_include_tag "fancybox/jquery.fancybox.js?v=2.1.0"%>
+    <%= stylesheet_link_tag "fancybox/jquery.fancybox.css?v=2.1.0"%>
+
+    <!-- Add Button helper (this is optional) -->
+    <%= stylesheet_link_tag "fancybox/jquery.fancybox-buttons.css?v=1.0.3"%>
+    <%=javascript_include_tag "fancybox/jquery.fancybox-buttons.js?v=1.0.3"%>
+
+    <!-- Add Thumbnail helper (this is optional) -->
+    <%= stylesheet_link_tag "fancybox/jquery.fancybox-thumbs.css?v=1.0.6"%>
+    <%=javascript_include_tag "fancybox/jquery.fancybox-thumbs.js?v=1.0.6"%>
+
+    <!-- Add Media helper (this is optional) -->
+    <%=javascript_include_tag "fancybox/jquery.fancybox-media.js?v=1.0.3"%>
+
+
+   <script type="text/javascript">
+      window.onload=function(){enableTooltips()};
+      // this allows jquery to be called along with scriptaculous and YUI without any conflicts
+      // the only difference is all jquery functions should be called with $j instead of $
+      // e.g. $j('#div_id').stuff instead of $('#div_id').stuff
+      var $j = jQuery.noConflict();
+    </script>
+
+</head>
+
+
+   
+
+<style>
+body {
+  background-repeat: no-repeat;
+}
+
+table
+{
+margin-left: auto;
+margin-right: auto;
+}
+
+td
+{
+padding:2px;
+}
+
+.input {
+    border: 1px solid #006;
+    background: #ffc;
+}
+</style>
+
+  <body style="background: #ffffff;">
+   <div class="header_area">
+      <div class="main_area">
+          <p class="collus_text" style="margin: 0;"><p class="TituloSubdireccion"><%=SUBDIRECCION%></p></p>
+      </div>
+      <div class="main_area">
+          <div class="logo_wrap">
+              <p class="logo_pad" style="margin:0;"> <%=link_to image_tag("kolaval/logo-menu_small.jpg", :border => 0), {:controller => "home" }, :title => "INICIO"%> <!-- , :size => "1250x130" --></p>
+          </div>
+          <div class="navarea_wrap">
+              <div class="nav_wrap">
+                <ul>
+                  <li class="TextBoxMenu"><%=link_to 'PERFIL',  {:controller => "customs", :action => "profile"}, :title => "Datos personales y perfiles a los que perteneces"%></li>
+                  <li>&nbsp;&nbsp;</li>
+                  <li class="TextBoxMenu"> <%=link_to 'ACTIVIDAD',  {:controller => "customs", :action => "activity"}, :title => "Mi actividad"%></li>
+                  <li>&nbsp;&nbsp;</li>
+                  <li class="TextBoxMenu"> <%=link_to 'CERRAR SESIÓN', {:action => "destroy", :controller=>"sessions"}, :title => "¿Desea salir del sistema?"%></li>
+                </ul>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Barra de nombre -->
+      <div class="main_area">
+         <div class="body_wrap">
+           <hr class="LineaHorizontalVerde" />
+              <%if logged_in?%>
+                        <div class="CaptionNombreUsuario">
+                            <%=link_to "#{current_user.nombre_completo}",  {:controller => "customs", :action => "profile"}, :title => current_user.nombre_completo, :style => "text-decoration: none; color: ##019595;"%>&nbsp;&nbsp;&nbsp;<span style="color: gray; text-transform: uppercase;"><%=h current_user.subdireccion.descripcion%></span>
+                        </div>
+             <%end%>
+            <hr class="LineaHorizontalVerde" />
+          </div>
+      </div>
+
+      <!-- inicia tabla de contenido -->
+      <div class="main_wrap">
+            <table style="text-align: center; width: 88%">
+
+                 <%if flash[:notice]%>
+        <div class="notice">
+            <%= flash[:notice] %>
+        </div>
+      <%else%>
+        <p></p>
+      <%end%>
+
+
+
+                  <tr>
+                    <td><%=yield%></td>
+                  </tr>
+            </table>
+      </div>
+
+  <div class="footer_wrap">
+    <div class="footer_area">
+      <br class="blank" />
+        <div style="text-align: center;">Copyright &copy; <a href="http://www.poderjudicialchiapas.gob.mx">Poder Judicial del Estado de Chiapas</a>, Todos los derechos reservados | Desarrollado por DDIT </div>
+      <br class="blank" />
+    </div>
+</div>
+               
+            
+
+          
+   
+
+          
+            
+          
+
+         
+
+             
+
+
+  </body>
+
+
+</html>
+
+
+
+
