@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 # Security functions
 include Security
 # Methods added to this helper will be available to all templates in the application.
@@ -24,7 +26,8 @@ module ApplicationHelper
   end
 
   def colors_to_days
-   return @backgrounds_colors = {0 => "#82FA58", 1 => "#FE2EC8", 2 => "#A9A9F5", 3 => "#31B404", 4=> "#F2F5A9", 5 => "#EDD46F", 6 => "#20d6d0"}
+   return @backgrounds_colors = {0 => "#82FA58", 
+                                                   1 => "#feaeff", 2 => "#A9A9F5", 3 => "#31B404", 4=> "#F2F5A9", 5 => "#EDD46F", 6 => "#20d6d0"}
   end
 
   def inhabil?(date=Time.now)
