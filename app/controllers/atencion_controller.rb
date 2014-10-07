@@ -95,5 +95,18 @@ class AtencionController < ApplicationController
     @orientacion ||= Orientacion.new
   end
 
+  def destroy_tramite
+    @tramite = Tramite.find(params[:id])
+     flash[:notice] = "No se pudo eliminar, verifique"
+    @orientacion = Orientacion.find_by_tramite_id(params[:id])
+    @historico = Historia.find_by_tramite_id(params[:id])
+    if @tramite.user == current_user
+      if ((@orientacion) ? @orientacion.destroy : true) && ((@historico) ? @historico.destroy : true) && ((@tramite) ? @tramite.destroy : false)
+        flash[:notice] = "Registro eliminado correctamente"
+     end
+    end
+    redirect_to :action => "por_escrito_index"
+  end
+
 
 end

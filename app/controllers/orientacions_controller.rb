@@ -57,6 +57,7 @@ class OrientacionsController < ApplicationController
     @extra = true if params[:t] == "extra"
     @orientacion = Orientacion.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
     @orientacion ||= Orientacion.new
+    @fecha = (@orientacion.fechahora)? @orientacion.fechahora.strftime("%Y/%m/%d %H:%M") : Time.now.strftime("%Y/%m/%d %H:%M")
     if @extra
       @caption = (@extra) ? "CON PERSONAL EXTRAORDINARIO" : ""
       @caption_type_specialist = (@extra) ? "Extraordinario" : ""

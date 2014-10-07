@@ -20,6 +20,12 @@ class EstadisticasController < ApplicationController
      return render(:partial => 'select_date_range', :layout => 'only_jquery')
     end
 
+    def select_grafica_materia
+     @title = "Seleccione el rango de fechas"
+     @action = "grafica_materia"
+     return render(:partial => 'select_date_range', :layout => 'only_jquery')
+    end
+
     def select_grafica_orientaciones_especialistas
      @title = "Seleccione el rango de fechas"
      @action = "grafica_orientaciones_especialistas"
@@ -113,13 +119,10 @@ class EstadisticasController < ApplicationController
       g.add_color("#FD242F") # Rojo
       g.add_color("#AFD2FE") # Celeste
       g.add_color("#C1F7BB") # verde Pistache
-
-     
-              g.additional_line_values
-              g.has_left_labels
-              g.x_axis_label = "xxxx"
-
-      especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+      g.additional_line_values
+      g.has_left_labels
+      g.x_axis_label = "Actividad"
+      especialistas = Role.find_by_name("especialistas").todos_usuarios
       if params[:fecha_inicio] && params[:fecha_fin]
           params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
           @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
@@ -240,9 +243,7 @@ end
       @sum_46_60 = Participante.count(:fecha_nac, :conditions => ["fecha_nac < ? AND fecha_nac >= ?", @today.years_ago(45), @today.years_ago(60)])
       @sum_60_mas = Participante.count(:fecha_nac, :conditions => ["fecha_nac < ?", @today.years_ago(60)])
 
-
       # --- Datos --
-      #g.data("de 1 a 15", [ @sum_1_15])
       g.data("de 16 a 30 (#{"%0.2f" %((@sum_1_15.to_i + @sum_16_30.to_i) / @total * 100.0)})%", [ @sum_1_15 + @sum_16_30 ])
       g.data("de 31 a 45 (#{"%0.2f" %((@sum_16_30.to_i) / @total * 100.0) })%", [ @sum_31_45])
       g.data("de 46 a 60 (#{"%0.2f" %((@sum_31_45.to_i) / @total * 100.0)})%", [ @sum_46_60])
@@ -266,26 +267,34 @@ end
   def grafica_materia
       #g = Gruff::Pie.new
       g = Gruff::Bar.new
-      g.title = "Asuntos por materia"
-      g.no_data_message = "No existe información"
+
+      
+
+       if params[:fecha_inicio] && params[:fecha_fin]
+          params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+          @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+           g.title = "Asuntos por materia: #{@inicio.strftime('%d-%m-%Y')} a #{@fin.strftime('%d-%m-%Y')}"
+          g.no_data_message = "No existe información"
+     end
+
       g.add_color("#E00CF7")
       g.add_color("#1BFB02") # Verde Fuerte
       g.add_color("#B3FF00")
       g.add_color("#0037FF")
       g.additional_line_values
       g.has_left_labels
-      total_asuntos = Temporal.count(:id)
-      g.x_axis_label = "TOTAL DEL AÑO 2013: #{total_asuntos} ASUNTOS"
+      total_asuntos = Tramite.count(:id, :joins => "tramites, comparecencias c", :conditions => ["tramites.id=c.tramite_id AND tramites.folio_expediente IS NOT NULL AND tramites.materia_id IS NOT NULL AND tramites.fechahora between ? and ?", @inicio, @fin ])
+      #   g.x_axis_label = "TOTAL DEL AÑO 2013: #{total_asuntos} ASUNTOS"
       @materias = Materia.find(:all, :order => "descripcion")
       @materias.each do |materia|
         #g.data("#{materia.descripcion}", [Tramite.count(:id, :conditions => ["materia_id = ?", materia.id])])
-        total = Temporal.count(:id, :conditions => ["materia_id = ?", materia.id])
+        total = Tramite.count(:id, :conditions => ["folio_expediente IS NOT NULL AND materia_id = ? and fechahora between ? AND ?", materia.id, @inicio, @fin])
         if total > 0
               g.data("#{materia.descripcion} (#{total}) - #{"%0.2f" % ((total / (total_asuntos * 1.0)) * 100.0)}%", [total])
         end
 
       end
-       g.data("SIN ASIGNAR (#{Temporal.count(:id, :conditions => 'materia_id is NULL')}) - #{"%0.2f" % ((Temporal.count(:id, :conditions => 'materia_id is NULL') / (total_asuntos * 1.0)) * 100.0)}%")
+       #g.data("SIN ASIGNAR (#{Temporal.count(:id, :conditions => 'materia_id is NULL')}) - #{"%0.2f" % ((Temporal.count(:id, :conditions => 'materia_id is NULL') / (total_asuntos * 1.0)) * 100.0)}%")
       send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list_by_materia.png")
   end
 
@@ -334,8 +343,8 @@ end
   end
 
   def show_cargas_trabajo
-     especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
-     @especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_por_semana <=> p2.num_orientaciones_por_semana}
+     @especialistas = Role.find_by_name("ESPECIALISTAS").todos_usuarios
+     @especialistas = @especialistas.sort{|p1,p2| p1.puntuacion <=> p2.puntuacion}
      return render(:partial => 'show_cargas_trabajo', :layout => 'only_jquery')
   end
 

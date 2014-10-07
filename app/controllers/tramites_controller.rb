@@ -45,6 +45,57 @@ class TramitesController < ApplicationController
       render :action => "show_numero_expediente"
     end
   end
+  
+  def filtrar_tramites
+    @carpeta_atencion = (params[:carpeta_atencion] =~ /^\d{1,4}\/\d{4}$/) ? params[:carpeta_atencion].strip : nil
+    folio_expediente, anio=@carpeta_atencion.split("/") if @carpeta_atencion
+    @participante = (params[:participante].size > 0) ? params[:participante].strip : nil
+    @especialista = (params[:especialista]) ? User.find(params[:especialista]) : nil
+    @razon_social = (params[:razon_social].size > 0) ? params[:razon_social] : nil
+
+    ### CARPETA DE ATENCION ###
+    @tramites = (@carpeta_atencion) ? Tramite.find(:all, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) : nil
+    
+    ### PARTICIPANTE ###
+    if @participante
+      id_tramites=Array.new
+      @participantes_comparecencia ||= Participante.find(:all, :conditions => ["full_name like ?", "#{@participante}%"])
+      @solicitante ||= Orientacion.find(:all, :conditions => ["full_name like ?", "#{@participante}%"])
+      if @participantes_comparecencia
+          @participantes_comparecencia.each do |p|
+            @comparecencia = (p.comparecencia)? p.comparecencia.tramite : nil
+            (@comparecencia) ? id_tramites << @comparecencia : nil
+          end
+      end
+      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}]) unless id_tramites.empty?
+      id_tramites = []
+      if @solicitantes
+            @solicitantes.each do |s|
+              (s.tramite) ? id_tramites << s.tramite.id : nil
+            end
+      end
+      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}]) unless id_tramites.empty?
+      #@tramites = @tramites.sort{|a,b| a.created_at <=> b.created_at}.reverse unless id_tramites.empty?
+    end
+
+    #### RAZON SOCIAL ####
+
+   if @razon_social
+      id_tramites=Array.new
+      @participantes_comparecencia ||= Participante.find(:all, :conditions => ["razon_social like ?", "#{@razon_social}%"])
+      if @participantes_comparecencia
+          @participantes_comparecencia.each do |p|
+            @comparecencia = (p.comparecencia)? p.comparecencia.tramite : nil
+            (@comparecencia) ? id_tramites << @comparecencia : nil
+          end
+      end
+      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}]) unless id_tramites.empty?
+   end
+
+    @tramites ||= Array.new
+    @tramites = @tramites.paginate(:page => params[:page], :per_page => 25)
+   end
+
 
   def list
     @estatus_unicos = Estatu.find_by_sql(["select distinct(estatu_id) as id from estatus_roles where role_id in (?)", current_user.roles])
@@ -52,7 +103,7 @@ class TramitesController < ApplicationController
     #@all = true if params[:t] == "all"
     #@tramites =  Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "anio DESC, folio_expediente DESC, fechahora DESC").paginate(:page => params[:page], :per_page => 25)
     @tramites = (current_user.has_role?("atencionpublico"))? Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 25) : Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "anio DESC, folio_expediente DESC, fechahora DESC").paginate(:page => params[:page], :per_page => 25)
-
+    
   end
 
   def show
