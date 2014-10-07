@@ -8,9 +8,6 @@
                });
 </script>
 
-
-
-
 <!-- contenido -->
 <div id="divlista">
 
@@ -36,7 +33,7 @@
     <%orientacion_confirmada = Estatu.find_by_clave("orie-conf")%>
     <%tramite_extraordinario = Estatu.find_by_clave("tram-extr")%>
     <%tramite_no_admitido = Estatu.find_by_clave("tram-noad")%>
-    
+
     <%contador=1%>
     <%@tramites.each do |tramite|%>
     <tr class="d<%=invert_class(clase)%>">
@@ -68,7 +65,7 @@
              <td style="vertical-align: middle;"><%=h (link_to "Cancelar", {:controller => "tramites", :action => "cancel_form", :id => tramite.id}, :confirm => "¿Esta seguro que desea cancelar el trámite?", :class => "fancybox fancybox.iframe") %></td>
         <%end%>
 
-            
+
         <!-- Reasignacion -->
         <%if current_user.has_role?("atencionpublico")%>
           <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("admin")))%>
@@ -143,42 +140,3 @@
       </td>
     </tr>
 </table>
-
-<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
-  <%= observe_field :estatu_id,
-        :on => "change",
-        :before => "Element.show('spinner')",
-        :success => "Element.hide('spinner')",
-        :url => {:controller => 'tramites',
-        :action => 'filtro_estatus'},
-        :update => 'divlista',
-        :with => :estatu_id %>
-
-  <%= observe_field :search_nombre,
-        :frequency => 0.36,
-        :before => "Element.show('spinner')",
-        :success => "Element.hide('spinner')",
-        :url => {:controller => 'tramites',
-        :action => 'filtro_nombre'},
-        :update => 'divlista',
-        :with => "search_nombre"%>
-
-
-  <%= observe_field :search_paterno,
-        :frequency => 0.36,
-        :before => "Element.show('spinner')",
-        :success => "Element.hide('spinner')",
-        :url => {:controller => 'tramites',
-        :action => 'filtro_paterno'},
-        :update => 'divlista',
-        :with => "search_paterno"%>
-
-
-  <%= observe_field :search_numero_expediente,
-        :frequency => 0.36,
-        :before => "Element.show('spinner')",
-        :success => "Element.hide('spinner')",
-        :url => {:controller => 'tramites',
-        :action => 'filtro_numero_expediente'},
-        :update => 'divlista',
-        :with => "search_numero_expediente"%>

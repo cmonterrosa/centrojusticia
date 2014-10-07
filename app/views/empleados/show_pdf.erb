@@ -1,0 +1,192 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+<style type="text/css">
+  /* Estilo para las tablas */
+table.sample {
+	border: 6px inset #8B8378;
+	-moz-border-radius: 6px;
+        font-family: "Open Sans";
+        font-size: 13px;
+        margin-left:auto;
+        margin-right:auto;
+}
+table.sample td {
+	border: 0px solid black;
+	padding: 0.2em 2ex 0.2em 2ex;
+	color: black;
+}
+table.sample tr.d0 td {
+	background-color: #e8f4f4;
+}
+table.sample tr.d1 td {
+	background-color: #FEFEF2;
+}
+table.sample td.d0 {
+	background-color: #FCF6CF;
+}
+table.sample td.d2 {
+	background-color: #FF8C00;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas */
+table.sample td.d0 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas de error */
+table.sample td.d99 {
+	background-color: #FF9900;
+}
+
+
+</style>
+
+<br />
+<table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    
+    <tr style="font-size: 14px;">
+      <th colspan="3" align="center">
+        CÉDULA DE INFORMACIÓN PROFESIONAL (CIP)
+      </th>
+     </tr>
+
+
+    <tr style="background-color:gray; color:white">
+      <th colspan="3">
+        Datos generales y laborales
+      </th>
+     </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;" colspan="3" align="center"> <b>Institución: </b><%=h(@empleado ? @empleado.institucion : "No existe información")%></td>
+      </tr>
+
+
+     <tr class="d1">
+       <!-- Fotografia del empleado -->
+       <th style="vertical-align: middle; text-align: center;" rowspan="7">
+          <%@foto = Adjunto.find(:first, :conditions => ["empleado_id = ?", @empleado.id])%>
+         <%if @foto%>
+            <%= link_to (image_tag @foto.url_path, :size => '160x190'), { :action => "preview_image", :controller => "upload", :id => @foto}, :class => "fancybox fancybox.iframe"  %><br />
+
+         <%else%>
+                 <%if current_user.has_role?("capacitacion")%>
+                    <b><%=link_to "No existe imagen",{ :action => "upload_profile_picture", :controller => "upload", :id => @empleado} ,:title => "Fotografia", :class => "fancybox fancybox.iframe"%></b>
+                 <%end%>
+         <%end%>
+      </th>
+
+      <td style="vertical-align: middle;" align="left"><b>Nombre completo:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado ? @empleado.nombre_completo : "No existe información")%></td>
+     </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;" align="left"><b>Sexo:</b></td>
+       <%sexos={"M" => "Masculino", "F" => "Femenino"}%>
+       <td style="vertical-align: middle;"> <%=h(@empleado.sexo ? sexos[@empleado.sexo] : "No existe información")%></td>
+    </tr>
+    <tr class="d1">
+       <td style="vertical-align: middle;" align="left"><b>Fecha de nacimiento:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.fecha_nac ? @empleado.fecha_nac.strftime("%d/%m/%Y") : "No existe información")%></td>
+    </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;" align="left"><b>Enlace:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado ? @empleado.enlace : "No existe información")%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;" align="left"><b>Categoria:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado ? @empleado.categoria : "No existe información")%></td>
+    </tr>
+    <tr class="d0">
+       <td style="vertical-align: middle;" align="left"><b>Fecha de ingreso:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.fecha_ingreso ? @empleado.fecha_ingreso.strftime("%d/%m/%Y") : "No existe información")%></td>
+    </tr>
+    <%if @empleado.baja%>
+    <tr class="d1">
+       <td style="vertical-align: middle;" align="left"><b>Fecha de baja:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.fecha_baja ? @empleado.fecha_baja.strftime("%d/%m/%Y") : "No existe información")%></td>
+    </tr>
+    <%end%>
+    <tr class="d0">
+      <td colspan="2">&nbsp;</td>
+    </tr>
+
+    <!-- Datos de ubicacion -->
+    <tr class="d1">
+       <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Dirección:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.direccion ? @empleado.direccion : "No existe información")%></td>
+    </tr>
+    <tr class="d0">
+      <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Municipio:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.municipio ? @empleado.municipio.descripcion : "No existe información")%></td>
+    </tr>
+    <tr class="d1">
+       <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Código Postal:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.codigo_postal ? @empleado.codigo_postal : "No existe información")%></td>
+    </tr>
+    <tr class="d0">
+       <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Correo electrónico:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.correo ? @empleado.correo : "No existe información")%></td>
+    </tr>
+    <tr class="d1">
+       <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Teléfono:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.telefono ? @empleado.telefono : "No existe información")%></td>
+    </tr>
+    <tr class="d0">
+       <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Teléfono celular:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.telefono_celular ? @empleado.telefono_celular : "No existe información")%></td>
+    </tr>
+
+</table><br />
+
+<table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="3">
+        Formación profesional
+      </th>
+     </tr>
+
+     <%unless @formacions.empty?%>
+     <tr class="d1">
+        <th style="vertical-align: middle;"><b>Institucion:</b></th>
+        <th style="vertical-align: middle;"><b>Descripcion:</b></th>
+        <th style="vertical-align: middle;"><b>Fecha de conclusión</b></th>
+      </tr>
+      <%end%>
+
+      <%clase=0%>
+     <%@formacions.each do |formacion|%>
+         <tr class="d<%=h clase%>">
+                <td align="left" width="40%"><%=h (formacion.institucion_academica) ? formacion.institucion_academica.descripcion_completa: ""%></td>
+                <td align="left" width="40%"><%=h (formacion.estudio) ? formacion.estudio.descripcion_jerarquica: ""%></td>
+                <td align="left" width="20%"><%=h (formacion.fecha_conclusion) ? formacion.fecha_conclusion.strftime('%d de %B de %Y'): ""%></td>
+         </tr>
+         
+         <%clase=invert_class(clase)%>
+      <%end%>
+
+
+
+</table><br />
+

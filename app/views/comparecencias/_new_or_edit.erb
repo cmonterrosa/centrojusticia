@@ -103,5 +103,19 @@ window.onload = function() {
     
 
 <% end %>
-
 </table>
+
+<script type="text/javascript">
+  var asunto = new LiveValidation( 'comparecencia_asunto' );
+  asunto.add( Validate.Presence );
+  asunto.add( Validate.Length, { maximum: 450 } );
+
+  var caracter = new LiveValidation( 'comparecencia_caracter' );
+  caracter.add( Validate.Presence );
+  caracter.add( Validate.Length, { maximum: 70 } );
+
+    var procedencia = new LiveValidation( 'comparecencia_procedencia' );
+  procedencia.add( Validate.Presence );
+  procedencia.add( Validate.Length, { maximum: 40 } );
+
+</script>

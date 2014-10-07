@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+            <%= stylesheet_link_tag "menu_desplegable/default.css"%>
+            <%= stylesheet_link_tag "menu_desplegable/component.css"%>
+            <%= javascript_include_tag 'menu_desplegable/modernizr.custom.js'%>
+        </head>
+	<body>
+		<div class="container">
+                        <div class="main">
+				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+					<div class="cbp-hsinner">
+						<ul class="cbp-hsmenu">
+							<li>
+								 <!-- Tramites -->
+                                                                 <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
+								<ul class="cbp-hssubmenu">
+									<li><%=link_to image_tag('kolaval/ico-iniciartramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-iniciartramites.jpg") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Iniciar trámite"%></li>
+                                                                         <li><%=link_to image_tag('kolaval/ico-tramit-otras.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramit-otras.jpg") , {:action => "index", :controller => "extraordinaria"}, :title => "Trámites de otras instituciones"%></li>
+                                                                         <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
+                                                                </ul>
+							</li>
+
+                                                        <!-- Agenda -->
+                                                        <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
+                                                        </li>
+
+
+                                                        <!-- agenda -->
+							<!--
+                                                        <li>
+								
+                                                                <=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%>
+								<ul class="cbp-hssubmenu cbp-hssub-rows">
+									<li><a href="#"><img src="/images/menu_desplegable/7.png" alt="img07"/><span>Lovely Slurp</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/8.png" alt="img08"/><span>Lemony Grappa</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/9.png" alt="img09"/><span>Eggy Liquor</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/10.png" alt="img10"/><span>Fresh Juice</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/1.png" alt="img01"/><span>Delicate Wine</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/2.png" alt="img02"/><span>Fine Spirit</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/3.png" alt="img03"/><span>Heavenly Ale</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/4.png" alt="img04"/><span>Juicy Lemonade</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/5.png" alt="img05"/><span>Wise Whiskey</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/6.png" alt="img06"/><span>Sweet Rum</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/1.png" alt="img01"/><span>Delicate Wine</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/2.png" alt="img02"/><span>Fine Spirit</span></a></li>
+								</ul>
+							</li>
+                                                         -->
+
+                                                        <li>
+                                                          <!-- Estadistica -->
+                                                          <ul><%=link_to image_tag('kolaval/ico-estadistica.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-estadistica.jpg") , {:action => "index", :controller => "estadisticas"}, :title => "Estadística"%></ul>
+                                                        </li>
+
+                                                        <li>
+                                                          <!-- Cuadrantes -->
+                                                          <ul><%=link_to image_tag('kolaval/ico-cuadrantes.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-cuadrantes.jpg") , {:action => "index", :controller => "cuadrantes"}, :title => "Cuadrantes"%></ul>
+                                                        </li>
+
+                                                        <li>
+                                                          <!-- Administracion -->
+                                                          <ul><%=link_to image_tag('kolaval/ico-administracion.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-administracion.jpg") , {:action => "index", :controller => "admin"}, :title => "Admin"%></ul>
+                                                        </li>
+							
+							
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<script src="/javascripts/menu_desplegable/cbpHorizontalSlideOutMenu.min.js"></script>
+		<script>
+			var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper' ) );
+		</script>
+	</body>
+</html>

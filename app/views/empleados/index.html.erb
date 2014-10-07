@@ -1,0 +1,38 @@
+<div>
+   <%=image_tag 'kolaval/capacitacion/ico-lista-empeleados.jpg', :style=> "width:auto; height:auto;vertical-align: middle;"%>
+   <span class="titulo_lista_empleados">&nbsp; LISTADO DE EMPLEADOS.</span>
+</div>
+
+<br />
+<table width="75%">
+  <tr>
+  </tr>
+
+<% @empleados.each do |empleado| %>
+  <tr>
+    <td align="left"><%=h empleado.nombre_completo%></td>
+    <td><%= link_to 'Mostrar', empleado, :class => "boton" %></td>
+    <td><%= link_to 'Editar', edit_empleado_path(empleado), :class => "boton" %></td>
+    <td><%= link_to 'Formacion academica', {:action => "formacion", :id => empleado}, :class => "boton" %></td>
+    <td><%= link_to 'Eliminar', empleado, :confirm => '¿Esta seguro que desea eliminarlo?', :method => :delete, :class => "boton" %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Nuevo empleado', new_empleado_path, :class => "boton" %>
+
+<!-- Paginacion -->
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @empleados %>
+          </div>
+          <%= will_paginate @empleados %>
+        </div>
+      </td>
+    </tr>
+</table>

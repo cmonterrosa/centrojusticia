@@ -42,7 +42,7 @@
 
         <!-- Eliminar si es inicio de tramite-->
         <%if (current_user.has_role?("jefeatencionpublico") || e.estatu_id == tramite_iniciado_por_escrito.id)%>
-              <td style="vertical-align: middle;"><%=link_to "Eliminar", {:controller => "tramites", :action => "destroy", :id => e.id}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton', :style => "background-color: red; text-color: white;" -%></td>
+              <td style="vertical-align: middle;"><%=link_to "Eliminar", {:controller => "atencion", :action => "destroy_tramite", :id => e.id}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton', :style => "background-color: red; text-color: white;" -%></td>
         <%end%>
 
         <!-- resumen general -->

@@ -121,3 +121,14 @@
 <% end %>
 
 
+<script type="text/javascript">
+  var domicilio = new LiveValidation( 'participante_domicilio' );
+  domicilio.add( Validate.Presence );
+  domicilio.add( Validate.Length, { maximum: 255 } );
+
+  var referencia = new LiveValidation( 'participante_referencia_domiciliaria' );
+  referencia.add( Validate.Length, { maximum: 160 } );
+
+  var observaciones = new LiveValidation( 'participante_observaciones' );
+  observaciones.add( Validate.Length, { maximum: 350 } );
+</script>

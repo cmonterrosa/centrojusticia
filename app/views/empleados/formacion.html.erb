@@ -1,0 +1,40 @@
+<h1>Formación académica del empleado: <%=@empleado.nombre_completo%></h1>
+
+  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  
+     <!-- titulo  -->
+     <%unless @formacions.empty?%>
+       <tr style="background-color:#019595; color:white">
+            <th align="left">Institucion académica</th>
+            <th align="left" >Descripción</th>
+            <th align="left">Fecha de conclusión</th>
+            <th align="center" colspan="4">Acciones</th>
+      </tr>
+     <%end%>
+
+
+
+<%clase=0%>
+<% @formacions.each do |formacion| %>
+
+      <tr class="d<%=invert_class(clase)%>">
+                <td align="left" width="15%"><%=h (formacion.institucion_academica) ? formacion.institucion_academica.descripcion_completa: ""%></td>
+                <td align="left" ><%=h (formacion.estudio) ? formacion.estudio.descripcion_jerarquica: ""%></td>
+                <td align="left" ><%=h (formacion.fecha_conclusion) ? formacion.fecha_conclusion.strftime('%d de %B de %Y'): ""%></td>
+                <!--
+                <td align="left" ><= link_to 'Mostrar', {:action => "show_formacion", :id =>formacion}, :class => "boton" %></td>
+                -->
+                <td align="left" ><%= link_to 'Documentos', {:controller => "upload", :action => "docs_formacion", :id =>formacion}, :class => "boton" %></td>
+                <!--
+                <td align="left" ><= link_to 'Editar', {:action => "edit_formacion", :id => formacion}, :class => "boton" %></td>
+                -->
+                <td align="left" ><%= link_to 'Eliminar', {:action => "destroy_formacion", :id => formacion},  :confirm => '¿Esta seguro que desea eliminarlo?', :method => :delete, :class => "boton" %></td>
+      </tr>
+      <%clase = invert_class(clase)%>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Agregar formación', {:action => "new_formacion"}, :class => "boton" %> |
+<%= link_to 'Atras', empleados_path, :class => "boton" %>

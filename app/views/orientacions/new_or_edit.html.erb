@@ -9,7 +9,7 @@
 <% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr class="titulo">
-      <td colspan="3" align="center" >ORIENTACIONES <%=@caption%></td>
+      <td colspan="3" align="center" >CAPTURA DE ORIENTACION <%=@caption%></td>
     </tr>
     <tr align="center">
       <td align="center">
@@ -28,7 +28,16 @@
           <td align="center">Observaciones</td>
         </tr>
         <tr>
-          <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
+          
+          <%#*<td align="center">%>
+              <%#=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%>
+          <%#*</td>%>
+          
+          <td align="center">
+              <%=f.text_field :fechahora, :value => @fecha%>
+          </td>
+
+
           <%if @extra%>
               <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%></td>
           <%else%>
@@ -45,7 +54,7 @@
           <!--
           <td align="center"><=f.check_box :notificacion%> </td>
           -->
-          <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>
+          <td align="center"><%= f.text_field :observaciones, :class => "text", :size => "50"%></td>
         </tr>
       </table></td>
     </tr>
@@ -122,3 +131,10 @@
   </table>
 <% end %>
 
+
+
+<script type="text/javascript">
+  var domicilio = new LiveValidation( 'orientacion_direccion' );
+  domicilio.add( Validate.Presence );
+  domicilio.add( Validate.Length, { maximum: 160 } );
+</script>

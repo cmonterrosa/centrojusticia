@@ -1,3 +1,4 @@
+<%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
 <script type="text/javascript">
 		$j(document).ready(function() {
 			/*
@@ -9,13 +10,10 @@
 </script>
 
 
-<table width="75%" border="0" cellspacing="0">
-  <tr align="center">
-    <td align="right" width="35%"><%=image_tag("pjech/logo_rojo.png", :border => 0, :size => "118×154", :alt => "PJECH")%></td>
-    <td align="left" width="65%"><%=image_tag("pjech/barra_estadistica.png", :border => 0, :alt => "PJECH")%></td>
-  </tr>
-</table>
-<br />
+<div>
+<p class="TituloMenuIconos">ESTADÍSTICAS</p>
+<p>&nbsp;</p>
+</div>
 
 <table width="75%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
@@ -23,7 +21,7 @@
            <%=link_to image_tag('iconos_estadisticos/grafica_orientaciones.png', :size => "128x128", :mouseover => "iconos_estadisticos/grafica_orientaciones_2.png") , {:action => "select_grafica_sesiones_especialistas"}, :title => "gráfica de sesiones detallada por especialista", :class => "fancybox fancybox.iframe"%>
         </td>
          <td>
-           <%=link_to image_tag('iconos_estadisticos/grafica_materia.png', :size => "128x128", :mouseover => "iconos_estadisticos/grafica_materia_2.png") , {:action => "grafica_materia"}, :title => "gráfica por materia", :class => "fancybox fancybox.iframe"%>
+           <%=link_to image_tag('iconos_estadisticos/grafica_materia.png', :size => "128x128", :mouseover => "iconos_estadisticos/grafica_materia_2.png") , {:action => "select_grafica_materia"}, :title => "gráfica por materia", :class => "fancybox fancybox.iframe"%>
         </td>
          <td>
            <%=link_to image_tag('iconos_estadisticos/bitacora_atencion.png', :size => "128x128", :mouseover => "iconos_estadisticos/bitacora_atencion_2.png") , {:action => "select_personas_atendidas"}, :title => "Bitácora de atención"%>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+            <%= stylesheet_link_tag "menu_desplegable/default.css"%>
+            <%= stylesheet_link_tag "menu_desplegable/component.css"%>
+            <%= javascript_include_tag 'menu_desplegable/modernizr.custom.js'%>
+        </head>
+	<body>
+		<div class="container">
+                        <div class="main">
+				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+					<div class="cbp-hsinner">
+						<ul class="cbp-hsmenu">
+							<li>
+								 <!-- Empleados -->
+                                                                 <ul><%=link_to image_tag('kolaval/capacitacion/ico-empleados.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-empleados.jpg") , {:action => "index", :controller => "empleados"}, :title => "Administración de Empleados"%></ul>
+							</li>
+
+                                                        <li>
+								 <!-- Estudios -->
+                                                                 <ul><%=link_to image_tag('kolaval/capacitacion/ico-estudios.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-estudios.jpg") , {:action => "index", :controller => "estudios"}, :title => "Estudios académicos"%></ul>
+							</li>
+
+                                                        <li>
+								 <!-- Instituciones -->
+                                                                 <ul><%=link_to image_tag('kolaval/capacitacion/ico-insti-academ.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-insti-academ.jpg") , {:action => "index", :controller => "institucion_academicas"}, :title => "Instituciones académicas"%></ul>
+							</li>
+                                                </ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<script src="/javascripts/menu_desplegable/cbpHorizontalSlideOutMenu.min.js"></script>
+		<script>
+			var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper' ) );
+		</script>
+	</body>
+</html>

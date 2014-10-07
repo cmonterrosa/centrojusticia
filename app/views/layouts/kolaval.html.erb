@@ -7,25 +7,22 @@
   <%= stylesheet_link_tag "kolaval_login"%>
   <%= stylesheet_link_tag "kolaval_main"%>
 
-  
-
    <%= javascript_include_tag 'prototype'%>
    <%= javascript_include_tag 'BubbleTooltips' %>
 
-   
 
     <!-- apis para datepicker de calendario -->
-    <%= stylesheet_link_tag "jquery-ui.css", "application" %>
-    <%= javascript_include_tag "jquery-ui.min", "application" %>
-    <%=javascript_include_tag "datetimepicker"%>
-    <%=javascript_include_tag "datepicker_es"%>
+    <%= stylesheet_link_tag "jquery-ui.css"%>
+    <%= javascript_include_tag "jquery-1.8.1.min.js", "jquery-ui.min", "application" %>
+    <%#=javascript_include_tag "datetimepicker"%>
+    <%#=javascript_include_tag "datepicker_es"%>
 
-    <!-- Add jQuery library -->
-    <%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
+    <!--datetimepicker -->
+    <%=javascript_include_tag "datetimepicker/jquery.datetimepicker.js"%>
+    <%= stylesheet_link_tag "datetimepicker/jquery.datetimepicker.css"%>
 
     <!-- validaciones -->
     <%=javascript_include_tag "validaciones"%>
-
     <%= stylesheet_link_tag "login-box"%>
     <%= stylesheet_link_tag "oficial"%>
     <%= stylesheet_link_tag "bt"%>
@@ -35,10 +32,9 @@
     <!-- Paginate -->
     <%= stylesheet_link_tag "paginate/style.css" %>
 
-   <!-- Add jQuery library-->
+    <!-- Add jQuery library-->
    <%=javascript_include_tag 'fancybox/jquery-ui.min.js'%>
 
-    
     <!-- Add mousewheel plugin (this is optional) -->
     <%=javascript_include_tag "fancybox/jquery.mousewheel-3.0.6.pack.js"%>
 
@@ -56,6 +52,10 @@
 
     <!-- Add Media helper (this is optional) -->
     <%=javascript_include_tag "fancybox/jquery.fancybox-media.js?v=1.0.3"%>
+
+    <!-- Live Validation -->
+    <%=javascript_include_tag "livevalidation/livevalidation_standalone.js" %>
+    <%= stylesheet_link_tag "livevalidation/validation.css" %>
 
 
    <script type="text/javascript">
@@ -132,16 +132,13 @@ padding:2px;
       <!-- inicia tabla de contenido -->
       <div class="main_wrap">
             <table style="text-align: center; width: 88%">
-
-                 <%if flash[:notice]%>
-        <div class="notice">
-            <%= flash[:notice] %>
-        </div>
-      <%else%>
-        <p></p>
-      <%end%>
-
-
+                <%if flash[:notice]%>
+                      <div class="notice">
+                          <%= flash[:notice] %>
+                      </div>
+                <%else%>
+                    <p></p>
+                <%end%>
 
                   <tr>
                     <td><%=yield%></td>

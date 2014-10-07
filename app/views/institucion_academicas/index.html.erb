@@ -1,0 +1,37 @@
+<h1>Listado de instituciones educativas</h1>
+
+<table width="90%">
+  <tr >
+    <th>Siglas</th>
+    <th>Descripcion</th>
+  </tr>
+
+<% @institucion_academicas.each do |institucion_academica| %>
+  <tr>
+    <td align="left"><%=h institucion_academica.siglas%></td>
+    <td align="left"><%=h institucion_academica.descripcion%></td>
+    <td><%= link_to 'Mostrar', institucion_academica, :class => "boton" %></td>
+    <td><%= link_to 'Editar', edit_institucion_academica_path(institucion_academica), :class => "boton" %></td>
+    <td><%= link_to 'Eliminar', institucion_academica, :confirm => '¿Esta seguro que desea eliminarlo?', :method => :delete, :class => "boton" %></td>
+  </tr>
+<% end %>
+</table>
+
+
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @institucion_academicas %>
+          </div>
+          <%= will_paginate @institucion_academicas %>
+        </div>
+      </td>
+    </tr>
+</table>
+
+
+<br />
+
+<%= link_to 'Nueva Institucion', new_institucion_academica_path, :class => "boton"%>

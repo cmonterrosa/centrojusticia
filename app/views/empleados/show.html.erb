@@ -1,0 +1,159 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+
+<p>
+   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "show", :id => @empleado}, :title => "Recargar"%>
+</p>
+
+<p>
+    <%= link_to image_tag("iconos/pdf.png", :border =>0) , { :action => "show_pdf", :controller => "empleados", :id => "#{@empleado.id}.pdf" }, :html => { :target => "_blank"}, :title => "Cédula de Identificación Profesional" %>
+  </p>
+
+<table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="3">
+        Datos generales y laborales
+      </th>
+     </tr>
+
+      <tr class="d0">
+       <td style="vertical-align: middle;" colspan="3"> <%=h(@empleado ? @empleado.institucion : "No existe información")%></td>
+      </tr>
+     
+
+     <tr class="d1">
+       <!-- Fotografia del empleado -->
+       <th style="vertical-align: middle; text-align: center;" rowspan="7">
+          <%@foto = Adjunto.find(:first, :conditions => ["empleado_id = ?", @empleado.id])%>
+         <%if @foto%>
+            <%= link_to (image_tag @foto.url_path, :size => '160x190'), { :action => "preview_image", :controller => "upload", :id => @foto}, :class => "fancybox fancybox.iframe"  %><br /><%=link_to "Eliminar", :controller => "upload", :action => "destroy_profile_picture", :id => @foto, :empleado => @empleado%>
+
+         <%else%>
+                 <%if current_user.has_role?("capacitacion")%>
+                    <b><%=link_to "Cargar fotografia",{ :action => "upload_profile_picture", :controller => "upload", :id => @empleado} ,:title => "Fotografia", :class => "fancybox fancybox.iframe"%></b>
+                 <%end%>
+         <%end%>
+      </th>
+
+      <td style="vertical-align: middle;" align="left"><b>Nombre completo:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado ? @empleado.nombre_completo : "No existe información")%></td>
+     </tr>
+
+    <tr class="d0">
+      <td style="vertical-align: middle;" align="left"><b>Sexo:</b></td>
+       <%sexos={"M" => "Masculino", "F" => "Femenino"}%>
+       <td style="vertical-align: middle;"> <%=h(@empleado.sexo ? sexos[@empleado.sexo] : "No existe información")%></td>
+    </tr>
+    <tr class="d1">
+       <td style="vertical-align: middle;" align="left"><b>Fecha de nacimiento:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.fecha_nac ? @empleado.fecha_nac.strftime("%d/%m/%Y") : "No existe información")%></td>
+    </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;" align="left"><b>Enlace:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado ? @empleado.enlace : "No existe información")%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;" align="left"><b>Categoria:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado ? @empleado.categoria : "No existe información")%></td>
+    </tr>
+    <tr class="d0">
+       <td style="vertical-align: middle;" align="left"><b>Fecha de ingreso:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.fecha_ingreso ? @empleado.fecha_ingreso.strftime("%d/%m/%Y") : "No existe información")%></td>
+    </tr>
+    <%if @empleado.baja%>
+    <tr class="d1">
+       <td style="vertical-align: middle;" align="left"><b>Fecha de baja:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.fecha_baja ? @empleado.fecha_baja.strftime("%d/%m/%Y") : "No existe información")%></td>
+    </tr>
+    <%end%>
+    <tr class="d0">
+      <td colspan="2">&nbsp;</td>
+    </tr>
+
+    <!-- Datos de ubicacion -->
+    <tr class="d1">
+       <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Dirección:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.direccion ? @empleado.direccion : "No existe información")%></td>
+    </tr>
+    <tr class="d0">
+      <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Municipio:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.municipio ? @empleado.municipio.descripcion : "No existe información")%></td>
+    </tr>
+    <tr class="d1">
+       <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Código Postal:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.codigo_postal ? @empleado.codigo_postal : "No existe información")%></td>
+    </tr>
+    <tr class="d0">
+       <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Correo electrónico:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.correo ? @empleado.correo : "No existe información")%></td>
+    </tr>
+    <tr class="d1">
+       <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Teléfono:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.telefono ? @empleado.telefono : "No existe información")%></td>
+    </tr>
+    <tr class="d0">
+       <td>&nbsp;</td>
+       <td style="vertical-align: middle;" align="left"><b>Teléfono celular:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.telefono_celular ? @empleado.telefono_celular : "No existe información")%></td>
+    </tr>
+
+</table><br />
+
+<table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="4">
+        Formación profesional
+      </th>
+     </tr>
+
+     <%unless @formacions.empty?%>
+     <tr class="d1">
+        <th style="vertical-align: middle;" width="5%">&nbsp;</th>
+        <th style="vertical-align: middle;" width="35%"><b>Institucion:</b></th>
+        <th style="vertical-align: middle;" width="45%"><b>Descripcion:</b></th>
+        <th style="vertical-align: middle;" width="15%"><b>Fecha de conclusión</b></th>
+      </tr>
+      <%end%>
+
+      <%clase=0%>
+     <%@formacions.each do |formacion|%>
+
+        <tr class="d<%=h clase%>">
+                <!-- Si tiene archivo adjunto -->
+               <%if Adjunto.count(:id, :conditions => ["formacion_id = ?", formacion.id]) > 0%>
+                  <td align="center" width="5%"><%= link_to image_tag("kolaval/capacitacion/archivo_adjunto.png", :border =>0) , { :action => "docs_formacion", :controller => "upload", :id => formacion }, :html => { :target => "_blank"}, :title => "Documentos Adjuntos" %></td>
+                <%else%>
+                  <td>&nbsp;</td>
+                 <%end%>
+               <td align="left" width="35%"><%=h (formacion.institucion_academica) ? formacion.institucion_academica.descripcion_completa: ""%></td>
+               <td align="left" width="45%"><%=h (formacion.estudio) ? formacion.estudio.descripcion_jerarquica: ""%></td>
+               <td align="left" width="15%"><%=h (formacion.fecha_conclusion) ? formacion.fecha_conclusion.strftime('%d de %B de %Y'): ""%></td>
+         </tr>
+
+
+         <%clase=invert_class(clase)%>
+      <%end%>
+
+    
+    
+</table><br />
+
+
+
+<%= link_to 'Editar', edit_empleado_path(@empleado), :class => "boton" %> |
+<%= link_to 'Atras', empleados_path, :class => "boton" %>

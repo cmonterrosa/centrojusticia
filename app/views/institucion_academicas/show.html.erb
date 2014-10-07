@@ -1,0 +1,12 @@
+<p>
+  <b>Siglas:</b>
+  <%=h @institucion_academica.siglas %>
+</p>
+<p>
+  <b>Descripcion:</b>
+  <%=h @institucion_academica.descripcion %>
+</p>
+
+
+<%= link_to 'Editar', edit_institucion_academica_path(@institucion_academica), :class => "boton" %> |
+<%= link_to 'Regresar', institucion_academicas_path, :class => "boton" %>

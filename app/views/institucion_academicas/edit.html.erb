@@ -1,0 +1,21 @@
+<h1>Editar Institución Académica</h1>
+
+<% form_for(@institucion_academica) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    Descripción<br />
+    <%= f.text_field :siglas, :size => "20" %>
+  </p>
+
+  <p>
+    Descripción<br />
+    <%= f.text_field :descripcion, :size => "100" %>
+  </p>
+  <p>
+    <%= f.submit 'Guardar' %>
+  </p>
+<% end %>
+
+<%= link_to 'Mostrar', @institucion_academica, :class => "boton" %> |
+<%= link_to 'Atras', institucion_academicas_path, :class => "boton" %>

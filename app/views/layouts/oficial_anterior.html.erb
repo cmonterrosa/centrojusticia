@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <%= javascript_include_tag 'prototype', 'scriptaculous'%>
+    <%= javascript_include_tag 'BubbleTooltips' %>
+
+    <!-- apis para datepicker de calendario -->
+    <!-- <= stylesheet_link_tag "http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/redmond/jquery-ui.css", "application" %> -->
+    <%= stylesheet_link_tag "jquery-ui.css", "application" %>
+    <!-- <= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js", "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/jquery-ui.min.js", "application" %> -->
+    <%= javascript_include_tag "jquery.min", "jquery-ui.min", "application" %>
+    <%=javascript_include_tag "datetimepicker"%>
+    <%=javascript_include_tag "datepicker_es"%>
+
+    <!-- validaciones -->
+    <%=javascript_include_tag "validaciones"%>
+
+    
+
+    <%= stylesheet_link_tag "login-box"%>
+    <%= stylesheet_link_tag "oficial"%>
+    <%= stylesheet_link_tag "bt"%>
+    <%= stylesheet_link_tag "search"%>
+    <%= stylesheet_link_tag "calendario"%>
+
+    <!-- Paginate -->
+    <%= stylesheet_link_tag "paginate/style.css" %>
+
+    <title>Centro Estatal de Justicia Alternativa</title>
+
+    <script type="text/javascript">
+      window.onload=function(){enableTooltips()};
+      // this allows jquery to be called along with scriptaculous and YUI without any conflicts
+      // the only difference is all jquery functions should be called with $j instead of $
+      // e.g. $j('#div_id').stuff instead of $('#div_id').stuff
+      var $j = jQuery.noConflict();
+    </script>
+</head>
+
+<body>
+  <table width="90%" border="0" align="center" cellspacing="0" style="BORDER-RIGHT: #cccccc 0px solid; BORDER-TOP: #cccccc 0px solid; BORDER-LEFT: #cccccc 0px solid; BORDER-BOTTOM: #cccccc 0px solid; text-align: center; opacity:0.9;
+  filter:alpha(opacity=10); background-color: #E8E8E8; background-repeat: repeat; background-repeat: repeat;/* For IE8 and earlier */" >
+  
+  <!-- header -->
+  <%= render :partial => "layouts/header"%>
+
+  <!-- contenido principal -->
+  <%= render :partial => "layouts/content"%>
+
+  <!--footer -->
+  <%= render :partial => "layouts/footer"%>
+
+</table>
+</body>
+</html>

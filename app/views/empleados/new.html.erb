@@ -1,0 +1,162 @@
+<script type="text/javascript">
+  window.onload=function(){enableBaja()};
+  
+ function enableBaja(){
+   if (document.getElementById("empleado_baja").checked == true)
+     {
+       alert("Empleado ha causado baja");
+       document.getElementById("tdbaja").style.display="inline";
+       document.getElementById("empleado_fecha_baja").style.display="inline";
+     }
+   else
+      {
+        document.getElementById("tdbaja").style.display="none";
+        document.getElementById("empleado_fecha_baja").style.display="none";
+      }
+       
+ }
+</script>
+
+<% form_for  @empleado, :html => {:id => "new_empleado"} do |f| -%>
+  <table width="80%" border="0" align="center" cellpadding="2" cellspacing="1">
+     <%= f.error_messages %>
+    <tr bgcolor="#CCCCCC" class="titulo">
+      <td colspan="3" align="center" >NUEVO EMPLEADO</td>
+    </tr>
+
+    <!-- primera barra  -->
+      <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5" >DATOS PERSONALES</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Enlace</td>
+          <td align="center">Apellido Paterno</td>
+          <td align="center">Apellido Materno</td>
+          <td align="center">Nombre(s)</td>
+          <td align="center">Sexo</td>
+        </tr>
+        <tr>
+          <td align="center"><%= f.text_field :enlace, :size => "7x1", :onKeyPress => "return CharNum(event, 'numero');" %></td>
+          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
+          <td align="center"><%= f.text_field :materno,  :onKeyPress => "return CharNum(event, 'letra');"%></td>
+          <td align="center"><%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
+          <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
+        </tr>
+      </table></td>
+      </tr>
+
+
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="4">DATOS LABORALES</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Categoría</td>
+          <td align="center">Adscripción</td>
+          <td align="center">Fecha de Ingreso</td>
+          <td align="center">Baja</td>
+          <td align="center">Fecha de baja</td>
+        </tr>
+        <tr>
+          <td align="center"><%=f.text_field :categoria, :limit => 40 %></td>
+          <td align="center"><%= f.select("subdireccion_id", Subdireccion.all.collect {|p| [ p.descripcion, p.id ] }, { :include_blank => true }, {:selected => @empleado.subdireccion})%></td>
+          <td align="center"><%=f.text_field :fecha_ingreso %></td>
+          <td align="center"><%=f.check_box :baja, :onchange => "enableBaja();" %></td>
+          <td align="center" id="tdbaja"><%=f.text_field :fecha_baja %></td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+
+
+    <!-- Datos de ubicacion -->
+     <tr align="center">
+        <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr bgcolor="#E8E8E8" class="subtitulo">
+            <td align="center" colspan="5">DATOS DE UBICACION</td>
+          </tr>
+          <tr align=" justify" class="pregunta">
+            <td align="center">Correo</td>
+            <td align="center">Dirección</td>
+            <td align="center">Código postal</td>
+          </tr>
+          <tr>
+            <td align="center"><%=f.text_field :correo, :limit => 40 %></td>
+            <td align="center"><%=f.text_area :direccion, :size => "50x3" %></td>
+            <td align="center"><%=f.text_field :codigo_postal, :limit => 40 %></td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+
+      <!-- segunda parte de datos de ubicacion -->
+     <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5">&nbsp;</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Municipio</td>
+          <td align="center">Teléfono</td>
+          <td align="center">Celular</td>
+        </tr>
+        <tr>
+           <td align="center"><%= f.select("municipio_id", Municipio.all.collect {|p| [ p.descripcion, p.id ] }, { :include_blank => true }, {:selected => @empleado.municipio})%></td>
+           <td align="center"><%=f.text_field :telefono, :limit => 40 %></td>
+           <td align="center"><%=f.text_field :telefono_celular, :limit => 40 %></td>
+         </tr>
+        </table>
+      </td>
+    </tr>
+
+
+    <!-- Observaciones -->
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5">Observaciones</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center" colspan="5"><%=f.text_area :observaciones, :size => "100x1"%></td>
+        </tr>
+       </table>
+      </td>
+    </tr>
+
+
+
+ 
+    <!-- espacio -->
+    <tr>
+      <td colspan="3"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onclick="this.disabled=true;this.value='Enviando, Por favor espere ...';this.form.submit();"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "empleados"-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+
+
+
+<%= link_to 'Atras', empleados_path, :class => "boton" %>

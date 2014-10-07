@@ -184,7 +184,7 @@ table.sample td.d99 {
       </table>
   <%end%>
 
-  <br />
+  
 
  <%if @comparecencia = @tramite.comparecencia%>
     <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
@@ -200,7 +200,7 @@ table.sample td.d99 {
       </tr>
 
       <tr class="d1">
-        <td style="vertical-align: middle;"><b>Carácter con el que compadece:</b></td>
+        <td style="vertical-align: middle;"><b>Carácter con el que comparece:</b></td>
         <td style="vertical-align: middle;"><%=@comparecencia.caracter%></td>
       </tr>
 
@@ -225,7 +225,7 @@ table.sample td.d99 {
 
       <tr class="d0">
         <th colspan="2">
-           <%=h @comparecencia.asunto%>
+          <%=text_area :comparecencia, :asunto, :size => "60x9", :disabled => true%>
         </th>
       </tr>
      </table>

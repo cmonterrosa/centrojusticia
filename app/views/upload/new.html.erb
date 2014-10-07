@@ -1,15 +1,20 @@
-<h1>Nuevo documento</h1>
+<h1>Cargar nuevo documento</h1>
 
-<% form_for(@uploaded_file, :url => {:action => "create", :id => @tramite}, :html => { :multipart => true }) do |f| %>
+<%@identificador = (@tramite)? @tramite : @formacion%>
+<%@token = (@tramite)? "tramite" : "formacion"%>
+
+<% form_for(@uploaded_file, :url => {:action => "create", :id => @identificador, :token => @token }, :html => { :multipart => true }) do |f| %>
   <%= f.error_messages %>
- 
+
+<%if @tramite%>
   <p>
-    <%=f.label "Tipo:"%><br />
+     Tipo:<br />
     <%= f.select :tipodoc_id, Tipodoc.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%>
   </p>
+ <%end%>
 
   <p>
-    <%= f.label "Archivo:" %><br />
+    Archivo:<br />
     <%= f.file_field :inputfile %>
   </p>
   <p>
@@ -17,4 +22,5 @@
   </p>
 <% end %>
 
-<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  :action => "index", :id => @tramite%><br />
+ <%@url = (@tramite)? {:action => "index", :id => @tramite} : {:action => "docs_formacion", :id => @formacion}%>
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) ,  @url%><br />

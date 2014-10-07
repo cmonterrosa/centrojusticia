@@ -1,0 +1,23 @@
+<h1>Crear nuevo estudio</h1>
+
+<% form_for(@estudio) do |f| %>
+  <%= f.error_messages %>
+
+
+
+<p>
+  Padre:<br />
+  <%= f.select :parent_id, @estudios.collect{|a| [a.descripcion_jerarquica, a.id]}, :prompt => 'Seleccione una opción'%>
+</p>
+
+<p>
+    Descripcion:<br />
+    <%= f.text_field :descripcion, :size => 70 %>
+  </p>
+
+  <p>
+    <%= f.submit 'Guardar' %>
+  </p>
+<% end %>
+
+<%= link_to 'Atras', estudios_path, :class => "boton" %>

@@ -31,7 +31,7 @@
       <td align="center">
           <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
             <tr bgcolor="#E8E8E8" class="subtitulo">
-              <td align="center" colspan="3">DATOS DE LA SESIÓN</td>
+              <td align="center" colspan="3">CAPTURAR DATOS DE LA SESIÓN</td>
             </tr>
             <tr align=" justify" class="pregunta">
                 <td align="center">Fecha</td>
@@ -39,7 +39,7 @@
                 <td align="center">Tipo de sesión</td>
             </tr>
             <tr>
-              <td align="center"><%=f.label "#{(@fecha.strftime("%d de %B de %Y")).upcase}"%></td>
+              <td align="center"><%=h  "#{(@fecha.strftime("%d de %B de %Y")).upcase}"%></td>
               <%unless @horario%>
                 <td align="center"><%= f.select :horario_id, @horarios.collect{|a| [a.hora_completa, a.id]}, :prompt => 'Seleccione una opción'%></td>
               <%else%>

@@ -1,0 +1,20 @@
+<h1>Capturar nueva Institución Academica</h1>
+
+<% form_for(@institucion_academica) do |f| %>
+  <%= f.error_messages %>
+
+ <p>
+     Siglas<br />
+    <%= f.text_field :siglas %>
+  </p>
+
+  <p>
+    Descripción<br />
+    <%= f.text_field :descripcion %>
+  </p>
+  <p>
+    <%= f.submit 'Guardar' %>
+  </p>
+<% end %>
+
+<%= link_to 'Atrás', institucion_academicas_path, :class => "boton"%>

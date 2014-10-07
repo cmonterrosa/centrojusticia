@@ -1,0 +1,17 @@
+<h1>Editar Estudio</h1>
+
+<% form_for(@estudio) do |f| %>
+  <%= f.error_messages %>
+
+<p>
+    Descripcion:<br />
+    <%= f.text_field :descripcion, :size => 70 %>
+  </p>
+
+  <p>
+    <%= f.submit 'Guardar', :class => "boton" %>
+  </p>
+<% end %>
+
+<%= link_to 'Mostrar', @estudio, :class => "boton" %> |
+<%= link_to 'Atras', estudios_path, :class => "boton" %>

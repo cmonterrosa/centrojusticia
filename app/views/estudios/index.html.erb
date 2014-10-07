@@ -1,0 +1,37 @@
+<h1>Estudios</h1>
+
+<table width="90%">
+  <tr>
+    <td>Descripcion Jerarquica</td>
+    <td colspan="3">Acciones</td>
+  </tr>
+
+<% @estudios.each do |estudio| %>
+  <tr>
+    <td align="left"><%=h estudio.descripcion_jerarquica%></td>
+    <td><%= link_to 'Mostrar', estudio, :class => "boton" %></td>
+    <td><%= link_to 'Editar', edit_estudio_path(estudio), :class => "boton" %></td>
+    <td><%= link_to 'Eliminar', estudio, :confirm => '¿Esta seguro que desea eliminarlo?', :method => :delete , :class => "boton"%></td>
+  </tr>
+<% end %>
+</table>
+
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @estudios %>
+          </div>
+          <%= will_paginate @estudios %>
+        </div>
+      </td>
+    </tr>
+</table>
+
+
+
+
+<br />
+
+<%= link_to 'Nuevo Estudio', new_estudio_path, :class => "boton" %>
