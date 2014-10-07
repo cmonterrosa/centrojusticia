@@ -41,4 +41,5 @@ Rails::Initializer.run do |config|
   config.i18n.default_locale = :esMX
   config.middleware.use "PDFKit::Middleware", :print_media_type => true
   config.gem 'will_paginate', :version => '~> 2.3.16'
+  config.gem 'acts_as_tree'
 end
