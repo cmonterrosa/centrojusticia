@@ -10,6 +10,14 @@ class Orientacion < ActiveRecord::Base
   #validates_presence_of :sala_id, :message => "Seleccione una sala"
   #validates_presence_of :municipio_id, :message => "Seleccione una municipio"
 
+  before_save :update_full_name
+
+
+  def update_full_name
+    self.full_name = solicitante if self.nombre && self.paterno
+  end
+
+
   def solicitante
    # "#{self.paterno} #{self.materno} #{self.nombre}"
     "#{self.nombre} #{self.paterno} #{self.materno}"

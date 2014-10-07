@@ -1,18 +1,25 @@
+require 'time'
 require 'ftools'
+
+
+
 class Adjunto < ActiveRecord::Base
    belongs_to :tramite
    belongs_to :tipodoc
-   validates_presence_of :tipodoc_id, :message => "Seleccione un tipo de documento"
+   belongs_to :formacion
+   belongs_to :empleado
+   #validates_presence_of :tipodoc_id, :message => "Seleccione un tipo de documento"
 
   after_create :write_file
   before_destroy :prepare_file_for_delete
   after_destroy :delete_file
 
-  STORAGE_DIR = "#{RAILS_ROOT}/tmp/documentos/"
+  STORAGE_DIR = "#{RAILS_ROOT}/public/documentos/"
+  URL_PUBLIC_DIR="/documentos"
+
 
   def inputfile=(input)
     @file_contents = input
-
     self.file_name = sanitize_filename(
       "#{Time.parse(self.created_at.to_s).to_i}#{File.extname(input.original_filename)}")
 
@@ -31,6 +38,11 @@ class Adjunto < ActiveRecord::Base
 
   def full_path
     file_path + self.file_name
+  end
+
+  def url_path
+    t = Time.parse(self.created_at.to_s)
+   return  File.join(Adjunto::URL_PUBLIC_DIR, "#{t.year}/#{t.month}/#{t.day}/") + self.file_name
   end
 
   def contents

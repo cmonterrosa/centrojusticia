@@ -1,3 +1,5 @@
+#!/bin/env ruby
+# encoding: utf-8
 class Horario < ActiveRecord::Base
   belongs_to :sala
   has_many :sesiones

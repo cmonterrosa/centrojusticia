@@ -1,6 +1,6 @@
 #Dir.getwd
 class Document
-  include Config
+  include RbConfig
   def self.generate_report_xml(ds_data, report_design, output_type, select_criteria, report_params)
        report_design << '.jasper' if !report_design.match(/\.jasper$/)
        interface_classpath=RAILS_ROOT+"/app/jasper/bin"
@@ -57,7 +57,8 @@ class Document
 
         jdbc_url= "jdbc:#{config['adapter']}://#{host}:#{port}/#{database}"
         exec = "java -Djava.awt.headless=true -cp \"#{interface_classpath}\" XmlJasperInterface -Duser.language=es -Duser.region=MX -o#{output_type} -f#{RAILS_ROOT}/app/reports/#{report_design} #{report_params} -d\"#{jdbc_driver}\" -u\"#{jdbc_url}\" -n\"#{username}\" -p\"#{password}\""
-	      IO.popen(exec, "r") do |pipe|
+	     puts exec
+       IO.popen(exec, "r") do |pipe|
 	        results = pipe.read
 	        pipe.close
 	      end

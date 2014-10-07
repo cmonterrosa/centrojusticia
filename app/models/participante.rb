@@ -1,3 +1,5 @@
+require 'time'
+
 class Participante < ActiveRecord::Base
   belongs_to :comparecencia
   belongs_to :municipio
@@ -20,6 +22,11 @@ class Participante < ActiveRecord::Base
     if self.fecha_nac
       self.anio_nac = self.fecha_nac.year if (self.fecha_nac.year && self.anio_nac == Time.now.year.to_s)
     end
+
+    if self.nombre && self.paterno
+      self.full_name =  "#{self.nombre} #{self.paterno} #{self.materno}"
+    end
+
   end
 
   def nombre_completo
@@ -55,7 +62,7 @@ class Participante < ActiveRecord::Base
     today = Date.today
     new = user.fecha_nac.to_date.change(:year => today.year)
     user = user.fecha_nac
-    if Date.civil_to_jd(today.year, today.month, today.day) >= Date.civil_to_jd(new.year, new.month, new.day)
+    if Date.civil(today.year, today.month, today.day) >= Date.civil(new.year, new.month, new.day)
       age = today.year - user.year
     else
       age = (today.year - user.year) -1

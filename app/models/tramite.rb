@@ -117,6 +117,10 @@ class Tramite < ActiveRecord::Base
         end
    end
 
+   def has_estatus?(estatus)
+     (self.estatu == Estatu.find_by_clave(estatus)) ? true : false
+   end
+
 
 
 end
