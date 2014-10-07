@@ -27,12 +27,13 @@
 
 .LineaHorizontalVerde {
     position:relative;
-    height:1px;
+    height: 0.1em;
     background: #019595;
     color: #019595;
     overflow:hidden;
     width:600%;
     margin-left: -100%;
+    border:  none;
 }
 
 .TituloInicioSesion{
@@ -186,16 +187,17 @@ select {
     -moz-box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;
     box-shadow: 0 3px 0 #ccc, 0 -1px #fff inset;*/
     background: #F5FFFF;
-/*    color:#888;*/
+
+    /* color:#888; */
     color: #424242;
-    border:none;
+    /* border:none; */
     outline:none;
     display: inline-block;
-    -webkit-appearance:none;
+    /* -webkit-appearance:none; */
     -moz-appearance:none;
     appearance:none;
     cursor:pointer;
-    font-family: "Nexa Bold";
+    font-family: "Open Sans";
 }
 
 /* Targetting Webkit browsers only. FF will show the dropdown arrow with so much padding. */
@@ -226,4 +228,50 @@ label:before {
     position:absolute;
     pointer-events:none;
     display:block;
+}
+
+
+/* index de capacitacion */
+
+.titulo_lista_empleados{
+    font-size: 15px;
+    font-family: "Nexa Bold";
+    color: #019595;
+}
+
+.TituloMenuLadoDerecho {
+    font-family: "Nexa Light";
+    background-color: #019595;
+    text-align: center;
+    color: #ffffff;
+    width: 150px;
+    height: 29px;
+    padding-top: 12px;
+    margin: 2px 0px 0 584px
+}
+
+.LabelBusquedaTramite{
+   font-family: "Open Sans";
+    color: black;
+    font-size: 15px;
+    text-align: center;
+}
+
+.SelectBusquedaTramite{
+    font-family: "Open Sans";
+    color: #019595;
+    font-size: 15px;
+    text-align: center;
+}
+
+.SubmitBusquedaTramite{
+    width:auto;
+    height:auto;
+    vertical-align: middle;
+    font-family: "Open Sans";
+    background-color: #019595;
+    text-align: center;
+    color: #ffffff;
+    width: 150px;
+    height: 39px;
 }

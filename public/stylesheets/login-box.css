@@ -82,7 +82,7 @@
 
 /* Estilo para las tablas */
 table.sample {
-	border: 6px inset #8B8378;
+	border: 1px inset #8B8378;
 	-moz-border-radius: 6px;
         font-family: "Open Sans";
         font-size: 13px;

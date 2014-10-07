@@ -62,8 +62,9 @@
 			maxHeight : 9999,
 
 			autoSize   : true,
-			autoHeight : false,
-			autoWidth  : false,
+                        // estados dos de abajo tenian false
+			autoHeight : true,
+			autoWidth  : true,
 
 			autoResize  : !isTouch,
 			autoCenter  : !isTouch,

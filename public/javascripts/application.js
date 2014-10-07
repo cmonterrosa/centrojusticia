@@ -255,11 +255,6 @@ $j('#sesion_start_at').datetimepicker({
 });
 });
 
-$(function() {
-$j('#orientacion_fechahora').datetimepicker({
-	timeFormat: 'h:m'
-});
-});
 
 
 $(function() {
@@ -405,6 +400,16 @@ $j('#festivo_fecha_fin').datetimepicker({
 //});
 
 
+/* Orientaciones */
+
+$(function() {
+    $j('#orientacion_fechahora').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'es'
+    });
+});
+
+
 
 
 
@@ -438,4 +443,25 @@ $j('#festivo_fecha_fin').datetimepicker({
         document.getElementById("comparecencia_datos").disabled = true;
         }
   }
+
+
+/* Funciones de empleado */
+$(function() {
+    $j('#empleado_fecha_ingreso').datetimepicker({
+            lang:'es',
+            timepicker:false,
+            format:'Y/m/d',
+            formatDate:'Y/m/d'
+    });
+});
+
+
+$(function() {
+    $j('#empleado_fecha_baja').datetimepicker({
+            lang:'es',
+            timepicker:false,
+            format:'Y/m/d',
+            formatDate:'Y/m/d'
+    });
+})
 
