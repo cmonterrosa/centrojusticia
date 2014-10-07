@@ -1,4 +1,17 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :institucion_academicas
+
+  map.resources :estudios
+
+  ## Administracion de perfiles academicos ##
+  map.resources :empleados
+  map.connect 'empleado/formacion/:id', :controller => "empleados", :action => "formacion"
+  map.connect 'empleado/new_formacion/:id', :controller => "empleados", :action => "new_formacion"
+  map.connect 'empleado/destroy_formacion/:id', :controller => "empleados", :action => "destroy_formacion"
+  map.connect 'empleado/show_formacion/:id', :controller => "empleados", :action => "show_formacion"
+  map.connect 'empleado/edit_formacion/:id', :controller => "empleados", :action => "edit_formacion"
+  
+
   map.resources :cuadrantes, :only => [:index, :new, :create, :edit, :show]
 
 
