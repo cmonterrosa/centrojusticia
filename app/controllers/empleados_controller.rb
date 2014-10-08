@@ -118,6 +118,14 @@ class EmpleadosController < ApplicationController
     @instituciones_academicas = InstitucionAcademica.find(:all, :order => "descripcion")
   end
 
+  def edit_formacion
+    @formacion = Formacion.find(params[:id])
+    @empleado = @formacion.empleado
+    @estudios = Estudio.find(:all, :conditions => ["parent_id IS NOT NULL"])
+    @estudios = @estudios.sort { |a, b| a.descripcion_jerarquica <=> b.descripcion_jerarquica  }
+    @instituciones_academicas = InstitucionAcademica.find(:all, :order => "descripcion")
+  end
+
   def save_formacion
     @formacion = Formacion.new(params[:formacion])
     @empleado = Empleado.find(params[:empleado]) if params[:empleado]

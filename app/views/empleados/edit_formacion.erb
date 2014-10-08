@@ -1,0 +1,89 @@
+<% form_for :formacion, @formacion, :url => {:action => "save_formacion", :empleado => @empleado},  :html => {:id => "new_formacion"} do |f| -%>
+  <table width="80%" border="0" align="center" cellpadding="2" cellspacing="1">
+     <%= f.error_messages %>
+     <tr bgcolor="#CCCCCC" class="titulo">
+       <td colspan="3" align="center" >:. EDITAR FORMACION: <%=h @empleado.nombre_completo%> :.</td>
+     </tr>
+
+    <!-- primera barra  -->
+      <tr align="center">
+        <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+            <tr bgcolor="#E8E8E8" class="subtitulo">
+              <td align="center" colspan="2" >DATOS GENERALES</td>
+            </tr>
+            <tr align=" justify" class="pregunta">
+              <td align="center">Institucion académica</td>
+              <td align="center">Fecha de Conclusión</td>
+            </tr>
+            <tr>
+              <td><%= f.select("institucion_academica_id", @instituciones_academicas.collect {|p| [ p.descripcion_completa, p.id ] }, { :include_blank => true }, {:selected => @formacion.institucion_academica})%></td>
+              <td><%= f.date_select :fecha_conclusion, :start_year=> Time.now.year - 25, :end_year => Time.now.year %></td>
+           </tr>
+          </table>
+        </td>
+      </tr>
+
+       <!-- barra  -->
+      <tr align="center">
+        <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr bgcolor="#E8E8E8" class="subtitulo">
+            <td align="center" colspan="2" >DETALLE</td>
+          </tr>
+          <tr align=" justify" class="pregunta">
+            <td align="center" colspan="2">Estudio</td>
+          </tr>
+           <tr>
+            <td colspan="2" align="center"><%= f.select("estudio_id", @estudios.collect {|p| [ p.descripcion_jerarquica, p.id ] }, { :include_blank => true }, {:selected => @formacion.estudio})%></td>
+           </tr>
+          </table>
+        </td>
+      </tr>
+
+      <!-- observaciones  -->
+      <tr align="center">
+        <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr bgcolor="#E8E8E8" class="subtitulo">
+            <td align="center" colspan="2" >OBSERVACIONES</td>
+          </tr>
+          <tr align=" justify" class="pregunta">
+            <td align="center" colspan="2">Observaciones</td>
+          </tr>
+           <tr>
+            <td colspan="2" align="center"><%=f.text_area :observaciones, :size => "100x2"  %></td>
+           </tr>
+          </table>
+        </td>
+      </tr>
+
+
+
+
+    <!-- espacio -->
+    <tr>
+      <td colspan="2"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onclick="this.disabled=true;this.value='Enviando, Por favor espere ...';this.form.submit();"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "empleados"-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+
+
+
+<%= link_to 'Atras', empleados_path, :class => "boton" %>
