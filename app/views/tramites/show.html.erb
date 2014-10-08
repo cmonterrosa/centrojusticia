@@ -24,7 +24,7 @@
   </p>
   
 
-  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid;">
      <tr style="background-color:gray; color:white">
       <th colspan="2">
         Datos generales
@@ -40,7 +40,7 @@
    
     <tr class="d0">
        <td style="vertical-align: middle;"><b>Fecha/hora que se llevó a cabo la orientación:</b></td>
-       <td style="vertical-align: middle;"> <%=h(@tramite.orientacion.fechahora ? @tramite.orientacion.fechahora.strftime("%Y-%m-%d %H:%M") : "No existe información")%></td>
+       <td style="vertical-align: middle;"> <%=h(@tramite.orientacion.fechahora ? @tramite.orientacion.fechahora.strftime("%d de %B de %Y - %H:%M:%S %p") : "No existe información")%></td>
     </tr>
 
 
