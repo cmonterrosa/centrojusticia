@@ -127,7 +127,9 @@ class EmpleadosController < ApplicationController
   end
 
   def save_formacion
-    @formacion = Formacion.new(params[:formacion])
+    @formacion = Formacion.find(params[:id]) if params[:id]
+    @formacion ||= Formacion.new
+    @formacion.update_attributes(params[:formacion])
     @empleado = Empleado.find(params[:empleado]) if params[:empleado]
     @formacion.empleado=@empleado if @empleado
     if @formacion.save
