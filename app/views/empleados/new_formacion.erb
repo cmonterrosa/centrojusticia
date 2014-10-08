@@ -18,7 +18,7 @@
             </tr>
             <tr>
               <td><%= f.select("institucion_academica_id", @instituciones_academicas.collect {|p| [ p.descripcion_completa, p.id ] }, { :include_blank => true }, {:selected => @formacion.institucion_academica})%></td>
-              <td><%= f.date_select :fecha_conclusion %></td>
+              <td><%= f.date_select :fecha_conclusion, :start_year=> Time.now.year - 25, :end_year => Time.now.year %></td>
            </tr>
           </table>
         </td>
