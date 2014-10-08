@@ -106,7 +106,7 @@ class EmpleadosController < ApplicationController
     ##### FORMACION ACADEMICA ######
   def formacion
     @empleado = Empleado.find(params[:id])
-    @formacions = Formacion.find(:all, :conditions => ["empleado_id = ?",  @empleado.id]) if @empleado
+    @formacions = Formacion.find(:all, :conditions => ["empleado_id = ?",  @empleado.id], :order => "fecha_conclusion") if @empleado
   end
 
   def new_formacion
@@ -132,6 +132,7 @@ class EmpleadosController < ApplicationController
     @formacion.update_attributes(params[:formacion])
     @empleado = Empleado.find(params[:empleado]) if params[:empleado]
     @formacion.empleado=@empleado if @empleado
+    @formacion.user_id = current_user.id
     if @formacion.save
       flash[:notice] = "Estudio guardado correctamente"
       redirect_to :action =>"formacion", :id => @empleado
