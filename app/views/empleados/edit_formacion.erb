@@ -1,4 +1,4 @@
-<% form_for :formacion, @formacion, :url => {:action => "save_formacion", :empleado => @empleado},  :html => {:id => "new_formacion"} do |f| -%>
+<% form_for :formacion, @formacion, :url => {:action => "save_formacion", :empleado => @empleado, :id => @formacion},  :html => {:id => "new_formacion"} do |f| -%>
   <table width="80%" border="0" align="center" cellpadding="2" cellspacing="1">
      <%= f.error_messages %>
      <tr bgcolor="#CCCCCC" class="titulo">
