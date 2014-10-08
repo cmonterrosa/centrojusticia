@@ -54,14 +54,31 @@
                                                           <ul><%=link_to image_tag('kolaval/ico-estadistica.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-estadistica.jpg") , {:action => "index", :controller => "estadisticas"}, :title => "Estadística"%></ul>
                                                         </li>
 
+                                                      
+                                                        <!-- admin -->
                                                         <li>
-                                                          <!-- Cuadrantes -->
-                                                          <ul><%=link_to image_tag('kolaval/ico-cuadrantes.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-cuadrantes.jpg") , {:action => "index", :controller => "cuadrantes"}, :title => "Cuadrantes"%></ul>
-                                                        </li>
+                                                          <%=link_to image_tag('kolaval/ico-administracion.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-administracion.jpg") , {:action => "index", :controller => "admin"}, :title => "Admin"%>
+                                                          <ul class="cbp-hssubmenu">
+                                                                            <!-- Administracion -->
 
-                                                        <li>
-                                                          <!-- Administracion -->
-                                                          <ul><%=link_to image_tag('kolaval/ico-administracion.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-administracion.jpg") , {:action => "index", :controller => "admin"}, :title => "Admin"%></ul>
+                                                                          <li><%=link_to image_tag('kolaval/ico-administracion.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-administracion.jpg") , {:action => "index", :controller => "admin"}, :title => "Admin"%></li>
+                                                                            <!-- Cuadrantes -->
+                                                                         <li><%=link_to image_tag('kolaval/ico-cuadrantes.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-cuadrantes.jpg") , {:action => "index", :controller => "cuadrantes"}, :title => "Cuadrantes"%></li>
+                                                                         <li>
+                                                                            <!-- Empleados -->
+                                                                            <%=link_to image_tag('kolaval/capacitacion/ico-empleados.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-empleados.jpg") , {:action => "index", :controller => "empleados"}, :title => "Administración de Empleados"%>
+                                                                        </li>
+                                                                        <li>
+                                                                            <!-- Estudios -->
+                                                                            <%=link_to image_tag('kolaval/capacitacion/ico-estudios.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-estudios.jpg") , {:action => "index", :controller => "estudios"}, :title => "Estudios académicos"%>
+                                                                        </li>
+                                                                        <li>
+                                                                            <!-- Instituciones -->
+                                                                            <%=link_to image_tag('kolaval/capacitacion/ico-insti-academ.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-insti-academ.jpg") , {:action => "index", :controller => "institucion_academicas"}, :title => "Instituciones académicas"%>
+                                                                        </li>
+                                                          </ul>
+
+                                                          
                                                         </li>
 							
 							
@@ -76,3 +93,6 @@
 		</script>
 	</body>
 </html>
+
+
+
