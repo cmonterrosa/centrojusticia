@@ -25,9 +25,7 @@
                 <td align="left" ><= link_to 'Mostrar', {:action => "show_formacion", :id =>formacion}, :class => "boton" %></td>
                 -->
                 <td align="left" ><%= link_to 'Documentos', {:controller => "upload", :action => "docs_formacion", :id =>formacion}, :class => "boton" %></td>
-                <!--
-                <td align="left" ><= link_to 'Editar', {:action => "edit_formacion", :id => formacion}, :class => "boton" %></td>
-                -->
+                <td align="left" ><%= link_to 'Editar', {:action => "edit_formacion", :id => formacion}, :class => "boton" %></td>
                 <td align="left" ><%= link_to 'Eliminar', {:action => "destroy_formacion", :id => formacion},  :confirm => '¿Esta seguro que desea eliminarlo?', :method => :delete, :class => "boton" %></td>
       </tr>
       <%clase = invert_class(clase)%>
