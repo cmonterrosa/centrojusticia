@@ -7,16 +7,16 @@
       </th>
      </tr>
      <tr class="d0">
-        <td style="vertical-align: middle;"><b>Descripción</b></td>
-         <td style="vertical-align: middle;"<b>Fecha hora</b></td>
-         <td style="vertical-align: middle;"<b>Modificó</b></td>
+        <td style="vertical-align: middle;" width="20%"><b>Descripción</b></td>
+        <td style="vertical-align: middle;" width="40%"><b>Fecha hora</b></td>
+        <td style="vertical-align: middle;" width="40%"><b>Modificó</b></td>
      </tr>
      <%Historia.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "created_at").each do |row|%>
        <tr class="d1">
-         <td style="vertical-align: middle;"><%=row.estatu.descripcion%></td>
-         <td style="vertical-align: middle;"><%=row.created_at.strftime("%d de %B de %Y - %H:%M %p")%></td>
-         <td style="vertical-align: middle;"><%=(row.user) ? User.find(row.user).nombre_completo : "---"%></td>
+         <td style="vertical-align: middle;" width="20%"><%=row.estatu.descripcion%></td>
+         <td style="vertical-align: middle;" width="40%"><%=row.created_at.strftime("%d de %B de %Y - %H:%M %p")%></td>
+         <td style="vertical-align: middle;" width="40%"><%=(row.user) ? User.find(row.user).nombre_completo : "---"%></td>
 
      </tr>
      <%end%>
-  </table><br /><br />
+  </table><br />
