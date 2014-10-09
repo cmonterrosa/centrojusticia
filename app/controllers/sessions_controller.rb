@@ -28,6 +28,7 @@ class SessionsController < ApplicationController
       note_failed_signin
       @login       = params[:login]
       @remember_me = params[:remember_me]
+      flash[:error] = "No se pudo acceder, verifique que el usuario y contraseña estén escritos correctamente"
       render :action => 'new'
     end
   end
