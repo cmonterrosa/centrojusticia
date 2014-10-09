@@ -27,7 +27,7 @@ class EstudiosController < ApplicationController
   def new
     @estudio = Estudio.new
     @estudios = Estudio.find(:all)
-    @estudios= @estudios.sort{|a,b| a.descripcion_jerarquica <=> b.descripcion_jerarquica}.paginate(:page => params[:page], :per_page => 25)
+    @estudios= @estudios.sort{|a,b| a.descripcion_jerarquica <=> b.descripcion_jerarquica}
     respond_to do |format|
       format.html # new.html.erb
       format.xml  { render :xml => @estudio }
