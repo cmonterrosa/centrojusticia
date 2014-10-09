@@ -3,8 +3,6 @@ a img {
         border: 0;
 }
 
-
-
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
@@ -165,12 +163,26 @@ a.boton:active {
 /* notificaciones */
 
 .notice {
+        font-family: "Nexa Light";
+        font-size: 16px;
+        color: black;
 	background: #FFF6BF;
 	border-top: 2px solid #FFD324;
 	border-bottom: 2px solid #FFD324;
 	text-align: center;
 	margin: 10px auto;
-	padding: 5px 20px;
+	padding: 18px 20px;
+	}
+
+  .error {
+        font-family: "Nexa Light";
+        font-size: 16px;
+	border-top: 0px solid red;
+	border-bottom: 0px solid;
+	text-align: center;
+	margin: 10px auto;
+	padding: 10px 20px;
+        color: red;
 	}
 
 /* css for timepicker */

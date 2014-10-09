@@ -70,6 +70,10 @@ div.centered{
 
            <tr><th style="height: 4px">&nbsp;</th></tr>
 
+           <%if flash[:error]%>
+              <tr><th style="height: 4px" class="error"><%=flash[:error]%></th></tr>
+           <%end%>
+
           <!-- inicia form -->
           <% form_tag session_path do -%>
             <tr align="center">
