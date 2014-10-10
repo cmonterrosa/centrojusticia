@@ -14,7 +14,8 @@ class EmpleadosController < ApplicationController
   end
 
   def  update_list_empleados
-     @empleados = Empleado.find(:all, :conditions => ["subdireccion_id = ?", params[:id]], :order => "paterno")
+     @subdireccion= Subdireccion.find(params[:id])
+     @empleados = Empleado.find(:all, :conditions => ["subdireccion_id = ?", @subdireccion.id], :order => "paterno")
      render :layout => false
  end
 
