@@ -31,7 +31,7 @@
 
      <tr class="d1">
        <!-- Fotografia del empleado -->
-       <th style="vertical-align: middle; text-align: center;" rowspan="7">
+       <th style="vertical-align: middle; text-align: center;" rowspan="8">
           <%@foto = Adjunto.find(:first, :conditions => ["empleado_id = ?", @empleado.id])%>
          <%if @foto%>
             <%= link_to (image_tag @foto.url_path, :size => '160x190'), { :action => "preview_image", :controller => "upload", :id => @foto}, :class => "fancybox fancybox.iframe"  %><br /><%=link_to "Eliminar", :controller => "upload", :action => "destroy_profile_picture", :id => @foto, :empleado => @empleado%>
@@ -57,56 +57,60 @@
        <td style="vertical-align: middle;"> <%=h(@empleado.fecha_nac ? @empleado.fecha_nac.strftime("%d/%m/%Y") : "No existe información")%></td>
     </tr>
 
-    <tr class="d0">
+     <tr class="d0">
+       <td style="vertical-align: middle;" align="left"><b>Adscripción:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@empleado.subdireccion ? @empleado.subdireccion.descripcion : "No existe información")%></td>
+    </tr>
+
+    <tr class="d1">
        <td style="vertical-align: middle;" align="left"><b>Enlace:</b></td>
        <td style="vertical-align: middle;"> <%=h(@empleado ? @empleado.enlace : "No existe información")%></td>
     </tr>
 
-    <tr class="d1">
+    <tr class="d0">
        <td style="vertical-align: middle;" align="left"><b>Categoria:</b></td>
        <td style="vertical-align: middle;"> <%=h(@empleado ? @empleado.categoria : "No existe información")%></td>
     </tr>
-    <tr class="d0">
+
+    <tr class="d1">
        <td style="vertical-align: middle;" align="left"><b>Fecha de ingreso:</b></td>
        <td style="vertical-align: middle;"> <%=h(@empleado.fecha_ingreso ? @empleado.fecha_ingreso.strftime("%d/%m/%Y") : "No existe información")%></td>
     </tr>
     <%if @empleado.baja%>
-    <tr class="d1">
+    
+    <tr class="d0">
        <td style="vertical-align: middle;" align="left"><b>Fecha de baja:</b></td>
        <td style="vertical-align: middle;"> <%=h(@empleado.fecha_baja ? @empleado.fecha_baja.strftime("%d/%m/%Y") : "No existe información")%></td>
     </tr>
     <%end%>
-    <tr class="d0">
-      <td colspan="2">&nbsp;</td>
-    </tr>
 
+    
     <!-- Datos de ubicacion -->
-    <tr class="d1">
-       <td>&nbsp;</td>
+    <tr class="d0">
        <td style="vertical-align: middle;" align="left"><b>Dirección:</b></td>
        <td style="vertical-align: middle;"> <%=h(@empleado.direccion ? @empleado.direccion : "No existe información")%></td>
     </tr>
-    <tr class="d0">
+    <tr class="d1">
       <td>&nbsp;</td>
        <td style="vertical-align: middle;" align="left"><b>Municipio:</b></td>
        <td style="vertical-align: middle;"> <%=h(@empleado.municipio ? @empleado.municipio.descripcion : "No existe información")%></td>
     </tr>
-    <tr class="d1">
+    <tr class="d0">
        <td>&nbsp;</td>
        <td style="vertical-align: middle;" align="left"><b>Código Postal:</b></td>
        <td style="vertical-align: middle;"> <%=h(@empleado.codigo_postal ? @empleado.codigo_postal : "No existe información")%></td>
     </tr>
-    <tr class="d0">
+    <tr class="d1">
        <td>&nbsp;</td>
        <td style="vertical-align: middle;" align="left"><b>Correo electrónico:</b></td>
        <td style="vertical-align: middle;"> <%=h(@empleado.correo ? @empleado.correo : "No existe información")%></td>
     </tr>
-    <tr class="d1">
+    <tr class="d0">
        <td>&nbsp;</td>
        <td style="vertical-align: middle;" align="left"><b>Teléfono:</b></td>
        <td style="vertical-align: middle;"> <%=h(@empleado.telefono ? @empleado.telefono : "No existe información")%></td>
     </tr>
-    <tr class="d0">
+    <tr class="d1">
        <td>&nbsp;</td>
        <td style="vertical-align: middle;" align="left"><b>Teléfono celular:</b></td>
        <td style="vertical-align: middle;"> <%=h(@empleado.telefono_celular ? @empleado.telefono_celular : "No existe información")%></td>
