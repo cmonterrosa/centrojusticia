@@ -5,13 +5,20 @@ class EmpleadosController < ApplicationController
   # GET /empleados
   # GET /empleados.xml
   def index
-    @empleados = Empleado.find(:all, :order => "paterno").paginate(:page => params[:page], :per_page => 25)
-
+     #@empleados = Empleado.find(:all, :order => "paterno").paginate(:page => params[:page], :per_page => 25)
+     @areas = Subdireccion.find(:all, :order => "descripcion")
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @empleados }
     end
   end
+
+  def  update_list_empleados
+     @empleados = Empleado.find(:all, :conditions => ["subdireccion_id = ?", params[:id]], :order => "paterno")
+     render :layout => false
+ end
+
+
 
   # GET /empleados/1
   # GET /empleados/1.xml
