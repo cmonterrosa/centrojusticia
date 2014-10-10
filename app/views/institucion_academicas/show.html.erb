@@ -8,5 +8,34 @@
 </p>
 
 
+
+<table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="4">
+        Empleados que han cursado en esta institución:
+      </th>
+     </tr>
+     <tr class="d1">
+       <th>&nbsp;</th>
+       <th>Empleado</th>
+       <th>Estudio</th>
+       <th>Fecha de conclusión</th>
+     </tr>
+      <%clase=0%>
+     <%@egresados.each do |formacion|%>
+        <tr class="d<%=h clase%>">
+                <!-- Si tiene archivo adjunto -->
+               <%if Adjunto.count(:id, :conditions => ["formacion_id = ?", formacion.id]) > 0%>
+                  <td align="center" width="5%"><%= link_to image_tag("kolaval/capacitacion/archivo_adjunto.png", :border =>0) , { :action => "docs_formacion", :controller => "upload", :id => formacion }, :html => { :target => "_blank"}, :title => "Documentos Adjuntos" %></td>
+                <%else%>
+                  <td>&nbsp;</td>
+                 <%end%>
+               <td align="left" width="35%"><%=h (formacion.empleado) ? formacion.empleado.nombre_completo: ""%></td>
+               <td align="left" width="40%"><%=h (formacion.estudio) ? formacion.estudio.descripcion_jerarquica: ""%></td>
+               <td align="left" width="20%"><%=h (formacion.fecha_conclusion) ? formacion.fecha_conclusion.strftime('%d de %B de %Y'): ""%></td>
+         </tr>
+      <%end%>
+</table><br />
+
 <%= link_to 'Editar', edit_institucion_academica_path(@institucion_academica), :class => "boton" %> |
 <%= link_to 'Regresar', institucion_academicas_path, :class => "boton" %>

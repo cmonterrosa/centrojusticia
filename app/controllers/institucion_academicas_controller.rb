@@ -13,7 +13,7 @@ class InstitucionAcademicasController < ApplicationController
   # GET /institucion_academicas/1.xml
   def show
     @institucion_academica = InstitucionAcademica.find(params[:id])
-
+    @egresados = Formacion.find(:all, :conditions => ["institucion_academica_id = ?", @institucion_academica], :order => "fecha_conclusion") if @institucion_academica
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @institucion_academica }
