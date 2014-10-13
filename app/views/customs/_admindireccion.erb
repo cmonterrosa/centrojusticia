@@ -1,39 +1,56 @@
-<%= render :partial => "barra_superior"%>
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+            <%= stylesheet_link_tag "menu_desplegable/default.css"%>
+            <%= stylesheet_link_tag "menu_desplegable/component.css"%>
+            <%= javascript_include_tag 'menu_desplegable/modernizr.custom.js'%>
+        </head>
+	<body>
+		<div class="container">
+                        <div class="main">
+				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+					<div class="cbp-hsinner">
+						<ul class="cbp-hsmenu">
 
-<table width="50%" border="0" cellspacing="0" cellpadding="0">
-  <tr align="center">
-   
-       <!-- Administración de personal -->
-       <td><%=link_to image_tag('iconos/perfiles2.png',  :size => "128x128", :mouseover => "iconos/perfiles2.png") , {:action => "show_users", :controller => "admin"}, :title => "Control de usuarios"%></td>
+                                                         <!-- Administracion de Usuarios -->
+                                                         <li>
+                                                            <ul><%=link_to image_tag('kolaval/admon-usuarios.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/admon-usuarios.jpg") , {:action => "show_users", :controller => "admin"}, :title => "Control de Usuarios"%></ul>
+                                                         </li>
 
-       <!-- Reportes -->
-       <td><%=link_to image_tag('iconos/reporte.png',  :size => "128x128", :mouseover => "iconos/reporte.png") , {:action => "select_bitacora_ausencias_personal", :controller => "estadisticas"}, :title => "Reporte de ausencias"%></td>
-  
-       <!-- Agenda -->
-       <td><%=link_to image_tag('iconos/calendario.png',  :size => "128x128", :mouseover => "iconos/calendario.png") , {:action => "calendario", :controller => "agenda"}, :title => "Agenda"%></td>
-</tr>
-  <tr align="center">
-    <td class="menu" align="center">Administración de Usuarios</td>
-    <td class="menu" align="center">Ausencias de personal</td>
-    <td class="menu" align="center">Agenda</td>
- </tr>
+                                                          <!-- Ausencias de personal -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ausencia-personal.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ausencia-personal.jpg") , {:action => "select_bitacora_ausencias_personal", :controller => "estadisticas"}, :title => "Reporte de ausencias de personal"%></ul>
+                                                          </li>
 
- <tr>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
-  </tr>
+                                                          <!-- Agenda -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
+                                                          </li>
 
-<tr align="center">
-         <!-- listado de trámites -->
-       <td><%=link_to image_tag('iconos/seguimiento.png',  :size => "128x128", :mouseover => "iconos/seguimiento.png") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></td>
+                                                          <!-- Listado de tramites-->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></ul>
+                                                          </li>
 
-       <!-- Administración de días inhabiles -->
-       <td><%=link_to image_tag('iconos/festivos.png',  :size => "128x128", :mouseover => "iconos/festivos.png") , {:action => "festivos", :controller => "admin"}, :title => "Control de días inhábiles"%></td>
 
-  </tr>
+                                                          <!-- Dias inhabiles-->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/dias-inha.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/dias-inha.jpg") , {:action => "festivos", :controller => "admin"}, :title => "Control de días inhábiles"%></ul>
+                                                          </li>
 
-  <tr align="center">
-    <td class="menu" align="center">Listado de Trámites</td>
-    <td class="menu" align="center">Días inhábiles</td>
-  </tr>
-</table>
+
+
+							
+
+
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<script src="/javascripts/menu_desplegable/cbpHorizontalSlideOutMenu.min.js"></script>
+		<script>
+			var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper' ) );
+		</script>
+	</body>
+</html>
