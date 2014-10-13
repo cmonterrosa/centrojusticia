@@ -71,8 +71,8 @@ window.onload = function() {
        </tr>
         <tr>
           <%enable = (@comparecencia.conocimiento) ? false : true%>
-          <td align="center"><%= f.text_area :datos, :class => "text", :size => "50x6", :disabled => enable%></td>
-          <td align="center"><%= f.text_area :asunto,  :required => true, :size => "80x6"%></td>
+          <td align="center"><%= f.text_area :datos, :class => "text", :size => "45x9", :disabled => enable%></td>
+          <td align="center"><%= f.text_area :asunto,  :required => true, :size => "90x12"%></td>
         </tr>
       </table></td>
      </tr>
@@ -108,14 +108,15 @@ window.onload = function() {
 <script type="text/javascript">
   var asunto = new LiveValidation( 'comparecencia_asunto' );
   asunto.add( Validate.Presence );
-  asunto.add( Validate.Length, { maximum: 450 } );
+  asunto.add( Validate.Length, { maximum: 940 } );
 
   var caracter = new LiveValidation( 'comparecencia_caracter' );
   caracter.add( Validate.Presence );
   caracter.add( Validate.Length, { maximum: 70 } );
 
-    var procedencia = new LiveValidation( 'comparecencia_procedencia' );
-  procedencia.add( Validate.Presence );
+  var procedencia = new LiveValidation( 'comparecencia_procedencia' );
   procedencia.add( Validate.Length, { maximum: 40 } );
 
+  var datos = new LiveValidation( 'comparecencia_datos' );
+  datos.add( Validate.Length, { maximum: 140 } );
 </script>
