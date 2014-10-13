@@ -58,6 +58,7 @@ class ComparecenciasController < ApplicationController
          param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
          #-- Parametros
          param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+         param["P_EXPEDIENTE"]=(@comparecencia.tramite)? {:tipo=>"String", :valor=>@comparecencia.tramite.numero_expediente} :  {:tipo=>"String", :valor=>"--"}
          param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
          param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}
          param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
