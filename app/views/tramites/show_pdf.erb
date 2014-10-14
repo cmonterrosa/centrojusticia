@@ -3,8 +3,8 @@
 table.sample {
 	border: 6px inset #8B8378;
 	-moz-border-radius: 6px;
-        font-family: "Open Sans";
-        font-size: 13px;
+        font-family: "Nexa Light";
+        font-size: 12px;
         margin-left:auto;
         margin-right:auto;
 }
@@ -65,8 +65,7 @@ table.sample td.d99 {
 
 <div class="titulocalendario">
   <p>Resumen General</p>
-  <p>Folio: <%=link_to @tramite.folio_integrado, :action => "menu", :id => @tramite%></p>
-  <p><b>Número de expediente: <%=h (@tramite.numero_expediente) ? (@tramite.numero_expediente) : "----"%></b></p>
+  <p><b>Número de expediente: <%=h (@tramite.numero_expediente) ? (@tramite.numero_expediente) : "----"%></b> | Folio: <%=link_to @tramite.folio_integrado, :action => "menu", :id => @tramite%></p>
 </div>
 
 
@@ -229,9 +228,12 @@ table.sample td.d99 {
        </th>
      </tr>
 
+     <%tamanio = (@comparecencia.asunto) ? @comparecencia.asunto.size : 1564 %>
+     <%tamanio = (tamanio / 92) + 5%>
+
       <tr class="d0">
         <th colspan="2">
-          <%=text_area :comparecencia, :asunto, :size => "90x9", :disabled => true%>
+          <%=text_area :comparecencia, :asunto, :size => "110x#{tamanio}", :disabled => true, :style => "text-align: justify"%>
         </th>
       </tr>
      </table>
