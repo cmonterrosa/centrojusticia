@@ -1,0 +1,26 @@
+
+<%unless @tramite.adjuntos.empty?%>
+
+<!-- Documentacion anexa -->
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+       <th colspan="2">
+           Documentación Anexa
+       </th>
+     </tr>
+
+      <tr class="d0">
+          <td style="vertical-align: middle;"><b>Documento</b></td>
+          <td style="vertical-align: middle;"<b>Fecha hora</b></td>
+      </tr>
+      <%clase=0%>
+      <%@tramite.adjuntos.each do |a|%>
+        <tr class="d<%=invert_class(clase)%>">
+          <td style="vertical-align: middle;"><b><%=link_to "#{a.tipodoc.descripcion}", :controller => "upload", :action => "download", :id => a%></b></td>
+          <td style="vertical-align: middle;"><%=a.created_at.strftime("%Y-%m-%d / %H:%M:%S")%></td>
+        </tr>
+        <%clase = invert_class(clase)%>
+      <%end%>
+    </table><br /><br />
+
+<%end%>
