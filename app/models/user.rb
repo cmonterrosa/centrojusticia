@@ -165,9 +165,12 @@ class User < ActiveRecord::Base
   end
 
   def estatus_actual
-    # Buscamos si tienen movimientos
+    # Buscamos si tienen movimientos o baja
+    @baja = (self.situacion == Situacion.find_by_descripcion("BAJA"))? true : nil
+    @estatus_actual = (@baja) ? "BAJA" : nil
     @movimiento = Movimiento.find(:first, :conditions => ["user_id = ? AND (? between fecha_inicio AND fecha_fin)", self.id, Time.now], :order => "fecha_fin DESC")
-    (@movimiento)? @movimiento.situacion.descripcion : "DISPONIBLE"
+    @estatus_actual ||= (@movimiento)? @movimiento.situacion.descripcion : "DISPONIBLE"
+    return @estatus_actual
   end
 
   def num_orientaciones_periodo(inicio,fin)

@@ -9,8 +9,8 @@
             <!-- Registros -->
             <%clase = 0%>
             <% for usuario in @users %>
-            
-                <tr class="<%=(usuario.activo) ?  "d#{invert_class(clase)}" : "d99"%>">
+                <%clase_ok = (usuario.activo) ?  "d#{invert_class(clase)}" : "bloqueado"%>
+                <tr class="<%=clase_ok%>">
                       <td align="center">
                           <%=usuario.login%>
                       </td>

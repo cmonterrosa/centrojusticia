@@ -195,7 +195,9 @@ class AdminController < ApplicationController
  def change_user_estatus
    if validate_token(params[:t]) && @user = User.find(params[:id])
      @mensaje = @user.activo ? "Usuario bloqueado" : "Usuario reactivado"
-     (@user.activo) ? @user.update_attributes!(:activo => false) : @user.update_attributes!(:activo => true)
+     @baja = Situacion.find_by_descripcion("BAJA")
+     @disponible = Situacion.find_by_descripcion("DISPONIBLE")
+     (@user.activo) ? @user.update_attributes!(:activo => false, :situacion_id => @baja.id) : @user.update_attributes!(:activo => true, :situacion_id => @disponible.id)
      flash[:notice] = @mensaje
    else
      flash[:notice] = "No se pudo bloquear usuario, verifique"
