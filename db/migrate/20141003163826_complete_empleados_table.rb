@@ -15,7 +15,11 @@ class CompleteEmpleadosTable < ActiveRecord::Migration
       #### Procesamiento de datos ####
       #usuario	Organización	Apellidos	Nombre	Dirección de correo electrónico	Especialidad	Teléfono	Teléfono móvil	Dirección	Ciudad	Codigo Postal	Notas
       #hjimenez,Poder Judicial del Esatado de Chiapas,Jiménez Esponda,Héctor Ivan,hijes2009@hotmail.com,Director General,Centro,---,9615791283,Cerrada Amarantos # 1 Fracc. Los Laureles.,Tuxtla Gutiérrez,2902
-      @subdireccion  = Subdireccion.find_by_descripcion('Subdirección Regional Centro')
+        unless  Subdireccion.find_by_descripcion('Subdirección Regional Centro')
+           Subdireccion.create(:descripcion => "Subdireccion Regional Centro", :titular => "Lic. Rodrigo Dominguez Moscoso", :direccion => "Calle Candoquis número 290 esq. con Avenida Pino, Fraccionamiento el bosque", :cargo => "SUBDIRECTOR REGIONAL")
+        end
+       @subdireccion  = Subdireccion.find_by_descripcion('Subdirección Regional Centro')
+
       @municipio = (@subdireccion.municipio)? (@subdireccion.municipio) : (Municipio.find_by_descripcion("TUXTLA GUTIERREZ"))
       File.open("#{RAILS_ROOT}/db/catalogos/empleados_ceja.csv").each_line { |line|
       usuario,organizacion,apellidos,nombre,correo,categoria,region,telefono,celular,direccion,codigo_postal = line.split(",")
