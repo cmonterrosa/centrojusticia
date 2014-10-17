@@ -1,48 +1,47 @@
-<%= render :partial => "barra_superior"%>
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+            <%= stylesheet_link_tag "menu_desplegable/default.css"%>
+            <%= stylesheet_link_tag "menu_desplegable/component.css"%>
+            <%= javascript_include_tag 'menu_desplegable/modernizr.custom.js'%>
+        </head>
+	<body>
+		<div class="container">
+                        <div class="main">
+				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+					<div class="cbp-hsinner">
+						<ul class="cbp-hsmenu">
 
-<table width="50%" border="0" cellspacing="0" cellpadding="0">
-  <tr align="center">
-      <td>
-        <a href="/orientacions/list_by_user" title="Mis Orientaciones">
-           <img src="/images/iconos/orientaciones2.png" width="128" height="128" alt="orientaciones" />
-        </a>
-      </td>
+                                                          <!-- Orientaciones -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/orientaciones.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/orientaciones.jpg") , {:action => "list_by_user", :controller => "orientacions"}, :title => "Orientaciones"%></ul>
+                                                          </li>
 
-       <td>
-        <a href="/comparecencias/list_by_user" title="Mis Comparecencias">
-          <img src="/images/iconos/comparecencias.png" width="128" height="128" alt="comparecencias" />
-        </a>
-       </td>
+                                                          <!-- Comparecencias -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/comparecencias.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/comparecencias.jpg") , {:action => "list_by_user", :controller => "comparecencias"}, :title => "Comparecencias"%></ul>
+                                                          </li>
 
-        <%if current_user.has_role?("bitacora")%>
-        <td>
-           <%=link_to image_tag('iconos_estadisticos/bitacora_atencion.png', :size => "128x128", :mouseover => "iconos_estadisticos/bitacora_atencion_2.png") , {:controller => "estadisticas", :action => "select_personas_atendidas"}, :title => "Bitácora de atención"%>
-        </td>
-        <%end%>
+                                                          <!-- listado de tramites -->
 
-       <!-- Listado de trámites -->
-        <td>
-            <a href="/tramites/list" title="Trámites">
-              <img src="/images/iconos/seguimiento.png" width="128" height="128" alt="Trámites" />
-            </a>
-        </td>
+                                                         <li>
+                                                             <ul><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></ul>
+                                                         </li>
 
-      <!--
-      <td>
-         <a href="/customs/library" title="Biblioteca">
-           <img src="/images/iconos/biblioteca.png" width="128" height="128" alt="biblioteca" />
-         </a>
-       </td>
-      -->
-  </tr>
-  <tr align="center">
-    <td class="menu">Orientaciones</td>
-    <td class="menu">Comparecencias</td>
-    <%if current_user.has_role?("bitacora")%>
-        <td class="menu">Bitácora de atención</td>
-    <%end%>
-    <td class="menu">Listado de trámites</td>
-    <!-- <td class="menu">Biblioteca</td> -->
-  </tr>
-</table>
-
+                                                        <!-- Agenda -->
+                                                        <%if current_user.has_role?("bitacora")%>
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-bitacora-aten.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-bitacora-aten.jpg") , {:action => "select_personas_atendidas", :controller => "estadisticas"}, :title => "Bitacora de atencion"%></ul>
+                                                          </li>
+                                                        <%end%>
+                                                  </ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<script src="/javascripts/menu_desplegable/cbpHorizontalSlideOutMenu.min.js"></script>
+		<script>
+			var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper' ) );
+		</script>
+	</body>
+</html>
