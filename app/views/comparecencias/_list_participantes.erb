@@ -6,17 +6,17 @@
 
 
 <%unless @comparecencia.participantes.empty?%>
-  <table class="table1">
-    <thead>
+  <table class="tablakolaval">
+    
          <!-- Nombre de los integrantes -->
          <tr>
-             <th scope="col" abbr="Starter">NP</th>
-             <th scope="col" abbr="Starter">Rol</th>
-             <th scope="col" abbr="Starter">Nombre completo o Razón Social</th>
-             <th scope="col" abbr="Starter" colspan="4">Acciones</th>
+             <td scope="col" abbr="Starter">NP</td>
+             <td scope="col" abbr="Starter">Rol</td>
+             <td scope="col" abbr="Starter">Nombre completo o Razón Social</td>
+             <td scope="col" abbr="Starter" colspan="4">Acciones</td>
          </tr>
-    </thead>
-    <tbody>
+    
+    
           <%contador=1%>
           <% @comparecencia.participantes.each do |participante| %>
                               <tr>
@@ -46,11 +46,11 @@
                               </tr>
             <%contador+=1%>
             <%end%>
-     </tbody>
+     
   </table>
 <%end%>
 
-
+<br />
 <%if Comparecencia.exists?(@comparecencia.id)%>
 <br />
 <table class="table1">

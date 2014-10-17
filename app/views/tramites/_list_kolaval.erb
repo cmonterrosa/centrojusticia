@@ -15,14 +15,14 @@
     Total de registros encontrados: <%=@tramites.size%>
   </p>
 
-    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-size:13px;">
-      <tr style="background-color:gray; color:white; height: 50px;">
-        <th style="vertical-align: middle;" align="center">Resumen</th>
-         <th style="vertical-align: middle;" align="center">Folio</th>
-         <th style="vertical-align: middle;" align="center">Carpeta de Atención</th>
-         <th style="vertical-align: middle;" align="center">Nombre del Solicitante</th>
-         <th style="vertical-align: middle;" align="center"><%=h "Estatus"%></th>
-         <th style="vertical-align: middle;" colspan="7" align="center">Acciones</th>
+    <table width="88%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-size:13px;">
+      <tr>
+        <td style="vertical-align: middle;" align="center">Resumen</td>
+         <td style="vertical-align: middle;" align="center">Folio</td>
+         <td style="vertical-align: middle;" align="center">Carpeta de Atención</td>
+         <td style="vertical-align: middle;" align="center">Nombre del Solicitante</td>
+         <td style="vertical-align: middle;" align="center"><%=h "Estatus"%></td>
+         <td style="vertical-align: middle;" colspan="7" align="center">Acciones</td>
       </tr>
     <%clase=1%>
     <%tramite_iniciado_estatus = Estatu.find_by_clave("tram-inic")%>
@@ -36,15 +36,12 @@
 
     <%contador=1%>
     <%@tramites.each do |tramite|%>
-    <tr class="d<%=invert_class(clase)%>">
-       <td style="vertical-align: middle;" width="4%"><%=link_to image_tag("iconos/show.png", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
+    <tr>
+       <td style="vertical-align: middle; text-align: 'center';" width="4%"><%=link_to image_tag("iconos/show.png", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
        <td style="vertical-align: middle;" width="6%"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
-       <td style="vertical-align: middle;" width="5%"><b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b></td>
-       <td style="vertical-align: middle;" width="35%"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
-       <!--
-       <td style="vertical-align: middle;" width="4%"><=link_to image_tag("iconos/fecha.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
-       -->
-       <td style="vertical-align: middle;" width="20%"><%=tramite.estatus%></td>
+       <td style="vertical-align: middle;" align="center" width="10%"><b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b></td>
+       <td style="vertical-align: middle;" width="32%"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
+       <td style="vertical-align: middle;" width="18%"><b><%=tramite.estatus%></b></td>
 
        <!-- siguiente estatus -->
        <%ids = []%>
@@ -55,7 +52,7 @@
                  <td style="vertical-align: middle;"><%=link_to "#{flujo.descripcion}", {:action => "update_estatus", :id => tramite, :new_st => flujo.new_status_id}, :confirm => "¿Esta seguro que desea cambiar el estatus?", :method => :delete, :class => 'boton' -%></td>
             <%end%>
        <%else%>
-            <td style="vertical-align: middle;">&nbsp;</td>
+            <%#*<td style="vertical-align: middle;">&nbsp;</td>%>
        <%end%>
 
         <%clase = invert_class(clase)%>
@@ -128,6 +125,7 @@
   </table>
 </div>
 
+<br />
 <table>
     <tr align="center" >
       <td colspan="5" style="padding: 0;">
