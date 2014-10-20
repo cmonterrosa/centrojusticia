@@ -10,14 +10,18 @@
 
 
 <div class="titulocalendario">
-  <p>Comparecencia</p>
+  <%if @comparecencia &&  @comparecencia.tramite.numero_expediente%>
+    <p>COMPARECENCIA DE CARPETA DE ATENCION: <%=h @comparecencia.tramite.numero_expediente%></p><br />
+  <%else%>
+    <p>COMPARECENCIA</p>
+  <%end%>
 </div>
 
-<table width="70%" border="0" cellspacing="0" cellpadding="0">
+<table width="50%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
     
       <td>
-          <%=link_to_remote image_tag("iconos/informacion.png", :size => "128x128", :alt => "Informacion", :title => "Informacion"), :update => "divcontenido",
+          <%=link_to_remote image_tag("kolaval/ico-infogeneral.jpg", :size => "128x128", :alt => "Informacion", :title => "Informacion"), :update => "divcontenido",
           :url => { :action => "show_informacion_general", :id => @tramite.id },
           :before => "Element.show('spinner')",
           :complete => "Element.hide('spinner')",
@@ -26,7 +30,7 @@
 
       <%if @comparecencia%>
         <td>
-           <%=link_to_remote image_tag("iconos/participantes.png", :size => "128x128", :alt => "Participantes", :title => "Participantes"), :update => "divcontenido",
+           <%=link_to_remote image_tag("kolaval/ico-participantes.jpg", :size => "128x128", :alt => "Participantes", :title => "Participantes"), :update => "divcontenido",
             :url => { :action => "show_participantes", :id => @tramite.id },
             :before => "Element.show('spinner')",
             :complete => "Element.hide('spinner')",
@@ -40,15 +44,19 @@
         <%end%>
      <%end%>
  </tr>
+
+ <!--
   <tr align="center">
    <td class="menu" align="center">Información General</td>
-    <%if @comparecencia%>
+    <if @comparecencia%>
       <td class="menu" align="center">Participantes</td>
-      <%if current_user.has_role?("lecturaagenda") && HABILITADO_RESERVA_SESION%>
+      <if current_user.has_role?("lecturaagenda") && HABILITADO_RESERVA_SESION%>
         <td class="menu" align="center">Selección de horario</td>
-      <%end%>
-    <%end%>
+      <end%>
+    <end%>
   </tr>
+ -->
+ 
 </table>
 
 <!-- spinner -->
