@@ -3,7 +3,7 @@
 class AdminController < ApplicationController
   #before_filter :login_required
    #require_role :admin#, :except => [:index]
-   require_role [:direccion, :admindireccion]
+   require_role [:direccion, :admindireccion, :adminusuarios]
    #require_role :direccion, :only => [:show_users, :situacion_user, :statistics_user, :permissions_user, :permission_show, :add_permission_user, :permissions_index, :save_permission  ]
    require_role :admin, :only => [:save_user, :add_user]
 
@@ -162,7 +162,8 @@ class AdminController < ApplicationController
   end
 
   def show_users
-    @usuarios = User.find(:all, :order => "login, paterno, materno, nombre")
+    @usuarios = User.find(:all,  :order => "login, paterno, materno, nombre") if (params[:token] && params[:token]  == 'all' )
+    @usuarios ||= User.find(:all, :conditions => ["activo = ?", true], :order => "login, paterno, materno, nombre")
     @token = generate_token
   end
 
