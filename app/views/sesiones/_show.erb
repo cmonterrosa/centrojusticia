@@ -7,11 +7,12 @@
        </td>
     <%end%>
 
-    <%#*<!-- Reprogramar -->%>
+    <!-- Reprogramar -->
     <%#if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
         <%#*<td>%>
-          <%#= link_to image_tag("iconos/edit.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "edit", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post %><br />
+          <%#= link_to image_tag("iconos/edit.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "edit", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post %><br />
         <%#*</td>%>
+        <%#= link_to image_tag("iconos/edit.png", :border =>0) , {:controller => "sesiones", :action => "reprogramar", :id => @sesion, :t => @token, :style => "fancy"}, :html => { :target => "_blank"}, :title => "Reprogramar sesion" %>
     <%#end%>
   </tr>
 </table>
