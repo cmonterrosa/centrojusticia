@@ -247,7 +247,7 @@ class SesionesController < ApplicationController
   def edit
     if (@sesion = Sesion.find(params[:id]))
         @tramite = @sesion.tramite
-        @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+        @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).todos_usuarios
     else
       flash[:notice] = "No se pudo encontrar sesion, verifique"
       redirect_to :controller => "home"
@@ -261,8 +261,9 @@ class SesionesController < ApplicationController
       flash[:notice] = "No se pudo encontrar sesion, verifique"
       redirect_to :controller => "home"
     else
+      @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).todos_usuarios
+      @notificacion = (params[:sesion_notificacion]) ? true : false
       return render(:partial => 'reprogramar', :layout => "only_jquery")
-      @notificacion = (params[:sesion_notificacion]) ? true : false 
     end
   end
 
