@@ -25,6 +25,13 @@
                                                           </li>
                                                         <%end%>
 
+                                                          <!-- Administracion de Usuarios -->
+                                                          <%if current_user.has_role?("adminusuarios")%>
+                                                         <li>
+                                                            <ul><%=link_to image_tag('kolaval/admon-usuarios.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/admon-usuarios.jpg") , {:action => "show_users", :controller => "admin"}, :title => "Control de Usuarios"%></ul>
+                                                         </li>
+                                                         <%end%>
+
 
 						</ul>
 					</div>
