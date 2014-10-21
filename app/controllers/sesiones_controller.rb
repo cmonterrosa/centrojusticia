@@ -105,11 +105,11 @@ class SesionesController < ApplicationController
     @comediadores = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones_funcion(@fecha_hora_sesion, "comediador")
 
 
-    if current_user.has_role?("admindireccion")
+    if current_user.has_role?("admindireccion") || current_user.has_role?("asignahorario")
       render :partial => 'new_with_date', :layout => 'oficial'
     else
       flash[:notice] = "No tiene privilegios, consulte al administrador del sistema"
-      render :action => "home"
+      redirect_to :controller => "home"
     end
 
 
