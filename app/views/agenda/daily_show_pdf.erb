@@ -1,0 +1,121 @@
+<%
+PDFKit.configure do |config|
+  config.default_options = {
+    :page_size => 'letter',
+    :margin_top => '0.2in',
+    :orientation => 'Landscape',
+    :margin_right => '0.1in',
+    :margin_bottom => '0.2in',
+    :margin_left => '0.1in',
+    :encoding => 'utf-8',
+    :header_right => "FECHA DE CREACION: [date] [time]     ",
+    :footer_right => "PAGINA [page] DE [toPage]     "
+  }
+end
+%>
+
+<style type="text/css">
+  /* Estilo para tabla con gradiente */
+
+
+table.table1{
+    font-family: "Trebuchet MS", sans-serif;
+    font-size: 10px;
+    line-height: 1.2em;
+    font-style: normal;
+    border-collapse:separate;
+}
+.table1 thead th{
+    padding:15px;
+    color:#fff;
+    text-shadow:1px 1px 1px #019595;
+    border:1px solid #019595;
+    border-bottom:3px solid #019595;
+    background-color: #019595;
+    border-top-left-radius:5px;
+    border-top-right-radius:5px;
+}
+
+.table1 thead th:empty{
+    background:transparent;
+    border:none;
+}
+
+.table1 tfoot td{
+    color: #4A0E08;
+    font-size:20px;
+    text-align:center;
+    padding:8px 0px;
+    text-shadow:1px 1px 1px #444;
+}
+.table1 tfoot th{
+    color:#666;
+}
+
+.table1 tbody td{
+    padding:6px;
+    text-align:center;
+    background-color:#EBEAD8;
+    border: 2px solid #E7EFE0;
+    -moz-border-radius:2px;
+    -webkit-border-radius:2px;
+    border-radius:2px;
+    color:#666;
+    text-shadow:1px 1px 1px #fff;
+}
+</style>
+
+<div style="font-size: 12px; font-weight: bold; color: black;">
+  <p><b><%=SUBDIRECCION.titleize%></b>  |  <%=@titulo%> de sesiones para el dia: <%=day_of_the_week(@fecha.strftime("%u").to_i).titleize%>, <%=(@fecha.strftime("%d de %B de %Y"))%></p>
+</div>
+
+
+<!-- From monday to friday -->
+  <%unless inhabil?(@fecha)%>
+   <table class="table1" border=1 width=98% style='table-layout:fixed'>
+      <thead>
+          <tr>
+              <th>Hora</th>
+              <%@salas.each do |sala|%>
+                <th scope="col" abbr="Starter"><%=sala.descripcion%></th>
+              <%end%>
+          </tr>
+      </thead>
+
+      <tbody>
+      <!-- horarios -->
+      <%@horarios.each do |horario|%>
+      <tr>
+          <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa) : "--"%></th>
+              <%@salas.each do |sala|%>
+
+             <%if @type%>
+              <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) ", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id])%>
+             <%else%>
+              <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+             <%end%>
+
+                  <%if sesion%>
+                    <%@backgrounds_colors = colors_to_days%>
+
+                   <%if sesion.tiposesion_id%>
+                      <td style="font-size: 8px; color: black; background-color: <%=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">
+                        <%=h sesion.resume%>
+                      </td>
+
+                   <%end%>
+                  <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
+                    <td style="background-color: #D7F2FF;">
+                        <%#=  link_to "Disponible", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
+                    </td>
+                 <%else%>
+                    <td></td>
+                 <%end%>
+              <%end%>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+<%end%>
+
+

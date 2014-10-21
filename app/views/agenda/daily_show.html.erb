@@ -23,6 +23,11 @@
 <img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
 <div id="calendario">
 
+  <p>
+   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "daily_show",          :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => @origin, :type => @type}, :title => "Recargar"%>|
+   <%= link_to image_tag("iconos/print.png", :border =>0) , {:action => "daily_show_pdf.pdf", :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => @origin, :type => @type}, :title => "Imprimir agenda del dia"%>
+</p>
+
   <div class="ultima_conexion">
     Ultima actualización: <%=Time.now.strftime("%H:%M:%S")%>
   </div><br />
@@ -58,7 +63,14 @@
                    <%if sesion.tiposesion_id%>
                       <td style="background-color: <%=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">
                         <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
+
+                       <!-- reprogramacion de sesion -->
+                       <%if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
+                          &nbsp;<%= link_to image_tag("iconos/reprogramar.png", :border =>0, :size => "24x24") , {:controller => "sesiones", :action => "reprogramar", :id => sesion}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post %>
+                      <%end%>
+
                       </td>
+                      
                    <%end%>
                   <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
                     <td style="background-color: #D7F2FF;">
@@ -82,7 +94,7 @@
 
 
 
-<%=periodically_call_remote(:url => { :action => 'update_daily_show', :controller => "agenda", :fecha => @fecha, :origin => @origin},
+<%#=periodically_call_remote(:url => { :action => 'update_daily_show', :controller => "agenda", :fecha => @fecha, :origin => @origin},
                             :frequency => '45',
                             :before => "Element.show('spinner')",
                             :success => "Element.hide('spinner')",

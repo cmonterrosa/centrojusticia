@@ -21,8 +21,9 @@
                       <%@comparecencia = Comparecencia.find_by_tramite_id(@tramite.id) if @tramite%>
                       <%=link_to "#{numero_expediente}", {:action => "show", :id => @tramite}, :target => "_blank"%>
                   </td>
-                  <td><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
-
+                  <%if @tramite%>
+                      <td><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
+                  <%end%>
                   <%if @sesion.start_at%>
                     <td><%=@sesion.fecha%> / <%=@sesion.hora_completa%></td>
                   <%end%>

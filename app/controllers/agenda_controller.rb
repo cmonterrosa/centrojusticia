@@ -1,7 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 class AgendaController < ApplicationController
-  layout 'kolaval'
+  layout :set_layout
   #require_role [:controlagenda, :admindireccion], :for => [:new_sesion]
   #require_role [:controlagenda, :especialistas, :lecturaagenda, :admindireccion], :for => [:management, :search_sesiones, :calendario]
   require_role [:controlagenda, :lecturaagenda, :especialistas, :admindireccion, :direccion, :asignahorario]
@@ -97,6 +97,23 @@ class AgendaController < ApplicationController
     end
   end
 
+  #### IMPRESION DE AGENDA EN FORMATO PDF ####
+  
+  def daily_show_pdf
+    @origin=params[:origin] if params[:origin]
+    @type = params[:type] if params[:type]
+    @titulo = (@type == 'custom') ? "Agenda de #{current_user.nombre_completo}" : "Agenda general"
+    if params[:year] =~ /^\d{4}$/ && params[:month] =~ /^\d{1,2}$/ && params[:day] =~ /^\d{1,2}$/
+       @fecha = DateTime.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
+       @before = @fecha.yesterday
+       @after = @fecha.tomorrow
+       @salas = Sala.find(:all, :order => "descripcion")
+       @horarios = Horario.find(:all, :group => "hora,minutos")
+    else
+      redirect_to :action => @accion
+    end
+  end
+
   def update_daily_show
        if params[:fecha]
           @fecha = DateTime.parse(params[:fecha])
@@ -108,6 +125,10 @@ class AgendaController < ApplicationController
        else
           render :text => "Ocurrió un error, vuelva a cargar la página"
        end
+  end
+
+   def set_layout
+    (action_name == 'daily_show_pdf')? 'pdf' : 'kolaval'
   end
 
 end
