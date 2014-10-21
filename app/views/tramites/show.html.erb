@@ -217,7 +217,7 @@
         <tr class="d1">
           <td style="vertical-align: middle;"><%=h (row.clave) ? row.clave : "---"%></td>
           <td style="vertical-align: middle;"><%=h(row.tiposesion_id ? row.tiposesion.descripcion : "---")%></td>
-          <td style="vertical-align: middle;"><%=h(row.start_at ? row.start_at.strftime("%Y-%m-%d %H:%M:%S") : "---")%></td>
+          <td style="vertical-align: middle;"><%=h(row.start_at ? row.start_at.strftime("%d de %B de %Y - %H:%M %p") : "---")%></td>
           <td style="vertical-align: middle;"><%=h(row.mediador ? row.mediador.nombre_completo : "---")%></td>
           <td style="vertical-align: middle;"><%=h(row.comediador ? row.comediador.nombre_completo : "---")%></td>
         </tr>
