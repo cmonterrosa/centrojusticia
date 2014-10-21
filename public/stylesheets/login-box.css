@@ -22,7 +22,9 @@
 	height: 352px;
 	padding: 58px 76px 0 76px;
 	color: #ebebeb;
-	font: 12px Arial, Helvetica, sans-serif;
+/*	font: 12px Arial, Helvetica, sans-serif;*/
+        font-family: 'Open Sans';
+        font-size: 14px;
 	background: url(/images/login/login-box-backg.png) no-repeat left top;
 }
 
@@ -85,7 +87,6 @@ table.sample {
 	border: 1px inset #8B8378;
 	-moz-border-radius: 6px;
         font-family: "Open Sans";
-        font-size: 13px;
         margin-left:auto;
         margin-right:auto;
 }
@@ -93,6 +94,7 @@ table.sample td {
 	border: 0px solid black;
 	padding: 0.2em 2ex 0.2em 2ex;
 	color: black;
+        
 }
 table.sample tr.d0 td {
 	background-color: #e8f4f4;
@@ -100,6 +102,13 @@ table.sample tr.d0 td {
 table.sample tr.d1 td {
 	background-color: #FEFEF2;
 }
+
+table.sample tr.bloqueado td {
+	background-color: #FF9900;
+        font-family: "Open Sans";
+        color: white;
+}
+
 table.sample td.d0 {
 	background-color: #FCF6CF;
 }
@@ -118,10 +127,6 @@ table.sample td.d0 {
 	background-color: #FFE4C4;
 }
 
-/* para las columnas de error */
-table.sample td.d99 {
-	background-color: #FF9900;
-}
 
 
 /* Estilo para la ficha */
