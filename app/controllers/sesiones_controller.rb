@@ -367,18 +367,19 @@ class SesionesController < ApplicationController
 
              ############### BUSCAMOS A ESPECIALISTA Y COMEDIADOR ###############
              if @sesion.num_tramite
-              @especialista = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?", @sesion.mediador_id, "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}%"])
-              @comediador = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?",  @sesion.comediador_id, "COMEDIADOR EN SESION, EXP. #{@sesion.num_tramite}%"])
-              @margen =  2/(24 * 60.0)
               @ensesion = Situacion.find_by_descripcion("EN SESION")
-              @especialista ||= Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at + @margen).strftime("%y-%m-%d %H:%M:%S"), @sesion.mediador_id, @ensesion.id]) if @sesion.start_at
-              @comediador ||= Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at + @margen).strftime("%y-%m-%d %H:%M:%S"), @sesion.comediador_id, @ensesion.id]) if @sesion.start_at
+              @especialista = Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at).strftime("%y-%m-%d %H:%M:%S"), @sesion.mediador_id, @ensesion.id]) if @sesion.start_at
+              @comediador = Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at).strftime("%y-%m-%d %H:%M:%S"), @sesion.comediador_id, @ensesion.id]) if @sesion.start_at
+              @especialista2 = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?", @sesion.mediador_id, "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}%"])
+              @comediador2 = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?",  @sesion.comediador_id, "COMEDIADOR EN SESION, EXP. #{@sesion.num_tramite}%"])
              end
 
             #if @sesion.destroy
             if @sesion.cancel?(current_user)
               @especialista.destroy if @especialista
               @comediador.destroy if @comediador
+              @especialista2.destroy if @especialista2
+              @comediador2.destroy if @comediador2
               flash[:notice] = "Sesión cancelada correctamente, notificación enviada a especialistas.."
               return render(:partial => 'sesion_cancelada_mensaje', :layout => 'only_jquery')
               #redirect_to :controller => "home"
