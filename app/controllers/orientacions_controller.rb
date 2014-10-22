@@ -213,6 +213,7 @@ class OrientacionsController < ApplicationController
             end
         end
      end
+     flash[:error] = "Verifique que el nombre de usuario y contraseña estén correctos"
      return render(:partial => 'confirmacion', :layout => "only_jquery")
     end
 
