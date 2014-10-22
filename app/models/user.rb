@@ -169,7 +169,8 @@ class User < ActiveRecord::Base
     @baja = (self.situacion == Situacion.find_by_descripcion("BAJA"))? true : nil
     @estatus_actual = (@baja) ? "BAJA" : nil
     @movimiento = Movimiento.find(:first, :conditions => ["user_id = ? AND (? between fecha_inicio AND fecha_fin)", self.id, Time.now], :order => "fecha_fin DESC")
-    @estatus_actual ||= (@movimiento)? @movimiento.situacion.descripcion : "DISPONIBLE"
+    @estatus_actual ||= (@movimiento.situacion)? @movimiento.situacion.descripcion : "DISPONIBLE" if @movimiento
+    @estatus_actual ||= "DISPONIBLE"
     return @estatus_actual
   end
 
