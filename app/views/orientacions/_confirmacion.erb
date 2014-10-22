@@ -1,51 +1,55 @@
-<%= error_messages_for :user %>
- <div class="centered">
-        <table width="1024px" align="center">
+<%= stylesheet_link_tag "kolaval_login"%>    
+<div class="centered">
+        <table width="100%" align="center">
+          
+          <!--linea -->
           <tr>
-              <th align="left"><%=image_tag("pjech/barra_confirmar-orientacion.png", :border => 0)%></th>
+            <th><hr class="LineaHorizontalVerde" /></th>
           </tr>
 
-          <!--espacio -->
+          
           <tr>
-            <th>&nbsp;</th>
+            <th class="TituloInicioSesion">CONFIRMAR ORIENTACIÓN</th>
           </tr>
+
+
+           <!--linea -->
+          <tr>
+            <th><hr class="LineaHorizontalVerde" /></th>
+          </tr>
+
+           <tr><th style="height: 4px">&nbsp;</th></tr>
+
+           <%if flash[:error]%>
+              <tr><th style="height: 4px" class="error"><%=flash[:error]%></th></tr>
+           <%end%>
 
           <!-- inicia form -->
-          <% form_for :historia, @historia, :url => { :action => "save_confirmar", :tramite => @tramite} do |f| -%>
+         <% form_for :historia, @historia, :url => { :action => "save_confirmar", :tramite => @tramite} do |f| -%>
+            <tr align="center">
+              <td>
+              <%= text_field_tag 'login', @login, :class => "TextBoxInicioSesion", :placeholder => "NOMBRE DE USUARIO" %>
+              </td>
+            </tr>
 
-           <tr>
-            <td class="titulocalendario">Id de trámite:</td>
-           </tr>
-           <tr>
-             <td><%=@tramite.folio_integrado%></td>
-           </tr>
+             <tr><th style="height: 2px">&nbsp;</th></tr>
 
-          <tr>
-            <td class="titulocalendario">Usuario:</td>
-          </tr>
-          <tr>
-            <td>
-            <%= text_field_tag 'login', @login, :class => "input" %>
-            </td>
-          </tr>
-          <tr>
-            <td class="titulocalendario">Contraseña:</td>
-          </tr>
-          <tr>
-            <td><%= password_field_tag 'password', nil, :class => "input"%></td>
-          </tr>
-          <!-- boton -->
-          <tr>
-           <td valign="bottom"><input title="inicio de sesión" alt="inicio de sesión" type="image"  src="/images/botones/btn_entrar.png"/></td>
-          </tr>
+             <tr align="center">
+              <td><%= password_field_tag 'password', nil, :class => "TextBoxInicioSesion", :placeholder => "CONTRASEÑA"%></td>
+            </tr>
+
+             <tr><th style="height: 2px">&nbsp;</th></tr>
+
+            <!-- boton de entrar-->
+            <tr align="center">
+              <td>
+               <input type="submit"  class="BotonEntrar" value="CONFIRMAR"/>
+              </td>
+            </tr>
         <%end%>
       </table>
-    <table>
-      <tr>
-        <th>&nbsp;</th>
-      </tr>
-    </table>
    </div>
+
 
 
 
