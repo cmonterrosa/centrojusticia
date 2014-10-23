@@ -35,9 +35,17 @@
                                               <%=  radio_button_tag("horario", h.id)%><%= h.hora_completa %>
                                            </td>
                                         <%else%>
-                                           <td align="center" style="background-color: #FEFEF2;">
+                                           <%#*<td align="center" style="background-color: #FEFEF2;">%>
+                                              <%#=  radio_button_tag "horario", h.id, false, :disabled => true%><%= h.hora_completa %>
+                                           <%#*</td>%>
+
+                                           <%background=(sesion)? @backgrounds_colors[sesion.tiposesion_id - 1] : "gray"%>
+                                           <%color_fuente=(sesion)? "black" : "white"%>
+                                           <%decoracion=(sesion)? "none" : "line-through"%>
+                                           <td style="background-color: <%=h background%>; color: <%=h color_fuente%>; text-decoration: <%=decoracion%>;">
                                               <%=  radio_button_tag "horario", h.id, false, :disabled => true%><%= h.hora_completa %>
                                            </td>
+
                                         <%end%>
 
                                     <%else%>

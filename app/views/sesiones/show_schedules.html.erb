@@ -1,23 +1,22 @@
 <%=render :partial => "encabezado_info_sesion"%>
 
-
-
-
 <% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
 
- <table class="table1" >
+ <table class="tablakolaval" >
   <tr align="center">
     <th align="center">Fecha/hora Sugerido</th>
     <th align="center">Fecha</th>
-    <th align="center">¿Notificar por correo electrónico?</th>
+    <%#*<th align="center">¿Notificar por correo electrónico?</th>%>
     <th align="center">Tipo de sesión</th>
   </tr>
  <tr align="center">
    <td><%=h @sesion_hora_sugerida = (@sesion.fecha_sugerida(@sesion.mediador,@sesion.comediador)) ? @sesion.start_at.strftime("%d de %B de %Y - %H:%M") : nil%><%@default_selected = (@sesion_hora_sugerida) ? true : false %>&nbsp;<%= check_box_tag 'sesion_hora_sugerida', @default_selected, @default_selected, :onchange => "enable_dates();"%></td>
-       <%(@fecha = (@sesion.start_at)? @sesion.start_at : nil)%>
+       <%(@fecha ||= (@sesion.start_at)? @sesion.start_at : nil)%>
        <%(@fecha_format = (@sesion.start_at)? @sesion.start_at.strftime("%Y/%m/%d") : nil)%>
     <td><%=text_field_tag "sesion_fecha", "#{@fecha_format}"%></td>
-    <td><%= check_box_tag 'sesion_notificacion', @notificacion%></td>
+    <!--
+    <td><= check_box_tag 'sesion_notificacion', @notificacion%></td>
+    -->
     <td><%=h (@sesion.tiposesion) ? (@sesion.tiposesion.descripcion) : @tiposesion.descripcion%></td>
     <td>
       <%=hidden_field_tag 'sesion_mediador_id', @mediador.id%>
@@ -28,12 +27,12 @@
  <tr align="center">
    <th align="center">Especialista</th>
    <th>Comediador</th>
-   <th></th>
  </tr>
  <tr align="center">
     <td><%= select_tag 'sesion_mediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @mediador.id)%></td>
     <td><%= select_tag 'sesion_comediador_id', options_from_collection_for_select(@especialistas, 'id', 'nombre_completo', @comediador.id)%></td>
-    <td><%= submit_tag "BUSCAR HORARIOS"%></td>
+    <td rowspan="2"><%=submit_tag "BUSCAR HORARIOS DISPONIBLES", :disable_with => "Espere un momento ...", :class => "boton"%></td>
+
  </tr>
  </table>
 
@@ -77,7 +76,10 @@
                                               <%=  radio_button_tag("horario", h.id)%><%= h.hora_completa %>
                                            </td>
                                         <%else%>
-                                           <td align="center" style="background-color: #FEFEF2;">
+                                           <%background=(sesion)? @backgrounds_colors[sesion.tiposesion_id - 1] : "gray"%>
+                                           <%color_fuente=(sesion)? "black" : "white"%>
+                                           <%decoracion=(sesion)? "none" : "line-through"%>
+                                           <td style="background-color: <%=h background%>; color: <%=h color_fuente%>; text-decoration: <%=decoracion%>;">
                                               <%=  radio_button_tag "horario", h.id, false, :disabled => true%><%= h.hora_completa %>
                                            </td>
                                         <%end%>

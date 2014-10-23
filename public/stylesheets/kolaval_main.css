@@ -1,6 +1,6 @@
 div, h1, h2, h3, h4, p, span, a, img, form, label, input, textarea {
 	/*margin:0;*/
-	padding:0;
+/*	padding:0;*/
 }
 
 @font-face {
@@ -424,3 +424,25 @@ a.footer:hover, a.footeractive {
 }
 
 
+
+input[type=submit]:hover {
+padding:12px 12px 12px 12px;
+border:0 none;
+cursor:pointer;
+-webkit-border-radius: 5px;
+font-size: 15px;
+background: #019595;
+color: white;
+font-family: "Nexa Light";
+border-radius: 6px; }
+
+input[type=submit] {
+padding:12px 12px 12px 12px;
+border:0 none;
+cursor:pointer;
+-webkit-border-radius: 5px;
+font-size: 15px;
+background: #ccc;
+color: black;
+font-family: "Nexa Light";
+border-radius: 6px; }

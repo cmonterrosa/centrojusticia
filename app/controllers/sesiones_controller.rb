@@ -291,7 +291,7 @@ class SesionesController < ApplicationController
    @notificacion = (params[:sesion_notificacion]) ? true : false 
    @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id as id from sesions where fecha = ?)",  @fecha])
    @title = "Resultados encontrados"
-   @horarios_disponibles = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ?) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
+   @horarios_disponibles = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ? AND cancel is NULL) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
   end
 
 

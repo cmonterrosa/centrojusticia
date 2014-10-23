@@ -2,11 +2,11 @@
 
 
 <% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
- <table class="table1" >
+ <table class="tablakolaval" >
    <tr align="center">
     <th align="center">Fecha/hora Sugerido</th>
     <th align="center">Fecha</th>
-    <th align="center">¿Notificar por correo electrónico?</th>
+    <%#*<th align="center">¿Notificar por correo electrónico?</th>%>
     <th align="center">Tipo de sesión</th>
   </tr>
  <tr align="center">
@@ -15,7 +15,7 @@
        <%(@fecha_format = (@sesion.start_at)? @sesion.start_at.strftime("%Y/%m/%d") : nil)%>
 
       <td><%=text_field_tag "sesion_fecha", "#{@fecha_format}"%></td>
-      <td><%= check_box_tag 'sesion_notificacion', @notificacion%></td>
+      <!--<td><= check_box_tag 'sesion_notificacion', @notificacion%></td>-->
      <td><%=h (@sesion.tiposesion) ? (@sesion.tiposesion.descripcion) : @tiposesion.descripcion%></td>
      <td>
        <%=hidden_field_tag 'sesion_mediador_id', @mediador.id%>

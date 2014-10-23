@@ -263,15 +263,3 @@ label:before {
     font-size: 15px;
     text-align: center;
 }
-
-.SubmitBusquedaTramite{
-    width:auto;
-    height:auto;
-    vertical-align: middle;
-    font-family: "Open Sans";
-    background-color: #019595;
-    text-align: center;
-    color: #ffffff;
-    width: 150px;
-    height: 39px;
-}
