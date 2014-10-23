@@ -102,27 +102,15 @@ class User < ActiveRecord::Base
     "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip}"
   end
 
-  def full_description_for_especialistas
-    if self.situacion
-     "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip} | #{self.estatus_actual} | #{self.puntuacion}"
-     #"#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip} | #{self.num_orientaciones_dos_dias} Orientaciones"
-     #"#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip} | #{self.situacion.descripcion}"
-    else
-       "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip}"
-    end
-     # "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip} | #{num_orientaciones_por_semana} Orientaciones"
-  end
+  ##### Puntuaciones #######
 
-  def num_orientaciones_por_semana
-      now = Date.today + 1
-      seven_days_ago = (now - 7)
-      #numero_orientaciones = Orientacion.find_by_sql("SELECT count(o.especialista_id) AS count_especialista_id FROM `orientacions` o, tramites t, estatus e WHERE (o.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (o.especialista_id = 10 ) AND (o.created_at between '2013-04-12' AND '2013-04-19')) ")
-      #numero_orientaciones = Orientacion.count(:especialista_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.especialista_id = ? ) AND (orientacions.created_at between ? AND ?)", self.id, seven_days_ago, now])
-      #return numero_orientaciones
-      num_orientaciones_periodo(seven_days_ago, now)
-  end
+     def num_orientaciones_periodo(inicio,fin)
+        numero_orientaciones = Orientacion.count(:especialista_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.especialista_id = ? ) AND (orientacions.fechahora between ? AND ?)", self.id, inicio, fin])
+        return numero_orientaciones
+     end
 
-  def num_orientaciones_desde_inicio_semana
+
+    def num_orientaciones_desde_inicio_semana
     now = DateTime.parse(Time.now.strftime("%Y-%m-%d") + " 08:00")
     dia_semana = Time.now.wday
 
@@ -149,20 +137,50 @@ class User < ActiveRecord::Base
     return num_orientaciones_periodo(inicio_semana,fin_semana)
   end
 
-  def num_orientaciones_dos_dias
+  def puntuacion_mes_actual
+    primer_dia_mes= DateTime.parse("#{Time.now.year}-#{Time.now.month}-1 00:01")
+    return num_orientaciones_periodo(primer_dia_mes,Time.now)
+  end
+
+  def puntuacion_anio_actual
+    primer_dia_anio= DateTime.parse("#{Time.now.year}-01-01 00:01")
+    return num_orientaciones_periodo(primer_dia_anio,Time.now)
+  end
+
+  def puntuacion_semana_actual
+    return (num_orientaciones_desde_inicio_semana)
+  end
+
+  def puntuacion_general
+      return (puntuacion_semana_actual + (puntuacion_mes_actual * 0.01))
+  end
+
+
+  def full_description_for_especialistas
+    if self.situacion
+     "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip} | #{self.estatus_actual} | #{self.puntuacion_semana_actual} | #{self.puntuacion_mes_actual}"
+    else
+       "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip}"
+    end
+  end
+
+  def num_orientaciones_por_semana
+      now = Date.today + 1
+      seven_days_ago = (now - 7)
+      #numero_orientaciones = Orientacion.find_by_sql("SELECT count(o.especialista_id) AS count_especialista_id FROM `orientacions` o, tramites t, estatus e WHERE (o.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (o.especialista_id = 10 ) AND (o.created_at between '2013-04-12' AND '2013-04-19')) ")
+      #numero_orientaciones = Orientacion.count(:especialista_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.especialista_id = ? ) AND (orientacions.created_at between ? AND ?)", self.id, seven_days_ago, now])
+      #return numero_orientaciones
+      num_orientaciones_periodo(seven_days_ago, now)
+  end
+
+def num_orientaciones_dos_dias
     now = Date.today + 1
     two_days_ago = (now - 2)
     num_orientaciones_periodo(two_days_ago, now)
   end
-  def puntuacion
-    return (num_orientaciones_desde_inicio_semana)
-  end
 
-  def puntuacion_anterior
-    dos_dias = num_orientaciones_dos_dias
-    semana = num_orientaciones_por_semana
-    return (dos_dias + (semana * 0.01))
-  end
+
+
 
   def estatus_actual
     # Buscamos si tienen movimientos o baja
@@ -174,10 +192,7 @@ class User < ActiveRecord::Base
     return @estatus_actual
   end
 
-  def num_orientaciones_periodo(inicio,fin)
-      numero_orientaciones = Orientacion.count(:especialista_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.especialista_id = ? ) AND (orientacions.fechahora between ? AND ?)", self.id, inicio, fin])
-      return numero_orientaciones
-  end
+
 
    def disponible?(date=Time.now)
         fecha = (date) ? date.strftime('%Y-%m-%d %H:%M:%S') : Time.now.strftime('%Y-%m-%d %H:%M:%S')
