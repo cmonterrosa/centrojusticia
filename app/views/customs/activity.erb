@@ -1,3 +1,9 @@
+<p>
+   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "activity"}, :title => "Recargar"%>
+</p>
+
+
+
 <div class="titulocalendario">
   <p>
     <%=@usuario.nombre_completo%>
@@ -7,31 +13,45 @@
 
 
 <div id="divlista">
-  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-     <tr style="background-color:gray; color:white">
-      <th colspan="2">
+  <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 85%; margin: auto;">
+     <tr>
+      <td colspan="2">
         Mi actividad
-      </th>
+      </td>
      </tr>
 
-     <tr class="d0">
-       <td style="vertical-align: middle;"><b>Trámites iniciados:</b></td>
-       <td style="vertical-align: middle;"><%=Tramite.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
+     <tr>
+       <td><b>Estatus actual:</b></td>
+       <td><%=h @usuario.estatus_actual%></td>
+     </tr>
+
+     <%if current_user.has_role?("atencionpublico")%>
+      <tr>
+         <td style="vertical-align: middle;"><b>Trámites iniciados:</b></td>
+        <td style="vertical-align: middle;"><%=Tramite.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
+      </tr>
+    <%end%>
+
+    <%if current_user.has_role?("especialistas")%>
+    <tr>
+       <td style="vertical-align: middle;"><b>Orientaciones y/o comparecencias que he dado en el transcurso de la semana:</b></td>
+       <td style="vertical-align: middle;"><%=h @usuario.puntuacion_semana_actual%></td>
     </tr>
 
-
-    <tr class="d1">
-       <td style="vertical-align: middle;"><b>Orientaciones realizadas:</b></td>
-       <td style="vertical-align: middle;"><%=Orientacion.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
+    <tr>
+       <td style="vertical-align: middle;"><b>Orientaciones y/o comparecencias que he dado en transcurso del mes de <%=h Time.now.strftime("%B del año %Y")%></b></td>
+       <td style="vertical-align: middle;"><%=h @usuario.puntuacion_mes_actual%></td>
     </tr>
 
-    
-    <tr class="d0">
-      <td style="vertical-align: middle;"><b>Comparecencias levantadas:</b></td>
-      <td style="vertical-align: middle;"><%=Comparecencia.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
+    <tr>
+       <td style="vertical-align: middle;"><b>Orientaciones y/o comparecencias que he dado en transcurso del año <%=h Time.now.strftime("%Y")%></b></td>
+       <td style="vertical-align: middle;"><%=h @usuario.puntuacion_anio_actual%></td>
     </tr>
+    <%end%>
 
-    <tr class="d1">
+
+
+    <tr>
        <td style="vertical-align: middle;"><b>Última conexión:</b></td>
        <td style="vertical-align: middle;"><%=h (@usuario.last_login) ? @usuario.last_login.strftime("%d de %B de %Y / %H:%M") : 'Sin conexión'%></td>
     </tr>
@@ -44,27 +64,24 @@
 
 <%unless @actividades.empty?%>
     <br /><br />
-    <div id="divlista">
-        <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-            <tr style="background-color:gray; color:white">
-              <th colspan="3">
-                Actividades/ausencias programadas
-              </th>
-            </tr>
 
-            <tr class="d0">
-              <th>Tipo</th>
-              <th>Fecha inicio</th>
-              <th>Fecha fin</th>
+    <div class="titulocalendario">
+      <p>Actividades y/o ausencias programadas</p>
+    </div>
+    
+    <div id="divlista">
+        <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 85%; margin: auto;">
+            <tr>
+              <td>Tipo</td>
+              <td>Fecha inicio</td>
+              <td>Fecha fin</td>
             </tr>
-            <%clase=1%>
             <%@actividades.each do |a|%>
-            <tr class="<%=h "d#{clase}"%>">
+            <tr>
                 <td style="vertical-align: middle;"><%=h a.situacion.descripcion%></td>
                 <td style="vertical-align: middle;"><%=h a.fecha_inicio.strftime("%d de %B de %Y / %H:%M")%></td>
                 <td style="vertical-align: middle;"><%=h a.fecha_fin.strftime("%d de %B de %Y / %H:%M")%></td>
             </tr>
-              <%clase = invert_class(clase)%>
             <%end%>
         </table>
      </div>
