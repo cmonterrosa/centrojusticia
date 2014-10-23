@@ -22,21 +22,15 @@
            <%if @extra || @especialista%>
               <td align="center">Especialista <%=@caption_type_specialist%> / Orientaciones en los últimos 7 días</td>
             <%else%>
-              <td align="center">Especialista que atenderá / Estado / Orientaciones durante la semana</td>
+              <td align="center">Especialista que atenderá / Estado / Orientaciones durante la semana/ mes</td>
            <%end%>
            <%#*<td align="center">¿Notificar especialista vía correo?</td>%>
           <td align="center">Observaciones</td>
         </tr>
         <tr>
-          
-          <%#*<td align="center">%>
-              <%#=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%>
-          <%#*</td>%>
-          
           <td align="center">
               <%=f.text_field :fechahora, :value => @fecha%>
           </td>
-
 
           <%if @extra%>
               <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%></td>
