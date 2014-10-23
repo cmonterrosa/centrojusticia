@@ -135,6 +135,8 @@
 
 <script type="text/javascript">
   var domicilio = new LiveValidation( 'orientacion_direccion' );
+  var nombre = new LiveValidation( 'orientacion_nombre' );
   domicilio.add( Validate.Presence );
+  nombre.add( Validate.Presence );
   domicilio.add( Validate.Length, { maximum: 160 } );
 </script>
