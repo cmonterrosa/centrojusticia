@@ -8,11 +8,13 @@
 </p>
 
 
+<p><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%></p>
+
 <!-- contenido -->
 
 
 <div id="divlista">
-    <table class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 80%;">
+    <table class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 90%;">
       <tr>
         <td style="vertical-align: middle;">&nbsp;</td>
         <td style="vertical-align: middle;">Login</td>
@@ -75,6 +77,24 @@
     <%end%>
   </table>
 </div>
+
+
+<br />
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @usuarios %>
+          </div>
+          <%= will_paginate @usuarios %>
+        </div>
+      </td>
+    </tr>
+</table>
+
+
+
 
 <%if current_user.has_role?("admin")%>
   <br /><%=link_to "Crear usuario", {:action => "new_from_admin", :controller => "users", :id => @token}, :class => 'boton'  -%>
