@@ -7,7 +7,7 @@
 
 
 <% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
-  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+  <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr class="titulo">
       <td colspan="3" align="center" >CAPTURA DE ORIENTACION <%=@caption%></td>
     </tr>
@@ -22,7 +22,7 @@
            <%if @extra || @especialista%>
               <td align="center">Especialista <%=@caption_type_specialist%> / Orientaciones en los últimos 7 días</td>
             <%else%>
-              <td align="center">Especialista que atenderá / Estado / Orientaciones durante la semana/ mes</td>
+              <td align="center">Especialista que atenderá / Estado / Actividad Semanal</td>
            <%end%>
            <%#*<td align="center">¿Notificar especialista vía correo?</td>%>
           <td align="center">Observaciones</td>
@@ -48,7 +48,7 @@
           <!--
           <td align="center"><=f.check_box :notificacion%> </td>
           -->
-          <td align="center"><%= f.text_field :observaciones, :class => "text", :size => "50"%></td>
+          <td align="center"><%= f.text_field :observaciones, :class => "text", :size => "40"%></td>
         </tr>
       </table></td>
     </tr>
@@ -66,9 +66,9 @@
           <td align="center">Sexo</td>
         </tr>
         <tr>
-          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
-          <td align="center"><%= f.text_field :materno,  :onKeyPress => "return CharNum(event, 'letra');"%></td>
-          <td align="center"><%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
+          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => "38"%></td>
+          <td align="center"><%= f.text_field :materno,  :onKeyPress => "return CharNum(event, 'letra');", :size => "38"%></td>
+          <td align="center"><%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => "56"%></td>
           <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
         </tr>
       </table></td>
@@ -94,7 +94,7 @@
               <=options_from_collection_for_select(MotivoInasistencia.find(:all), :clave, :descripcion, @s_motivos)%>
             </select>
             -->
-            <%= f.text_area :direccion, :class => "text", :size => "40x10"%>
+            <%= f.text_area :direccion, :class => "text", :size => "50x7"%>
           </td>
           <td><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td><%= f.text_field :telefono, :onKeyPress => "return CharNum(event, 'numero');", :class => "text"%></td>

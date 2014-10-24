@@ -2,7 +2,8 @@ require 'digest/sha1'
 require 'date'
 
 class User < ActiveRecord::Base
-  
+
+  attr_accessor :puntaje_semanal, :puntaje_mensual
   
   has_many :comparecencias
   has_many :participantes
@@ -158,7 +159,7 @@ class User < ActiveRecord::Base
 
   def full_description_for_especialistas
     if self.situacion
-     "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip} | #{self.estatus_actual} | #{self.puntuacion_semana_actual} | #{self.puntuacion_mes_actual}"
+     "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip} / #{self.estatus_actual} / #{self.puntuacion_semana_actual} Orientacion(es)"
     else
        "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip}"
     end
