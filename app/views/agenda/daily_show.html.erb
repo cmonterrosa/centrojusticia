@@ -37,7 +37,7 @@
    <table class="table1" border=1 width=90% style='table-layout:fixed'>
       <thead>
           <tr>
-              <th>Hora</th>
+              <th>HORA</th>
               <%@salas.each do |sala|%>
                 <th scope="col" abbr="Starter"><%=sala.descripcion%></th>
               <%end%>
@@ -62,7 +62,13 @@
 
                    <%if sesion.tiposesion_id%>
                       <td style="background-color: <%=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">
-                        <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
+                        
+                       <!-- Mostramos observaciones si tiene -->
+                       <%if current_user.has_role?("asignahorario")%>
+                          <%=link_to sesion.resume_with_observaciones, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
+                       <%else%>
+                          <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
+                       <%end%>
 
                        <!-- reprogramacion de sesion -->
                        <%if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
