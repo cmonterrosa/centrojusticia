@@ -53,6 +53,13 @@ class Sesion < ActiveRecord::Base
     return string
   end
 
+  def resume_with_observaciones
+    string = ""
+    string << resume
+    string << "      #{self.observaciones.strip[0..15]}" if self.observaciones
+    return string
+  end
+
   def generate_clave
     id = maximo = (Sesion.maximum(:id)) ? (Sesion.maximum(:id)) : 1
     clave = Time.now.year.to_s[2,3] + id.to_s.rjust(4,"0")
