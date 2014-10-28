@@ -20,7 +20,7 @@
 <div id="divlista">
   
   <p>
-    <%= link_to image_tag("iconos/pdf.png", :border =>0) , { :action => "show_pdf", :controller => "tramites", :id => "#{@tramite.id}.pdf" }, :html => { :target => "_blank"} %>
+    <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , { :action => "show_pdf", :controller => "tramites", :id => "#{@tramite.id}.pdf", :method => "post"}, :title => "Imprimir",  :html => { :target => "_blank"} %>
   </p>
   
 
