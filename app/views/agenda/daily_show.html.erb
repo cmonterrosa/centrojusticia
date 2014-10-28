@@ -24,8 +24,8 @@
 <div id="calendario">
 
   <p>
-   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "daily_show",          :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => @origin, :type => @type}, :title => "Recargar"%>|
-   <%= link_to image_tag("iconos/print.png", :border =>0) , {:action => "daily_show_pdf.pdf", :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => @origin, :type => @type}, :title => "Imprimir agenda del dia"%>
+   <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "daily_show",          :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => @origin, :type => @type}, :title => "Recargar"%>
+   <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "daily_show_pdf.pdf", :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => @origin, :type => @type}, :title => "Imprimir agenda del dia"%>
 </p>
 
   <div class="ultima_conexion">
@@ -72,7 +72,7 @@
 
                        <!-- reprogramacion de sesion -->
                        <%if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
-                          &nbsp;<%= link_to image_tag("iconos/reprogramar.png", :border =>0, :size => "24x24") , {:controller => "sesiones", :action => "reprogramar", :id => sesion}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post %>
+                          &nbsp;<%= link_to image_tag("kolaval/ico-calen-edicion.png", :border =>0, :size => "24x24") , {:controller => "sesiones", :action => "reprogramar", :id => sesion}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post %>
                       <%end%>
 
                       </td>

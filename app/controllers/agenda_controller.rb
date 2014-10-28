@@ -102,7 +102,7 @@ class AgendaController < ApplicationController
   def daily_show_pdf
     @origin=params[:origin] if params[:origin]
     @type = params[:type] if params[:type]
-    @titulo = (@type == 'custom') ? "Agenda de #{current_user.nombre_completo}" : "Agenda general"
+    @titulo = (@type == 'custom') ? "Agenda de Sesiones para #{current_user.nombre_completo}" : "Agenda de Sesiones General"
     if params[:year] =~ /^\d{4}$/ && params[:month] =~ /^\d{1,2}$/ && params[:day] =~ /^\d{1,2}$/
        @fecha = DateTime.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
        @before = @fecha.yesterday
