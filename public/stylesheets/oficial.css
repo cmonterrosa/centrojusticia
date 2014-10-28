@@ -22,20 +22,31 @@ a img {
 }
 
 .titulo {
-    font-size: 18px;
-    height: 32px;
-    font-weight: bold;
-    font-family: "Open Sans";
+    font-size: 17px;
+    height: 36px;
+    font-family: "Nexa Bold";
     text-align: center;
     color: white;
     background-color: #019595;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 16px;
 }
 
 .Session {font-size: 24px; font-weight: bold; font-family: Arial, Helvetica, sans-serif; color: #FFF; }
 /*.subtitulo {font-size: 14px; font-family: Verdana, Arial, Helvetica, sans-serif; color: #666666; }*/
-.subtitulo {font-size: 15px; font-family: "Open Sans"; color: black; text-align: center;}
+.subtitulo {
+    font-size: 14px;
+    height: 25px;
+    font-family: "Nexa Light";
+    color: black;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 16px;
+}
 
-.pregunta {font-size: 14px; font-family: "Open Sans"; color: #666666; }
+.pregunta {font-size: 14px; font-family: "Nexa Light"; color: black; }
 .Estilo4 {font-size: 11px; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #666666; }
 .Estilo5 {font-size: 11px; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #333333; }
 .menu {font-size: 14px; ; font-family: Verdana, Geneva, sans-serif; color: #666666; }
