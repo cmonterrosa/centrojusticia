@@ -1,3 +1,8 @@
+ <p>
+   <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "estadisticas_generales_pdf.pdf", :fecha_inicio => @inicio.strftime('%Y/%m/%d'), :fecha_fin => @fin.strftime('%Y/%m/%d')}, :title => "Imprimir estadistica general"-%>
+</p>
+
+
 <h2 align="center">Estadísticas generales</h2>
 <h3 align="center">Del período del <%=@inicio.strftime('%d de %B de %Y')%> al <%=@fin.strftime('%d de %B de %Y')%></h3>
 
@@ -68,13 +73,7 @@
        <td style="vertical-align: middle;"><%=h @solo_orientacion%></td>
      </tr>
 
-     <!--
-     <tr class="d0">
-       <td style="vertical-align: middle;" colspan="2">Concluidas</td>
-       <td style="vertical-align: middle;">< @comparecencias_concluidas%></td>
-     </tr>
-     -->
-
+     
      <tr class="d1">
        <td style="vertical-align: middle;" colspan="2">Con conocimiento de alguna autoridad</td>
        <td style="vertical-align: middle;"><%=h @comparecencias_conocimiento%></td>
@@ -138,7 +137,3 @@
      </tr>
  </table>
 </div>
-
-<FORM>
-<INPUT TYPE="button" value ="Imprimir" onClick="window.print()">
-</FORM>

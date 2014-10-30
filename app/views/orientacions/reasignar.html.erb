@@ -2,7 +2,7 @@
 <%=javascript_include_tag "validations/jquery_validate.js"%>
 
 <p>
-   <%= link_to image_tag("iconos/reload.png", :border =>0) , {:action => "reasignar", :id => @orientacion.tramite}, :title => "Recargar"%>
+   <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "reasignar", :id => @orientacion.tramite}, :title => "Recargar"%>
 </p>
 
 <% form_for :historia, @historia, :url => { :action => "save_reasignacion", :id => @orientacion, :ei => @especialista_inicial, :en => @especialista_nuevo }, :html => {:id => "new_orientacion"} do |f| -%>
