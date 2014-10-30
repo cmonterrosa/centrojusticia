@@ -1,9 +1,12 @@
-<h1>Listado de instituciones educativas</h1>
+<div class="titulocalendario">
+  <p>LISTADO DE INSTITUCIONES ACADÉMICAS</p>
+</div>
 
-<table width="90%">
+<table class="tablakolaval" style="width: 84%; margin: auto;">
   <tr >
-    <th>Siglas</th>
-    <th>Descripcion</th>
+    <td>Siglas</td>
+    <td>Descripcion</td>
+    <td colspan="3">Acciones</td>
   </tr>
 
 <% @institucion_academicas.each do |institucion_academica| %>
@@ -15,7 +18,7 @@
     <td><%= link_to 'Eliminar', institucion_academica, :confirm => '¿Esta seguro que desea eliminarlo?', :method => :delete, :class => "boton" %></td>
   </tr>
 <% end %>
-</table>
+</table><br />
 
 
 <table>
