@@ -8,7 +8,7 @@ class CompleteEmpleadosTable < ActiveRecord::Migration
       add_column :empleados, :codigo_postal, :string, :limit => 10
       add_column :empleados, :telefono, :string, :limit => 40
       add_column :empleados, :telefono_celular, :string, :limit => 14
-      add_column :empleados, :notas, :text, :limit => 500
+      add_column :empleados, :notas, :text
       add_column :empleados, :subdireccion_id, :integer
       add_column :empleados, :municipio_id, :integer
      

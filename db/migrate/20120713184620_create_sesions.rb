@@ -21,14 +21,14 @@ class CreateSesions < ActiveRecord::Migration
         t.timestamps
     end
 
-    add_index :sesions, [:tramite_id], :name => "tramite"
-    add_index :sesions, [:mediador_id], :name => "mediador"
-    add_index :sesions, [:comediador_id], :name => "comediador"
-    add_index :sesions, [:horario_id], :name => "horario"
-    add_index :sesions, [:clave], :name => "clave"
-    add_index :sesions, [:tiposesion_id], :name => "tiposesion"
-    add_index :sesions, [:hora, :minutos, :sala_id], :name => "busqueda_diaria"
-    add_index :sesions, [:fecha], :name => "fecha"
+    add_index :sesions, [:tramite_id], :name => "sesion_tramite"
+    add_index :sesions, [:mediador_id], :name => "sesion_mediador"
+    add_index :sesions, [:comediador_id], :name => "sesion_comediador"
+    add_index :sesions, [:horario_id], :name => "sesion_horario"
+    add_index :sesions, [:clave], :name => "sesion_clave"
+    add_index :sesions, [:tiposesion_id], :name => "sesion_tiposesion"
+    add_index :sesions, [:hora, :minutos, :sala_id], :name => "sesion_busqueda_diaria"
+    add_index :sesions, [:fecha], :name => "sesion_fecha"
   end
 
 

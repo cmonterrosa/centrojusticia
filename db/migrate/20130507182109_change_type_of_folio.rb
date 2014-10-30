@@ -1,6 +1,11 @@
+require 'yaml'
 class ChangeTypeOfFolio < ActiveRecord::Migration
   def self.up
-    change_column(:tramites, :folio,  :integer)
+    db_yaml = YAML.load_file("#{RAILS_ROOT}/config/database.yml")
+    (db_yaml[RAILS_ENV]["adapter"] == "postgresql") ? (change_column :tramites, :folio, 'integer USING CAST(folio AS integer)') : (change_column :tramites, :folio,  :integer)
+
+   #    change_column :tramites, :folio,  :integer
+   # change_column :tramites, :folio, 'integer USING CAST(folio AS integer)'
 
     # Renumber
     counter=1

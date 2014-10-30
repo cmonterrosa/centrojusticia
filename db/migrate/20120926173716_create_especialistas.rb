@@ -2,7 +2,7 @@ class CreateEspecialistas < ActiveRecord::Migration
   def self.up
     #-- load catalogue
     users = []
-    role = Role.find_by_name("ESPECIALISTAS")
+    role = Role.find_by_name("especialistas")
     File.open("#{RAILS_ROOT}/db/catalogos/especialistas.txt").each do |linea|
         nombre, apellidos, login = linea.strip.split("|")
         paterno, materno = apellidos.strip.split(" ")

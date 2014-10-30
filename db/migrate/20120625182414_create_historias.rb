@@ -7,8 +7,8 @@ class CreateHistorias < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :historias, [:tramite_id], :name => "tramite"
-    add_index :historias, [:estatu_id], :name => "estatus"
+    add_index :historias, [:tramite_id], :name => "historias_tramite"
+    add_index :historias, [:estatu_id], :name => "historias_estatus"
   end
 
   def self.down

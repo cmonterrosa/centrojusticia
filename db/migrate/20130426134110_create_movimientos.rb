@@ -11,8 +11,8 @@ class CreateMovimientos < ActiveRecord::Migration
       t.timestamps
     end
 
-    add_index :movimientos, [:user_id], :name => "Usuario"
-    add_index :movimientos, [:situacion_id], :name => "situacion"
+    add_index :movimientos, [:user_id], :name => "movimientos_usuario"
+    add_index :movimientos, [:situacion_id], :name => "movimientos_situacion"
   end
 
   def self.down

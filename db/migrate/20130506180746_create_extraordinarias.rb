@@ -18,9 +18,9 @@ class CreateExtraordinarias < ActiveRecord::Migration
       t.boolean :notificacion
       t.timestamps
     end
-    add_index :extraordinarias, [:procedencia_id], :name => "procedencia"
-    add_index :extraordinarias, [:num_expediente], :name => "numero_expediente"
-    add_index :extraordinarias, [:tramite_id], :name => "tramites"
+    add_index :extraordinarias, [:procedencia_id], :name => "extraordinarias_procedencia"
+    add_index :extraordinarias, [:num_expediente], :name => "extraordinarias_numero_expediente"
+    add_index :extraordinarias, [:tramite_id], :name => "extraordinarias_tramites"
   end
 
   def self.down

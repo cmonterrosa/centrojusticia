@@ -14,7 +14,7 @@ class CreateTramites < ActiveRecord::Migration
     end
 
     add_index :tramites, [:anio, :folio], :name => "busqueda"
-    add_index :tramites, [:estatu_id], :name => "estatus"
+#    add_index :tramites, [:estatu_id], :name => "estatus"
    end
 
   def self.down

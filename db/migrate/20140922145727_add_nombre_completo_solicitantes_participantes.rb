@@ -39,8 +39,8 @@ class AddNombreCompletoSolicitantesParticipantes < ActiveRecord::Migration
         end
       end
 
-    add_index :orientacions, [:full_name], :name => "nombre_completo"
-    add_index :participantes, [:full_name], :name => "nombre_completo"
+    add_index :orientacions, [:full_name], :name => "orientacions_nombre_completo"
+    add_index :participantes, [:full_name], :name => "participantes_nombre_completo"
   end
 
   def self.down
