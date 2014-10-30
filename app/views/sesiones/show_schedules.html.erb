@@ -76,7 +76,9 @@
                                               <%=  radio_button_tag("horario", h.id)%><%= h.hora_completa %>
                                            </td>
                                         <%else%>
-                                           <%background=(sesion)? @backgrounds_colors[sesion.tiposesion_id - 1] : "gray"%>
+                                           <%@backgrounds_colors = colors_to_days%>
+                                           <%#background=(sesion)? @backgrounds_colors[sesion.tiposesion_id - 1] : "gray"%>
+                                           <%background="#9CACAC"%>
                                            <%color_fuente=(sesion)? "black" : "white"%>
                                            <%decoracion=(sesion)? "none" : "line-through"%>
                                            <td style="background-color: <%=h background%>; color: <%=h color_fuente%>; text-decoration: <%=decoracion%>;">

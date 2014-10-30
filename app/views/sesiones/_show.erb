@@ -1,11 +1,27 @@
-<table width="60%" border="0" cellspacing="0" cellpadding="0">
+<table width="40%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
     <!-- Cancelacion -->
     <%if current_user.has_role?("asignahorario") || current_user.has_role?("controlagenda") || current_user.has_role?("admindireccion")%>
+       <!--
+            <td>
+                 <= link_to image_tag("iconos/cancel.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post %><br />
+            </td>
+       -->
+       <!-- Cancelar -->
        <td>
-          <%= link_to image_tag("iconos/cancel.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post %><br />
+          <%= link_to "Cancelar" , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar sesión", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post, :class => "boton" %><br />
        </td>
+
+     <%end%>
+
+      <!-- Eliminar -->
+    <%if current_user.has_role?("asignahorario")%>
+          <td>
+              <%= link_to "Eliminar" , {:controller => "sesiones", :action => "destroy", :id => @sesion, :t => @token}, :title => "Eliminar sesión", :confirm => '¿Esta seguro que quiere eliminar completamente la sesión?, No se podrá recuperar', :method => :post, :class => "boton" %><br />
+          </td>
     <%end%>
+
+   <br />
 
     <!-- Reprogramar -->
     <%#if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>

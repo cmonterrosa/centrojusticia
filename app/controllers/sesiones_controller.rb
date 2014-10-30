@@ -398,6 +398,46 @@ class SesionesController < ApplicationController
     end
   end
 
+    def destroy
+    if ((@sesion = Sesion.find(params[:id])) && validate_token(params[:t]))
+        if @sesion.has_permission?(current_user)
+             #----- Notificamos a especialistas ---
+             #NotificationsMailer.deliver_sesion_canceled("mediador", @sesion)
+             #NotificationsMailer.deliver_sesion_canceled("comediador", @sesion)
+
+             ############### BUSCAMOS A ESPECIALISTA Y COMEDIADOR ###############
+             if @sesion.num_tramite
+              @ensesion = Situacion.find_by_descripcion("EN SESION")
+              @especialista = Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at).strftime("%y-%m-%d %H:%M:%S"), @sesion.mediador_id, @ensesion.id]) if @sesion.start_at
+              @comediador = Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at).strftime("%y-%m-%d %H:%M:%S"), @sesion.comediador_id, @ensesion.id]) if @sesion.start_at
+              @especialista2 = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?", @sesion.mediador_id, "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}%"])
+              @comediador2 = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?",  @sesion.comediador_id, "COMEDIADOR EN SESION, EXP. #{@sesion.num_tramite}%"])
+             end
+
+            #if @sesion.destroy
+            if @sesion.destroy
+              @especialista.destroy if @especialista
+              @comediador.destroy if @comediador
+              @especialista2.destroy if @especialista2
+              @comediador2.destroy if @comediador2
+              flash[:notice] = "Sesión eliminada correctamente, notificación enviada a especialistas.."
+              return render(:partial => 'sesion_eliminada_mensaje', :layout => 'only_jquery')
+              #redirect_to :controller => "home"
+
+            else
+              flash[:notice] = "No se pudo eliminar, verifique sesión"
+               return render(:partial => 'no_results', :layout => 'only_jquery')
+              #redirect_to :action => "show", :id => @sesion
+           end
+        end
+    elsif params[:id]
+        flash[:notice] = "Token de seguridad incorrecto"
+        redirect_to :action => "show", :id => params[:id]
+    else
+        redirect_to :controller => "home"
+    end
+  end
+
 
  def enable_form
    if params[:numero_tramite] =~ /^\d{1,4}\/20\d{2}$/

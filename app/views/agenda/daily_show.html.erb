@@ -52,16 +52,23 @@
               <%@salas.each do |sala|%>
 
              <%if @type%>
-              <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) ", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id])%>
-             <%else%>
-              <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
-             <%end%>
+                    <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) ", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id])%>
+
+              <%else%>
+                      <%if current_user.has_role?("asignahorario")%>
+                            <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+                      <%else%>
+                            <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+                      <%end%>
+              <%end%>
 
                   <%if sesion%>
                     <%@backgrounds_colors = colors_to_days%>
 
+                    <%estilo = !(sesion.cancel == nil)? "background-color: #F8FB53; text-decoration: line-through; color: white;" : "background-color:  #{@backgrounds_colors[sesion.tiposesion_id - 1]}"%>
+
                    <%if sesion.tiposesion_id%>
-                      <td style="background-color: <%=h @backgrounds_colors[sesion.tiposesion_id - 1]%>">
+                      <td style="<%=h estilo%>">
                         
                        <!-- Mostramos observaciones si tiene -->
                        <%if current_user.has_role?("asignahorario")%>
