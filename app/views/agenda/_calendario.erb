@@ -4,9 +4,9 @@
 
 <div id="calendar">
   <h2 id="month">
-    <%= link_to "<", :month => (@date.beginning_of_month-1).strftime("%Y-%m") %>
+    <%= link_to "<", {:month => (@date.beginning_of_month-1).strftime("%Y-%m")}, :class => "flecha_calendario" -%>
     <%=h @date.strftime("%B %Y") %>
-    <%= link_to ">", :month => (@date.end_of_month+1).strftime("%Y-%m") %>
+    <%= link_to ">", {:month => (@date.end_of_month+1).strftime("%Y-%m")}, :class => "flecha_calendario" -%>
   </h2>
   <% calendar_for @sesiones, :year => @date.year, :month => @date.month do |calendar| %>
     <%= calendar.head('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado') %>

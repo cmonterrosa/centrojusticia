@@ -263,3 +263,16 @@ label:before {
     font-size: 15px;
     text-align: center;
 }
+
+
+/* Boton de atras y adelante de calendario */
+
+.flecha_calendario{
+    font-family: "Nexa Light";
+    color: #999;
+    font-size: 36px;
+    margin: auto;
+    vertical-align: center;
+    text-align: center;
+    padding: 0 10px;
+}
