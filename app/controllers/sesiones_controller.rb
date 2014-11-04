@@ -254,6 +254,33 @@ class SesionesController < ApplicationController
     end
   end
 
+  ## Acciones desde menu fancy ###
+
+  def edit_jquery
+    if (@sesion = Sesion.find(params[:id]))
+        @tramite = @sesion.tramite
+        @horario = @sesion.horario
+        @fecha = @sesion.fecha
+        @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).todos_usuarios
+        render :partial => "edit", :layout => "only_jquery"
+    else
+      render :text => "<h2>No se pudo encontrar sesion, verifique</h2>"
+    end
+  end
+
+  def update_jquery
+    unless (@sesion = Sesion.find(params[:id]))
+      flash[:notice] = "No se pudo encontrar sesion, verifique"
+      render :text => "<h2 align='center' style='color:red;'>No se pudo encontrar sesión, verifique</h2>"
+    else
+      if @sesion.update_attributes!(params[:sesion])
+        render :text => "<h2 align='center'>Sesión actualizada correctamente</h2>"
+      else
+        render :text => "<h2 align='center' style='color:red;'>No se pudo actualizar, verifique</h2>"
+      end
+    end
+  end
+
   #---------------- Actualización de fecha/hora de sesion -------
 
   def reprogramar
@@ -505,6 +532,19 @@ class SesionesController < ApplicationController
   def management
     @sesion = Sesion.find(params[:id])
   end
+
+  def validar_observaciones
+    if params[:observaciones].size > 0
+        @sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND observaciones = ?", params[:fecha], params[:hora], params[:minutos], params[:observaciones].strip])
+        if @sesion
+          render :text => "<h1>YA EXISTE UNA SESION A LA MISMA HORA PARA #{params[:observaciones]}</h1>" if request.xhr?
+        else
+          render :text => ""
+        end
+    else
+       render :text => ""
+    end
+   end
 
 
 end

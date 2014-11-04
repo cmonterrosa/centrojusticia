@@ -16,6 +16,11 @@
 
       <!-- Eliminar -->
     <%if current_user.has_role?("asignahorario")%>
+
+          <td>
+              <%= link_to "Editar" , {:controller => "sesiones", :action => "edit_jquery", :id => @sesion, :t => @token}, :title => "Editar sesión", :confirm => '¿Esta seguro que quiere editar la sesión?', :method => :post, :class => "boton" %><br />
+          </td>
+
           <td>
               <%= link_to "Eliminar" , {:controller => "sesiones", :action => "destroy", :id => @sesion, :t => @token}, :title => "Eliminar sesión", :confirm => '¿Esta seguro que quiere eliminar completamente la sesión?, No se podrá recuperar', :method => :post, :class => "boton" %><br />
           </td>

@@ -66,6 +66,8 @@
             </tr>
             <tr>
                 <td align="center"><%= f.text_area :observaciones, :size => "40x10"%></td>
+                <img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
+                <div id="divmensaje"></div>
             </tr>
         </table>
       </td>
@@ -73,7 +75,7 @@
 
     <!-- espacio -->
     <tr>
-      <td colspan="3"><hr /></td>
+      <td colspan="3">&nbsp;</td>
     </tr>
     <!-- FOOTER -->
     <tr>
@@ -92,3 +94,21 @@
     </tr>
   </table>
 <% end %>
+
+
+<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
+
+
+
+
+<!-- AJAX -->
+<%= observe_field :sesion_observaciones,
+                                :frequency => 0.36,
+                                :before => "Element.show('spinner')",
+                                :success => "Element.hide('spinner')",
+                                :update=>"divmensaje",
+                                :url => {:action=>"validar_observaciones"},
+                                :with=>  " 'observaciones=' + value + '&hora=#{@horario.hora}&minutos=#{@horario.minutos}&fecha=#{@fecha}' "
+%>
+
+ 

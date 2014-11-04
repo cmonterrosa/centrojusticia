@@ -1,0 +1,94 @@
+<table width="99%" height="75%" border="0" align="center" cellpadding="2" cellspacing="0">
+    <tr class="titulo">
+      <td colspan="3" align="center" >EDITAR SESIÓN</td>
+    </tr>
+
+    <!-- Datos generales -->
+   <tr align="center">
+      <td align="center">
+        <% form_for :sesion, @sesion, :url => { :action => "update_jquery", :id => @sesion } do |f| -%>
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+            <tr bgcolor="#E8E8E8" class="subtitulo">
+              <td align="center" colspan="4">DATOS GENERALES</td>
+            </tr>
+             <!-- tipo de sesion  y horario-->
+            <tr align=" justify" class="pregunta">
+              <td align="center">Tipo de sesión</td>
+              <td align="center">Fecha/hora programada</td>
+            </tr>
+
+            <tr>
+              <td align="center"><%= f.select :tiposesion_id, Tiposesion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+              <td align="center"><%=@sesion.fecha%>/<%=@sesion.hora_completa%></td>
+            </tr>
+
+
+            <tr align=" justify" class="pregunta">
+              <td align="center">Mediador</td>
+              <td align="center">Comediador</td>
+            </tr>
+            <tr>
+              <td align="center"><%= f.text_field :mediador_id, :value => @sesion.mediador.nombre_completo, :disabled => true, :size => "48"%></td>
+              <td align="center"><%= f.text_field :comediador_id, :value => @sesion.comediador.nombre_completo, :disabled => true, :size => "48"%></td>
+            </tr>
+          </table>
+       </td>
+    </tr>
+
+    <!-- Detalle -->
+    <tr align="center">
+      <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+            <tr bgcolor="#E8E8E8" class="subtitulo">
+              <td align="center" colspan="1">DETALLE</td>
+            </tr>
+            <tr align=" justify" class="pregunta">
+                <td align="center">Observaciones</td>
+            </tr>
+
+            <tr>
+                <td align="center"><%= f.text_area :observaciones, :size => "40x10"%></td>
+                <img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
+                <div id="divmensaje"></div>
+            </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- espacio -->
+    <tr>
+      <td colspan="3">&nbsp;</td>
+    </tr>
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "sesiones", :action => "show", :id => @sesion-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+
+
+<!-- AJAX -->
+<%= observe_field :sesion_observaciones,
+                                :frequency => 0.36,
+                                :before => "Element.show('spinner')",
+                                :success => "Element.hide('spinner')",
+                                :update=>"divmensaje",
+                                :url => {:action=>"validar_observaciones"},
+                                :with=>  " 'observaciones=' + value + '&hora=#{@horario.hora}&minutos=#{@horario.minutos}&fecha=#{@fecha}' "
+%>
+
+
+
+
