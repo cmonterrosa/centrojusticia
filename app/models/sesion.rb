@@ -53,6 +53,15 @@ class Sesion < ActiveRecord::Base
     return string
   end
 
+  def descripcion_especialistas
+    string = ""
+    #string << "[#{self.start_at.strftime('%d de %B de %Y')} / #{self.hora_completa}]  " if self.start_at
+    string << "#{self.mediador.nombre.upcase}  " if self.mediador
+    string << " Y  #{self.comediador.nombre.upcase}  " if self.comediador
+    string << "  (#{self.tiposesion.descripcion}) \r" if self.tiposesion
+    return string
+  end
+
   def resume_with_observaciones
     string = ""
     string << resume

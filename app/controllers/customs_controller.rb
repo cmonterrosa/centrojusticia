@@ -96,6 +96,29 @@ class CustomsController < ApplicationController
       redirect_to :action => "show_calendario"
     end
   end
-  
+
+
+  def mis_expedientes
+    @user = (params[:id])? User.find(params[:id]) : current_user
+    if @user.has_role?("especialistas")
+        ### Si recibe parametros ###
+        @carpeta_atencion = (params[:carpeta_atencion] =~ /^\d{1,4}\/\d{4}$/) ? params[:carpeta_atencion].strip : nil if params[:carpeta_atencion]
+        folio_expediente, anio=@carpeta_atencion.split("/") if @carpeta_atencion
+        @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? AND (cancel IS NULL OR cancel=0)", @user.id], :order => "fecha, hora, minutos, created_at")
+        @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND (cancel IS NULL OR cancel=0)", @user.id], :order => "fecha, hora, minutos, created_at")
+        @tramites_ids =  @sesiones_mediador.map{|s|s.tramite_id} + @sesiones_mediador.map{|s|s.tramite_id}
+        
+        ## Filtrado de tramites ###
+        @tramites = (folio_expediente && anio)?  Tramite.find(:all, :conditions => ["folio_expediente =? AND anio=? AND id in (?)", folio_expediente, anio, @tramites_ids], :order => "anio DESC, folio_expediente DESC") : nil
+        @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", @tramites_ids], :order => "anio DESC, folio_expediente DESC") if @tramites_ids
+        @tramites = @tramites.paginate(:page => params[:page], :per_page => 25)
+        render :partial => "mis_expedientes", :layout => "kolaval"
+    else
+      flash[:notice]= "El usuario no es especialista"
+      redirect_to :controller => "home"
+    end
+
+    
+  end
 
 end
