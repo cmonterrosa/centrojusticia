@@ -65,6 +65,13 @@
       <td colspan="2">DETALLE DE SESION</td>
     </tr>
 
+     <%if @sesion.cancel == 1%>
+     <tr>
+        <td style="vertical-align: middle; width: 30%;"><b>Cancelado por:</b></td>
+        <td style="vertical-align: middle; width: 70%;"><%=User.find(@sesion.cancel_user).nombre_completo%></td>
+     </tr>
+     <%end%>
+
      <%if @sesion.tramite%>
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Número de expediente:</b></td>
