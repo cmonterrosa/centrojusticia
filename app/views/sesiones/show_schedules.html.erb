@@ -67,20 +67,28 @@
           <tbody>
               <% @horarios_disponibles.each do |horario| %>
                             <tr>
-
+                                <%guardia = Situacion.find_by_descripcion("GUARDIA")%>
                                 <%@salas.each do |sala|%>
                                     <%if h = Horario.find(:first, :conditions => ["sala_id = ? and hora=? and minutos=? and activo=1", sala.id, horario.hora, horario.minutos])%>
                                         <%sesion = Sesion.find(:first, :conditions => ["activa = 1 AND fecha = ? AND hora = ? AND minutos = ? AND ((mediador_id = ? OR comediador_id = ?) OR (mediador_id = ? OR comediador_id = ?))", @fecha, horario.hora, horario.minutos, @mediador.id, @mediador.id, @comediador.id, @comediador.id])%>
-                                        <%if sesion.nil? && sala.libre?(h.id, @fecha)%>
-                                           <td align="center">
+                                        <%fecha_hora = DateTime.parse("#{@fecha.year}-#{@fecha.month}-#{@fecha.day} #{horario.hora}:#{horario.minutos}")%>
+                                        <%mediador_tiene_guardia=(Movimiento.count(:id, :conditions => ["user_id = ? AND situacion_id = ? AND ? between fecha_inicio AND fecha_fin", @mediador, guardia, fecha_hora]) > 0)? true : false%>
+                                        <%comediador_tiene_guardia=(Movimiento.count(:id, :conditions => ["user_id = ? AND situacion_id = ? AND ? between fecha_inicio AND fecha_fin", @comediador, guardia, fecha_hora]) > 0)? true : false%>
+
+                                        <%if sesion.nil? && sala.libre?(h.id, @fecha) && !mediador_tiene_guardia && !comediador_tiene_guardia%>
+                                           <td align="center" style="background-color: #ceefef; color: black;">
                                               <%=  radio_button_tag("horario", h.id)%><%= h.hora_completa %>
                                            </td>
                                         <%else%>
                                            <%@backgrounds_colors = colors_to_days%>
                                            <%#background=(sesion)? @backgrounds_colors[sesion.tiposesion_id - 1] : "gray"%>
-                                           <%background="#9CACAC"%>
-                                           <%color_fuente=(sesion)? "black" : "white"%>
-                                           <%decoracion=(sesion)? "none" : "line-through"%>
+                                           <%#background ||=(mediador_tiene_guardia)? "#f79760" : nil%>
+                                           <%#background ||=(comediador_tiene_guardia)? "#f79760" : nil%>
+                                           <%#background ||="#9CACAC"%>
+                                           <%#color_fuente ||=(mediador_tiene_guardia || comediador_tiene_guardia)? "white" : nil%>
+                                           <%background ||="#52626d"%>
+                                           <%color_fuente  ="white"%>
+                                           <%decoracion= "line-through"%>
                                            <td style="background-color: <%=h background%>; color: <%=h color_fuente%>; text-decoration: <%=decoracion%>;">
                                               <%=  radio_button_tag "horario", h.id, false, :disabled => true%><%= h.hora_completa %>
                                            </td>
