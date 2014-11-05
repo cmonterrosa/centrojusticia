@@ -1,0 +1,81 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+<!-- contenido -->
+<div class="titulocalendario">
+  <p style="font-family: 'Nexa Bold';">MIS EXPEDIENTES</p>
+</div>
+
+<%=render :partial => "encabezado_busqueda"%>
+
+
+<div id="divlista">
+    <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-size:13px; width: 94%; margin: auto;">
+      <tr>
+        <td style="vertical-align: middle;" align="center">&nbsp;</td>
+        <td style="vertical-align: middle;" align="left">Expediente</td>
+        <td style="vertical-align: middle;" align="center">Participantes</td>
+        <td style="vertical-align: middle;" align="center">Sesion(es)</td>
+        <td style="vertical-align: middle;" align="center"><%=h "Estatus"%></td>
+      </tr>
+    
+
+    <%contador=1%>
+    <%@tramites.each do |tramite|%>
+    <tr>
+       <td style="vertical-align: middle; text-align: 'center';" width="4%"><%=link_to image_tag("kolaval/ico-print-tramite.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')-%></td>
+       <td style="vertical-align: middle;" align="center" width="6%"><b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b></td>
+
+       <!-- Participantes -->
+       <td style="vertical-align: middle;" width="35%">
+            <%participantes=[]%>
+              <%if @comparecencia = Comparecencia.find_by_tramite_id(tramite)%>
+                  <%@comparecencia.participantes.each do |p|%>
+                    <%participantes << "#{p.nombre_completo} (#{p.perfil})"%>
+                  <%end%>
+                  <%=h participantes.join(", ")%>
+               <%else%>
+                    <%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%>
+              <%end%>
+         </td>
+
+         <td style="vertical-align: middle;" width="35%">
+           <%sesiones=[]%>
+              <%if @sesiones = Sesion.find(:all, :conditions => ["tramite_id = ? AND (cancel IS NULL OR cancel=0)", tramite], :order => "fecha DESC")%>
+                  <%@sesiones.each do |s|%>
+                      <b><%=h "[#{s.start_at.strftime('%d de %B de %Y')} / #{s.hora_completa}] "%></b>
+                      <%=h "#{s.descripcion_especialistas}"%><br /><br />
+                    <%end%>
+                  <%#=h sesiones.join(",")%>
+               <%else%>
+                    &nbsp;
+              <%end%>
+          </td>
+
+       <td style="vertical-align: middle; text-align: center;" width="20%"><b><%=tramite.estatus%></b></td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+
+<br />
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @tramites %>
+          </div>
+          <%= will_paginate @tramites %>
+        </div>
+      </td>
+    </tr>
+</table>
+
