@@ -16,7 +16,7 @@
               <td align="center">¿Notificar vía correo electrónico?</td>
             </tr>
             <tr>
-              <td align="center"><%= f.text_field :num_tramite%></td> <!-- :onchange => "validar_expediente(); -->
+              <td align="center"><%= f.text_field :num_tramite, :size => "16", :required => true%></td> <!-- :onchange => "validar_expediente(); -->
               <td align="center"><%= f.select :mediador_id, @mediadores.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
               <td align="center"><%= f.select :comediador_id, @comediadores.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
               <td align="center"><%=  f.check_box :notificacion%></td>
@@ -38,12 +38,12 @@
                 <td align="center">Hora y sala</td>
                 <td align="center">Tipo de sesión</td>
             </tr>
-            <tr>
-              <td align="center"><%=h  "#{(@fecha.strftime("%d de %B de %Y")).upcase}"%></td>
+            <tr class="respuesta">
+              <td align="center"><b><%=h  "#{(@fecha.strftime("%d de %B de %Y")).upcase}"%></b></td>
               <%unless @horario%>
                 <td align="center"><%= f.select :horario_id, @horarios.collect{|a| [a.hora_completa, a.id]}, :prompt => 'Seleccione una opción'%></td>
               <%else%>
-                <td align="center"><%=@horario.descripcion_completa%></td>
+                <td align="center"><b><%=@horario.descripcion_completa%></b></td>
               <%end%>
               <td align="center"><%= f.select :tiposesion_id, @tipos_sesiones.collect{|a| [a.descripcion, a.id]}, :selected => Tiposesion.find_by_descripcion("ORIENTACION CONJUNTA")%></td>
             </tr>
@@ -65,10 +65,11 @@
                 <td align="center">Observaciones</td>
             </tr>
             <tr>
-                <td align="center"><%= f.text_area :observaciones, :size => "40x10"%></td>
+                <td align="center"><%= f.text_area :observaciones, :size => "60x5"%></td>
                 <img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
                 <div id="divmensaje"></div>
             </tr>
+            <tr><td>&nbsp;</td></tr>
         </table>
       </td>
     </tr>
