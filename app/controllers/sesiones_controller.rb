@@ -344,13 +344,16 @@ class SesionesController < ApplicationController
         if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id, :sala_id => @sala, :user_id => @user)
            #---- Notificamos a especialistas ---
            @sesion.update_attributes!(:tiposesion_id => @tiposesion.id) if @tiposesion
+           @sesion.rehabilitar!
            if params[:notificacion] == "true"
              NotificationsMailer.deliver_sesion_updated("mediador", @sesion)
              NotificationsMailer.deliver_sesion_updated("comediador", @sesion)
            end
            ############ Cambiamos status ##############
            if @sesion.tramite
-              (@sesion.tramite.has_estatus?("fecha-asig")) ?  @sesion.tramite.update_estatus!("camb-sesi", current_user) :  @sesion.tramite.update_estatus!("fech-asig", current_user)
+              nuevo_estatus = (@sesion.tramite.has_estatus?("comp-conc") || @sesion.tramite.has_estatus?("mate-asig") ) ? "fech-asig" : nil
+              nuevo_estatus ||= (@sesion.tramite.has_estatus?("fech-asig"))? "camb-sesi" : nil
+              @sesion.tramite.update_estatus!(nuevo_estatus, current_user) if nuevo_estatus
            end
            flash[:notice] = "Hora de sesión actualizada correctamente"
         end

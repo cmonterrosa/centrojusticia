@@ -96,9 +96,9 @@ table.table1{
               <%@salas.each do |sala|%>
 
              <%if @type%>
-              <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) ", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id])%>
+              <%sesion = Sesion.find(:first, :conditions => ["(cancel is NULL OR cancel=0) AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) ", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id])%>
              <%else%>
-              <%sesion = Sesion.find(:first, :conditions => ["cancel is NULL AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+              <%sesion = Sesion.find(:first, :conditions => ["(cancel is NULL OR cancel=0) AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
              <%end%>
 
                   <%if sesion%>

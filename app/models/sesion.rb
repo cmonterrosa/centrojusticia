@@ -101,6 +101,12 @@ class Sesion < ActiveRecord::Base
     self.save
   end
 
+  def rehabilitar!
+    self.cancel_user = false if !(self.cancel==1)
+    self.cancel =false if (self.cancel==1)
+    self.save
+  end
+
   def fecha_sugerida(especialista=nil,comediador=nil)
     ### Por regla buscamos tres dias hacia adelante ####
     @horarios = Horario.find(:all, :conditions => ["activo = true"], :order => "hora,minutos")
