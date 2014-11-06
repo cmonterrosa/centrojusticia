@@ -351,7 +351,7 @@ end
      @tramites = Tramite.find(:all, 
                               :select => "tramites.*",
                               :joins => "tramites, orientacions orientacions, estatus e",
-                              :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar', 'tram-escr') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
+                              :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar', 'tram-escr', 'mate-asig') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
                               :order => ["tramites.anio DESC, tramites.folio_expediente DESC, tramites.fechahora"])
   end
 
@@ -364,7 +364,7 @@ end
     @tramites = Tramite.find(:all,
                               :select => "tramites.*",
                               :joins => "tramites, orientacions orientacions, estatus e",
-                              :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar', 'tram-escr') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
+                              :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar', 'tram-escr', 'mate-asig') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
                               :order => ["tramites.anio DESC, tramites.folio_expediente DESC, tramites.fechahora"])
     
     csv_string = FasterCSV.generate do |csv|
