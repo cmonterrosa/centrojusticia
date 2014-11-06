@@ -165,7 +165,8 @@ class AdminController < ApplicationController
     if current_user.has_role?("adminusuarios")
       @especialistas = Role.find_by_name("especialistas").todos_usuarios
       @convenios = Role.find_by_name("convenios").todos_usuarios
-      @usuarios = (@especialistas + @convenios).sort{|a,b| a.nombre_completo <=> b.nombre_completo}
+      @usuarios = User.find(:all, :order => "login, paterno, materno, nombre") if current_user.has_role?("admin")
+      @usuarios ||= (@especialistas + @convenios).sort{|a,b| a.nombre_completo <=> b.nombre_completo}
     else
       @usuarios = User.find(:all,  :order => "login, paterno, materno, nombre") if (params[:token] && params[:token]  == 'all' )
       @usuarios ||= User.find(:all, :conditions => ["activo = ?", true], :order => "login, paterno, materno, nombre")
