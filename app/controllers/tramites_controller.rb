@@ -108,12 +108,15 @@ class TramitesController < ApplicationController
 
   def show
     if params[:id] && params[:id] =~/^\d{1,6}$/
-    unless @tramite=Tramite.find(:first, :conditions => ["id = ?", params[:id]])
-      flash[:notice] = "No se encontro trámite, verifique"
-      redirect_back_or_default('/')
-    end
+        unless @tramite=Tramite.find(:first, :conditions => ["id = ?", params[:id]])
+          flash[:notice] = "No se encontro trámite, verifique"
+          redirect_back_or_default('/')
+        else
+          @layout_final=(params[:token] && params[:token]=="show_sesion")? "only_jquery" : "kolaval"
+          render :partial =>"show", :layout => @layout_final
+        end
     else
-      redirect_back_or_default('/')
+        redirect_back_or_default('/')
     end
   end
 
