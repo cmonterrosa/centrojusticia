@@ -72,79 +72,61 @@ table.sample td.d99 {
 
 <!-- contenido -->
 <div id="divlista">
-    <table width="88%" border="1" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="75%" border="1" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
 
+    <!-- Descripcion de tramites -->
     <tr style="background-color:gray; color:white">
         <th colspan="3">
-          Orientaciones
+          Trámites / Estatus actual
         </th>
     </tr>
-    <tr class="d0">
-       <td style="vertical-align: middle;" colspan="2">Número de orientaciones</td>
-       <td style="vertical-align: middle;"><%=h @total_orientaciones%></td>
-    </tr>
-
-    <tr class="d1">
-       <td style="vertical-align: middle;" colspan="2">Hombres</td>
-       <td style="vertical-align: middle;"><%=h @orientaciones_hombres%> (<%=h (@total_orientaciones > 0) ?  ("%.2f" % ((@orientaciones_hombres / @total_orientaciones.to_f) * 100)) : "0"%>)%</td>
-    </tr>
-
-    <tr class="d0">
-       <td style="vertical-align: middle;" colspan="2">Mujeres</td>
-       <td style="vertical-align: middle;"><%=h @orientaciones_mujeres%> (<%=h (@total_orientaciones > 0) ? ("%.2f" % ((@orientaciones_mujeres / @total_orientaciones.to_f) * 100)) : "0"%>)%</td>
-    </tr>
-
-    <!-- Estraordinarias --->
-    <tr style="background-color:gray; color:white">
-        <th colspan="3">
-          Atenciones extraordinarias
-        </th>
-    </tr>
-    <tr class="d1">
-       <td style="vertical-align: middle;" colspan="2">Número de atenciones extraordinarias</td>
-       <td style="vertical-align: middle;"><%=h @atenciones_extraordinarias%></td>
-    </tr>
-
-    <!-- ESTADISTICAS POR PROCEDENCIA -->
-    <%unless @procedencias.empty?%>
-      <tr style="background-color:gray; color:white">
-          <th colspan="3">Instituciones que han sido atendidas por el Centro.</th>
-      </tr>
-      <tr class="d0">
-        <td style="vertical-align: middle;" colspan="2" align="center"><b>Institución</b></td>
-         <td style="vertical-align: middle;" align="center"><b>Total de atendidos</b></td>
-      </tr>
-      <%clase=1%>
-      <%@procedencias.each do |procedencia|%>
-        <tr class="d<%=h clase%>" align="center">
-          <td colspan="2"><%=h procedencia.descripcion%></td>
-          <td><%=h procedencia.numero_atenciones%></td>
-          <%clase=(clase==0)? 1 : 0%>
-        </tr>
-      <%end%>
+    <%clase=0%>
+    <%total_estatus_activos=0%>
+    <%@estatus.each do |e|%>
+     <%estatus_activo=Tramite.count(:id, :conditions => ["estatu_id = ? AND fechahora between ? AND ?", e.id, @inicio, @fin]) %>
+        <%if estatus_activo > 0%>
+            <tr class="d<%=h clase%>" align="center">
+                <td style="vertical-align: middle;" colspan="2"><%=e.descripcion%></td>
+                <td style="vertical-align: middle;"><%=h estatus_activo%><%total_estatus_activos+=estatus_activo%></td>
+                <%clase=(clase==0)? 1 : 0%>
+            </tr>
+        <%end%>
     <%end%>
 
+      <!-- totales -->
+       <tr class="d<%=h clase%>" align="center">
+              <td style="vertical-align: middle;" colspan="2"><b> => Total de trámites atendidos</b></td>
+              <td style="vertical-align: middle;"><%=h total_estatus_activos%></td>
+              <%clase=(clase==0)? 1 : 0%>
+       </tr>
+
+       <!-- totales -->
+       <tr class="d<%=h clase%>" align="center">
+              <td style="vertical-align: middle;" colspan="2"><b> => Total de trámites que generaron número de expediente</b></td>
+              <td style="vertical-align: middle;"><%=h @total_expedientes_generados%></td>
+              <%clase=(clase==0)? 1 : 0%>
+       </tr>
+
+
+
+
+
+
+
 
     <tr style="background-color:gray; color:white">
         <th colspan="3">
-          Atenciones normales
+          Orientaciones / atenciones normales
         </th>
     </tr>
 
-
-     <tr class="d1">
-       <td style="vertical-align: middle;" colspan="2">Se brindó solo orientación</td>
-       <td style="vertical-align: middle;"><%=h @solo_orientacion%></td>
-     </tr>
-
-
-     <tr class="d0">
-       <td style="vertical-align: middle;" colspan="2">Con conocimiento de alguna autoridad</td>
+    <tr class="d0">
+       <td style="vertical-align: middle;" colspan="2">Comparecencias con conocimiento de alguna autoridad</td>
        <td style="vertical-align: middle;"><%=h @comparecencias_conocimiento%></td>
      </tr>
 
-        <tr class="d1">
-       <td style="vertical-align: middle;" colspan="2">Sin conocimiento de alguna autoridad</td>
+     <tr class="d1">
+       <td style="vertical-align: middle;" colspan="2">Comparecencias sin conocimiento de alguna autoridad</td>
        <td style="vertical-align: middle;"><%=h @comparecencias_noconocimiento%></td>
      </tr>
 
@@ -154,19 +136,83 @@ table.sample td.d99 {
      </tr>
 
 
+
+     <tr class="d1">
+       <td style="vertical-align: middle;" colspan="2">Total de Solo Orientación</td>
+       <td style="vertical-align: middle;"><%=h @solo_orientacion%></td>
+     </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;" colspan="2">Hombres</td>
+       <td style="vertical-align: middle;"><%=h @orientaciones_hombres%> (<%=h (@total_orientaciones > 0) ?  ("%.2f" % ((@orientaciones_hombres / @total_orientaciones.to_f) * 100)) : "0"%>)%</td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;" colspan="2">Mujeres</td>
+       <td style="vertical-align: middle;"><%=h @orientaciones_mujeres%> (<%=h (@total_orientaciones > 0) ? ("%.2f" % ((@orientaciones_mujeres / @total_orientaciones.to_f) * 100)) : "0"%>)%</td>
+    </tr>
+
+
+    <tr class="d0">
+       <td style="vertical-align: middle;" colspan="2">=> Número total de  orientaciones (Solo Orientacion + Comparecencia concluida)</td>
+       <td style="vertical-align: middle;"><%=h @total_orientaciones%></td>
+    </tr>
+
+
+
+
+
+    <!-- ESTADISTICAS POR PROCEDENCIA -->
+    <%unless @procedencias.empty?%>
+      <tr style="background-color:gray; color:white">
+          <th colspan="3">Atenciones extraordinarias (Instituciones que han sido atendidas por el Centro)</th>
+      </tr>
+      <tr class="d0">
+        <td style="vertical-align: middle;" colspan="2" align="center"><b>Institución</b></td>
+         <td style="vertical-align: middle;" align="center"><b>Total de atendidos</b></td>
+      </tr>
+      <%clase=1%>
+      <%sum_extraordinarios=0%>
+      <%@procedencias.each do |procedencia|%>
+        <tr class="d<%=h clase%>" align="center">
+          <td colspan="2"><%=h procedencia.descripcion%></td>
+          <td><%=h procedencia.numero_atenciones%><%sum_extraordinarios+=procedencia.numero_atenciones.to_i%></td>
+          <%clase=(clase==0)? 1 : 0%>
+        </tr>
+      <%end%>
+
+      <!-- gran total -->
+      <tr class="d<%=h clase%>" align="center">
+          <td colspan="2"><b>=> Total general</b></td>
+          <td><%=h sum_extraordinarios%></td>
+      </tr>
+
+
+    <%end%>
+
+
+
      <!-- ESTADISTICAS POR MATERIA -->
       <%if @total_materias > 0%>
         <tr style="background-color:gray; color:white">
           <th colspan="3">Materia</th>
         </tr>
         <%  clase=0%>
+        <%sum_materia=0%>
          <%@detalle_materias.each do |d|%>
               <tr class="d<%=h clase%>">
                   <td style="vertical-align: middle;" colspan="2" align="center"><%=d["nombre"]%></td>
-                  <td style="vertical-align: middle;"><%=d["total"]%> (<%=  "%.2f" % ((d["total"] / @total_materias.to_f) * 100)%>)%</td>
+                  <td style="vertical-align: middle;"><%sum_materia+=d["total"].to_i%><%=d["total"]%> (<%=  "%.2f" % ((d["total"] / @total_materias.to_f) * 100)%>)%</td>
                   <%clase=(clase==0)? 1 : 0%>
               </tr>
           <%end%>
+
+          <!-- Total -->
+          <tr class="d<%=h clase%>" align="center">
+            <td colspan="2"><b>=> Total general</b></td>
+            <td><%=h sum_materia%></td>
+          </tr>
+
       <%end%>
 
 
@@ -182,14 +228,23 @@ table.sample td.d99 {
        <td style="vertical-align: middle;"><b>Atención extraordinaria</b></td>
      </tr>
      <%clase=0%>
+     <%sum_atencion_normal=0%>
+     <%sum_atencion_extraordinaria=0%>
      <%@especialistas.each do |e|%>
         <tr class="d<%=h clase%>">
-          <td style="vertical-align: middle;"><%=e.nombre_completo%></td>
-          <td style="vertical-align: middle;"><%=e.num_orientaciones_periodo(@inicio,@fin)%></td>
-          <td style="vertical-align: middle;"><%=Extraordinaria.count(:id, :conditions => ["especialista_id = ? AND fechahora between ? AND ?", e.id, @inicio, @fin])%></td>
+          <td style="vertical-align: middle;"><%=h e.nombre_completo%></td>
+          <td style="vertical-align: middle;"><%=h (sum_periodo = e.num_orientaciones_periodo(@inicio,@fin))%><%sum_atencion_normal += sum_periodo%></td>
+          <td style="vertical-align: middle;"><%=h  (sum_extraordinaria = Extraordinaria.count(:id, :conditions => ["especialista_id = ? AND fechahora between ? AND ?", e.id, @inicio, @fin]))%><%sum_atencion_extraordinaria += sum_extraordinaria%></td>
         </tr>
          <%clase=(clase==0)? 1 : 0%>
      <%end%>
+
+        <tr class="d<%=h clase%>">
+            <td style="vertical-align: middle;">&nbsp;</td>
+            <td style="vertical-align: middle;"><b>=> Total atención normal:</b><%=sum_atencion_normal%> </td>
+            <td style="vertical-align: middle;"><b>=> Total atención extraordinaria:</b><%=sum_atencion_extraordinaria%> </td>
+        </tr>
+
 
 
 
