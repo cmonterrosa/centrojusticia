@@ -27,7 +27,14 @@
           </td>
     <%end%>
 
-   <br /><br />
+    <!-- detalle del tramite -->
+    <%if current_user.has_role?("especialistas")%>
+          <td>
+              <%= link_to "Detalle del expediente" , {:controller => "tramites", :action => "show", :id => @sesion.tramite, :token => "show_sesion"}, :title => "Detalle del trámite", :method => :post, :class => "boton" %><br />
+          </td>
+    <%end%>
+
+   <br />
 
     <!-- Reprogramar -->
     <%#if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
