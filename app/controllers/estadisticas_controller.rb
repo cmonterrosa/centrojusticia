@@ -15,19 +15,19 @@ class EstadisticasController < ApplicationController
      end
 
     def select_grafica_noatencion
-     @title = "Seleccione el rango de fechas"
+     @title = "Seleccione el rango de fechas para estadística de no atención"
      @action = "grafica_noatencion"
      return render(:partial => 'select_date_range', :layout => 'only_jquery')
     end
 
     def select_grafica_materia
-     @title = "Seleccione el rango de fechas"
+     @title = "Seleccione el rango de fechas para estadística por materia"
      @action = "grafica_materia"
      return render(:partial => 'select_date_range', :layout => 'only_jquery')
     end
 
     def select_grafica_orientaciones_especialistas
-     @title = "Seleccione el rango de fechas"
+     @title = "Seleccione el rango de fechas para estadística de atención de especialistas"
      @action = "grafica_orientaciones_especialistas"
      return render(:partial => 'select_date_range', :layout => 'only_jquery')
     end
@@ -233,9 +233,6 @@ class EstadisticasController < ApplicationController
 end
 
 
-
-
-
   def select_grafica_sesiones_especialistas
      @title = "Seleccione el rango de fechas"
      @action = "grafica_orientaciones_especialistas"
@@ -313,15 +310,13 @@ end
   def grafica_materia
       #g = Gruff::Pie.new
       g = Gruff::Bar.new
-
-      
-
-       if params[:fecha_inicio] && params[:fecha_fin]
+      if params[:fecha_inicio] && params[:fecha_fin]
           params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
           @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
-           g.title = "Asuntos por materia: #{@inicio.strftime('%d-%m-%Y')} a #{@fin.strftime('%d-%m-%Y')}"
-          g.no_data_message = "No existe información"
-     end
+           g.title = "ASUNTOS POR MATERIA"
+           g.x_axis_label = "Período del #{@inicio.strftime('%d de %B de %Y')} al #{@fin.strftime('%d de %B de %Y')} "
+           g.no_data_message = "No existe información"
+      end
 
       g.add_color("#E00CF7")
       g.add_color("#1BFB02") # Verde Fuerte
