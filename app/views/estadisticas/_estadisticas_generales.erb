@@ -1,4 +1,4 @@
- <p>
+ <p align="center">
    <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "estadisticas_generales_pdf.pdf", :fecha_inicio => @inicio.strftime('%Y/%m/%d'), :fecha_fin => @fin.strftime('%Y/%m/%d')}, :title => "Imprimir estadistica general"-%>
 </p>
 
@@ -89,7 +89,20 @@
        <td style="vertical-align: middle;"><%= @comparecencias_concluidas%></td>
      </tr>
 
-    
+
+     <!-- Segregado por materia -->
+      <tr style="background-color:gray; color:white">
+        <th colspan="3">
+          Materia
+        </th>
+      </tr>
+
+      <%@detalle_materias.each do |d|%>
+          <tr class="d0">
+              <td style="vertical-align: middle;" colspan="2"><%=d["nombre"]%></td>
+              <td style="vertical-align: middle;"><%=d["total"]%></td>
+          </tr>
+      <%end%>
 
 
       <tr style="background-color:gray; color:white">
@@ -112,6 +125,8 @@
         </tr>
      <%end%>
 
+
+     
      
      <tr style="background-color:gray; color:white">
         <th colspan="3">
