@@ -1,15 +1,78 @@
- <p align="center">
-   <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "estadisticas_generales_pdf.pdf", :fecha_inicio => @inicio.strftime('%Y/%m/%d'), :fecha_fin => @fin.strftime('%Y/%m/%d')}, :title => "Imprimir estadistica general"-%>
-</p>
+<%
+PDFKit.configure do |config|
+  config.default_options = {
+    :page_size => 'letter',
+    :margin_top => '0.3in',
+    :margin_right => '0.3in',
+    :margin_bottom => '0.3in',
+    :margin_left => '0.3in',
+    :encoding => 'utf-8',
+    :header_right => "FECHA DE CREACION: [date] [time]     ",
+    :footer_right => "PAGINA [page] DE [toPage]     "
+  }
+end
+
+%>
 
 
-<h2 align="center">Estadísticas generales</h2>
-<h3 align="center">Del período del <%=@inicio.strftime('%d de %B de %Y')%> al <%=@fin.strftime('%d de %B de %Y')%></h3>
+<style type="text/css">
+  /* Estilo para las tablas */
+table.sample {
+	border: 6px inset #8B8378;
+         font-family: "Nexa Light";
+	-moz-border-radius: 6px;
+        font-size: 12px;
+        margin-left:auto;
+        margin-right:auto;
+}
+table.sample td {
+	border: 0px solid black;
+	padding: 0.2em 2ex 0.2em 2ex;
+	color: black;
+}
+table.sample tr.d0 td {
+	background-color: #e8f4f4;
+}
+table.sample tr.d1 td {
+	background-color: #FEFEF2;
+}
+table.sample td.d0 {
+	background-color: #FCF6CF;
+}
+table.sample td.d2 {
+	background-color: #FF8C00;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas */
+table.sample td.d0 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas de error */
+table.sample td.d99 {
+	background-color: #FF9900;
+}
+
+
+</style>
+
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+   <tr><th align="center"><%=SUBDIRECCION.titleize%></th></tr>
+</table>
+
+<h4 align="center">Estadísticas generales</h4>
+<h5 align="center">Del período del <%=@inicio.strftime('%d de %B de %Y')%> al <%=@fin.strftime('%d de %B de %Y')%></h5>
 
 
 <!-- contenido -->
 <div id="divlista">
-    <table width="75%" border="1" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="88%" border="1" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
 
     <tr style="background-color:gray; color:white">
         <th colspan="3">
@@ -30,7 +93,7 @@
        <td style="vertical-align: middle;" colspan="2">Mujeres</td>
        <td style="vertical-align: middle;"><%=h @orientaciones_mujeres%> (<%=h (@total_orientaciones > 0) ? ("%.2f" % ((@orientaciones_mujeres / @total_orientaciones.to_f) * 100)) : "0"%>)%</td>
     </tr>
-    
+
     <!-- Estraordinarias --->
     <tr style="background-color:gray; color:white">
         <th colspan="3">
@@ -68,13 +131,13 @@
         </th>
     </tr>
 
-     
+
      <tr class="d1">
        <td style="vertical-align: middle;" colspan="2">Se brindó solo orientación</td>
        <td style="vertical-align: middle;"><%=h @solo_orientacion%></td>
      </tr>
 
-     
+
      <tr class="d0">
        <td style="vertical-align: middle;" colspan="2">Con conocimiento de alguna autoridad</td>
        <td style="vertical-align: middle;"><%=h @comparecencias_conocimiento%></td>
@@ -129,8 +192,8 @@
      <%end%>
 
 
-     
-     
+
+
      <tr style="background-color:gray; color:white">
         <th colspan="3">
           Participantes
