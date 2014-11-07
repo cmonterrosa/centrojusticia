@@ -400,7 +400,7 @@ class SesionesController < ApplicationController
               @ensesion = Situacion.find_by_descripcion("EN SESION")
               @especialista = Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at).strftime("%y-%m-%d %H:%M:%S"), @sesion.mediador_id, @ensesion.id]) if @sesion.start_at
               @comediador = Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at).strftime("%y-%m-%d %H:%M:%S"), @sesion.comediador_id, @ensesion.id]) if @sesion.start_at
-              @especialista2 = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?", @sesion.mediador_id, "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}%"])
+              @especialista2 = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?", @sesion.mediador_id, "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}%"]) if @especialista2 = Movimiento.count(:id, :conditions => ["user_id = ? AND observaciones like ?", @sesion.mediador_id, "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}%"]) == 1
               @comediador2 = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?",  @sesion.comediador_id, "COMEDIADOR EN SESION, EXP. #{@sesion.num_tramite}%"])
              end
 
