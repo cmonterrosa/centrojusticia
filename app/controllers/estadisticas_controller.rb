@@ -352,7 +352,7 @@ end
 
   def show_cargas_trabajo
      @especialistas = Role.find_by_name("ESPECIALISTAS").todos_usuarios
-     @especialistas = @especialistas.sort{|p1,p2| p1.puntuacion <=> p2.puntuacion}
+     @especialistas_semana = (@especialistas.sort{|p1,p2| p1.puntuacion_semana_actual <=> p2.puntuacion_semana_actual}).reverse
      return render(:partial => 'show_cargas_trabajo', :layout => 'only_jquery')
   end
 
