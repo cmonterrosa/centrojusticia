@@ -46,7 +46,7 @@
              <%else%>
               <!-- disabled -->
               <!-- <td align="center"><= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, {:disabled => true}%></td> -->
-              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, :style => "width: 90%;"%></td>
+              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%></td>
              <%end%>
           <%end%>
           <!--
