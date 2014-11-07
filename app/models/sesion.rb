@@ -23,8 +23,9 @@ class Sesion < ActiveRecord::Base
 
 
   def start_at
-    horario = Horario.find(self.horario_id) if self.horario_id
-    fecha = DateTime.civil(self.fecha.year, self.fecha.month, self.fecha.day, horario.hora, horario.minutos) if self.fecha
+    horario = (self.horario_id) ? Horario.find(:first, :conditions => ["id = ?", self.horario_id]) : nil
+    horario ||= Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo != 0", self.hora, self.minutos, self.sala_id])
+    fecha = DateTime.civil(self.fecha.year, self.fecha.month, self.fecha.day, horario.hora, horario.minutos) if self.fecha && horario
     return (fecha) if fecha
     return nil
   end
