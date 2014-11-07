@@ -159,7 +159,7 @@ class User < ActiveRecord::Base
 
   def full_description_for_especialistas
     if self.situacion
-     "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip} / #{self.estatus_actual} / #{self.puntuacion_semana_actual} Orientacion(es)"
+         "#{self.estatus_actual}".ljust(18) +   " | "  +   "#{self.nombre_completo}".ljust(40)  +  " | " +  "#{self.puntuacion_semana_actual}"
     else
        "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip}"
     end
@@ -187,8 +187,28 @@ def num_orientaciones_dos_dias
     # Buscamos si tienen movimientos o baja
     @baja = (self.situacion == Situacion.find_by_descripcion("BAJA"))? true : nil
     @estatus_actual = (@baja) ? "BAJA" : nil
+
+    # Buscamos si tiene algun otro movimiento
     @movimiento = Movimiento.find(:first, :conditions => ["user_id = ? AND (? between fecha_inicio AND fecha_fin)", self.id, Time.now], :order => "fecha_fin DESC")
-    @estatus_actual ||= (@movimiento.situacion)? @movimiento.situacion.descripcion : "DISPONIBLE" if @movimiento
+    @estatus_actual ||= (@movimiento.situacion)? @movimiento.situacion.descripcion : nil if @movimiento
+
+    #### Buscamos si tiene sesion proxima, dentro de 24 min ####
+    if self.has_role?("especialistas")
+      total_minutos_anticipacion=24
+      @sesiones_del_dia = Sesion.find(:all, :select => "id, hora, minutos, horario_id, sala_id, fecha", :conditions => ["(cancel IS NULL or cancel=0) AND fecha= ? AND (mediador_id = ? OR comediador_id = ?) AND hora >= ?", Time.now.strftime("%Y-%m-%d"), self.id, self.id, Time.now.strftime("%H")])
+      puts "Encuentra sesiones del dia"
+      @tiempo_actual = DateTime.civil(Time.now.year, Time.now.month, Time.now.day, Time.now.hour, Time.now.strftime('%M').to_i) unless @sesiones_del_dia.empty?
+      @sesiones_del_dia.each do |s|
+               if s.start_at
+                    if ((s.start_at - ((total_minutos_anticipacion/60.0)/(24.0))) <= @tiempo_actual) && (@tiempo_actual <= (s.start_at - ((1/60.0)/(24.0))))
+                        puts("Limite inferior #{(s.start_at - ((24/60.0)/(24.0)))}")
+                        puts("Limite El tiempo ahora #{@tiempo_actual}")
+                        puts("Limite superior #{(s.start_at - ((1/60.0)/(24.0)))}")
+                        @estatus_actual ||= "SESION PROXIMA"
+                    end
+               end
+          end
+      end
     @estatus_actual ||= "DISPONIBLE"
     return @estatus_actual
   end
