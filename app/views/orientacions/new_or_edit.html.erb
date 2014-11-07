@@ -6,6 +6,10 @@
 </p>
 
 
+  <div class="ultima_conexion">
+    Ultima actualización: <%=Time.now.strftime("%H:%M:%S")%>
+  </div><br />
+
 <% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
   <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr class="titulo">
@@ -22,14 +26,14 @@
            <%if @extra || @especialista%>
               <td align="center">Especialista <%=@caption_type_specialist%> / Orientaciones en los últimos 7 días</td>
             <%else%>
-              <td align="center">Especialista que atenderá / Estado / Actividad Semanal</td>
+              <td align="center"> Estado   |   Especialista que atenderá   |   Orientaciones en semana actual</td>
            <%end%>
            <%#*<td align="center">¿Notificar especialista vía correo?</td>%>
           <td align="center">Observaciones</td>
         </tr>
         <tr>
           <td align="center">
-              <%=f.text_field :fechahora, :value => @fecha%>
+              <%=f.text_field :fechahora, :value => @fecha, :size => 16%>
           </td>
 
           <%if @extra%>
@@ -42,13 +46,13 @@
              <%else%>
               <!-- disabled -->
               <!-- <td align="center"><= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, {:disabled => true}%></td> -->
-              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%></td>
+              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, :style => "width: 90%;"%></td>
              <%end%>
           <%end%>
           <!--
           <td align="center"><=f.check_box :notificacion%> </td>
           -->
-          <td align="center"><%= f.text_field :observaciones, :class => "text", :size => "40"%></td>
+          <td align="center"><%= f.text_field :observaciones, :class => "text", :size => "48"%></td>
         </tr>
       </table></td>
     </tr>
@@ -103,10 +107,7 @@
         </table>
       </td>
     </tr>
-    <!-- espacio -->
-    <tr>
-      <td colspan="3"><hr /></td>
-    </tr>
+    
     <!-- FOOTER -->
     <tr>
       <td align="right">
