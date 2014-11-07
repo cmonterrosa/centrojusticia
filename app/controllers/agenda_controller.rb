@@ -86,6 +86,7 @@ class AgendaController < ApplicationController
   def daily_show
     @origin=params[:origin] if params[:origin]
     @type = params[:type] if params[:type]
+    @token = params[:token] if params[:token]
     if params[:year] =~ /^\d{4}$/ && params[:month] =~ /^\d{1,2}$/ && params[:day] =~ /^\d{1,2}$/
        @fecha = DateTime.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
        @before = @fecha.yesterday

@@ -76,7 +76,7 @@ class CustomsController < ApplicationController
 
   def show_calendario
      @sesion = Sesion.new
-     @sesiones = (params[:id] == "all") ? Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["cancel is NULL AND s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos") :  Sesion.find(:all, :conditions => ["cancel is NULL AND fecha is not NULL and (mediador_id = ? OR comediador_id = ?)", current_user.id, current_user.id], :order => "fecha")
+     @sesiones = (params[:id] == "all") ? Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["(cancel is NULL OR cancel=0) AND s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos") :  Sesion.find(:all, :conditions => ["(cancel is NULL OR cancel=0) AND fecha is not NULL and (mediador_id = ? OR comediador_id = ?)", current_user.id, current_user.id], :order => "fecha")
      @title = (params[:id] == "all") ? "Calendario general": "Calendario personalizado para #{current_user.nombre_completo}"
      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
   end
