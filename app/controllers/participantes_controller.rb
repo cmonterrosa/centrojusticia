@@ -53,6 +53,7 @@ class ParticipantesController < ApplicationController
     if Participante.exists?(params[:id])
         @participante =  Participante.find(params[:id])
         @tramite = @participante.comparecencia.tramite
+        render :partial => "show", :layout => "only_jquery"
     end
   end
 

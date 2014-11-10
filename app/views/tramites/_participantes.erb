@@ -1,3 +1,13 @@
+  <script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
   <!-- Participantes del trámite -->
   <% if @tramite.comparecencia %>
     <%unless @tramite.comparecencia.participantes.empty?%>
@@ -26,7 +36,7 @@
 
             <!-- Nombre o razón social -->
             <%nombre = (participante.tipopersona.descripcion == 'MORAL') ? participante.razon_social : participante.nombre_completo %>
-            <td align="left" colspan="3"><%=link_to "#{nombre}", :action => "show", :controller => "participantes", :id => participante%></td>
+            <td align="left" colspan="3"><%=link_to "#{nombre}", { :action => "show", :controller => "participantes", :id => participante}, :class => "fancybox fancybox.iframe"%></td>
            </tr>
           <%clase = invert_class(clase)%>
         <%end%>

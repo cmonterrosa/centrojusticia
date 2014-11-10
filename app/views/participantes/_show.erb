@@ -4,12 +4,17 @@
     <= link_to image_tag("iconos/pdf.png", :border =>0) , :action => "pdf", :controller => "tramites", :id => @tramite%>
   </p>
   -->
-  <table width="75%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table width="94%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
       <th colspan="2">
-        Detalles del participante
+        Detalles del participante (<%=h (@participante.comparecencia)? (@participante.comparecencia.tramite.numero_expediente) : ""%>)
       </th>
      </tr>
+
+     <tr class="d1">
+      <td style="vertical-align: middle;"><b>Nombre completo:</b></td>
+      <td style="vertical-align: middle;"><%=h(@participante.nombre_completo ? @participante.nombre_completo : "No existe información")%></td>
+    </tr>
 
     <tr class="d0">
        <td style="vertical-align: middle;"><b>Rol:</b></td>
@@ -21,53 +26,50 @@
        <td style="vertical-align: middle;"><%=h(@participante.tipopersona_id ? @participante.tipopersona.descripcion : "No existe información")%></td>
     </tr>
 
-    <tr class="d0">
-      <td style="vertical-align: middle;"><b>Nombre completo:</b></td>
-      <td style="vertical-align: middle;"><%=h(@participante.nombre_completo ? @participante.nombre_completo : "No existe información")%></td>
-    </tr>
+    
 
-    <tr class="d1">
+    <tr class="d0">
       <td style="vertical-align: middle;"><b>Fecha de Nacimiento:</b></td>
       <td style="vertical-align: middle;"><%=h  ((@participante.fecha_nac) ? @participante.fecha_nac.strftime("%d de %B de %Y") : "No existe información")%></td>
     </tr>
 
-    <tr class="d0">
+    <tr class="d1">
       <td style="vertical-align: middle;"><b>Sexo:</b></td>
       <%sexos = {"F" => "FEMENINO", "M" => "MASCULINO" }%>
       <td style="vertical-align: middle;"><%=h (@participante.sexo) ? sexos[@participante.sexo] : "No existe información"%></td>
     </tr>
 
-    <tr class="d1">
+    <tr class="d0">
         <td style="vertical-align: middle;"><b>Domicilio:</b></td>
-        <td><%=text_area(:participante, :domicilio, :size => "75x10", :disabled => 'disabled')%></td>
+        <td><%=text_area(:participante, :domicilio, :size => "50x14", :disabled => 'disabled')%></td>
+    </tr>
+
+    <tr class="d1">
+        <td style="vertical-align: middle;"><b>Referencias domiciliarias:</b></td>
+        <td><%=text_area(:participante, :referencia_domiciliaria, :size => "50x14", :disabled => 'disabled')%></td>
     </tr>
 
     <tr class="d0">
-        <td style="vertical-align: middle;"><b>Referencias domiciliarias:</b></td>
-        <td><%=text_area(:participante, :referencia_domiciliaria, :size => "75x10", :disabled => 'disabled')%></td>
-    </tr>
-
-    <tr class="d1">
         <td style="vertical-align: middle;"><b>Cuadrante de ubicación:</b></td>
         <td style="vertical-align: middle;"><%=h (@participante.cuadrante_id ? @participante.cuadrante.descripcion : "No existe información")%></td>
     </tr>
 
-    <tr class="d0">
+    <tr class="d1">
       <td style="vertical-align: middle;"><b>Municipio:</b></td>
       <td style="vertical-align: middle;"><%=h (@participante.municipio_id ? @participante.municipio.descripcion : "No existe información")%></td>
     </tr>
 
-    <tr class="d1">
+    <tr class="d0">
       <td style="vertical-align: middle;"><b>Teléfono particular:</b></td>
       <td style="vertical-align: middle;"><%=h ((@participante.telefono_particular) ? @participante.telefono_particular : "No existe información")%></td>
     </tr>
 
-    <tr class="d0">
+    <tr class="d1">
       <td style="vertical-align: middle;"><b>Teléfono celular:</b></td>
       <td style="vertical-align: middle;"><%=h ((@participante.telefono_celular) ? @participante.telefono_celular  : "No existe información")%></td>
     </tr>
 
-    <tr class="d1">
+    <tr class="d0">
       <td style="vertical-align: middle;"><b>Correo electrónico:</b></td>
       <td style="vertical-align: middle;"><%=h ((@participante.correo) ? @participante.correo : "No existe información")%></td>
     </tr>
