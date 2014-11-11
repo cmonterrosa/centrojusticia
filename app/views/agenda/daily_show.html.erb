@@ -71,7 +71,7 @@
                       <td style="<%=h estilo%>">
                         
                        <!-- Mostramos observaciones si tiene -->
-                       <%if current_user.has_role?("asignahorario")%>
+                       <%if current_user.has_role?("asignahorario") || current_user.has_role?("especialistas")%>
                           <%=link_to sesion.resume_with_observaciones, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
                        <%else%>
                           <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
