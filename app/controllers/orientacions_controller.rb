@@ -70,6 +70,9 @@ class OrientacionsController < ApplicationController
     if current_user.has_role?("direccion")
       @especialistas << current_user
     end
+    if @especialistas.empty?
+      render :partial => "especialistas_ocupados", :layout => "kolaval"
+    end
 
   end
 
