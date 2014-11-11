@@ -301,7 +301,7 @@ class AdminController < ApplicationController
 
 def permissions_user
    if @user = User.find(params[:id])
-      @movimientos = Movimiento.find(:all, :conditions => ["user_id = ?", @user.id], :order => "fecha_inicio DESC,fecha_fin DESC").paginate(:page => params[:page], :per_page => 25)
+      @movimientos = Movimiento.find(:all, :conditions => ["user_id = ?", @user.id], :order => "fecha_fin DESC,fecha_inicio DESC").paginate(:page => params[:page], :per_page => 25)
    end
 end
 

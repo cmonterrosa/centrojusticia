@@ -13,19 +13,19 @@
 
 <div id="divlista">
     <!-- Historico de movimientos -->
-    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 98%; margin: auto;">
      <tr>
-          <td style="vertical-align: middle;">Tipo</td>
-          <td style="vertical-align: middle;">Fecha/hora inicio</td>
-          <td style="vertical-align: middle;">Fecha/hora fin</td>
+          <td style="vertical-align: middle; width: 8%;">Tipo</td>
+          <td style="vertical-align: middle; width: 22%;">Fecha/hora inicio</td>
+          <td style="vertical-align: middle; width: 22%;">Fecha/hora fin</td>
           <td style="vertical-align: middle;">Registró</td>
           <td style="vertical-align: middle;" colspan="3">&nbsp;</td>
       </tr>
       <%@movimientos.each do |m|%>
         <tr>
           <td style="vertical-align: middle;"><b><%=h (m.situacion) ? (m.situacion.descripcion) : "----"%></b></td>
-          <td style="vertical-align: middle;"><b><%=m.fecha_inicio.strftime("%Y-%m-%d / %H:%M:%S")%></b></td>
-          <td style="vertical-align: middle;"><b><%=m.fecha_fin.strftime("%Y-%m-%d / %H:%M:%S")%></b></td>
+          <td style="vertical-align: middle;"><b><%=m.fecha_inicio.strftime("%d de %B de %Y  (%H:%M %p)")%></b></td>
+          <td style="vertical-align: middle;"><b><%=m.fecha_fin.strftime("%d de %B de %Y  (%H:%M %p)")%></b></td>
           <td style="vertical-align: middle;"><b><%=h (m.autorizo) ? User.find(m.autorizo).nombre_completo : "---"%></b></td>
           <td style="vertical-align: middle;"><%=link_to "Detalle", {:action => "detail_permission", :id => m}, :class => 'boton', :title => "Detalle del Registro"-%></td>
           <%if m.fecha_inicio >= Time.now || Time.now <= (m.fecha_inicio + 3600) || (current_user.has_role?("admin")) || current_user.has_role?("admindireccion")%> <!-- 60 minutos -->
