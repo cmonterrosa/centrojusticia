@@ -134,18 +134,16 @@ class EstadisticasController < ApplicationController
       g.add_color("#C1F7BB") # verde Pistache
       g.additional_line_values
       g.has_left_labels
-      g.x_axis_label = "Actividad"
       especialistas = Role.find_by_name("especialistas").todos_usuarios
       if params[:fecha_inicio] && params[:fecha_fin]
           params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
           @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
-          g.title = "Orientaciones del #{@inicio.strftime('%d/%m')} al #{@fin.strftime('%d/%m')}"
+          g.title = "Orientaciones y/o comparecencias"
           #@especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_periodo(@inicio,@fin) <=> p2.num_orientaciones_periodo(@inicio,@fin)}
           especialistas.each do |especialista|
                 g.data("#{especialista.nombre}(#{especialista.num_orientaciones_periodo(@inicio,@fin)})", [especialista.num_orientaciones_periodo(@inicio,@fin)]) if especialista.num_orientaciones_periodo(@inicio,@fin) > 0
           end
       else
-            g.title = "Total de orientaciones"
             especialistas.each do |especialista|
             total_sesiones = Orientacion.count(:id, :conditions => ["user_id = ?", especialista.id.to_i])
               if total_sesiones > 0
@@ -154,6 +152,7 @@ class EstadisticasController < ApplicationController
             end
       end
       g.sort
+      g.x_axis_label = "Período del #{@inicio.strftime('%d de %B de %Y')} al #{@fin.strftime('%d de %B de %Y')} "
       send_data(g.to_blob,:disposition => 'inline', :type => 'image/png', :filename => "list.png")
  end
 
