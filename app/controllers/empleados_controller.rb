@@ -41,6 +41,7 @@ class EmpleadosController < ApplicationController
   def new_or_edit_certificacion
     @empleado = Empleado.find(params[:id])
     @certificacion = Certificacion.find(params[:certificacion]) if params[:certificacion]
+    @certificacion_id = (@certificacion)? @certificacion.id : nil
     @certificacion ||= Certificacion.new
     @certificacion.mgdo_presidente ||= MAGISTRADO_PRESIDENTE
     @certificacion.director_ceja ||= DIRECTOR_CEJA
