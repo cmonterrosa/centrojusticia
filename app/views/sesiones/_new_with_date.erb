@@ -16,6 +16,8 @@
               <td align="center">¿Notificar vía correo electrónico?</td>
             </tr>
             <tr>
+              <div id="divmensaje_expediente"></div>
+              <img alt="spinner" id="spinner2" src="/images/loading_spinner.gif" style="display:none;" />
               <td align="center"><%= f.text_field :num_tramite, :size => "16", :required => true%></td> <!-- :onchange => "validar_expediente(); -->
               <td align="center"><%= f.select :mediador_id, @mediadores.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
               <td align="center"><%= f.select :comediador_id, @comediadores.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción', :class => "required"%></td>
@@ -31,12 +33,13 @@
       <td align="center">
           <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
             <tr bgcolor="#E8E8E8" class="subtitulo">
-              <td align="center" colspan="3">CAPTURAR DATOS DE LA SESIÓN</td>
+              <td align="center" colspan="4">CAPTURAR DATOS DE LA SESIÓN</td>
             </tr>
             <tr align=" justify" class="pregunta">
                 <td align="center">Fecha</td>
                 <td align="center">Hora y sala</td>
                 <td align="center">Tipo de sesión</td>
+                <td align="center">Invitacion</td>
             </tr>
             <tr class="respuesta">
               <td align="center"><b><%=h  "#{(@fecha.strftime("%d de %B de %Y")).upcase}"%></b></td>
@@ -46,6 +49,10 @@
                 <td align="center"><b><%=@horario.descripcion_completa%></b></td>
               <%end%>
               <td align="center"><%= f.select :tiposesion_id, @tipos_sesiones.collect{|a| [a.descripcion, a.id]}, :selected => Tiposesion.find_by_descripcion("ORIENTACION CONJUNTA")%></td>
+
+              <!-- invitaciones -->
+              <%@invitaciones = {"PRIMERA INVITACION" => 1, "SEGUNDA INVITACION" => 2}%>
+              <td align="center"><%=f.select(:num_invitacion, @invitaciones.map { |k,v| [ k, v ] },  { :include_blank => true })%></td>
             </tr>
         </table>
       </td>
@@ -103,6 +110,17 @@
 
 
 <!-- AJAX -->
+
+
+<%= observe_field :sesion_num_tramite,
+                                :frequency => 0.25,
+                                :before => "Element.show('spinner2')",
+                                :success => "Element.hide('spinner2')",
+                                :update=>"divmensaje_expediente",
+                                :url => {:action=>"validar_num_tramite"},
+                                :with=>  " 'num_tramite=' + value + '&hora=#{@horario.hora}&minutos=#{@horario.minutos}&fecha=#{@fecha}' "
+%>
+
 <%= observe_field :sesion_observaciones,
                                 :frequency => 0.36,
                                 :before => "Element.show('spinner')",

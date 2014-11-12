@@ -136,76 +136,80 @@ class SesionesController < ApplicationController
     @horario = Horario.find(params[:horario]) if params[:horario]
     @sesion.horario = @horario if @horario
     @sesion.horario ||= Horario.find(params[:sesion][:horario_id])
+    @sesion.fecha = Date.parse(params[:date]) if params[:date]
     #---- if tramite has a valid format -----
     
-    if params[:sesion][:num_tramite] =~ /^\d{1,4}\/20\d{2}$/
+    if params[:sesion][:num_tramite] =~ /^\d{1,4}\/\d{4}$/
        folio_expediente, anio = params[:sesion][:num_tramite].split("/")
        @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio_expediente = ?", anio.to_i, folio_expediente.to_i])
-       #@tramite ||= Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
        @sesion.tramite = @tramite if @tramite
     end
 
-
-#    if params[:sesion][:num_tramite] =~ /^\d{1,4}\/20\d{2}$/
-#       folio, anio = params[:sesion][:num_tramite].split("/")
-#       @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio.to_i, folio.to_i])
-#       @tramite ||= Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
-#       @sesion.tramite = @tramite
-#    end
-
-
-    @sesion.fecha = Date.parse(params[:date]) if params[:date]
-    @sesion.user = current_user
-    #--- guardamos historia de hora y minutos ---
-    @sesion.hora = @sesion.horario.hora
-    @sesion.minutos = @sesion.horario.minutos
-    @sesion.sala_id = @sesion.horario.sala_id
-    @sesion.activa = true
-    @sesion.generate_clave if @sesion.clave.nil?
-     if    @mediador && @comediador && @sesion.save
-           ############### REGISTRAMOS AUSENCIA DE ESPECIALISTAS ##################
-            @situacion = Situacion.find_by_descripcion("EN SESION")
-            @rango_inicial =  5/(24 * 60.0) # 5 Minutos
-            @rango_final = 65/(24 * 60.0) # 1 Hora y cinco (65 minutos)
-            @fecha_inicio = @sesion.start_at - @rango_inicial
-            @fecha_fin = @sesion.start_at + @rango_final
-            @autorizo = (current_user) ? current_user.id : session["user_id"]
-            if @mediador
-               @movimiento_especialista = Movimiento.new
-               @movimiento_especialista.update_attributes(:situacion_id => @situacion.id,
-                :user_id => @mediador.id, :autorizo => @autorizo, :fecha_inicio => @fecha_inicio,
-                :fecha_fin => @fecha_fin, :observaciones => "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}")
-               @movimiento_especialista.save
-            end
-            if @comediador
-               @movimiento_comediador = Movimiento.new
-               @movimiento_comediador.update_attributes(:situacion_id => @situacion.id,
-                :user_id => @comediador.id, :autorizo => @autorizo, :fecha_inicio => @fecha_inicio,
-                :fecha_fin => @fecha_fin, :observaciones => "COMEDIADOR EN SESION, EXP. #{@sesion.num_tramite}")
-               @movimiento_comediador.save
-            end
-
-            #--- Notificaciones ---
-            if @sesion.notificacion && @sesion.comediador_id && @sesion.mediador_id
-              NotificationsMailer.deliver_sesion_created("mediador", @sesion)
-              NotificationsMailer.deliver_sesion_created("comediador", @sesion)
-            end
-       flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
-       redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
+    unless @tramite
+      flash[:notice] = "SESION NO GUARDADA DEBIDO A NUMERO DE EXPEDIENTE NO ENCONTRADO"
+      redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
     else
-       flash[:notice] = "no se puedo guardar, verifique"
-       @fecha = Date.parse(params[:date])
-       @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
-       @especialistas = User.find_by_sql(["SELECT u.* FROM users u
-        inner join roles_users ru on u.id=ru.user_id
-        inner join roles r on ru.role_id=r.id
-        where r.name='ESPECIALISTAS' and
-        u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) AND
-        u.id not in (select comediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno", @fecha, @horario.hora, @horario.minutos, @fecha, @horario.hora, @horario.minutos ])
-    render :action => "new_with_date"
-    end
 
-  end
+      ##### SI EXISTE UN TRAMITE VALIDO #####
+
+      #    if params[:sesion][:num_tramite] =~ /^\d{1,4}\/20\d{2}$/
+      #       folio, anio = params[:sesion][:num_tramite].split("/")
+      #       @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio = ?", anio.to_i, folio.to_i])
+      #       @tramite ||= Tramite.create(:folio => folio, :anio => anio, :user_id => current_user.id, :subdireccion_id => current_user.subdireccion_id)
+      #       @sesion.tramite = @tramite
+      #    end
+
+      @sesion.user = current_user
+      #--- guardamos historia de hora y minutos ---
+      @sesion.hora = @sesion.horario.hora
+      @sesion.minutos = @sesion.horario.minutos
+      @sesion.sala_id = @sesion.horario.sala_id
+      @sesion.activa = true
+      @sesion.generate_clave if @sesion.clave.nil?
+            if @mediador && @comediador && @sesion.save
+              ############### REGISTRAMOS AUSENCIA DE ESPECIALISTAS ##################
+              @situacion = Situacion.find_by_descripcion("EN SESION")
+              @rango_inicial =  5/(24 * 60.0) # 5 Minutos
+              @rango_final = 65/(24 * 60.0) # 1 Hora y cinco (65 minutos)
+              @fecha_inicio = @sesion.start_at - @rango_inicial
+              @fecha_fin = @sesion.start_at + @rango_final
+              @autorizo = (current_user) ? current_user.id : session["user_id"]
+              if @mediador
+                 @movimiento_especialista = Movimiento.new
+                 @movimiento_especialista.update_attributes(:situacion_id => @situacion.id,
+                    :user_id => @mediador.id, :autorizo => @autorizo, :fecha_inicio => @fecha_inicio,
+                    :fecha_fin => @fecha_fin, :observaciones => "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}")
+                  @movimiento_especialista.save
+              end
+              if @comediador
+                  @movimiento_comediador = Movimiento.new
+                  @movimiento_comediador.update_attributes(:situacion_id => @situacion.id,
+                  :user_id => @comediador.id, :autorizo => @autorizo, :fecha_inicio => @fecha_inicio,
+                  :fecha_fin => @fecha_fin, :observaciones => "COMEDIADOR EN SESION, EXP. #{@sesion.num_tramite}")
+                  @movimiento_comediador.save
+              end
+
+              #--- Notificaciones ---
+              if @sesion.notificacion && @sesion.comediador_id && @sesion.mediador_id
+                NotificationsMailer.deliver_sesion_created("mediador", @sesion)
+                NotificationsMailer.deliver_sesion_created("comediador", @sesion)
+              end
+              flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
+              redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
+            else
+              flash[:notice] = "no se puedo guardar, verifique"
+              @fecha = Date.parse(params[:date])
+              @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
+              @especialistas = User.find_by_sql(["SELECT u.* FROM users u
+                inner join roles_users ru on u.id=ru.user_id
+                inner join roles r on ru.role_id=r.id
+                where r.name='ESPECIALISTAS' and
+                u.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) AND
+                u.id not in (select comediador_id from sesions WHERE activa = 1 AND fecha = ? AND hora= ? AND minutos= ?) ORDER BY u.nombre, u.paterno, u.materno", @fecha, @horario.hora, @horario.minutos, @fecha, @horario.hora, @horario.minutos ])
+                render :action => "new_with_date"
+          end
+    end
+ end
 
   def save
     @sesion = (params[:sesion_id]) ? Sesion.find(params[:sesion_id])  :  Sesion.new(params[:sesion])
@@ -550,6 +554,20 @@ class SesionesController < ApplicationController
        render :text => ""
     end
    end
+
+  def validar_num_tramite
+    if params[:num_tramite].size > 5
+      unless params[:num_tramite] =~ /^\d{1,4}\/\d{4}$/
+         render :text => "<h4 style='color:#ff9305;'>Formato de expediente no valido</h4>"
+      else
+        folio_expediente, anio=params[:num_tramite].split("/")
+        @tramite = (folio_expediente && anio) ? Tramite.count(:id, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) : 0
+        (@tramite > 0) ? (render :text => "<h4 style='color:green;'>Expediente encontrado correctamente</h4>") : (render :text => "<h4 style='color:red;'>Expediente no encontrado</h4>")
+      end
+    else
+      render :text => ""
+    end
+  end
 
 
 end
