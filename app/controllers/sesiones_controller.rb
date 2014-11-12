@@ -248,6 +248,7 @@ class SesionesController < ApplicationController
     if (@sesion = Sesion.find(params[:id]))
         @tramite = @sesion.tramite
         @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).todos_usuarios
+        @invitaciones = {"PRIMERA INVITACION" => 1, "SEGUNDA INVITACION" => 2}
     else
       flash[:notice] = "No se pudo encontrar sesion, verifique"
       redirect_to :controller => "home"
@@ -261,6 +262,7 @@ class SesionesController < ApplicationController
         @tramite = @sesion.tramite
         @horario = @sesion.horario
         @fecha = @sesion.fecha
+        @invitaciones = {"PRIMERA INVITACION" => 1, "SEGUNDA INVITACION" => 2}
         @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).todos_usuarios
         render :partial => "edit", :layout => "only_jquery"
     else

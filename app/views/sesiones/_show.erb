@@ -74,10 +74,20 @@
 
      <%if @sesion.cancel == 1%>
      <tr>
-        <td style="vertical-align: middle; width: 30%;"><b>Cancelado por:</b></td>
+        <td style="vertical-align: middle; width: 30%;"><b>Cancelada por:</b></td>
         <td style="vertical-align: middle; width: 70%;"><%=User.find(@sesion.cancel_user).nombre_completo%></td>
      </tr>
      <%end%>
+
+     <tr>
+        <td style="vertical-align: middle; width: 30%;"><b>Capturada por:</b></td>
+        <td style="vertical-align: middle; width: 70%;"><%=h (@sesion.user_id)?  User.find(@sesion.user_id).nombre_completo : "No existe informacion"%></td>
+     </tr>
+
+     <tr>
+        <td style="vertical-align: middle; width: 30%;"><b>Ultima modificacion:</b></td>
+        <td style="vertical-align: middle; width: 70%;"><%=h (@sesion.updated_at)?  @sesion.updated_at.strftime("%d de %B de %Y / %H:%M %p") : "No existe informacion"%></td>
+     </tr>
 
      <%if @sesion.tramite%>
      <tr>
@@ -120,6 +130,15 @@
         <td style="vertical-align: middle; width: 70%;"><%=@sesion.comediador.nombre_completo%></td>
      </tr>
      <%end%>
+
+
+
+     <tr>
+        <td style="vertical-align: middle; width: 30%;"><b>Numero de invitacion:</b></td>
+        <td style="vertical-align: middle; width: 70%;"><%=h (@sesion.num_invitacion)?  @sesion.num_invitacion : "No existe informacion"%></td>
+     </tr>
+
+    
 
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Observaciones:</b></td>

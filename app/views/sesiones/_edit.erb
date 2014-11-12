@@ -1,4 +1,4 @@
-<table width="99%" height="75%" border="0" align="center" cellpadding="2" cellspacing="0">
+<table width="99%" height="95%" border="0" align="center" cellpadding="2" cellspacing="0">
     <tr class="titulo">
       <td colspan="3" align="center" >EDITAR SESIÓN</td>
     </tr>
@@ -21,6 +21,16 @@
               <td align="center"><%= f.select :tiposesion_id, Tiposesion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
               <td align="center"><%=@sesion.fecha%>/<%=@sesion.hora_completa%></td>
             </tr>
+
+            <!-- Numero de invitacion -->
+            
+             <tr align=" justify" class="pregunta">
+               <td align="center" align="center" colspan="2">Invitación</td>
+             </tr>
+             <tr>
+               <td align="center" colspan="2">  <%=f.select(:num_invitacion, @invitaciones.map { |k,v| [ k, v ] })%></td>
+             </tr>
+
 
 
             <tr align=" justify" class="pregunta">
