@@ -33,6 +33,33 @@ class EmpleadosController < ApplicationController
     end
   end
 
+  def certificaciones
+    @empleado = Empleado.find(params[:id])
+    @certificaciones = Certificacion.find(:all, :conditions => ["empleado_id = ?", @empleado.id])
+  end
+
+  def new_or_edit_certificacion
+    @empleado = Empleado.find(params[:id])
+    @certificacion = Certificacion.find(params[:certificacion]) if params[:certificacion]
+    @certificacion ||= Certificacion.new
+    @certificacion.mgdo_presidente ||= MAGISTRADO_PRESIDENTE
+    @certificacion.director_ceja ||= DIRECTOR_CEJA
+  end
+
+  def save_certificacion
+    @empleado = Empleado.find(params[:id])
+    @certificacion = Certificacion.find(params[:certificacion]) if params[:certificacion]
+    @certificacion ||= Certificacion.new
+    @certificacion.update_attributes(params[:certificacion])
+    if @certificacion.save
+      flash[:notice] = "Certificacion guardada correctamente"
+      redirect_to :action => "certificaciones", :id => @empleado
+    else
+       flash[:notice] = "Certificacion no se guardo correctamente, intente de nuevo"
+        redirect_to :action => "certificaciones", :id => @empleado
+    end
+  end
+
   def show_pdf
     @empleado = Empleado.find(params[:id])
     @formacions = Formacion.find(:all, :conditions => ["empleado_id = ?", @empleado], :order => "fecha_conclusion")

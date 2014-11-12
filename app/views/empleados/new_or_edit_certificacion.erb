@@ -1,0 +1,109 @@
+<% form_for  :certificacion, @certificacion, :url => {:action => "save_certificacion", :id => @empleado, :certificacion => @certificacion}, :html => {:id => "new_or_edit_certificacion"} do |f| -%>
+  <table width="80%" border="0" align="center" cellpadding="2" cellspacing="1">
+     <%= f.error_messages %>
+    <tr bgcolor="#CCCCCC" class="titulo">
+      <td colspan="3" align="center" >NUEVA CERTIFICACION / RECERTIFICACION</td>
+    </tr>
+
+    <!-- primera barra  -->
+      <tr align="center">
+        <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+            <tr bgcolor="#E8E8E8" class="subtitulo">
+              <td align="center" colspan="5" >DATOS PERSONALES</td>
+            </tr>
+            <tr align=" justify" class="pregunta">
+              <td align="center">Nombre completo</td>
+              <td align="center">Categoría</td>
+            </tr>
+            <tr>
+              <td align="center"><%=h (@empleado.nombre_completo)? @empleado.nombre_completo : "No existe informacion" %></td>
+              <td align="center"><%=h (@empleado.categoria)? @empleado.categoria : "No existe informacion" %></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+
+
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="4">DATOS DEL DOCUMENTO</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Tipo</td>
+          <td align="center">Fecha de emision</td>
+           <td align="center">Encabezado</td>
+        </tr>
+        <tr>
+          <td align="center"><%= f.select(:tipo, { "CERTIFICACION" => "C", "RECERTIFICACION" => "R"}) %></td>
+          <td align="center"><%=f.text_field :fecha_emision%></td>
+          <td align="center"><%=f.text_area :encabezado, :size => "50x3" %></td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="4">&nbsp;</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Magistrado Presidente</td>
+          <td align="center">Director del CEJA</td>
+        </tr>
+        <tr>
+          <td align="center"><%=f.text_field :mgdo_presidente, :size => "60"%></td>
+          <td align="center"><%=f.text_area :director_ceja, :size => "60" %></td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+
+
+    <!-- Observaciones -->
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="5">Observaciones</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center" colspan="5"><%=f.text_area :observaciones, :size => "75x2"%></td>
+        </tr>
+       </table>
+      </td>
+    </tr>
+
+
+
+
+    <!-- espacio -->
+    <tr>
+      <td colspan="3"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onclick="this.disabled=true;this.value='Enviando, Por favor espere ...';this.form.submit();"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "empleados", :action => "certificaciones", :id => @empleado-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+
+
+<br />
+<%= link_to 'Atras', empleados_path, :class => "boton" %>
