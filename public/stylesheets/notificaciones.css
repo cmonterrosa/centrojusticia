@@ -3,6 +3,12 @@
 	src: url('/NexaLight.otf');
 }
 
+@font-face {
+	font-family: "Nexa Bold";
+	font-weight: bold;
+	src: url('/NexaBold.otf');
+}
+
 
 .msg-info, .msg-warning, .msg-error, .msg-success, .msg-suggest {
 /*	padding:20px 20px 15px 38px;*/
@@ -11,20 +17,20 @@
 	display: block;
 	height: auto;
         width: auto;
-/*	margin: 0 1.5% 0.8em;*/
-      margin: 1% 2% 1% 2%;
+        margin: 1% 2% 1% 2%;
 	clear:both;
         text-align: justify;
 
         /* Nuevas propiedades */
-        padding-bottom: 11px;
-        width: 78%;
-        margin: auto;
-        /*font-family: "Nexa Light";*/
-        font-size: 14px;
+        padding-bottom: 7px;
+        width: 72%;
+        font-size: 15px;
         color: black;
-
+        border-top: 2px solid #FFD324;
+	border-bottom: 2px solid #FFD324;
+        margin: 10px auto;
 }
+
 .msg-info li, .msg-warning li, .msg-error li, .msg-success li, .msg-suggest {
 	list-style: none;
 	padding:0;
