@@ -49,9 +49,13 @@ class EmpleadosController < ApplicationController
 
   def save_certificacion
     @empleado = Empleado.find(params[:id])
-    @certificacion = Certificacion.find(params[:certificacion]) if params[:certificacion]
+    @certificacion = Certificacion.find(params[:certificacion_id]) if params[:certificacion_id]
     @certificacion ||= Certificacion.new
     @certificacion.update_attributes(params[:certificacion])
+    @certificacion.empleado_id ||= @empleado.id if @empleado
+    @certificacion.categoria ||= (@empleado.categoria)? @empleado.categoria : ""
+
+    @certificacion.generar_folio
     if @certificacion.save
       flash[:notice] = "Certificacion guardada correctamente"
       redirect_to :action => "certificaciones", :id => @empleado
