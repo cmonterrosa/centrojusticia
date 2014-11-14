@@ -103,7 +103,7 @@ class CuadrantesController < ApplicationController
         flash[:notice] = (@cuadrante.save) ? "Invitador agregado correctamente" : "El usuario no fue agregado, verifique"
         redirect_to :action => "invitadores_by_cuadrante", :id => @cuadrante
     else
-      flash[:notice] = "No se registró ningún invitador, verifique"
+      flash[:error] = "No se registró ningún invitador, verifique"
       redirect_to :action => "invitadores_by_cuadrante", :id => @cuadrante
     end
 

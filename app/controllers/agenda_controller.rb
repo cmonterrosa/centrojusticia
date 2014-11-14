@@ -49,7 +49,7 @@ class AgendaController < ApplicationController
     
 
     else
-      flash[:notice] = "Seleccione un horario, verifique los datos"
+      flash[:error] = "Seleccione un horario, verifique los datos"
       redirect_to :controller => @controlador, :action => "search_sesiones"
     end
   end
@@ -74,7 +74,7 @@ class AgendaController < ApplicationController
        flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
        redirect_to :action => "management", :controller => @controlador
     else
-       flash[:notice] = "no se puedo guardar, verifique"
+       flash[:error] = "no se puedo guardar, verifique"
        render :action => "new_sesion"
     end
   end

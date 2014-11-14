@@ -124,7 +124,7 @@ class ComparecenciasController < ApplicationController
 
 
     else
-      flash[:notice] = "Imposible generar reporte del involucrado, verifique parámetros"
+      flash[:error] = "Imposible generar reporte del involucrado, verifique parámetros"
       redirect_to :action => "show", :id => params[:id]
     end
  end
@@ -322,7 +322,7 @@ class ComparecenciasController < ApplicationController
        #redirect_to :action => "daily_show", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
        redirect_to :action => "generar_pdf_reserva_sesion", :id => @sesion
    else
-       flash[:notice] = "no se puedo guardar, verifique"
+       flash[:error] = "no se puedo guardar, verifique"
        @fecha = Date.parse(params[:date])
        @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
        @especialistas = User.find_by_sql(["SELECT u.* FROM users u

@@ -30,7 +30,7 @@ class ParticipantesController < ApplicationController
       flash[:notice] = "Guardado correctamente"
       redirect_to :controller => "comparecencias", :action => "new_or_edit", :id => @participante.comparecencia.tramite
     else
-      flash[:notice] = "No se pudo guardar, verifique"
+      flash[:error] = "No se pudo guardar, verifique"
       render :action => "new_or_edit"
     end
  end
@@ -43,7 +43,7 @@ class ParticipantesController < ApplicationController
             flash[:notice] = "Participante eliminado correctamente"
             redirect_to :controller => "comparecencias", :action => "new_or_edit", :id => @tramite
         else
-            flash[:notice] = "No se pudo eliminar, verifique"
+            flash[:error] = "No se pudo eliminar, verifique"
             render :action => "new_or_edit"
         end
     end

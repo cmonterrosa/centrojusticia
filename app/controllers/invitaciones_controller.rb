@@ -45,7 +45,7 @@ class InvitacionesController < ApplicationController
       flash[:notice] = "Invitacion asignada correctamente"
       redirect_to :action => "show_all"
     else
-      flash[:notice] = "No se pudo asignar, verifique"
+      flash[:error] = "No se pudo asignar, verifique"
       render :action => "asignar_invitador"
     end
   end
@@ -202,7 +202,7 @@ class InvitacionesController < ApplicationController
         update_tramite_model(@invitacion.sesion.tramite) if @change_status
         flash[:notice] = "Invitacion actualizada correctamente"
       else
-        flash[:notice] = "No se pudo guardar verifique"
+        flash[:error] = "No se pudo guardar verifique"
         render :action => "razonar"
       end
     else

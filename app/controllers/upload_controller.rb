@@ -70,7 +70,7 @@ class UploadController < ApplicationController
     if @empleado_valid && @uploaded_file.save
       render :text => "<h1 style='color: red;'>Imagen cargada correctamente</h1>"
     else
-       flash[:notice] = "Verifique tipo de archivo, no fue cargado correctamente, "
+       flash[:error] = "Verifique tipo de archivo, no fue cargado correctamente, "
        redirect_to :action => "upload_profile_picture", :id => @empleado
     end
   end

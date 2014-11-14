@@ -116,7 +116,7 @@ class OrientacionsController < ApplicationController
         flash[:notice] = "Orientación reasignada correctamente"
         redirect_to :action => "index", :controller => "home"
      else
-       flash[:notice] = "Ocurrió un error, verifique"
+       flash[:error] = "Ocurrió un error, verifique"
        render :action => "reasignar"
      end
    end
@@ -152,7 +152,7 @@ class OrientacionsController < ApplicationController
         end
         redirect_to :controller => "home"
     else
-      flash[:notice] = "No se pudo guardar, verifique"
+      flash[:error] = "No se pudo guardar, verifique"
       render :action => "new_or_edit"
     end
    end
@@ -190,7 +190,7 @@ class OrientacionsController < ApplicationController
       flash[:notice] = "El solicitante: #{@orientacion.solicitante} guardado correctamente"
       redirect_to :controller => "home"
     else
-      flash[:notice] = "No se pudo guardar, verifique"
+      flash[:error] = "No se pudo guardar, verifique"
       render :action => "captura_historica"
     end
    end

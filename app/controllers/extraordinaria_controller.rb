@@ -58,7 +58,7 @@ class ExtraordinariaController < ApplicationController
               end
               redirect_to :controller => "extraordinaria"
           else
-              flash[:notice] = "No se pudo guardar, verifique"
+              flash[:error] = "No se pudo guardar, verifique"
               render :action => "new_or_edit"
       end
       
@@ -72,14 +72,14 @@ class ExtraordinariaController < ApplicationController
     if @extraordinaria.destroy && @historico.destroy && @tramite.destroy
       flash[:notice] = "Registro eliminado correctamente"
     else
-      flash[:notice] = "No se pudo eliminar, verifique"
+      flash[:error] = "No se pudo eliminar, verifique"
     end
     redirect_to :action => "index"
   end
 
   def show
     unless @extraordinaria=Extraordinaria.find(params[:id])
-      flash[:notice] = "No se encontro trámite, verifique"
+      flash[:error] = "No se encontro trámite, verifique"
       redirect_back_or_default('/')
     end
   end

@@ -63,7 +63,7 @@ class UsersController < ApplicationController
       flash[:notice] = "Usuario creado correctamente"
       redirect_to :action => "show_roles", :controller => "admin"
     else
-      flash[:notice]  = "No se puedo crear usuario, verifique los datos"
+      flash[:error]  = "No se puedo crear usuario, verifique los datos"
       render :action => 'new_from_admin'
     end
   end

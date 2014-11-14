@@ -53,7 +53,7 @@ class AdminController < ApplicationController
        flash[:notice] = (@flujo.save) ?   "Guardado correctamente" :  "No se puedo guardar, verifique"
        redirect_to :action => "flujo"
     else
-      flash[:notice] = "No se puedo guardar, verifique"
+      flash[:error] = "No se puedo guardar, verifique"
       render :action => "flujo"
     end
   end
@@ -64,7 +64,7 @@ class AdminController < ApplicationController
       if @flujo.destroy
         flash[:notice] = "Registro eliminado correctamente"
       else
-         flash[:notice] = "No se pudo eliminar, verifique"
+         flash[:error] = "No se pudo eliminar, verifique"
       end
       redirect_to :action => "flujo"
     end
@@ -92,7 +92,7 @@ class AdminController < ApplicationController
     if @materia.save
       flash[:notice] = "Usuario agregado correctamente"
     else
-      flash[:notice] = "El usuario no fue agregado, verifique"
+      flash[:error] = "El usuario no fue agregado, verifique"
     end
     redirect_to :action => "members_by_materia", :id => @materia
   end
@@ -104,7 +104,7 @@ class AdminController < ApplicationController
       if @materia.save!
         flash[:notice] = "Especialista eliminado del perfil correctamente"
       else
-        flash[:notice] = "No se pudo eliminar, verifique"
+        flash[:error] = "No se pudo eliminar, verifique"
       end
       redirect_to :action => "members_by_materia", :id => @materia
     end
@@ -128,7 +128,7 @@ class AdminController < ApplicationController
   if @role.save
     flash[:notice] = "Usuario agregado correctamente"
   else
-    flash[:notice] = "El usuario no fue agregado, verifique"
+    flash[:error] = "El usuario no fue agregado, verifique"
   end
   redirect_to :action => "members_by_role", :id => @role
 
@@ -151,7 +151,7 @@ class AdminController < ApplicationController
      if @role.save!
        flash[:notice] = "Elemento eliminado del perfil correctamente"
      else
-       flash[:notice] = "No se pudo eliminar, verifique"
+       flash[:error] = "No se pudo eliminar, verifique"
      end
       redirect_to :action => "members_by_role", :id => @role
   end
@@ -196,7 +196,7 @@ class AdminController < ApplicationController
      (@horario.activo) ? @horario.update_attributes!(:activo => false) : @horario.update_attributes!(:activo => true)
      flash[:notice] = @mensaje
    else
-     flash[:notice] = "No se pudo bloquear horario, verifique"
+     flash[:error] = "No se pudo bloquear horario, verifique"
    end
    redirect_to :action => "show_horarios_sesiones"
  end
@@ -209,7 +209,7 @@ class AdminController < ApplicationController
      (@user.activo) ? @user.update_attributes!(:activo => false, :situacion_id => @baja.id) : @user.update_attributes!(:activo => true, :situacion_id => @disponible.id)
      flash[:notice] = @mensaje
    else
-     flash[:notice] = "No se pudo bloquear usuario, verifique"
+     flash[:error] = "No se pudo bloquear usuario, verifique"
    end
    redirect_to :action => "show_users_by_area"
  end
@@ -221,7 +221,7 @@ class AdminController < ApplicationController
      (@user.activo) ? @user.update_attributes!(:activo => false) : @user.update_attributes!(:activo => true)
      flash[:notice] = @mensaje
    else
-     flash[:notice] = "No se pudo bloquear usuario, verifique"
+     flash[:error] = "No se pudo bloquear usuario, verifique"
    end
    redirect_to :action => "show_users_by_area"
  end
@@ -257,7 +257,7 @@ class AdminController < ApplicationController
         flash[:notice] = "Horario y sesiones actualizadas correctamente"
         redirect_to :action => "show_horarios_sesiones"
      else
-        flash[:notice] = "No se pudo actualizar, verifique"
+        flash[:error] = "No se pudo actualizar, verifique"
         render :action => "new_or_edit_horario_sesion"
      end
  end
@@ -329,7 +329,7 @@ end
  def save_permission
    @movimiento = Movimiento.new(params[:movimiento])
    @movimiento.autorizo = current_user.id if current_user
-   (@movimiento.save) ? flash[:notice] = "Permiso creado correctamente" : flash[:notice] = "No se pudo guardar, verifique"
+   (@movimiento.save) ? flash[:notice] = "Permiso creado correctamente" : flash[:error] = "No se pudo guardar, verifique"
    #update status of current
    redirect_to :action => "permissions_user", :t => generate_token, :id => @movimiento.user
  end
@@ -364,7 +364,7 @@ end
         flash[:notice] = "Registro actualizado correctamente"
         redirect_to :action => "permissions_user", :id => @user, :t => generate_token
      else
-       flash[:notice] = "No se pudo actualizar, verifique"
+       flash[:error] = "No se pudo actualizar, verifique"
        render :action => "redit_permission"
      end
    end
@@ -394,7 +394,7 @@ end
        @justificacion = Justificacion.find_by_descripcion("ESPECIALISTA NO DA ATENCIÓN")
        @historias = Historia.find(:all, :conditions => ["tramite_id in (?) AND justificacion_id = ? AND especialista_id IS NOT NULL", @tramites.map{|t|t.id}, @justificacion.id ])
     else
-      flash[:notice] = "Parámetros insuficientes, verifique"
+      flash[:error] = "Parámetros insuficientes, verifique"
       redirect_to :action => "atenciones_no_brindadas"
     end
   end

@@ -18,7 +18,7 @@ class SesionesController < ApplicationController
 
   def asignar_horario
     unless (@sesion = Sesion.find(params[:id]))
-      flash[:notice] = "No se pudo encontrar sesion, verifique"
+      flash[:error] = "No se pudo encontrar sesion, verifique"
       redirect_to :controller => "home"
     else
       @title = (params[:title]) ? "Resignación de horario" : "Asignación de horario"
@@ -197,7 +197,7 @@ class SesionesController < ApplicationController
               flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
               redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
             else
-              flash[:notice] = "no se puedo guardar, verifique"
+              flash[:error] = "no se puedo guardar, verifique"
               @fecha = Date.parse(params[:date])
               @tipos_sesiones = Tiposesion.find(:all, :order => "descripcion")
               @especialistas = User.find_by_sql(["SELECT u.* FROM users u
@@ -222,7 +222,7 @@ class SesionesController < ApplicationController
        flash[:notice] = "Sesión guardada correctamente"
        redirect_to :action => @redireccion, :id => @tramite
     else
-       flash[:notice] = "no se puedo guardar, verifique"
+       flash[:error] = "no se puedo guardar, verifique"
        render :action => "new"
     end
   end
@@ -239,7 +239,7 @@ class SesionesController < ApplicationController
 
   def select_schedule
     unless (@sesion = Sesion.find(params[:id]))
-      flash[:notice] = "No se pudo encontrar sesion, verifique"
+      flash[:error] = "No se pudo encontrar sesion, verifique"
       redirect_to :controller => "home"
     else
       @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
@@ -254,7 +254,7 @@ class SesionesController < ApplicationController
         @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).todos_usuarios
         @invitaciones = {"PRIMERA INVITACION" => 1, "SEGUNDA INVITACION" => 2}
     else
-      flash[:notice] = "No se pudo encontrar sesion, verifique"
+      flash[:error] = "No se pudo encontrar sesion, verifique"
       redirect_to :controller => "home"
     end
   end
@@ -291,7 +291,7 @@ class SesionesController < ApplicationController
 
   def reprogramar
     unless (@sesion = Sesion.find(params[:id]))
-      flash[:notice] = "No se pudo encontrar sesion, verifique"
+      flash[:error] = "No se pudo encontrar sesion, verifique"
       redirect_to :controller => "home"
     else
       @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).todos_usuarios
@@ -304,7 +304,7 @@ class SesionesController < ApplicationController
 
   def change_sesion_data
     unless (@sesion = Sesion.find(params[:id]))
-      flash[:notice] = "No se pudo encontrar sesion, verifique"
+      flash[:error] = "No se pudo encontrar sesion, verifique"
       redirect_to :controller => "home"
     else
       @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
@@ -345,7 +345,7 @@ class SesionesController < ApplicationController
    @tiposesion = Tiposesion.find(params[:tiposesion]) if params[:tiposesion]
    @sala = @horario.sala ? @horario.sala.id : nil
    @user = current_user ? current_user.id : nil
-   flash[:notice] = "No se pudo actualizar correctamente, verifique"
+   flash[:error] = "No se pudo actualizar correctamente, verifique"
      if @sesion && @horario && @fecha && @mediador && @comediador
         if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id, :sala_id => @sala, :user_id => @user)
            #---- Notificamos a especialistas ---
@@ -421,7 +421,7 @@ class SesionesController < ApplicationController
               #redirect_to :controller => "home"
 
             else
-              flash[:notice] = "No se pudo cancelar, verifique sesión"
+              flash[:error] = "No se pudo cancelar, verifique sesión"
                return render(:partial => 'no_results', :layout => 'only_jquery')
               #redirect_to :action => "show", :id => @sesion
            end
@@ -461,7 +461,7 @@ class SesionesController < ApplicationController
               #redirect_to :controller => "home"
 
             else
-              flash[:notice] = "No se pudo eliminar, verifique sesión"
+              flash[:error] = "No se pudo eliminar, verifique sesión"
                return render(:partial => 'no_results', :layout => 'only_jquery')
               #redirect_to :action => "show", :id => @sesion
            end

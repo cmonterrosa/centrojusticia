@@ -41,7 +41,7 @@ class TramitesController < ApplicationController
       flash[:notice] = "Número de expediente actualizado correctamente"
       redirect_to :action => "list", :controller => "tramites"
     else
-      flash[:notice] = "El formato no es válido, verifique"
+      flash[:error] = "El formato no es válido, verifique"
       render :action => "show_numero_expediente"
     end
   end
@@ -109,7 +109,7 @@ class TramitesController < ApplicationController
   def show
     if params[:id] && params[:id] =~/^\d{1,6}$/
         unless @tramite=Tramite.find(:first, :conditions => ["id = ?", params[:id]])
-          flash[:notice] = "No se encontro trámite, verifique"
+          flash[:error] = "No se encontro trámite, verifique"
           redirect_back_or_default('/')
         else
           @layout_final=(params[:token] && params[:token]=="show_sesion")? "only_jquery" : "kolaval"
@@ -123,7 +123,7 @@ class TramitesController < ApplicationController
   def show_pdf
       if params[:id] && params[:id] =~/^\d{1,6}$/
         unless @tramite=Tramite.find(:first, :conditions => ["id = ?", params[:id]])
-          flash[:notice] = "No se encontro trámite, verifique"
+          flash[:error] = "No se encontro trámite, verifique"
           redirect_back_or_default('/')
         end
     else
@@ -143,7 +143,7 @@ class TramitesController < ApplicationController
     if ((@orientacion) ? @orientacion.destroy : true) && ((@historico) ? @historico.destroy : true) && ((@tramite) ? @tramite.destroy : false)
       flash[:notice] = "Registro eliminado correctamente"
     else
-      flash[:notice] = "No se pudo eliminar, verifique"
+      flash[:error] = "No se pudo eliminar, verifique"
     end
     redirect_to :action => "list"
   end
@@ -164,7 +164,7 @@ class TramitesController < ApplicationController
 
   def menu
     unless @tramite=Tramite.find(params[:id])
-      flash[:notice] = "No se encontro trámite, verifique"
+      flash[:error] = "No se encontro trámite, verifique"
       redirect_back_or_default('/')
     end
   end
@@ -186,7 +186,7 @@ class TramitesController < ApplicationController
         flash[:notice] = "Registro guardado correctamente"
         redirect_to :action => "list_by_user", :controller => "orientacions"
       else
-        flash[:notice] = "no se pudo guardar el registro, verifique"
+        flash[:error] = "no se pudo guardar el registro, verifique"
         render :action => "asignar_materia"
       end
   end
@@ -313,11 +313,11 @@ class TramitesController < ApplicationController
                 #NotificationsMailer.deliver_sesion_created("comediador", @sesion)
                 flash[:notice] = "Especialista y comediador notificados asignados"
               else
-                flash[:notice] = "No se pudo guardar el registro, verifique"
+                flash[:error] = "No se pudo guardar el registro, verifique"
                 redirect_to :action => "list"
               end
           else
-              flash[:notice] = "Información incompleta, verifique"
+              flash[:error] = "Información incompleta, verifique"
               redirect_to :action => "list"
           end
       
@@ -343,7 +343,7 @@ class TramitesController < ApplicationController
           flash[:notice] = ( @tramite.update_estatus!("invi-firm", current_user)) ? "Registro actualizado correctamente" :  "No se pudo guardar, verifique"
           redirect_to :action => "list"
       else
-          flash[:notice] = "No se pudo cambiar el estatus, verifique"
+          flash[:error] = "No se pudo cambiar el estatus, verifique"
           redirect_to :action => "list"
       end
    end
@@ -376,7 +376,7 @@ class TramitesController < ApplicationController
           @sesion = Sesion.find_by_clave(params[:q].strip)
           @controlador, @id, @accion = "sesiones", @sesion, "show" if @sesion
         else
-           flash[:notice] = "No se pudo realizar la búsqueda, verifique"
+           flash[:error] = "No se pudo realizar la búsqueda, verifique"
            #redirect_back_or_default('/')
        end
         redirect_to :action => @accion, :controller => @controlador, :id => @id

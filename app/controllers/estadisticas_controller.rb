@@ -191,7 +191,7 @@ class EstadisticasController < ApplicationController
             end
       #@historias = Historia.find(:all, :conditions => ["tramite_id in (?) AND justificacion_id = ? AND especialista_id IS NOT NULL", @tramites.map{|t|t.id}, @justificacion.id ])
     else
-      flash[:notice] = "Parámetros insuficientes, verifique"
+      flash[:error] = "Parámetros insuficientes, verifique"
       redirect_to :action => "atenciones_no_brindadas"
     end
       g.sort
