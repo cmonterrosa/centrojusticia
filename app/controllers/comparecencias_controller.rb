@@ -207,7 +207,7 @@ class ComparecenciasController < ApplicationController
        #render :action => "new_or_edit"
        redirect_to :action => "show", :id => @tramite
     else
-      flash[:notice] = "No se pudo guardar, verifique"
+      flash[:error] = "No se pudo guardar, verifique"
      # render :action => "new_or_edit"
        render :action => "show_informacion_general"
     end
