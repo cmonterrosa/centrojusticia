@@ -465,3 +465,12 @@ $(function() {
     });
 })
 
+$(function() {
+    $j('#certificacion_fecha_emision').datetimepicker({
+            lang:'es',
+            timepicker:false,
+            format:'Y/m/d',
+            formatDate:'Y/m/d'
+    });
+})
+
