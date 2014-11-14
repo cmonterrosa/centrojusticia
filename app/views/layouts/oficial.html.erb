@@ -10,6 +10,9 @@
    <%= javascript_include_tag 'prototype', 'scriptaculous'%>
     <%= javascript_include_tag 'BubbleTooltips' %>
 
+    <!-- Notificaciones de mensajes -->
+    <%= stylesheet_link_tag "notificaciones"%>
+
     <!-- apis para datepicker de calendario -->
     <%= stylesheet_link_tag "jquery-ui.css", "application" %>
     <%= javascript_include_tag "jquery.min", "jquery-ui.min", "application" %>
@@ -122,24 +125,36 @@ padding:2px;
           </div>
       </div>
 
-      <!-- inicia tabla de contenido -->
+        <!-- inicia tabla de contenido -->
       <div class="main_wrap">
             <table style="text-align: center; width: 88%">
-
-                   <%if flash[:notice]%>
-        <div class="notice">
-            <%= flash[:notice] %>
-        </div>
-      <%else%>
-        <p></p>
-      <%end%>
-
+                <%if flash[:notice]%>
+                      <div class="msg-success">
+                          <h3>Operación realizada exitosamente:</h3>
+                                <ul>
+                                    <li><%=flash[:notice]%></li>
+                                </ul>
+                                <ul><li>&nbsp;</li></ul>
+                      </div>
+                 <%elsif flash[:error]%>
+                    <div class="msg-error">
+                            <h3>Error:</h3>
+                                <ul>
+                                      <li><%=flash[:error]%></li>
+                                </ul>
+                            <ul><li>&nbsp;</li></ul>
+                               
+                    </div>
+                  <%else%>
+                        <p></p>
+                 <%end%>
 
                   <tr>
                     <td><%=yield%></td>
                   </tr>
             </table>
       </div>
+
 
   <div class="footer_wrap">
     <div class="footer_area">

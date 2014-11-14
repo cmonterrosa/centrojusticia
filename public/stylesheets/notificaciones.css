@@ -1,0 +1,83 @@
+@font-face {
+	font-family: "Nexa Light";
+	src: url('/NexaLight.otf');
+}
+
+
+.msg-info, .msg-warning, .msg-error, .msg-success, .msg-suggest {
+/*	padding:20px 20px 15px 38px;*/
+        padding:2px 20px 0px 35px;
+	border: 1px solid #ccc;
+	display: block;
+	height: auto;
+        width: auto;
+/*	margin: 0 1.5% 0.8em;*/
+      margin: 1% 2% 1% 2%;
+	clear:both;
+        text-align: justify;
+
+        /* Nuevas propiedades */
+        padding-bottom: 11px;
+        width: 78%;
+        margin: auto;
+        /*font-family: "Nexa Light";*/
+        font-size: 14px;
+        color: black;
+
+}
+.msg-info li, .msg-warning li, .msg-error li, .msg-success li, .msg-suggest {
+	list-style: none;
+	padding:0;
+	margin-bottom: -1.6%;
+/*	font-size:1.4em;*/
+      font-size:0.9em;
+	line-height:1.5em;
+	vertical-align: top;
+}
+
+/* form msg status  */
+.msg-info, .msg-warning, .msg-error, .msg-success, .msg-suggest {
+	color:#2b2b2b;
+	/*corner*/
+	-moz-border-radius: 16px 4px 16px 4px;
+	-webkit-border-radius: 16px 4px 16px 4px;
+	border-radius: 16px 4px 16px 4px;
+}
+.msg-suggest {
+	color: black;
+        font-size:1.1em;
+        padding: 0 1em 0 1em;
+	/*corner*/
+	-moz-border-radius: 16px 4px 16px 4px;
+	-webkit-border-radius: 16px 4px 16px 4px;
+	border-radius: 16px 4px 16px 4px;
+}
+.msg-info h3, .msg-warning h3, .msg-error h3, .msg-success h3 {
+	font-size:0.95em;
+	line-height:1.5em;
+	letter-spacing:-.02em;
+	padding:0;
+	margin:0 0 -1em 0;
+}
+
+
+.msg-info {
+/*	background: #d1ecf7 url(/images/notificaciones/form-ic-info.png) no-repeat 12px 23px;*/
+      background: #d1ecf7 url(/images/notificaciones/form-ic-info.png) no-repeat 12px 7px;
+	border-color:#bcdfef;
+}
+.msg-warning {
+/*	background: #fff6bf url(/images/notificaciones/form-ic-warning.png) no-repeat 12px 23px;*/
+      background: #fff6bf url(/images/notificaciones/form-ic-warning.png) no-repeat 12px 7px;
+	border-color:#fceb77;
+}
+.msg-error {
+/*	background: #fad0d0 url(/images/notificaciones/form-ic-error.png) no-repeat 12px 23px;*/
+      background: #fad0d0 url(/images/notificaciones/form-ic-error.png) no-repeat 12px 7px;
+	border-color:#f6abab;
+}
+.msg-success {
+/*	background: #e5f8ce url(/images/notificaciones/form-ic-success.png) no-repeat 12px 23px;*/
+      background: #e5f8ce url(/images/notificaciones/form-ic-success.png) no-repeat 12px 7px;
+	border-color:#d0f1a6;
+}
