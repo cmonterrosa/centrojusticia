@@ -146,7 +146,7 @@ class SesionesController < ApplicationController
     end
 
     unless @tramite
-      flash[:notice] = "SESION NO GUARDADA DEBIDO A NUMERO DE EXPEDIENTE NO ENCONTRADO"
+      flash[:error] = "Sesión no guardaba, debido a número de expediente no encontrado"
       redirect_to :action => "daily_show", :controller => "agenda", :day => @sesion.fecha.day, :month=> @sesion.fecha.month, :year => @sesion.fecha.year, :origin => @origin
     else
 
