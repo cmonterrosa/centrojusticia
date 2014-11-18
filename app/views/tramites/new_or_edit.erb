@@ -1,0 +1,194 @@
+<p>
+   <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%>
+</p>
+
+  <div class="ultima_conexion">
+      Ultima actualización: <%=Time.now.strftime("%H:%M:%S")%>
+  </div><br />
+
+<% form_for :tramite, @tramite, :url => { :action => "save_historico" }, :html => {:id => "new_tramite_historico"} do |f| -%>
+  <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr class="titulo">
+      <td colspan="3" align="center" >CAPTURA HISTORICA DE EXPEDIENTES </td>
+    </tr>
+    <tr align="center">
+      <td align="center">
+        <table class="TablaKolaval100">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="3">DATOS GENERALES</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Fecha/hora inicial</td>
+           <td align="center">Número de Expediente</td>
+           <td align="center">Materia</td>
+        </tr>
+        <tr>
+            <td align="center"><%=f.text_field :fechahora, :value => @fecha, :size => 16%></td>
+            <td align="center"><%=f.text_field :folio_expediente, :size => 18, :onchange => "validate_expediente();"%></td>
+            <td align="center"><%= f.select :materia_id, @materias.collect{|a| [a.descripcion, a.id]}%></td>
+         </tr>
+      </table></td>
+    </tr>
+
+
+    <!-- segunda barra inferior -->
+      <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+            <td align="center" colspan="6" >DATOS DEL SOLICITANTE</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Tipo de Persona</td>
+          <td align="center"><label id="paterno" style="display: none;">Paterno</label></td>
+          <td align="center"><label id="materno" style="display: none;">Materno</label></td>
+          <td align="center"><label id="nombre" style="display: none;">Nombre</label></td>
+          <td align="center"><label id="rsocial" style="display: none;">Razón Social</label></td>
+          <td align="center">Sexo</td>
+        </tr>
+        <tr>
+          <td align="center"><%= select(:participante, :tipopersona_id, @tipopersonas.collect{|a|[a.descripcion, a.id]}, {}, :onchange => "check_tipopersona();") %></td>
+          <td align="center"><%= text_field :participante, :paterno, :onKeyPress => "return CharNum(event, 'letra');",  :size => "38"%></td>
+          <td align="center"><%= text_field :participante, :materno,  :onKeyPress => "return CharNum(event, 'letra');", :size => "38"%></td>
+          <td align="center"><%= text_field :participante, :nombre,  :onKeyPress => "return CharNum(event, 'letra');",  :size => "56"%></td>
+          <td align="center"><%= text_field :participante, :razon_social,  :onKeyPress => "return CharNum(event, 'letra');", :size => "56", :style => "display: none;"%></td>
+          <td align="center"><%= select(:participante, :sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
+        </tr>
+      </table></td>
+      </tr>
+
+
+
+    <!-- segunda barra inferior -->
+      <tr align="center">
+      <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+            <tr bgcolor="#E8E8E8" class="subtitulo">
+              <td align="center" colspan="3" >DATOS DEL ASUNTO</td>
+            </tr>
+            <tr align=" justify" class="pregunta">
+              <td align="center">Objeto de la Solicitud</td>
+              <td align="center">Observaciones</td>
+              <td align="center">Documentacion Anexa</td>
+            </tr>
+            <tr>
+              <td align="center"><%= f.text_field :objeto_solicitud, :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => "38"%></td>
+              <td align="center"><%= f.text_area :observaciones_generales,  :onKeyPress => "return CharNum(event, 'letra');", :size => "38"%></td>
+              <td align="center"><%= f.text_area :documentacion_anexa,  :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => "56"%></td>
+            </tr>
+          </table>
+      </td>
+      </tr>
+
+    <!-- barra media -->
+    <tr class="Estilo3">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr align="center" bgcolor="#E8E8E8" class="subtitulo">
+            <td colspan="4" >DATOS DE UBICACION DEL SOLICITANTE</td>
+          </tr>
+        <tr align="center" class="pregunta">
+          <td>Dirección</td>
+          <td>Municipio</td>
+          <td>Teléfono Celular</td>
+          <td>Correo Electrónico</td>
+        </tr>
+        <tr align="center">
+          <td><%= text_area :participante, :domicilio, :class => "text", :size => "50x7"%></td>
+          <td><%= select :participante, :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+          <td><%= text_field :participante, :telefono_celular, :onKeyPress => "return CharNum(event, 'numero');", :class => "text"%></td>
+          <td><%= text_field :participante, :correo%></td>
+        </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- FOOTER -->
+    <tr>
+      <td align="right">
+        <table>
+          <tr>
+            <td>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onclick="this.disabled=true;this.value='Enviando, Por favor espere ...';this.form.submit();"/>
+            </td>
+            <td>
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "home"-%>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+<% end %>
+
+
+
+<script type="text/javascript">
+  var folio_expediente = new LiveValidation( 'tramite_folio_expediente' );
+  folio_expediente.add( Validate.Presence );
+  folio_expediente.add( Validate.Length, { maximum: 10 } );
+</script>
+
+<script type="text/javascript">
+window.onload = check_tipopersona();
+function check_tipopersona(){
+  var myselect = document.getElementById("participante_tipopersona_id");
+  //alert(myselect.options[myselect.selectedIndex].value);
+  if (myselect.options[myselect.selectedIndex].value == 1) /* FISICA*/
+  {
+    document.getElementById("participante_paterno").disabled = false;
+    document.getElementById("participante_materno").disabled = false;
+    document.getElementById("participante_nombre").disabled = false;
+    document.getElementById("participante_razon_social").disabled = true;
+
+    document.getElementById("participante_paterno").style.display = "inline";
+    document.getElementById("participante_materno").style.display = "inline";
+    document.getElementById("participante_nombre").style.display = "inline";
+    document.getElementById("participante_razon_social").style.display = "none";
+
+    /* Etiquetas */
+    document.getElementById("paterno").style.display = "inline";
+    document.getElementById("materno").style.display = "inline";
+    document.getElementById("nombre").style.display = "inline";
+    document.getElementById("rsocial").style.display = "none";
+
+  }
+    else
+       {
+
+         /* Combos */
+
+         document.getElementById("participante_paterno").disabled = true;
+         document.getElementById("participante_materno").disabled = true;
+         document.getElementById("participante_nombre").disabled = true;
+         document.getElementById("participante_razon_social").disabled = false;
+         document.getElementById("participante_razon_social").style.display = "inline";
+         document.getElementById("participante_paterno").style.display = "none";
+         document.getElementById("participante_materno").style.display = "none";
+         document.getElementById("participante_nombre").style.display = "none";
+
+         /* Etiquetas */
+        document.getElementById("paterno").style.display = "none";
+        document.getElementById("materno").style.display = "none";
+        document.getElementById("nombre").style.display = "none";
+        document.getElementById("rsocial").style.display = "inline";
+       }
+}
+
+</script>
+
+
+  <script type="text/javascript">
+function validate_expediente()
+{
+var pattern=/^\d{1,4}\/\d{4}$/;
+if (document.getElementById("tramite_folio_expediente").value.match(pattern))
+{
+  //alert("=> Formato de expediente válido");
+  return false;
+}
+else
+  alert("=> Formato de expediente NO válido");
+}
+</script>
+

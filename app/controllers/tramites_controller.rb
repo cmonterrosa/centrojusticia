@@ -465,6 +465,55 @@ class TramitesController < ApplicationController
     return render(:partial => 'asignacion_materia', :layout => "oficial")
   end
 
+  ############################################
+  #
+  #    CAPTURA DE EXPEDIENTES HISTORICOS
+  #
+  ############################################
+
+  def new_or_edit
+      @tramite = Tramite.new
+      @materias = Materia.find(:all)
+      @tipopersonas = Tipopersona.find(:all)
+      @fecha = Time.now.strftime("%Y/%m/%d %H:%M")
+  end
+
+  def save_historico
+    if params[:tramite][:folio_expediente].size > 5 && params[:tramite][:folio_expediente] =~ /^\d{1,4}\/\d{4}$/
+         folio, anio = params[:tramite][:folio_expediente].split("/")
+         @tramites_existentes= Tramite.count(:id, :conditions => ["anio = ? AND folio_expediente = ?", anio, folio])
+         @fecha = Time.now.strftime("%Y/%m/%d %H:%M")
+         @tramite = Tramite.new
+         @materias = Materia.find(:all)
+         @tipopersonas = Tipopersona.find(:all)
+        if @tramites_existentes > 0
+          flash[:error] = "El expediente ya se encuentra registrado"
+          render :action => "new_or_edit"
+        else
+          @nuevo_tramite = Tramite.new
+          @nuevo_tramite.update_attributes(params[:tramite])
+          @nuevo_tramite.anio = anio
+          @nuevo_tramite.folio_expediente = folio
+          if @nuevo_tramite.save
+             if @comparecencia = Comparecencia.create(:asunto => params[:tramite][:objeto_solicitud], :tramite_id => @nuevo_tramite)
+               @participante = Participante.create(params[:participante])
+               @participante.comparecencia_id = @comparecencia if @comparecencia
+                if @participante.save
+                  @nuevo_tramite.update_estatus!("tram-hist", current_user)
+                  flash[:notice] = "Expediente registrado correctamente"
+               end
+             end
+          end
+          redirect_to :controller => "home"
+        end
+    else
+      ### Formato invalido
+      flash[:error] = "Error de captura, verifique formatos"
+      render :action => "new_or_edit"
+    end
+  end
+  
+
 
 protected
   def generar_folio(anio)
