@@ -46,7 +46,8 @@ a img {
     padding: 16px;
 }
 
-.pregunta {font-size: 14px; font-family: "Nexa Light"; color: black; }
+.pregunta {font-size: 15px; font-family: "Nexa Light"; color: black; }
+.respuesta {font-size: 14px; font-family: "Nexa Light"; color: black; }
 .Estilo4 {font-size: 11px; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #666666; }
 .Estilo5 {font-size: 11px; font-weight: bold; font-family: Verdana, Arial, Helvetica, sans-serif; color: #333333; }
 .menu {font-size: 14px; ; font-family: Verdana, Geneva, sans-serif; color: #666666; }
