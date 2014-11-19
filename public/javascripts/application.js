@@ -474,3 +474,11 @@ $(function() {
     });
 })
 
+/* Tramite historico */
+
+$(function() {
+    $j('#tramite_fechahora').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'es'
+    });
+});
