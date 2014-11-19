@@ -12,12 +12,16 @@
 					<div class="cbp-hsinner">
 						<ul class="cbp-hsmenu">
                                                         <%if current_user.has_role?("asignahorario")%>
-                                                          <li>
-                                                              <!-- Listado de tramites -->
-                                                              <li>
-                                                                  <ul><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></ul>
-                                                              </li>
-                                                          </li>
+                                                  
+                                                        <li>
+								 <!-- Tramites -->
+                                                                 <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
+								<ul class="cbp-hssubmenu">
+									 <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
+                                                                         <li><%=link_to image_tag('kolaval/ico-exp-historicos.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-exp-historicos.jpg") , {:action => "new_or_edit", :controller => "tramites"}, :title => "Captura de expedientes historicos"%></li>
+                                                                </ul>
+							</li>
+
                                                        <%end%>
 
                                                         <!-- Agenda -->
