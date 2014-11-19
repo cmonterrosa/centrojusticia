@@ -8,6 +8,12 @@
                });
 </script>
 
+<%if current_user.has_role?("asignahorario")%>
+<p align="center">
+    <%=link_to "CAPTURAR EXPEDIENTE HISTORICO", {:action => "new_or_edit", :controller => "tramites"}, :title => "Captura de expedientes historicos", :class => "boton"%>
+</p>
+<%end%>
+
 <!-- contenido -->
 <div id="divlista">
 
