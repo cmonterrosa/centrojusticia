@@ -207,8 +207,9 @@ select {
 
 label {position:relative}
 label:after {
-    content:'<>';
-    font:11px "Consolas", monospace;
+/*    content:'<>';*/
+    font:12px;
+    font-family: "Nexa Light";
     color:#aaa;
     -webkit-transform:rotate(90deg);
     -moz-transform:rotate(90deg);
@@ -221,7 +222,7 @@ label:after {
     pointer-events:none;
 }
 label:before {
-    content:'';
+/*    content:'';*/
     right:6px; top:0px;
     width:20px; height:20px;
     background:#f8f8f8;
