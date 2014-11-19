@@ -378,6 +378,25 @@ end
      end
   end
 
+    ### REPORTE DE ORIENTACIONES CONCURRENTES CON SESIONES #####
+
+  def reporte_orientaciones_concurrentes
+   @orientaciones = Orientacion.find(:all, :order => "fechahora DESC")
+   @recurrentes = Array.new
+   total_minutos_anticipacion=10
+   @tiempo_actual = DateTime.civil(Time.now.year, Time.now.month, Time.now.day, Time.now.hour, Time.now.strftime('%M').to_i)
+   @orientaciones.each do |o|
+       @fechahora_de_orientacion = DateTime.civil(o.fechahora.year, o.fechahora.month, o.fechahora.day, o.fechahora.hour, o.fechahora.strftime('%M').to_i) if o.fechahora
+        @sesiones_del_mismo_dia = Sesion.find(:all, :select => "id, hora, minutos, horario_id, sala_id, fecha", :conditions => ["(cancel IS NULL or cancel=0) AND fecha= ? AND (mediador_id = ? OR comediador_id = ?)", @fechahora_de_orientacion.strftime("%Y-%m-%d"), o.especialista_id, o.especialista_id])
+         @sesiones_del_mismo_dia.each do |s|
+            if ((s.start_at - ((total_minutos_anticipacion/60.0)/(24.0))) <= @fechahora_de_orientacion) && (@fechahora_de_orientacion <= (s.start_at - ((1/60.0)/(24.0))))
+                  @recurrentes << ("Especialista: #{o.especialista.nombre_completo} / Sesion recurrente a orientacion: #{s.start_at.strftime('%d/%m/%Y - %H:%M:%S')} y Orientacion a: #{@fechahora_de_orientacion.strftime('%d/%m/%Y - %H:%M:%S')}")
+            end
+         end
+     end
+     
+  end
+
 
   def set_layout
     (action_name == 'estadisticas_generales_pdf')? 'pdf' : 'kolaval'

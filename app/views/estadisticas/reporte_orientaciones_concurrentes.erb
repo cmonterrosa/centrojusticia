@@ -1,0 +1,14 @@
+<div class="titulocalendario">
+  Reporte de orientaciones y sesiones recurrentes
+</div><br />
+
+<table class="tablakolaval" style="width: 90%; margin: auto;">
+  <tr>
+    <td>Detalle</td>
+  </tr>
+  <%@recurrentes.each do |r|%>
+  <tr>
+    <td><%=h r%></td>
+  </tr>
+  <%end%>
+</table>
