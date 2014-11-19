@@ -194,7 +194,7 @@ def num_orientaciones_dos_dias
 
     #### Buscamos si tiene sesion proxima, dentro de algunos min ####
     if self.has_role?("especialistas")
-      total_minutos_anticipacion=18
+      total_minutos_anticipacion=22
       @sesiones_del_dia = Sesion.find(:all, :select => "id, hora, minutos, horario_id, sala_id, fecha", :conditions => ["(cancel IS NULL or cancel=0) AND fecha= ? AND (mediador_id = ? OR comediador_id = ?) AND hora >= ?", Time.now.strftime("%Y-%m-%d"), self.id, self.id, Time.now.strftime("%H")])
       puts "Encuentra sesiones del dia"
       @tiempo_actual = DateTime.civil(Time.now.year, Time.now.month, Time.now.day, Time.now.hour, Time.now.strftime('%M').to_i) unless @sesiones_del_dia.empty?
