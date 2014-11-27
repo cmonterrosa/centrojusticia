@@ -39,7 +39,7 @@
         </tr>
         <tr>
           <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
-          <td align="center" colspan="2"><%=f.date_select :fecha_nac, :start_year => 1925, :end_year => Time.now.year%></td>
+          <td align="center" colspan="2"><%=f.date_select :fecha_nac, :start_year => 1918, :end_year => Time.now.year%></td>
           <td align="center"><%= f.select(:anio_nac,  hash_of_years)%></td>
         </tr>
       </table>
