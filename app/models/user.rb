@@ -197,7 +197,7 @@ def num_orientaciones_dos_dias
     if self.has_role?("especialistas")
       total_minutos_anticipacion=21
       minutos_aproximados_sesion=55
-      @sesiones_del_dia = Sesion.find(:all, :select => "id, hora, minutos, horario_id, sala_id, fecha", :conditions => ["(cancel IS NULL or cancel=0) AND fecha= ? AND (mediador_id = ? OR comediador_id = ?) AND hora >= ?", Time.now.strftime("%Y-%m-%d"), self.id, self.id, Time.now.strftime("%H").to_i - 1], :order => "hora,minutos")
+      @sesiones_del_dia = Sesion.find(:all, :select => "id, cancel, hora, minutos, horario_id, sala_id, fecha", :conditions => ["(cancel IS NULL or cancel=0) AND fecha= ? AND (mediador_id = ? OR comediador_id = ?) AND hora >= ?", Time.now.strftime("%Y-%m-%d"), self.id, self.id, Time.now.strftime("%H").to_i - 1], :order => "hora,minutos")
       puts "Encuentra sesiones del dia: #{@sesiones_del_dia.size} sesiones" unless @sesiones_del_dia.empty?
       @tiempo_actual = DateTime.civil(Time.now.year, Time.now.month, Time.now.day, Time.now.hour, Time.now.strftime('%M').to_i) unless @sesiones_del_dia.empty?
       @sesiones_del_dia.each do |s|
@@ -205,8 +205,10 @@ def num_orientaciones_dos_dias
                     puts("Hora de sesion: #{s.start_at.strftime("%d-%m-%Y - %H:%M:%S")}")
 
                     ## En sesion ahora mismo ###
-                    if ((s.start_at  <= @tiempo_actual)) && (@tiempo_actual <= (s.start_at + ((minutos_aproximados_sesion/60.0)/(24.0))))
-                      @estatus_actual ||= "EN SESION"
+                    unless s.canceled?
+                      if ((s.start_at  <= @tiempo_actual)) && (@tiempo_actual <= (s.start_at + ((minutos_aproximados_sesion/60.0)/(24.0))))
+                        @estatus_actual ||= "EN SESION"
+                      end
                     end
 
                      #### Sesion proxima ####
