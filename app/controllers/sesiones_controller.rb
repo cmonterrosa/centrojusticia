@@ -411,7 +411,7 @@ class SesionesController < ApplicationController
              end
 
             #if @sesion.destroy
-            if @sesion.cancel?(current_user)
+            if @sesion.cancel!(current_user)
               @especialista.destroy if @especialista
               @comediador.destroy if @comediador
               @especialista2.destroy if @especialista2

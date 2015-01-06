@@ -96,10 +96,14 @@ class Sesion < ActiveRecord::Base
     end
   end
 
-  def cancel?(user=nil)
+  def cancel!(user=nil)
     self.cancel = true
     self.cancel_user = user.id if user
     self.save
+  end
+
+  def canceled?
+    (self.cancel == true || self.cancel == 1)? true : false
   end
 
   def rehabilitar!
