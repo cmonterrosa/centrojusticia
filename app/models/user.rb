@@ -191,7 +191,7 @@ def num_orientaciones_dos_dias
     # Buscamos si tiene algun otro movimiento
     @movimiento = Movimiento.find(:first, :conditions => ["user_id = ? AND (? between fecha_inicio AND fecha_fin)", self.id, Time.now], :order => "fecha_fin DESC")
     @estatus_actual ||= (@movimiento.situacion)? @movimiento.situacion.descripcion : nil if @movimiento
-    puts("=> Movimiento encontrado: #{@movimiento.situacion.descripcion}") if @movimiento
+    puts("=> Movimiento encontrado: #{@movimiento.situacion.descripcion}") if @movimiento && @movimiento.situacion
 
     #### Buscamos si tiene sesion ahora mismo o proxima dentro de algunos min ####
     if self.has_role?("especialistas")
