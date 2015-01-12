@@ -7,12 +7,13 @@
 <br />
 
 
-<table width="75%">
+<table width="88%">
   <% @empleados.each do |empleado| %>
   <tr>
     <td align="left"><%=h empleado.nombre_completo%></td>
     <td><%= link_to 'Mostrar', empleado, :class => "boton" %></td>
     <td><%= link_to 'Editar', edit_empleado_path(empleado), :class => "boton" %></td>
+    <td><%= link_to 'Certificaciones', {:action => "certificaciones", :id => empleado}, :class => "boton" %></td>
     <td><%= link_to 'Formacion academica', {:action => "formacion", :id => empleado}, :class => "boton" %></td>
     <td><%= link_to 'Eliminar', empleado, :confirm => '¿Esta seguro que desea eliminarlo?', :method => :delete, :class => "boton" %></td>
   </tr>
