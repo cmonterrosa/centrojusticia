@@ -33,6 +33,8 @@ class EmpleadosController < ApplicationController
     end
   end
 
+  ##### CERTIFICACIONES ######
+
   def certificaciones
     @empleado = Empleado.find(params[:id])
     @certificaciones = Certificacion.find(:all, :conditions => ["empleado_id = ?", @empleado.id])
@@ -45,6 +47,7 @@ class EmpleadosController < ApplicationController
     @certificacion ||= Certificacion.new
     @certificacion.mgdo_presidente ||= MAGISTRADO_PRESIDENTE
     @certificacion.director_ceja ||= DIRECTOR_CEJA
+    @certificacion.secretaria_consejo ||= SECRETARIA_EJECUTIVA_CONSEJO
   end
 
   def save_certificacion
@@ -62,6 +65,29 @@ class EmpleadosController < ApplicationController
     else
        flash[:notice] = "Certificacion no se guardo correctamente, intente de nuevo"
         redirect_to :action => "certificaciones", :id => @empleado
+    end
+  end
+
+  def print_certificacion
+      if @certificacion = Certificacion.find(params[:id])
+          #-- Parametros
+         param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
+         param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+         param["P_PRESIDENTE"]=(@certificacion.mgdo_presidente) ? {:tipo=>"String", :valor=>@certificacion.mgdo_presidente} : {:tipo=>"String", :valor=>MAGISTRADO_PRESIDENTE}
+         param["P_DIRECTOR_CEJA"]=(@certificacion.director_ceja) ? {:tipo=>"String", :valor=>@certificacion.director_ceja} : {:tipo=>"String", :valor=> DIRECTOR_CEJA}
+         param["P_SECRETARIA_CONSEJO"]=(@certificacion.secretaria_consejo) ? {:tipo=>"String", :valor=>@certificacion.secretaria_consejo} : {:tipo=>"String", :valor=>SECRETARIA_EJECUTIVA_CONSEJO}
+         param["P_FUNCION"]=(@certificacion.categoria)? {:tipo=>"String", :valor=>@certificacion.categoria.upcase} :  {:tipo=>"String", :valor=>"--"}
+         param["P_NUMERO_OFICIO"]=(@certificacion.numero_oficio)? {:tipo=>"String", :valor=>@certificacion.numero_oficio} :  {:tipo=>"String", :valor=>"--"}
+         param["P_ESPECIALISTA"]=(@certificacion.empleado)? {:tipo=>"String", :valor=>@certificacion.empleado.nombre_completo} :  {:tipo=>"String", :valor=>"--"}
+         param["P_FECHA_CAPTURA"]=(@certificacion.fecha_emision)? {:tipo=>"String", :valor=>@certificacion.fecha_emision.strftime('%d de %B del año %Y')} :  {:tipo=>"String", :valor=>Time.now.strftime('%d de %B del año %Y')}
+
+         if File.exists?(REPORTS_DIR + "/certificacion.jasper")
+           send_doc_jdbc("certificacion", "certificacion", param, output_type = 'pdf')
+         else
+           render :text => "Error"
+        end
+    else
+        render :text => "Imposible generar certificacion, verifique los parámetros"
     end
   end
 
