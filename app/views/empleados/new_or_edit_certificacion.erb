@@ -1,5 +1,5 @@
 <% form_for  :certificacion, @certificacion, :url => {:action => "save_certificacion", :id => @empleado, :certificacion_id => @certificacion_id}, :html => {:id => "new_or_edit_certificacion"} do |f| -%>
-  <table width="80%" border="0" align="center" cellpadding="2" cellspacing="1">
+  <table width="90%" border="0" align="center" cellpadding="2" cellspacing="1">
      <%= f.error_messages %>
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="3" align="center" >NUEVA CERTIFICACION / RECERTIFICACION</td>
@@ -35,11 +35,13 @@
           <td align="center">Tipo</td>
           <td align="center">Fecha de emision</td>
            <td align="center">Encabezado</td>
+           <td align="center">Número de Oficio</td>
         </tr>
         <tr>
-          <td align="center"><%= f.select(:tipo, { "CERTIFICACION" => "C", "RECERTIFICACION" => "R"}, { :include_blank => true }) %></td>
-          <td align="center"><%=f.text_field :fecha_emision%></td>
-          <td align="center"><%=f.text_area :encabezado, :size => "50x3" %></td>
+            <td align="center"><%= f.select(:tipo, { "CERTIFICACION" => "C", "RECERTIFICACION" => "R"}, { :include_blank => true }) %></td>
+            <td align="center"><%=f.text_field :fecha_emision%></td>
+            <td align="center"><%=f.text_area :encabezado, :size => "50x3" %></td>
+            <td align="center"><%=f.text_field :numero_oficio, :size => "45" %></td>
         </tr>
         </table>
       </td>
@@ -54,10 +56,12 @@
         <tr align=" justify" class="pregunta">
           <td align="center">Magistrado Presidente</td>
           <td align="center">Director del CEJA</td>
+          <td align="center">Secretaria Ejecutiva del Consejo</td>
         </tr>
         <tr>
-          <td align="center"><%=f.text_field :mgdo_presidente, :size => "60"%></td>
-          <td align="center"><%=f.text_field :director_ceja, :size => "60" %></td>
+          <td align="center"><%=f.text_field :mgdo_presidente, :size => "50"%></td>
+          <td align="center"><%=f.text_field :director_ceja, :size => "50" %></td>
+           <td align="center"><%=f.text_field :secretaria_consejo, :size => "50" %></td>
         </tr>
         </table>
       </td>
@@ -69,7 +73,7 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5">Observaciones</td>
+          <td align="center" colspan="5">Observaciones (no se imprimirán)</td>
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center" colspan="5"><%=f.text_area :observaciones, :size => "75x2"%></td>
