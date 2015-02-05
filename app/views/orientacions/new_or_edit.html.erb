@@ -1,8 +1,21 @@
 <!-- Validate Plugin -->
 <%=javascript_include_tag "validations/jquery_validate.js"%>
 
+<%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+
+
 <p>
-   <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%>
+   <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%> | <%=link_to image_tag('iconos_estadisticos/carga_trabajo.png', :size => "54x54", :mouseover => "iconos_estadisticos/carga_trabajo_2.png") , {:action => "show_cargas_trabajo"}, :title => "Cargas de trabajo", :class => "fancybox fancybox.iframe"%>
 </p>
 
 

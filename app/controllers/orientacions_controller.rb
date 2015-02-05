@@ -224,6 +224,12 @@ def show_especialistas_disponibles
     @especialistas = seleccionar_especialistas
 end
 
+  def show_cargas_trabajo
+    @todos_especialistas = Role.find_by_name("ESPECIALISTAS").todos_usuarios
+    @especialistas_semana = (@todos_especialistas.sort{|p1,p2| p1.puntuacion_semana_actual <=> p2.puntuacion_semana_actual}).reverse
+    return render(:partial => 'estadisticas/show_cargas_trabajo', :layout => 'only_jquery')
+  end
+
 
 
 protected

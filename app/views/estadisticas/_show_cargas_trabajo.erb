@@ -1,25 +1,27 @@
-<div class="titulocalendario">
-  <p>Ranking de Actividad de Especialistas</p>
-</div>
-<br />
-<!-- contenido -->
-<div id="divlista">
-    <table  border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 90%">
-    <tr>
-       <td style="vertical-align: middle;" width="5%">Rank</td>
-       <td style="vertical-align: middle;" width="50%">Especialista</td>
-       <td style="vertical-align: middle;" width="20%">Orientaciones de la semana actual</td>
-       <td style="vertical-align: middle;" width="25%">Orientaciones del mes actual (<%=Time.now.strftime("%B de %Y")%>)</td>
-    </tr>
-    <%contador=1%>
-    <%@especialistas_semana.each do |e|%>
-    <tr>
-      <td style="vertical-align: middle;"><%=contador%></td>
-      <td style="vertical-align: middle;"><%=h(e.nombre_completo)%></td>
-      <td style="vertical-align: middle;"><%=h(e.puntuacion_semana_actual)%></td>
-      <td style="vertical-align: middle;"><%=h(e.puntuacion_mes_actual)%></td>
-      <%contador+=1%>
-     </tr>
+<div id="cargastrabajo" style="height: 90%;width: 90%;">
+  <div class="titulocalendario">
+    <p>Ranking de Actividad de Especialistas</p>
+  </div>
+  <br />
+  <!-- contenido -->
+  <div id="divlista">
+      <table  border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 90%">
+      <tr>
+        <td style="vertical-align: middle;" width="5%">Rank</td>
+        <td style="vertical-align: middle;" width="50%">Especialista</td>
+        <td style="vertical-align: middle;" width="20%">Orientaciones de la semana actual</td>
+        <td style="vertical-align: middle;" width="25%">Orientaciones del mes actual (<%=Time.now.strftime("%B de %Y")%>)</td>
+      </tr>
+      <%contador=1%>
+      <%@especialistas_semana.each do |e|%>
+      <tr>
+        <td style="vertical-align: middle;"><%=contador%></td>
+        <td style="vertical-align: middle;"><%=h(e.nombre_completo)%></td>
+        <td style="vertical-align: middle;"><%=h(e.puntuacion_semana_actual)%></td>
+        <td style="vertical-align: middle;"><%=h(e.puntuacion_mes_actual)%></td>
+        <%contador+=1%>
+      </tr>
     <%end%>
-  </table>
+    </table>
+</div>
 </div>
