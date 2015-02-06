@@ -15,7 +15,9 @@ class AgendaController < ApplicationController
   def management
      @sesion = Sesion.new
      #@sesiones = Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos")
-     @sesiones = Sesion.find_by_sql("select s.id, s.horario_id, s.fecha from sesions s inner join horarios h  on s.horario_id=h.id LIMIT 50")
+     #@sesiones = Sesion.find_by_sql("select s.id, s.horario_id, s.fecha from sesions s inner join horarios h  on s.horario_id=h.id LIMIT 80")
+     @sesiones =  Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["(cancel is NULL OR cancel=0) AND s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos")
+
      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
      @title = "Control de agenda"
   end
@@ -74,7 +76,7 @@ class AgendaController < ApplicationController
        flash[:notice] = "Sesión guardada correctamente, clave: #{@sesion.clave}"
        redirect_to :action => "management", :controller => @controlador
     else
-       flash[:error] = "no se puedo guardar, verifique"
+       flash[:error] = "no se pudo guardar, verifique"
        render :action => "new_sesion"
     end
   end
@@ -94,7 +96,7 @@ class AgendaController < ApplicationController
        @salas = Sala.find(:all, :order => "descripcion")
        @horarios = Horario.find(:all, :group => "hora,minutos")
     else
-      redirect_to :action => @accion
+       redirect_to :action => @accion
     end
   end
 
