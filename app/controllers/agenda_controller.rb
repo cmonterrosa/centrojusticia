@@ -16,8 +16,8 @@ class AgendaController < ApplicationController
      @sesion = Sesion.new
      #@sesiones = Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos")
      #@sesiones = Sesion.find_by_sql("select s.id, s.horario_id, s.fecha from sesions s inner join horarios h  on s.horario_id=h.id LIMIT 80")
-     @sesiones =  Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["(cancel is NULL OR cancel=0) AND s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos")
-
+     #@sesiones =  Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["(cancel is NULL OR cancel=0) AND s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos")
+      @sesiones = []
      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
      @title = "Control de agenda"
   end

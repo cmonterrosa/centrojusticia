@@ -17,6 +17,11 @@
       <%=day_of_the_week(@fecha.strftime("%u").to_i)%>, <%=(@fecha.strftime("%d de %B de %Y")).upcase%>&nbsp;
     <%=link_to ">", {:action => "daily_show", :day => @after.day, :month => @after.month, :year => @after.year, :origin => @origin, :type => @type}, :class => "flecha_calendario"-%>
   </p>
+
+  <p>
+    <%=h Sesion.count(:id, :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha])%> Sesiones
+  </p>
+
 </div>
 
 

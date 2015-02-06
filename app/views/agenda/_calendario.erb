@@ -12,12 +12,14 @@
     <%= calendar.head('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado') %>
     <% calendar.day(:day_method => :start_at) do |date, sesiones| %>
        <%=(date.month == @date.month && !inhabil?(date)) ? (link_to date.day, {:action => "daily_show", :controller => "agenda", :year => date.year, :month=> date.month, :day => date.day, :origin => params[:controller]}, {:title => date.strftime("%d de %B de %Y"), :class => "titulocalendario"}) : date.day %>
-         <ul>
-            <!-- sesiones por dia -->
-            <%if sesiones.size > 0%>
-                <li><%=  sesiones.size%> sesiones</li>
-            <%end%>
+        <!-- sesiones por dia 
+        <ul>
+            
+            <if sesiones.size > 0%>
+                <li><=  sesiones.size%> sesiones</li>
+            <end%>
         </ul>
+          -->
      
     <% end %>
   <% end %>
