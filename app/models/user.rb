@@ -105,9 +105,20 @@ class User < ActiveRecord::Base
 
   ##### Puntuaciones #######
 
-     def num_orientaciones_periodo(inicio,fin)
+     def num_orientaciones_periodo_old(inicio,fin)
         numero_orientaciones = Orientacion.count(:especialista_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar', 'mate-asig', 'tram-admi', 'fech-asig') AND (orientacions.especialista_id = ? ) AND (orientacions.fechahora between ? AND ?)", self.id, inicio, fin])
         return numero_orientaciones
+     end
+
+     def num_orientaciones_periodo(inicio=Time.now,fin=Time.now)
+       inicio = inicio.strftime("%Y-%m-%d %H:%M:%S")
+       fin = fin.strftime("%Y-%m-%d %H:%M:%S")
+       num_orientaciones= Orientacion.find_by_sql("select count(orientacions.id) as numero_orientaciones from orientacions orientacions inner join tramites t
+      on orientacions.tramite_id=t.id inner join estatus e on t.estatu_id=e.id
+      where (orientacions.especialista_id = #{self.id} )
+      AND e.clave in ('comp-conc', 'no-compar', 'mate-asig', 'tram-admi', 'fech-asig')
+      AND (orientacions.fechahora between '#{inicio}' AND '#{fin}')")
+      return num_orientaciones.first.numero_orientaciones
      end
 
 
