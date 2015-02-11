@@ -139,7 +139,7 @@
           <div class="page_info">
             <%= page_entries_info @tramites %>
           </div>
-          <%= will_paginate @tramites %>
+          <%= will_paginate @tramites, :params => { :participante => @participante, :razon_social => @razon_social, :estatus => @estatus  } %>
         </div>
       </td>
     </tr>

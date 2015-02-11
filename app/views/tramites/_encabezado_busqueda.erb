@@ -2,11 +2,14 @@
   <p>TRAMITES</p>
 </div>
 
-<table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+
+<table class="tablakolaval" style="width: 80%; margin: auto;">
 <% form_tag :action => "filtrar_tramites" do -%>
 
+  
+
   <tr>
-    <th rowspan="6" align="center">
+    <th rowspan="5" align="center">
       <%=image_tag 'iconos/busqueda_tramites.png', :title => "Búsqueda de trámites"%>
     </th>
   </tr>
@@ -16,21 +19,36 @@
     <th class="LabelBusquedaTramite">Carpeta de Atención/Expediente: </th>
     <th><%= text_field_tag  "carpeta_atencion", @carpeta_atencion, :placeholder => "Ejemplo: 0036/2014", :class => "SelectBusquedaTramite"%></th>
   </tr>
+  
   <tr>
     <th class="LabelBusquedaTramite">Nombre del participante: </th>
     <th><%= text_field_tag  "participante", @participante, :placeholder => "Ejemplo: Juan Carlos Martinez López", :size => "40", :class => "SelectBusquedaTramite" %></th>
   </tr>
+  
 
   <tr>
-    <th class="LabelBusquedaTramite">Razón Social: </th>
+    <th class="LabelBusquedaTramite">Razón Social:</th>
     <th><%= text_field_tag  "razon_social", @razon_social, :placeholder => "Ejemplo: Constructora ABC", :size => "40", :class => "SelectBusquedaTramite" %></th>
   </tr>
+  
 
-  <tr><th>&nbsp;</th></tr>
+   <tr>
+     
+    <th class="LabelBusquedaTramite">Estatus: <br /></th>
+
+    <%ids = []%>
+       <%current_user.roles.each do |role| ids << role.id end%>
+       <%@estatuses = Estatu.find(:all, :conditions => ["id in (?)",  ids])%>
+       
+       <th><%=select("busqueda", "estatu_id", @estatuses.collect {|mt| [ mt.descripcion, mt.id ] }, {:include_blank => 'Selecciona el estatus'})%></th>
+   
+  </tr>
+
+  
     <tr>
-      <th colspan="2"><%= submit_tag 'BUSCAR REGISTROS' %></th>
+      <th  align="center" rowspan="2" colspan="4"><%= submit_tag 'BUSCAR REGISTROS' %></th>
     </tr>
-    <tr><th>&nbsp;</th></tr>
+    
 <% end -%>
 </table>
 <br />

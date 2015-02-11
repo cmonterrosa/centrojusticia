@@ -49,12 +49,20 @@ class TramitesController < ApplicationController
   def filtrar_tramites
     @carpeta_atencion = (params[:carpeta_atencion] =~ /^\d{1,4}\/\d{4}$/) ? params[:carpeta_atencion].strip : nil
     folio_expediente, anio=@carpeta_atencion.split("/") if @carpeta_atencion
-    @participante = (params[:participante].size > 0) ? params[:participante].strip : nil
-    @especialista = (params[:especialista]) ? User.find(params[:especialista]) : nil
-    @razon_social = (params[:razon_social].size > 0) ? params[:razon_social] : nil
 
-    ### CARPETA DE ATENCION ###
-    @tramites = (@carpeta_atencion) ? Tramite.find(:all, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) : nil
+     @participante = (params[:participante]) ? true : nil
+     @especialista = (params[:especialista]) ? true :nil
+     @razon_social = (params[:razon_social]) ? true : nil
+
+     @participante = (params[:participante].size > 0) ? params[:participante].strip : nil if @participante
+     @especialista = (params[:especialista]) ? User.find(params[:especialista]) : nil if @especialista
+     @razon_social = (params[:razon_social].size > 0) ? params[:razon_social] : nil if @razon_social
+
+     @estatus = (params[:busqueda]) ? params[:busqueda][:estatu_id] : nil
+     @estatus ||= (params[:estatus]) ? params[:estatus] : nil
+
+     ### CARPETA DE ATENCION ###
+     @tramites = (@carpeta_atencion) ? Tramite.find(:all, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) : nil
     
     ### PARTICIPANTE ###
     if @participante
@@ -92,6 +100,11 @@ class TramitesController < ApplicationController
       @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}]) unless id_tramites.empty?
    end
 
+    ### Estatus ###
+    @estatus = Estatu.find(@estatus) if @estatus
+    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id = ?", @estatus]) if @estatus
+
+    ## Default ###
     @tramites ||= Array.new
     @tramites = @tramites.paginate(:page => params[:page], :per_page => 25)
    end
