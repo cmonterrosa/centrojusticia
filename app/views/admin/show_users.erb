@@ -27,6 +27,7 @@
     <%@usuarios.each do |user|%>
     <tr class="d<%=invert_class(clase)%>">
       <td style="vertical-align: middle;">
+        
       <%=case user.estatus_actual
         when "INCAPACIDAD"
             h(image_tag("iconos/licencia2.png", :border =>0))

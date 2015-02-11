@@ -1,17 +1,28 @@
 <h4 style=" font-family:  Helvetica;">Asignación de estatus y roles</h4>
 
-  <!-- Filtro -->
-  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+<!-- Filtro -->
+<% form_tag( :controller => 'admin', :action => 'filtro_role', :id =>@role) do -%>
+ <table width="80%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
     <tr>
       <td align="center"> <b>Filtro por perfil</b></td>
     </tr>
     <tr>
       <td align="center"><%= select :role, :id, Role.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Todos los roles'%></td>
     </tr>
-  </table><br /><br />
+    <tr>
+      <td colspan="2" align="center"><%= submit_tag 'Mostrar' %></td>
+    </tr>
+  </table>
+  <br /><br />
+  <%end%>
 
-<!-- contenido -->
-<%= render :partial => "estatus_by_role"%>
+ <%if @role%>
+    <div class="titulocalendario">
+      <p>Role: <%=h @role.descripcion%></p>
+    </div>
+ <%end%>
+
+
 
 <br />
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin"%><br />

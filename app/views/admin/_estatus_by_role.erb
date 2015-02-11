@@ -1,10 +1,42 @@
+<h4 style=" font-family:  Helvetica;">Asignación de estatus y roles</h4>
+
+<!-- Filtro -->
+<% form_tag( :controller => 'admin', :action => 'filtro_role', :id =>@role) do -%>
+ <table width="80%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <tr>
+      <td align="center"> <b>Filtro por perfil</b></td>
+    </tr>
+    <tr>
+      <td align="center"><%= select :role, :id, Role.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Todos los roles'%></td>
+    </tr>
+    <tr>
+      <td colspan="2" align="center"><%= submit_tag 'Mostrar' %></td>
+    </tr>
+  </table>
+  <br /><br />
+  <%end%>
+
+ <%if @role%>
+    <div class="titulocalendario">
+      <p>Role: <%=h @role.descripcion%></p>
+    </div>
+ <%end%>
+
+
+
+<!-- contenido -->
+
+
 <div id="divlista">
   <table class="tablakolaval" width="80%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
          <tr align="center" class="d0">
            <td bgcolor="#E8E8E8">Estatus</td>
          </tr>
            <!-- Registros -->
-          <% form_tag :action => 'update_role_estatus', :id =>@role do -%>
+          <%# form_tag :controller => 'admin', :action => 'update_role_estatus', :id =>@role  do -%>
+
+           <% form_tag( :controller => 'admin', :action => 'update_role_estatus', :id =>@role) do -%>
+            
                 <% for estatu in Estatu.find(:all) %>
                     <tr align="center" class="d1">
                         <td bgcolor="#f3f3f3" align="left">
@@ -14,17 +46,19 @@
                     </tr>
                 <%end%>
 
-                 <!-- boton final -->
-           <tr align="center" class="d0">
-               <th class="boton"><%= submit_tag "Actualizar", :onclick => "return comprobar();" %></th>
-           </tr>
+                           <!-- boton final -->
+                <tr>
+                    <td colspan="2" align="center"><%= submit_tag 'Guardar' %></td>
+                </tr>
+
+           
           <%end%>
        
    </table>
 </div>
 
-<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
-  <%= observe_field :role_id,
+<%#*<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />%>
+  <%#= observe_field :role_id,
         :on => "change",
         :before => "Element.show('spinner')",
         :success => "Element.hide('spinner')",
@@ -32,6 +66,11 @@
         :action => 'filtro_role'},
         :update => 'divlista',
         :with => :role_id %>
+
+
+<br />
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin"%><br />
+
 
 
 

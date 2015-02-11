@@ -18,13 +18,13 @@ class AdminController < ApplicationController
 
   #--- administracion de roles y estatus por visualizar
   def roles_estatus
-    @role = Role.find(1)
+    @role = Role.find(params[:id]) if params[:id]
   end
 
   def filtro_role
-    if params[:role_id].size > 0
-      @role = Role.find(params[:role_id])
-      return render(:partial => 'estatus_by_role', :layout => false) if request.xhr?
+    if params[:role][:id].size > 0
+      @role = Role.find(params[:role][:id])
+      return render(:partial => 'estatus_by_role', :layout => 'kolaval') #if request.xhr?
     else
       render :text => "No se pudo realizar la búsqueda, verifique"
     end
