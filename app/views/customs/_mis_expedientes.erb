@@ -50,7 +50,7 @@
            <%sesiones=[]%>
               <%if @sesiones = Sesion.find(:all, :conditions => ["tramite_id = ? AND (cancel IS NULL OR cancel=0)", tramite], :order => "fecha DESC")%>
                   <%@sesiones.each do |s|%>
-                      <b><%=h "[#{s.start_at.strftime('%d de %B de %Y')} / #{s.hora_completa}] "%></b>
+                      <b><%=h link_to "[#{s.start_at.strftime('%d de %B de %Y')} / #{s.hora_completa}] ", {:controller => "sesiones", :action => "show_window", :id => s}, :class => "fancybox fancybox.iframe"%></b>
                       <%=h "#{s.descripcion_especialistas}"%><br /><br />
                     <%end%>
                   <%#=h sesiones.join(",")%>

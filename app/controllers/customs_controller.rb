@@ -111,6 +111,7 @@ class CustomsController < ApplicationController
         ## Filtrado de tramites ###
         @tramites = (folio_expediente && anio)?  Tramite.find(:all, :conditions => ["folio_expediente =? AND anio=? AND id in (?)", folio_expediente, anio, @tramites_ids], :order => "anio DESC, folio_expediente DESC") : nil
         @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", @tramites_ids], :order => "anio DESC, folio_expediente DESC") if @tramites_ids
+        @tramites = @tramites.sort{|a,b| a.numero_expediente <=> b.numero_expediente}.reverse
         @tramites = @tramites.paginate(:page => params[:page], :per_page => 25)
         render :partial => "mis_expedientes", :layout => "kolaval"
     else
