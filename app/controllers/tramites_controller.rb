@@ -67,8 +67,8 @@ class TramitesController < ApplicationController
     ### PARTICIPANTE ###
     if @participante
       id_tramites=Array.new
-      @participantes_comparecencia ||= Participante.find(:all, :conditions => ["full_name like ?", "#{@participante}%"])
-      @solicitante ||= Orientacion.find(:all, :conditions => ["full_name like ?", "#{@participante}%"])
+      @participantes_comparecencia ||= Participante.find(:all, :conditions => ["full_name like ? OR full_name like ?", "#{@participante}%",  "%#{@participante}"])
+      @solicitante ||= Orientacion.find(:all, :conditions => ["full_name like ? OR full_name like ?", "#{@participante}%", "%#{@participante}"])
       if @participantes_comparecencia
           @participantes_comparecencia.each do |p|
             @comparecencia = (p.comparecencia)? p.comparecencia.tramite : nil

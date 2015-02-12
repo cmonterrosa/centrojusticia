@@ -3,7 +3,7 @@
 </div>
 
 
-<table class="tablakolaval" style="width: 80%; margin: auto;">
+<table class="tablakolaval" style="width: 90%; margin: auto;">
 <% form_tag :action => "filtrar_tramites" do -%>
 
   
@@ -21,8 +21,8 @@
   </tr>
   
   <tr>
-    <th class="LabelBusquedaTramite">Nombre del participante: </th>
-    <th><%= text_field_tag  "participante", @participante, :placeholder => "Ejemplo: Juan Carlos Martinez López", :size => "40", :class => "SelectBusquedaTramite" %></th>
+    <th class="LabelBusquedaTramite">Nombre o apellidos del participante/involucrado: </th>
+    <th><%= text_field_tag  "participante", @participante, :placeholder => "Ejemplo: Rebeca Esquinca Robles / Esquinca Robles ", :size => "40", :class => "SelectBusquedaTramite" %></th>
   </tr>
   
 
