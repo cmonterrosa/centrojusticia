@@ -569,5 +569,24 @@ class SesionesController < ApplicationController
     end
   end
 
+  def add_result
+    if @sesion = Sesion.find(params[:id])
+      render :partial => "add_result", :layout => "only_jquery"
+    else
+      render :text => "Sesión no existe, verifique"
+    end
+  end
+
+  def save_result
+    @sesion = Sesion.find(params[:id])
+    @sesion.update_attributes(params[:sesion])
+    @sesion.concluida = true if @sesion.resultado && @sesion.resultado.size > 2
+    if @sesion.save
+      flash[:notice] = "Resultado guardado correctamente"
+      redirect_to :action => "show_window", :id => @sesion
+    end
+    
+  end
+
 
 end

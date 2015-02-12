@@ -32,6 +32,16 @@
           <td>
               <%= link_to "Detalle del expediente" , {:controller => "tramites", :action => "show", :id => @sesion.tramite, :token => "show_sesion"}, :title => "Detalle del trámite", :method => :post, :class => "boton" %><br />
           </td>
+
+
+          <!-- solamente si es mediador o comediador -->
+
+          <%if current_user.id == @sesion.mediador_id || current_user.id == @sesion.comediador_id%>
+            <td>
+                <%= link_to "Capturar Resultado" , {:controller => "sesiones", :action => "add_result", :id => @sesion, :token => "show_sesion"}, :title => "Resultado de la sesion", :method => :post, :class => "boton" %><br />
+            </td>
+          <%end%>
+
     <%end%>
 
    <br />
