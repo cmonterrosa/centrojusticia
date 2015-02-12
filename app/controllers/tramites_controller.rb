@@ -101,7 +101,7 @@ class TramitesController < ApplicationController
    end
 
     ### Estatus ###
-    @estatus = Estatu.find(@estatus) if @estatus
+    @estatus = Estatu.find(@estatus) if @estatus && params[:estatus]
     @tramites ||= Tramite.find(:all, :conditions => ["estatu_id = ?", @estatus]) if @estatus
 
     ## Default ###
