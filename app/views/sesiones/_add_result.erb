@@ -1,0 +1,76 @@
+<% form_for :sesion, @sesion, :url => { :action => "save_result", :id => @sesion} do |f| -%>
+  <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;width: 80%; height: 80%; margin: auto;">
+    <tr align="center" >
+      <td align="center" colspan="4">DATOS GENERALES DE LA SESIÓN</td>
+    </tr>
+
+    <tr align="center">
+      <td align="center" colspan="4">
+          <table style="width:100%">
+            <tr>
+               <td align="center">Número de Expediente</td>
+               <td align="center">Fecha</td>
+               <td align="center">Hora</td>
+               <td align="center">Clase</td>
+            </tr>
+            <tr>
+              <td align="center"><%=h @sesion.tramite.numero_expediente%></td>
+               <td align="center"><%=h @sesion.fecha.strftime("%d/%m/%Y")%></td>
+               <td align="center"><%=h @sesion.hora_completa%></td>
+               <td align="center"><%=h (@sesion.tiposesion)? @sesion.tiposesion.descripcion : "No existe información"%></td>
+            </tr>
+          </table>
+       </td>
+    </tr>
+
+    <tr align="center">
+      <td align="center" colspan="4">
+          <table style="width:100%">
+            <tr>
+               <td align="center" colspan="2">Especialista</td>
+               <td align="center" colspan="2">Comediador</td>
+            </tr>
+            <tr>
+                <td align="center" colspan="2"><%=h (@sesion.mediador_id)? @sesion.mediador.nombre_completo : "No existe información"%></td>
+                <td align="center" colspan="2"><%=h (@sesion.comediador_id)? @sesion.comediador.nombre_completo : "No existe información"%></td>
+            </tr>
+          </table>
+       </td>
+    </tr>
+
+
+    <!-- Detalle -->
+
+    <tr align="center">
+      <td align="center" colspan="4">
+          <table style="width: 100%">
+            <tr>
+               <td align="center" colspan="4">Resultado de la sesión</td>
+             </tr>
+          </table>
+       </td>
+    </tr>
+
+    
+            <tr>
+                <td align="center" colspan="4"><%= f.text_area :resultado, :size => "90x8"%></td>
+            </tr>
+     
+
+    <!-- espacio -->
+    <tr>
+      <td colspan="4"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+   
+          <tr>
+            <td colspan="2">
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+            </td>
+            <td colspan="2">
+              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :action => 'search_sesiones', :controller => "sesiones"-%>
+            </td>
+          </tr>
+       
+  </table>
+<% end %>
