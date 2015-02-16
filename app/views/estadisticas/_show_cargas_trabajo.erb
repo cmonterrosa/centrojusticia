@@ -1,24 +1,50 @@
-<div id="cargastrabajo" style="height: 90%;width: 90%;">
+<div id="cargastrabajo" style="height: 100%;width: 100%;">
   <div class="titulocalendario">
     <p>Ranking de Actividad de Especialistas</p>
   </div>
-  <br />
+  
+
+  <div class="titulocalendario">
+  <p align="center">
+   <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "show_cargas_trabajo"}, :title => "Recargar"%>
+  </p
+
+  <div class="ultima_conexion">
+    Ultima actualización: <%=Time.now.strftime("%H:%M:%S")%>
+  </div><br />
+
+  </div>
+
+  
+
+
   <!-- contenido -->
   <div id="divlista">
-      <table  border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 90%">
+      <table  border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 98%">
       <tr>
-        <td style="vertical-align: middle;" width="5%">Rank</td>
+        <td style="vertical-align: middle;" width="5%"># Rank</td>
         <td style="vertical-align: middle;" width="50%">Especialista</td>
         <td style="vertical-align: middle;" width="20%">Orientaciones de la semana actual</td>
         <td style="vertical-align: middle;" width="25%">Orientaciones del mes actual (<%=Time.now.strftime("%B de %Y")%>)</td>
+        <td style="vertical-align: middle;" width="25%">Estatus actual</td>
       </tr>
       <%contador=1%>
       <%@especialistas_semana.each do |e|%>
       <tr>
         <td style="vertical-align: middle;"><%=contador%></td>
         <td style="vertical-align: middle;"><%=h(e.nombre_completo)%></td>
-        <td style="vertical-align: middle;"><%=h(e.puntuacion_semana_actual)%></td>
-        <td style="vertical-align: middle;"><%=h(e.puntuacion_mes_actual)%></td>
+        <!-- semana -->
+        <td style="vertical-align: middle;"><%=h(e['puntuacion_final'].to_i)%></td>
+
+        <!-- mes -->
+        <td style="vertical-align: middle;"><%=h( (e['puntuacion_final'].modulo(1) * 100).to_i)%></td>
+
+        <td style="vertical-align: middle;"><%=h e.estatus_actual%></td>
+        
+        <!--
+          <td style="vertical-align: middle;"><=h(e.puntuacion_semana_actual)%></td>
+          <td style="vertical-align: middle;"><=h(e.puntuacion_mes_actual)%></td>
+         -->
         <%contador+=1%>
       </tr>
     <%end%>

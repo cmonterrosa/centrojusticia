@@ -3,7 +3,7 @@ require 'date'
 
 class User < ActiveRecord::Base
 
-  attr_accessor :puntaje_semanal, :puntaje_mensual
+  attr_accessor :puntaje_final
   
   has_many :comparecencias
   has_many :participantes
@@ -164,7 +164,7 @@ class User < ActiveRecord::Base
   end
 
   def puntuacion_general
-      return (puntuacion_semana_actual + (puntuacion_mes_actual * 0.01))
+      return ((puntuacion_semana_actual.to_i) + ((puntuacion_mes_actual.to_i) * 0.01))
   end
 
 
