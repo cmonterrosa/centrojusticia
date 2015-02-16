@@ -41,7 +41,7 @@
 
 
 
-<% if @noweekend %>
+<% unless @inhabil %>
 
 <div class="titulocalendario">
   <p>
@@ -116,7 +116,7 @@
 
 <div class="titulocalendario">
   <p>
-    <%=(@fecha.strftime("%d de %B de %Y")).upcase%> no es una fecha válida
+    <%=(@fecha.strftime("%d de %B de %Y")).upcase%> es un día no laborable
   </p>
 </div>
 

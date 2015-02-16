@@ -313,14 +313,18 @@ class SesionesController < ApplicationController
   end
 
   def show_schedules
-   @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
-   @salas = Sala.find(:all, :order => "descripcion")
-   @sesion= Sesion.find(params[:sesion]) if params[:sesion]
-   @mediador = User.find(params[:sesion_mediador_id]) if params[:sesion_mediador_id]
-   @comediador = User.find(params[:sesion_comediador_id]) if params[:sesion_comediador_id]
-   @horario = Horario.find(params[:horario]) if params[:horario]
-   @fecha = Date.parse(params[:sesion_fecha]) if params[:sesion_fecha]
-   @noweekend = (1..5).include?(@fecha.wday)
+    @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    @salas = Sala.find(:all, :order => "descripcion")
+    @sesion= Sesion.find(params[:sesion]) if params[:sesion]
+    @mediador = User.find(params[:sesion_mediador_id]) if params[:sesion_mediador_id]
+    @comediador = User.find(params[:sesion_comediador_id]) if params[:sesion_comediador_id]
+    @horario = Horario.find(params[:horario]) if params[:horario]
+    @fecha = Date.parse(params[:sesion_fecha]) if params[:sesion_fecha]
+    #@noweekend = (1..5).include?(@fecha.wday)
+    @inhabil = inhabil?(@fecha)
+
+
+
    @notificacion = (params[:sesion_notificacion]) ? true : false 
    @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id as id from sesions where fecha = ?)",  @fecha])
    @title = "Resultados encontrados"

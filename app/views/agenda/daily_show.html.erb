@@ -19,7 +19,7 @@
   </p>
 
   <p>
-    <%=h Sesion.count(:id, :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha])%> Sesiones
+    <%=h @numero_total_sesiones = Sesion.count(:id, :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha])%> Sesiones
   </p>
 
 </div>
@@ -30,7 +30,10 @@
 
   <p>
     <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "daily_show",          :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => @origin, :type => @type}, :title => "Recargar"%>
-    <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "daily_show_pdf.pdf", :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => @origin, :type => @type}, :title => "Imprimir agenda del dia"%>
+
+    <%if @numero_total_sesiones > 0%>
+      <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "daily_show_pdf.pdf", :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => @origin, :type => @type}, :title => "Imprimir agenda del dia"%>
+    <%end%>
   </p>
 
   <div class="ultima_conexion">
@@ -106,6 +109,14 @@
         <%end%>
       </tbody>
     </table>
+
+
+  <%else%>
+
+<div class="titulocalendario">
+  <p> Es un día no laborable</p>
+</div>
+
 <%end%>
 </div>
 

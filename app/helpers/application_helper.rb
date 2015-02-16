@@ -31,11 +31,12 @@ module ApplicationHelper
   end
 
   def inhabil?(date=Time.now)
+    date = DateTime.parse(date.strftime('%Y-%m-%d') + " 08:00")
     inhabil = ((1..5)===date.wday) ? false : true
     if inhabil
        return true
     else
-       if Festivo.find(:first, :conditions => ["? between fecha_inicio and fecha_fin", date])
+       if Festivo.find(:first, :conditions => ["? between fecha_inicio and fecha_fin", date.strftime('%Y-%m-%d %H:%M')])
          return true
        else
          return false
