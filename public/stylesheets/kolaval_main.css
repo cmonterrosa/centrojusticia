@@ -26,8 +26,8 @@ div, h1, h2, h3, h4, p, span, a, img, form, label, input, textarea {
 body {
 /*	font-family:Verdana, Arial, Helvetica, sans-serif;*/
         font-family: "Nexa Light";
-	font-size:12px;
-	color:#576370;
+	font-size:13px;
+/*	color:#576370;*/
 	margin:0;
 	padding:0;
 	background: url('/images/pjech/fondo_login.jpg') no-repeat;
