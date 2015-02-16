@@ -106,6 +106,7 @@ class AgendaController < ApplicationController
     @origin=params[:origin] if params[:origin]
     @type = params[:type] if params[:type]
     @titulo = (@type == 'custom') ? "Agenda de Sesiones para #{current_user.nombre_completo}" : "Agenda de Sesiones General"
+    @impreso_por = (current_user) ? "| Impreso por : #{current_user.nombre_completo}" : ""
     if params[:year] =~ /^\d{4}$/ && params[:month] =~ /^\d{1,2}$/ && params[:day] =~ /^\d{1,2}$/
        @fecha = DateTime.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
        @before = @fecha.yesterday
