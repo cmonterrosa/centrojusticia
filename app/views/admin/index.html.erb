@@ -21,11 +21,18 @@
           <img src="/images/iconos/roles_estatus.png" width="128" height="128" alt="estatus por perfil" />
          </a>
        </td>
+
+        <!-- Dias inhabiles-->
+        <td>
+          <%=link_to image_tag('kolaval/dias-inha.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/dias-inha.jpg") , {:action => "festivos", :controller => "admin"}, :title => "Control de días inhábiles"%>
+        </td>
+        
   </tr>
   <tr align="center">
     <td class="menu">Áreas y Usuarios</td>
     <td class="menu">Perfiles y Usuarios</td>
     <td class="menu">Perfiles y Estatus</td>
+    <td class="menu" align="center">Días inhábiles</td>
   </tr>
   <tr>
     <th>&nbsp;</th>
@@ -55,6 +62,10 @@
            <img src="/images/iconos/configuracion.png" width="128" height="128" alt="Configuracion" />
          </a>
         </td>
+
+       
+
+
   </tr>
 
   <tr>
@@ -62,6 +73,7 @@
     <td class="menu" align="center">Horarios de sesiones</td>
     <td class="menu" align="center">Flujo</td>
     <td class="menu" align="center">Configuración</td>
+    
   </tr>
 </table>
 
