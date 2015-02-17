@@ -247,7 +247,9 @@ protected
       ahora = Time.parse("#{norm_date} #{DateTime.now.strftime "%H:%M:%S"}")
       hora_limite = Time.parse("#{norm_date} #{limite.strftime "%H:%M:%S"}")
       especialistas = (ahora >= hora_limite) ? Role.find_by_name("especialistas").usuarios_disponibles_vespertinos : Role.find_by_name("especialistas").usuarios_disponibles
-      return (especialistas.sort{|p1,p2| p1.puntuacion_semana_actual <=> p2.puntuacion_semana_actual})
+      especialistas.each do |e| e["puntuacion_final"] = e.puntuacion_general end
+      return (especialistas.sort{|p1,p2| p1["puntuacion_final"] <=> p2["puntuacion_final"]})
+      #return (especialistas.sort{|p1,p2| p1.puntuacion_semana_actual <=> p2.puntuacion_semana_actual})
    end
 
 
