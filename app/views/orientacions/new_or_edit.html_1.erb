@@ -1,44 +1,32 @@
-<!-- jquery validation -->
+<!-- Validate Plugin -->
+<%=javascript_include_tag "validations/jquery_validate.js"%>
 
+<%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
 <script type="text/javascript">
-  $j(document).ready(function () {
-	var emailreg = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
-	$j(".boton").click(function (){
-		$j(".error").remove();
-		if( $j(".nombre").val() == "" ){
-			$j(".nombre").focus().after("<span class='error'>Ingrese su nombre</span>");
-			return false;
-		}else if( $j(".email").val() == "" || !emailreg.test($j(".email").val()) ){
-			$j(".email").focus().after("<span class='error'>Ingrese un email correcto</span>");
-			return false;
-		}else if( $j(".asunto").val() == ""){
-			$j(".asunto").focus().after("<span class='error'>Ingrese un asunto</span>");
-			return false;
-		}else if( $j(".mensaje").val() == "" ){
-			$j(".mensaje").focus().after("<span class='error'>Ingrese un mensaje</span>");
-			return false;
-		}
-	});
-	$j(".nombre, .asunto, .mensaje").keyup(function(){
-		if( $j(this).val() != "" ){
-			$j(".error").fadeOut();
-			return false;
-		}
-	});
-	$j(".email").keyup(function(){
-		if( $j(this).val() != "" && emailreg.test($j(this).val())){
-			$j(".error").fadeOut();
-			return false;
-		}
-	});
-});
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
 </script>
 
 
-<% form_for :orientacion, @orientacion, :url => { :action => "save" }, :html => {:id => "new_orientacion"} do |f| -%>
-  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
-    <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" >ORIENTACIONES</td>
+
+<p>
+   <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%> | <%=link_to image_tag('iconos_estadisticos/carga_trabajo.png', :size => "54x54", :mouseover => "iconos_estadisticos/carga_trabajo_2.png") , {:action => "show_cargas_trabajo"}, :title => "Cargas de trabajo", :class => "fancybox fancybox.iframe"%>
+</p>
+
+
+  <div class="ultima_conexion">
+    Ultima actualización: <%=Time.now.strftime("%H:%M:%S")%>
+  </div><br />
+
+<% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
+  <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr class="titulo">
+      <td colspan="3" align="center" >CAPTURA DE ORIENTACION <%=@caption%></td>
     </tr>
     <tr align="center">
       <td align="center">
@@ -48,19 +36,39 @@
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center">Fecha/hora</td>
-          <td align="center">Especialista</td>
-           <td align="center">¿Notificar especialista vía correo?</td>
+           <%if @extra || @especialista%>
+              <td align="center">Especialista <%=@caption_type_specialist%> / Orientaciones en los últimos 7 días</td>
+            <%else%>
+              <td align="center"> Estado   |   Especialista que atenderá   |   Orientaciones en semana actual</td>
+           <%end%>
+           <%#*<td align="center">¿Notificar especialista vía correo?</td>%>
           <td align="center">Observaciones</td>
-          <td align="center">Sala</td>
         </tr>
         <tr>
-          <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
-          <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :prompt => 'Seleccione una opción'%></td>
-          <td align="center"><%=f.check_box :notificacion%> </td>
-          <td align="center"><%= f.text_field :observaciones, :class => "text"%></td>
-          <td align="center"><%= f.select :sala_id, Sala.find(:all, :conditions => ["is_active = ?", true]).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+          <td align="center">
+              <%=f.text_field :fechahora, :value => @fecha, :size => 16%>
+          </td>
+
+          <%if @extra%>
+              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%></td>
+          <%else%>
+              <!-- Tramite con personal ordinario -->
+              <%if @especialista%>
+                <td align="center">&nbsp;</td>
+              <!--<td align="center"><= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%></td>-->
+             <%else%>
+              <!-- disabled -->
+              <!-- <td align="center"><= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, {:disabled => true}%></td> -->
+              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%></td>
+             <%end%>
+          <%end%>
+          <!--
+          <td align="center"><=f.check_box :notificacion%> </td>
+          -->
+          <td align="center"><%= f.text_field :observaciones, :class => "text", :size => "48"%></td>
         </tr>
-      </table></td>
+      </table>
+      </td>
     </tr>
     <!-- segunda barra inferior -->
       <tr align="center">
@@ -76,10 +84,10 @@
           <td align="center">Sexo</td>
         </tr>
         <tr>
-          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :class => "text", :required => true%></td>
-          <td align="center"><%= f.text_field :materno,  :onKeyPress => "return CharNum(event, 'letra');", :class => "text"%></td>
-          <td align="center"><%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :class => "text", :required => true%></td>
-          <td align="center"><%= f.select(:sexo, ["Masculino", "Femenino"], :prompt => 'Seleccione una opción')%></td>
+          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => "38"%></td>
+          <td align="center"><%= f.text_field :materno,  :onKeyPress => "return CharNum(event, 'letra');", :size => "38"%></td>
+          <td align="center"><%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => "56"%></td>
+          <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
         </tr>
       </table></td>
       </tr>
@@ -95,7 +103,7 @@
           <td>Dirección</td>
           <td>Municipio</td>
           <td>Teléfono</td>
-          <td>Correo</td>
+          <td>Correo Electrónico</td>
         </tr>
         <tr align="center">
           <td>
@@ -104,7 +112,7 @@
               <=options_from_collection_for_select(MotivoInasistencia.find(:all), :clave, :descripcion, @s_motivos)%>
             </select>
             -->
-            <%= f.text_field :direccion, :class => "text"%>
+            <%= f.text_area :direccion, :class => "text", :size => "50x7"%>
           </td>
           <td><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td><%= f.text_field :telefono, :onKeyPress => "return CharNum(event, 'numero');", :class => "text"%></td>
@@ -113,17 +121,14 @@
         </table>
       </td>
     </tr>
-    <!-- espacio -->
-    <tr>
-      <td colspan="3"><hr /></td>
-    </tr>
+
     <!-- FOOTER -->
     <tr>
       <td align="right">
         <table>
           <tr>
             <td>
-              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onclick="this.disabled=true;this.value='Enviando, Por favor espere ...';this.form.submit();"/>
             </td>
             <td>
               <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "home"-%>
@@ -135,3 +140,12 @@
   </table>
 <% end %>
 
+
+
+<script type="text/javascript">
+  var domicilio = new LiveValidation( 'orientacion_direccion' );
+  var nombre = new LiveValidation( 'orientacion_nombre' );
+  domicilio.add( Validate.Presence );
+  nombre.add( Validate.Presence );
+  domicilio.add( Validate.Length, { maximum: 160 } );
+</script>

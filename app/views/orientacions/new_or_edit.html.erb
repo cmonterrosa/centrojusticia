@@ -12,139 +12,169 @@
                });
 </script>
 
+<div class="container">
+
+  <div class="grid-12-12">
+   <p>
+    <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%> | <%=link_to image_tag('iconos_estadisticos/carga_trabajo.png', :size => "54x54", :mouseover => "iconos_estadisticos/carga_trabajo_2.png") , {:action => "show_cargas_trabajo"}, :title => "Cargas de trabajo", :class => "fancybox fancybox.iframe"%>
+   </p>
+    <p class="ultima_conexion">
+     Última actualización: <%=Time.now.strftime("%H:%M:%S")%>
+   </p>
+ </div>
+
+    <div class="formee-msg-info">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
 
 
-<p>
-   <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%> | <%=link_to image_tag('iconos_estadisticos/carga_trabajo.png', :size => "54x54", :mouseover => "iconos_estadisticos/carga_trabajo_2.png") , {:action => "show_cargas_trabajo"}, :title => "Cargas de trabajo", :class => "fancybox fancybox.iframe"%>
-</p>
 
-
-  <div class="ultima_conexion">
-    Ultima actualización: <%=Time.now.strftime("%H:%M:%S")%>
-  </div><br />
 
 <% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
   <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1">
-    <tr class="titulo">
-      <td colspan="3" align="center" >CAPTURA DE ORIENTACION <%=@caption%></td>
-    </tr>
-    <tr align="center">
-      <td align="center">
-        <table class="TablaKolaval100">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5">DATOS GENERALES</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">Fecha/hora</td>
-           <%if @extra || @especialista%>
-              <td align="center">Especialista <%=@caption_type_specialist%> / Orientaciones en los últimos 7 días</td>
-            <%else%>
-              <td align="center"> Estado   |   Especialista que atenderá   |   Orientaciones en semana actual</td>
-           <%end%>
-           <%#*<td align="center">¿Notificar especialista vía correo?</td>%>
-          <td align="center">Observaciones</td>
-        </tr>
-        <tr>
-          <td align="center">
-              <%=f.text_field :fechahora, :value => @fecha, :size => 16%>
-          </td>
-
-          <%if @extra%>
-              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%></td>
-          <%else%>
-              <!-- Tramite con personal ordinario -->
-              <%if @especialista%>
-                <td align="center">&nbsp;</td>
-              <!--<td align="center"><= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%></td>-->
-             <%else%>
-              <!-- disabled -->
-              <!-- <td align="center"><= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, {:disabled => true}%></td> -->
-              <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%></td>
-             <%end%>
-          <%end%>
-          <!--
-          <td align="center"><=f.check_box :notificacion%> </td>
-          -->
-          <td align="center"><%= f.text_field :observaciones, :class => "text", :size => "48"%></td>
-        </tr>
-      </table></td>
-    </tr>
-    <!-- segunda barra inferior -->
-      <tr align="center">
-      <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4" >DATOS PERSONALES DEL SOLICITANTE</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">Apellido Paterno</td>
-          <td align="center">Apellido Materno</td>
-          <td align="center">Nombre(s)</td>
-          <td align="center">Sexo</td>
-        </tr>
-        <tr>
-          <td align="center"><%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => "38"%></td>
-          <td align="center"><%= f.text_field :materno,  :onKeyPress => "return CharNum(event, 'letra');", :size => "38"%></td>
-          <td align="center"><%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => "56"%></td>
-          <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
-        </tr>
-      </table></td>
-      </tr>
-
-    <!-- barra media -->
-    <tr class="Estilo3">
-      <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-          <tr align="center" bgcolor="#E8E8E8" class="subtitulo">
-            <td colspan="4" >DATOS DE UBICACION DEL SOLICITANTE</td>
-          </tr>
-        <tr align="center" class="pregunta">
-          <td>Dirección</td>
-          <td>Municipio</td>
-          <td>Teléfono</td>
-          <td>Correo Electrónico</td>
-        </tr>
-        <tr align="center">
-          <td>
-            <!--
-            <select id="motivo_inasistencias" name="motivo_inasistencias[]" multiple="multiple" size="5" style="width:350px;" onchange="enable_disable_others(this, 'escolaridad_motivos_inasistencias_otros', '');">
-              <=options_from_collection_for_select(MotivoInasistencia.find(:all), :clave, :descripcion, @s_motivos)%>
-            </select>
-            -->
-            <%= f.text_area :direccion, :class => "text", :size => "50x7"%>
-          </td>
-          <td><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
-          <td><%= f.text_field :telefono, :onKeyPress => "return CharNum(event, 'numero');", :class => "text"%></td>
-          <td><%= f.text_field :correo%></td>
-        </tr>
-        </table>
-      </td>
-    </tr>
-    
-    <!-- FOOTER -->
     <tr>
-      <td align="right">
-        <table>
-          <tr>
-            <td>
-              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onclick="this.disabled=true;this.value='Enviando, Por favor espere ...';this.form.submit();"/>
-            </td>
-            <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "home"-%>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
+  <fieldset>
+    <legend style="font-size: 16px;">CAPTURA&nbsp;DE&nbsp;NUEVA&nbsp;ORIENTACIÓN</legend>
+    
+     <!-- primera linea -->
+     <div class="grid-4-12">
+        <label style=" font-weight: bold;">Fecha/hora:</label>
+         <div class="grid-12-12">
+          <%=f.text_field :fechahora, :value => @fecha%>
+         </div>
+      </div>
+
+     <div class="grid-8-12">
+    <label style=" font-weight: bold;">Estado | Especialista  | Actividad en semana actual: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+            <%if @extra%>
+                <%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%>
+            <%else%>
+                <%if @especialista%>
+                      &nbsp;
+                  <%else%>
+                        <%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%>
+                  <%end%>
+            <%end%>
+         </div>
+    </div>
+
+     <div class="grid-12-12 clear"></div>
+     
+     
+
+      <!-- segunda linea -->
+
+     <div class="grid-3-12">
+        <label style=" font-weight: bold;">Apellido Paterno: <em class="formee-req">*</em></label>
+        <div class="grid-12-12">
+          <%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => 24%>
+        </div>
+     </div>
+
+      <div class="grid-3-12">
+        <label style=" font-weight: bold;">Apellido Materno:</label>
+         <div class="grid-12-12">
+        <%= f.text_field :materno, :onKeyPress => "return CharNum(event, 'letra');", :size => 24%>
+         </div>
+      </div>
+      
+      <div class="grid-3-12">
+        <label style=" font-weight: bold;">Nombre(s): <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+         <%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => 32%>
+         </div>
+      </div>
+
+       <div class="grid-3-12">
+        <label style=" font-weight: bold;">Sexo: <em class="formee-req">*</em></label>
+        <div class="grid-12-12">
+            <%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %>
+        </div>
+      </div>
+
+      <div class="grid-12-12 clear"></div>
+
+     
+      <!-- tercera linea -->
+
+      <div class="grid-3-12">
+        <label style=" font-weight: bold;">Dirección: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+               <%= f.text_area :direccion, :class => "text", :size => "28x7"%>
+         </div>
+       </div>
+
+      <div class="grid-3-12">
+        <label style=" font-weight: bold;">Municipio:</label>
+         <div class="grid-12-12">
+            <%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%>
+         </div>
+      </div>
+
+      <div class="grid-3-12">
+        <label style=" font-weight: bold;">Teléfono:</label>
+         <div class="grid-12-12">
+            <%= f.text_field :telefono, :onKeyPress => "return CharNum(event, 'numero');", :class => "text", :size => 19%>
+          </div>
+       </div>
+
+       <div class="grid-3-12">
+        <label style=" font-weight: bold;">Correo: </label>
+        <div class="grid-12-12">
+            <%= f.text_field :correo, :size => 28%>
+        </div>
+      </div>
+
+
+     <!-- cuarta linea --->
+      <div class="grid-12-12">
+        <label style=" font-weight: bold;">Observaciones y/o comentarios: </label>
+        <div class="grid-12-12">
+            <%= f.text_area :observaciones, :size => "88x4"%>
+        </div>
+      </div>
+</fieldset>
+  </tr>
+
+    <tr>
+    <td align="right">
+      <table>
+        <tr>
+          <td>
+            <input id="button4" onclick="to_uppercase();" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar" />
+          </td>
+          <td>
+            <a href="/home" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" >&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
   </table>
-<% end %>
+
+
+
+<%end%>
+
+  </div>
 
 
 
 <script type="text/javascript">
   var domicilio = new LiveValidation( 'orientacion_direccion' );
   var nombre = new LiveValidation( 'orientacion_nombre' );
+  var sexo = new LiveValidation( 'orientacion_sexo' );
   domicilio.add( Validate.Presence );
   nombre.add( Validate.Presence );
+  sexo.add( Validate.Presence );
   domicilio.add( Validate.Length, { maximum: 160 } );
 </script>
