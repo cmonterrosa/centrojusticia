@@ -123,20 +123,29 @@
     </tr>
 
     <!-- FOOTER -->
-    <tr>
-      <td align="right">
-        <table>
-          <tr>
-            <td>
-              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onclick="this.disabled=true;this.value='Enviando, Por favor espere ...';this.form.submit();"/>
-            </td>
-            <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "home"-%>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
+
+      <tr>
+    <td align="right">
+      <table>
+        <tr>
+          <td>
+            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar" />
+          </td>
+          <td>
+            <a href="/home" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" >&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+
+
+
+
   </table>
 <% end %>
 
@@ -145,7 +154,9 @@
 <script type="text/javascript">
   var domicilio = new LiveValidation( 'orientacion_direccion' );
   var nombre = new LiveValidation( 'orientacion_nombre' );
+  var sexo = new LiveValidation( 'orientacion_sexo' );
   domicilio.add( Validate.Presence );
   nombre.add( Validate.Presence );
+  sexo.add( Validate.Presence );
   domicilio.add( Validate.Length, { maximum: 160 } );
 </script>
