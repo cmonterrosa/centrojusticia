@@ -97,14 +97,21 @@ class Tramite < ActiveRecord::Base
    end
 
    def generar_folio_expediente!
-     unless self.folio_expediente
-        anio = self.anio
-        maximo=  Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", anio])
-        folio = 1 unless maximo
-        folio ||= maximo.to_i + 1
-        self.update_attributes!(:folio_expediente => folio) if folio
+     self.transaction do
+        self.reload(:lock => true)
+        unless self.folio_expediente
+          anio = self.anio
+          maximo=  Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", anio])
+          folio = 1 unless maximo
+          folio ||= maximo.to_i + 1
+          self.update_attributes!(:folio_expediente => folio)
+      end
      end
    end
+
+
+
+
 
    def numero_expediente
      (self.folio_expediente) ?  "#{self.folio_expediente.to_s.rjust(4, '0')}/#{self.anio}" : nil

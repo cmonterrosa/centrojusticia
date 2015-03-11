@@ -4,7 +4,7 @@ window.onload = function() {
 }
 </script>
 
-<% form_for :comparecencia, @comparecencia, :url => { :action => "save", :tramite => @comparecencia.tramite } do |f| -%>
+<% form_for :comparecencia, @comparecencia, :url => { :action => "save", :tramite => @comparecencia.tramite }, :method => :post do |f| -%>
 
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
@@ -85,20 +85,25 @@ window.onload = function() {
     </tr>
     <!-- FOOTER -->
     
-    <tr>
-      <td align="right">
-        <table>
-          <tr>
-            <td>
-              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
-            </td>
-            <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "tramites", :action => "menu", :id => @comparecencia.tramite -%>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
+
+   <tr>
+    <td align="right">
+      <table>
+        <tr>
+          <td>
+            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar" />
+          </td>
+          <td>
+            <a href="/home" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" >&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
 
     
 

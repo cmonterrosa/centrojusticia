@@ -4,6 +4,8 @@ class Comparecencia < ActiveRecord::Base
   has_many :participantes
   has_one :expediente
 
+  #validates_uniqueness_of :tramite_id
+
   def before_save
     self.asunto.upcase! if self.asunto
     self.caracter.upcase! if self.caracter
