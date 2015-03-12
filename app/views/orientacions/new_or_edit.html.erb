@@ -12,6 +12,16 @@
                });
 </script>
 
+<script  type="text/javascript">
+   function DisableButton(b)
+   {
+      b.disabled = true;
+      b.value = 'ENVIANDO DATOS..';
+      b.form.submit();
+   }
+</script>
+
+
 <div class="container">
 
   <div class="grid-12-12">
@@ -146,7 +156,7 @@
       <table>
         <tr>
           <td>
-            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar" />
+            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar" onclick="DisableButton(this);" />
           </td>
           <td>
             <a href="/home" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
