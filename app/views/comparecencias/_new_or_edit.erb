@@ -26,7 +26,7 @@ window.onload = function() {
         </tr>
 
         <tr align=" justify" class="pregunta">
-          <td align="center" colspan="4">Carácter con el que comparece</td>
+          <td align="center" colspan="4">Carácter con el que comparece <em class="formee-req">*</em></td>
         </tr>
         <tr>
           <td align="center" colspan="4"><%= f.text_field :caracter, :class => "text", :size => "80"%></td>
@@ -67,7 +67,7 @@ window.onload = function() {
         </tr>
         <tr align=" justify" class="pregunta">
            <td align="center">Datos</td>
-          <td align="center">Anote la descripción del asunto</td>
+          <td align="center">Anote la descripción del asunto <em class="formee-req">*</em></td>
        </tr>
         <tr>
           <%enable = (@comparecencia.conocimiento) ? false : true%>

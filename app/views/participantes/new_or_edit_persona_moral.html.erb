@@ -6,6 +6,14 @@
    }
 </script>
 
+  <div class="formee-msg-info">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
+
 <% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id } do |f| -%>
   <table width="80%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
@@ -20,8 +28,8 @@
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center"></td>
-          <td align="center">Rol</td>
-          <td align="center">Razón Social</td>
+          <td align="center">Rol <em class="formee-req">*</em></td>
+          <td align="center">Razón Social <em class="formee-req">*</em></td>
           <td align="center">A través de:</td>
         </tr>
         <tr>
@@ -44,7 +52,7 @@
           </tr>
           <tr align=" justify" class="pregunta">
             <td align="center">Municipio</td>
-            <td align="center">Domicilio</td>
+            <td align="center">Domicilio <em class="formee-req">*</em></td>
             <td align="center">Referencias Domiciliarias</td>
             <td align="center">Cuadrante</td>
           </tr>

@@ -6,6 +6,14 @@
    }
 </script>
 
+    <div class="formee-msg-info">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
+
 <% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id } do |f| -%>
   <table width="80%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
@@ -20,10 +28,10 @@
           <td align="center" colspan="4">DATOS PERSONALES</td>
         </tr>
         <tr align=" justify" class="pregunta">
-            <td align="center">Rol</td>
-            <td align="center">Paterno</td>
+            <td align="center">Rol <em class="formee-req">*</em></td>
+            <td align="center">Paterno<em class="formee-req">*</em></td>
             <td align="center">Materno</td>
-            <td align="center">Nombre(s)</td>
+            <td align="center">Nombre(s)<em class="formee-req">*</em></td>
         </tr>
         <tr>
           <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción')%></td>
@@ -54,8 +62,8 @@
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center">Municipio</td>
-          <td align="center">Domicilio</td>
-          <td align="center">Referencias</td>
+          <td align="center">Domicilio <em class="formee-req">*</em></td>
+          <td align="center">Referencias <em class="formee-req">*</em></td>
           <td align="center">Cuadrante</td>
         </tr>
         <tr>
