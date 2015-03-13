@@ -23,7 +23,8 @@
 
     <table width="93%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-size:13px;">
       <tr>
-        <td style="vertical-align: middle;" align="center">&nbsp;</td>
+         <td style="vertical-align: middle;" align="center">&nbsp;</td>
+         <td style="vertical-align: middle;" align="center">&nbsp;</td>
          <td style="vertical-align: middle;" align="left">Folio</td>
          <td style="vertical-align: middle;" align="left">Expediente</td>
          <td style="vertical-align: middle;" align="center">Nombre del Solicitante</td>
@@ -82,7 +83,7 @@
         <!-- Confirmación -->
         <%if (current_user.has_role?("admin") || current_user.has_role?("direccion") || (current_user.has_role?("atencionpublico")) && tramite.fechahora.yday == Time.now.yday)%>
           <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("atencionpublico") || current_user.has_role?("direccion")))%>
-            <td style="vertical-align: middle;"><%=h (link_to "Confirmar", {:controller => "orientacions", :action => "confirmar", :id => tramite.id}, :title => "Confirmar orientacion", :class => "fancybox fancybox.iframe") %></td>
+            <td style="vertical-align: middle;"><%=h (link_to "Confirmar", {:controller => "orientacions", :action => "confirmar", :id => tramite.id}, :title => "Confirmar orientacion", :class => "fancybox fancybox.iframe boton") %></td>
           <%end%>
         <%end%>
 

@@ -9,7 +9,7 @@
   
 
   <tr>
-    <th rowspan="5" align="center">
+    <th rowspan="5" align="center" style="background-color: white;">
       <%=image_tag 'iconos/busqueda_tramites.png', :title => "Búsqueda de trámites"%>
     </th>
   </tr>
@@ -17,24 +17,23 @@
 
   <tr>
     <th class="LabelBusquedaTramite">Carpeta de Atención/Expediente: </th>
-    <th><%= text_field_tag  "carpeta_atencion", @carpeta_atencion, :placeholder => "Ejemplo: 0036/2014", :class => "SelectBusquedaTramite"%></th>
+    <th><%= text_field_tag  "carpeta_atencion", @carpeta_atencion, :placeholder => "Ejemplo: 0036/2014   ", :class => "SelectBusquedaTramite"%></th>
   </tr>
   
   <tr>
     <th class="LabelBusquedaTramite">Nombre o apellidos del participante/involucrado: </th>
-    <th><%= text_field_tag  "participante", @participante, :placeholder => "Ejemplo: Rebeca Esquinca Robles / Esquinca Robles ", :size => "40", :class => "SelectBusquedaTramite" %></th>
+    <th><%= text_field_tag  "participante", @participante, :placeholder => "Ejemplo: Rebeca Esquinca Robles / Esquinca Robles    ", :size => "60", :class => "SelectBusquedaTramite" %></th>
   </tr>
   
-
   <tr>
     <th class="LabelBusquedaTramite">Razón Social:</th>
-    <th><%= text_field_tag  "razon_social", @razon_social, :placeholder => "Ejemplo: Constructora ABC", :size => "40", :class => "SelectBusquedaTramite" %></th>
+    <th><%= text_field_tag  "razon_social", @razon_social, :placeholder => "Ejemplo: Constructora ABC    ", :size => "60", :class => "SelectBusquedaTramite" %></th>
   </tr>
   
 
    <tr>
      
-    <th class="LabelBusquedaTramite">Estatus: <br /></th>
+    <th class="LabelBusquedaTramite">Estatus del trámite: <br /></th>
 
     <%ids = []%>
        <%current_user.roles.each do |role| ids << role.id end%>
@@ -44,9 +43,14 @@
    
   </tr>
 
+   
   
     <tr>
-      <th  align="center" rowspan="2" colspan="4"><%= submit_tag 'BUSCAR REGISTROS' %></th>
+      <th  align="center" rowspan="2" colspan="4" style=" padding: 8px;"><%= submit_tag 'BUSCAR REGISTROS' %></th>
+    </tr>
+
+    <tr>
+      <th>&nbsp;</th>
     </tr>
     
 <% end -%>
