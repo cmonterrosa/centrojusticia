@@ -56,22 +56,23 @@
   </tr>
 </table>
 </div>
-<!-- Mostramos icono de bitácora si es mediador o comediador -->
 
-<%if @sesion.invitacion%>
-  <% if @sesion.invitacion.entregada == true && (@sesion.mediador_id == current_user.id || @sesion.comediador_id == current_user.id )%>
-  <!-- Acciones -->
+<!-- Mostramos icono de bitácora si es mediador o comediador -->
+<!--
+<if @sesion.invitacion%>
+  < if @sesion.invitacion.entregada == true && (@sesion.mediador_id == current_user.id || @sesion.comediador_id == current_user.id )%>
     <table width="70%" border="0" cellspacing="0" cellpadding="0">
       <tr align="center">
         <td>
-          <a href="/sesiones/bitacora/<%=h @sesion.id%>/?t=<%=h @token%>" title=Bitácora">
+          <a href="/sesiones/bitacora/<=h @sesion.id%>/?t=<=h @token%>" title=Bitácora">
             <img src="/images/iconos/bitacora.png" width="64" height="64" alt="bitácora" />
           </a>
         </td>
       </tr>
     </table><br />
-  <%end%>
-<%end%>
+  <end%>
+<end%>
+-->
 
 <br /><br />
 
@@ -104,10 +105,25 @@
         <td style="vertical-align: middle; width: 30%;"><b>Número de expediente:</b></td>
         <td style="vertical-align: middle; width: 70%;"><%=@sesion.tramite.numero_expediente%></td>
      </tr>
+
+     <!-- Mostramos los participantes si encontramos registro -->
+     <%if comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", @sesion.tramite.id])%>
+        <% if comparecencia.solicitantes %>
+          <tr>
+              <td style="vertical-align: middle; width: 30%;"><b>Solicitante(s):</b></td>
+              <td style="vertical-align: middle; width: 70%;"><%=h comparecencia.solicitantes%></td>
+          </tr>
+        <%end%>
+        <% if comparecencia.involucrados %>
+          <tr>
+            <td style="vertical-align: middle; width: 30%;"><b>Involucrado(s):</b></td>
+            <td style="vertical-align: middle; width: 70%;"><%=h comparecencia.involucrados%></td>
+          </tr>
+        <%end%>
      <%end%>
+   <%end%>
 
-
-     <%if @sesion.clave%>
+    <%if @sesion.clave%>
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Identificador de sesión:</b></td>
         <td style="vertical-align: middle; width: 70%;"><%=@sesion.clave%></td>
