@@ -3,7 +3,7 @@ class DatosValidacionTramite < ActiveRecord::Migration
     add_column :tramites, :procedente, :boolean
     add_column :tramites, :objeto_solicitud, :string, :limit => 140
     add_column :tramites, :observaciones_generales, :string
-    add_column :tramites, :documentacion_anexa, :string, :limit => 160
+    add_column :tramites, :documentacion_anexa, :string
   end
 
   def self.down
