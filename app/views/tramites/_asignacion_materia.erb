@@ -108,7 +108,7 @@
               Observaciones generales
           </th>
           <td>
-            <%= f.text_area "observaciones_generales", :size => "95x3"%>
+            <%= f.text_area "observaciones_generales", :size => "95x6"%>
           </td>
       </tr>
 
@@ -117,7 +117,7 @@
               Documentación anexa
           </th>
           <td>
-            <%= f.text_area "documentacion_anexa", :size => "95x3"%>
+            <%= f.text_area "documentacion_anexa", :size => "95x6"%>
           </td>
       </tr>
 
@@ -159,6 +159,6 @@
   var observaciones = new LiveValidation( 'tramite_observaciones_generales' );
   var documentacion_anexa = new LiveValidation( 'tramite_documentacion_anexa' );
   objeto_solicitud.add( Validate.Length, { maximum: 140 } );
-  observaciones.add( Validate.Length, { maximum: 255 } );
-  documentacion_anexa.add( Validate.Length, { maximum: 255 } );
+  observaciones.add( Validate.Length, { maximum: 600 } );
+  documentacion_anexa.add( Validate.Length, { maximum: 700 } );
 </script>
