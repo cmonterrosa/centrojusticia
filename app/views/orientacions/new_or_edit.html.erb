@@ -12,6 +12,21 @@
                });
 </script>
 
+<script type="text/javascript">
+$j(document).ready(function() {
+  formulario = $j("#new_orientacion");
+  formulario.submit(function() {
+    $j.blockUI({
+            message: '<h1><img src="/images/busy.gif" /> Procesando, por favor espere ...</h1>'
+          });
+
+        setTimeout($.unblockUI, 3000);
+  })
+})
+</script>
+
+
+
 <script  type="text/javascript">
    function DisableButton(b)
    {
@@ -115,7 +130,7 @@
       <div class="grid-3-12">
         <label style=" font-weight: bold;">Dirección: <em class="formee-req">*</em></label>
          <div class="grid-12-12">
-               <%= f.text_area :direccion, :class => "text", :size => "28x7"%>
+               <%= f.text_area :direccion, :class => "text", :size => "28x7", :required => true%>
          </div>
        </div>
 
@@ -156,7 +171,7 @@
       <table>
         <tr>
           <td>
-            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar" onclick="DisableButton(this);" />
+            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar"  />
           </td>
           <td>
             <a href="/home" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
