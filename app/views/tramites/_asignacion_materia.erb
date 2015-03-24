@@ -158,6 +158,7 @@
   var objeto_solicitud = new LiveValidation( 'tramite_objeto_solicitud' );
   var observaciones = new LiveValidation( 'tramite_observaciones_generales' );
   var documentacion_anexa = new LiveValidation( 'tramite_documentacion_anexa' );
+  objeto_solicitud.add( Validate.Presence );
   objeto_solicitud.add( Validate.Length, { maximum: 140 } );
   observaciones.add( Validate.Length, { maximum: 750 } );
   documentacion_anexa.add( Validate.Length, { maximum: 750 } );
