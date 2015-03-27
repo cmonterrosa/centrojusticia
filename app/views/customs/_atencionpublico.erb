@@ -27,6 +27,13 @@
                                                           </li>
                                                         <%end%>
 
+                                                        <!-- Bitacora -->
+                                                        <%if current_user.has_role?("bitacora")%>
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-bitacora-aten.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-bitacora-aten.jpg") , {:action => "select_personas_atendidas", :controller => "estadisticas"}, :title => "Bitacora de atencion"%></ul>
+                                                          </li>
+                                                        <%end%>
+
 
 						</ul>
 					</div>
