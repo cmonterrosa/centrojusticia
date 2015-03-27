@@ -91,4 +91,9 @@
 </table>
 
 
-<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "estadisticas"%><br />
+
+<%if current_user.has_role?("bitacora")%>
+  <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
+<%else%>
+  <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "estadisticas"%><br />
+<%end%>
