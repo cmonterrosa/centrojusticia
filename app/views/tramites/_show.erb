@@ -201,9 +201,11 @@
       <tr class="d0">
 
         <!-- Si es concluido -->
-        <%if Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id])%>
-          <div class="watermark">Trámite concluido</div>
-        <%end%>
+          <!--
+          <if Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id])%>
+            <div class="watermark">Trámite concluido</div>
+          <end%>
+           -->
 
         <th colspan="2" width="95%">
           <%=text_area :comparecencia, :asunto, :cols => 64, :disabled => true%>
