@@ -336,8 +336,8 @@ end
                               :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in  ('comp-conc', 'no-compar', 'tram-escr', 'mate-asig', 'fecha-asig', 'camb-sesi', 'tram-conc')  AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
                                :order => ["tramites.fechahora DESC, tramites.folio_expediente"])
     
-    csv_string = FasterCSV.generate do |csv|
-      csv << ["NP", "NUMERO_TRAMITE", "ESTATUS_DEL TRAMITE",  "NUMERO_EXPEDIENTE",  "ESPECIALISTA_BRINDO_ORIENTACION",   "CATEGORIA",    "SOLICITANTES", "INVOLUCRADOS",  "FECHA_HORA"]
+    csv_string = FasterCSV.generate(:encoding => 'u') do |csv|
+      csv << ["NP", "NUMERO_TRAMITE", "ESTATUS_DEL TRAMITE",  "NUMERO_EXPEDIENTE",  "ESPECIALISTA_BRINDO_ORIENTACION",   "CATEGORIA",  "FECHA_HORA",  "SOLICITANTES", "INVOLUCRADOS"]
       np=1
       @tramites.each do |t|
          especialista = (t.orientacion.especialista) ? t.orientacion.especialista.nombre_completo : "POR ESCRITO"
