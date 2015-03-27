@@ -307,7 +307,7 @@ end
 
 
   def select_personas_atendidas
-    
+   
   end
 
   def search_personas_atendidas
@@ -317,8 +317,11 @@ end
      @tramites = Tramite.find(:all, 
                               :select => "tramites.*",
                               :joins => "tramites, orientacions orientacions, estatus e",
-                              :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar', 'tram-escr', 'mate-asig') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
-                              :order => ["tramites.anio DESC, tramites.folio_expediente DESC, tramites.fechahora"])
+                              :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar', 'tram-escr', 'mate-asig', 'fecha-asig', 'camb-sesi', 'tram-conc') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
+                              :order => ["tramites.fechahora DESC, tramites.folio_expediente"])
+
+      #@tramites = @tramites.sort{|a,b|  a.numero_expediente <=> b.numero_expediente}
+      @tramites = @tramites.paginate(:page => params[:page], :per_page => 25)
   end
 
   
@@ -330,17 +333,20 @@ end
     @tramites = Tramite.find(:all,
                               :select => "tramites.*",
                               :joins => "tramites, orientacions orientacions, estatus e",
-                              :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar', 'tram-escr', 'mate-asig') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
-                              :order => ["tramites.anio DESC, tramites.folio_expediente DESC, tramites.fechahora"])
+                              :conditions => ["orientacions.tramite_id=tramites.id AND tramites.estatu_id=e.id AND e.clave in  ('comp-conc', 'no-compar', 'tram-escr', 'mate-asig', 'fecha-asig', 'camb-sesi', 'tram-conc')  AND (orientacions.fechahora between ? AND ?)", @inicio, @fin],
+                               :order => ["tramites.fechahora DESC, tramites.folio_expediente"])
     
     csv_string = FasterCSV.generate do |csv|
-      csv << ["NP", "NUMERO_TRAMITE", "NUMERO_EXPEDIENTE", "ESPECIALISTA",       "CATEGORIA",          "FECHA_HORA"]
+      csv << ["NP", "NUMERO_TRAMITE", "ESTATUS_DEL TRAMITE",  "NUMERO_EXPEDIENTE",  "ESPECIALISTA_BRINDO_ORIENTACION",   "CATEGORIA",    "SOLICITANTES", "INVOLUCRADOS",  "FECHA_HORA"]
       np=1
       @tramites.each do |t|
-         especialista = (t.orientacion.especialista) ? t.orientacion.especialista.nombre_completo : "Por Escrito"
+         especialista = (t.orientacion.especialista) ? t.orientacion.especialista.nombre_completo : "POR ESCRITO"
          categoria = (t.orientacion.especialista) ? t.orientacion.especialista.categoria : "-----"
-         fecha_hora = t.fechahora.strftime("%d de %B de %Y - %H:%M:%S")
-         csv << [ np, t.folio_integrado, t.numero_expediente,  especialista, categoria, fecha_hora]
+          comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", t.id])
+          solicitantes = (comparecencia) ? comparecencia.solicitantes : "-----"
+          involucrados = (comparecencia) ? comparecencia.involucrados : "-----"
+          fecha_hora = t.fechahora.strftime("%d de %B de %Y - %H:%M:%S")
+         csv << [ np, t.folio_integrado, t.estatus, t.numero_expediente,  especialista, categoria, fecha_hora, solicitantes, involucrados]
          np+=1 
       end
     end

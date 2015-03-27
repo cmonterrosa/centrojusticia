@@ -40,9 +40,9 @@
 <div id="divlista">
   <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
-        <th style="vertical-align: middle;" align="center">NP</th>
         <th style="vertical-align: middle;" align="center">Número de trámite</th>
         <th style="vertical-align: middle;" align="center">Expediente</th>
+        <th style="vertical-align: middle;" align="center">Estatus Actual</th>
         <th style="vertical-align: middle;" align="center">Especialista que brindo orientacion</th>
         <th style="vertical-align: middle;" align="center">Categoría</th>
         <th style="vertical-align: middle;" align="center">Fecha/Hora</th>
@@ -51,15 +51,22 @@
      <%contador=1%>
      <%for tramite in @tramites%>
         <tr class="d<%=invert_class(clase)%>">
-          <td style="vertical-align: middle;"><%=contador%></td>
           <td style="vertical-align: middle;"><%=link_to "#{tramite.folio_integrado}", {:action => "show", :controller => "tramites", :id => tramite}, {:target => "_blank", :method => :delete}%></td>
           <%if tramite.numero_expediente%>
-              <td style="vertical-align: middle;"><%=link_to "#{tramite.numero_expediente}", {:action => "show", :controller => "tramites", :id => tramite}, {:target => "_blank", :method => :delete}%></td>
+              <td style="vertical-align: middle;"><b><%=link_to "#{tramite.numero_expediente}", {:action => "show", :controller => "tramites", :id => tramite}, {:target => "_blank", :method => :delete}%></b></td>
+              <td style="vertical-align: middle;"><%=h tramite.estatus%></td>
               <td style="vertical-align: middle;"><%=h (tramite.orientacion.especialista) ? tramite.orientacion.especialista.nombre_completo : "INICIADO POR ESCRITO"%></td>
               <td style="vertical-align: middle;"><%=h (tramite.orientacion.especialista) ? tramite.orientacion.especialista.categoria : "-----"%></td>
            <%else%>
-              <td style="vertical-align: middle;" colspan="3">&nbsp;</td>
-          <%end%>
+              <%if tramite.estatu == Estatu.find_by_clave("no-compar")%>
+                    <td style="vertical-align: middle;" >&nbsp;</td>
+                    <td style="vertical-align: middle;">Solo Orientación</td>
+                    <td style="vertical-align: middle;"><%=h (tramite.orientacion.especialista) ? tramite.orientacion.especialista.nombre_completo : "INICIADO POR ESCRITO"%></td>
+                    <td style="vertical-align: middle;"><%=h (tramite.orientacion.especialista) ? tramite.orientacion.especialista.categoria : "-----"%></td>
+              <%else%>
+                    <td style="vertical-align: middle;" colspan="3">&nbsp;</td>
+              <%end%>
+            <%end%>
           <td style="vertical-align: middle;"><%=h tramite.fechahora.strftime("%d de %B de %Y - %H:%M:%S")%></td>
         </tr>
         <%contador+=1%>
@@ -67,5 +74,21 @@
      <%end%>
   </table>
 </div>
+
+
+<br />
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @tramites %>
+          </div>
+          <%= will_paginate @tramites, :params => { :fecha_inicio => @inicio, :fecha_fin => @fin  } %>
+        </div>
+      </td>
+    </tr>
+</table>
+
 
 <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "estadisticas"%><br />
