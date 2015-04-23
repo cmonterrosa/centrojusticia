@@ -91,9 +91,15 @@
     </tr>
 
     <%if @tramite.orientacion%>
+
     <tr class="d1">
-       <td style="vertical-align: middle;"><b>Municipio:</b></td>
-       <td style="vertical-align: middle;"><%=h(@tramite.orientacion.municipio ? @tramite.orientacion.municipio.descripcion : "---")%></td>
+       <td style="vertical-align: middle;"><b>Estado / Municipio:</b></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion.municipio ? @tramite.orientacion.municipio.descripcion_jerarquica : "---")%></td>
+    </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b>País:</b></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion.pais ? @tramite.orientacion.pais.descripcion : "---")%></td>
     </tr>
     <%end%>
 
