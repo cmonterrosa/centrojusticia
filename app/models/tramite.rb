@@ -5,6 +5,7 @@ class Tramite < ActiveRecord::Base
   belongs_to :user
   belongs_to :estatu
   belongs_to :noprocedente
+  belongs_to :motivo_conclusion
   has_one :orientacion
   has_one :comparecencia
   has_many :historias
