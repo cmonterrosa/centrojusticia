@@ -3,6 +3,7 @@ require 'time'
 class Participante < ActiveRecord::Base
   belongs_to :comparecencia
   belongs_to :municipio
+  belongs_to :pais
   belongs_to :user
   belongs_to :tipopersona
   belongs_to :cuadrante
@@ -72,6 +73,13 @@ class Participante < ActiveRecord::Base
 
    def numero_expediente
      (self.folio_expediente) ?  "#{self.folio_expediente.to_s.rjust(4, '0')}/#{self.anio}" : nil
+   end
+
+   def originario
+     mexico = Pais.find_by_clave("MX")
+     pais = (self.pais) ? self.pais : self.pais = mexico
+     originario_desc = (pais== mexico && self.municipio_id) ? self.municipio.descripcion_jerarquica : nil
+     originario_desc ||= (pais) ? self.pais.descripcion : ""
    end
 
 

@@ -15,7 +15,7 @@
   </div>
 
 <% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id } do |f| -%>
-  <table width="80%" border="0" align="center" cellpadding="2" cellspacing="1">
+  <table width="90%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="3" align="center" >PERSONA MORAL</td>
     </tr>
@@ -36,7 +36,7 @@
           <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%></td>
           <td align="center"><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción', :required => true)%></td>
           <td align="center"><%= f.text_field :razon_social, :onKeyPress => "return CharNum(event, 'letra');", :onchange => "verificar_rol();",  :placeholder => "Es necesario capturarlo", :required => true%></td>
-          <td align="center"><%= f.text_field :apoderado_legal, :onKeyPress => "return CharNum(event, 'letra');",  :placeholder => "Solo capturar si existe"%></td>
+          <td align="center"><%= f.text_field :apoderado_legal, :onKeyPress => "return CharNum(event, 'letra');",  :placeholder => "Solo capturar si existe", :size => 60%></td>
         </tr>
       </table></td>
     </tr>
@@ -51,13 +51,40 @@
             <td align="center" colspan="4" >DATOS DE UBICACIÓN</td>
           </tr>
           <tr align=" justify" class="pregunta">
-            <td align="center">Municipio</td>
+            <td align="center">País</td>
+            <td align="center">Estado / Municipio</td>
+          </tr>
+          <tr>
+             <!-- pais -->
+             <%default_pais = Pais.find(:first, :conditions => ["id = ?", @participante.pais_id])%>
+             <%default_pais ||=Pais.find(:first, :conditions => ["clave = ? ", 'MX'])%>
+             <td align="center"><%= f.select :pais_id, Pais.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, {:selected =>default_pais.id}, {:onchange => "showHideListadoDeEstados('participante_pais_id', 'estados_municipios', 'participante_municipio_id', 156);"}%></td>
+             
+             <!-- Estado/Municipio -->
+             <div id="estados_municipios">
+                <%estado_default = Estado.find_by_descripcion("CHIAPAS")%>
+                <%default = Municipio.find(:first, :conditions => ["id = ?", @participante.municipio_id])%>
+                <%default ||= Municipio.find(:first, :conditions => ["estado_id = ? and descripcion like ?", estado_default.id, "%#{LUGAR}%"])%>
+                <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion_jerarquica, a.id]}, :prompt => 'Seleccione una opción', :selected =>default.id%></td>
+             </div>
+          </tr>
+      </table>
+      </td>
+    </tr>
+
+    <!-- segunda barra inferior segunda seccion -->
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr bgcolor="#E8E8E8" class="subtitulo">
+            <td align="center" colspan="4" >DATOS DE UBICACIÓN</td>
+          </tr>
+          <tr align=" justify" class="pregunta">
             <td align="center">Domicilio <em class="formee-req">*</em></td>
             <td align="center">Referencias Domiciliarias</td>
             <td align="center">Cuadrante</td>
           </tr>
           <tr>
-            <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
             <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true, :onchange => "verificar_rol();"%></td>
             <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x10"%></td>
             <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
@@ -65,6 +92,9 @@
       </table>
       </td>
     </tr>
+
+
+
 
     <tr align="center">
       <td align="center">
@@ -106,10 +136,7 @@
     </tr>
 
 
-    <!-- espacio -->
-    <tr>
-      <td colspan="3"><hr /></td>
-    </tr>
+    
     <!-- FOOTER -->
     <tr>
       <td align="right">
@@ -139,4 +166,9 @@
 
   var observaciones = new LiveValidation( 'participante_observaciones' );
   observaciones.add( Validate.Length, { maximum: 350 } );
+</script>
+
+
+<script type="text/javascript">
+    showHideListadoDeEstados('participante_pais_id', 'estados_municipios', 'participante_municipio_id', 156);
 </script>
