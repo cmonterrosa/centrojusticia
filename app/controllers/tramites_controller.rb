@@ -183,6 +183,41 @@ class TramitesController < ApplicationController
   end
 
 
+  #### CONCLUSION DE EXPEDIENTES ######
+
+  def opciones_conclusion
+    if params[:token] == "apply_conclusion"
+      @sesion = Sesion.find(params[:id])
+      if current_user.id == @sesion.mediador_id || current_user.has_role?("convenios") || current_user.has_role?("subdireccion")
+          @tramite = @sesion.tramite if @sesion
+          @concluido = Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id]) if @tramite
+          @concluido ||= Concluido.new(:tramite_id => @tramite.id)
+          @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", @tramite.id]) if @tramite
+          @motivos_conclusion = MotivoConclusion.find(:all, :order => "fraccion")
+          render :partial => "concluir", :layout => "only_jquery"
+      else
+          render :text => "No tiene permisos para realizar la acción"
+      end
+    else
+      render :text => "Error, consulte al administrador"
+    end
+  end
+
+  def concluir
+    @tramite = Tramite.find(params[:id])
+    @concluido = Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id]) if @tramite
+    @concluido ||= Concluido.new(:tramite_id => @tramite.id)
+    @concluido.update_attributes(params[:concluido])
+    @concluido.user = current_user
+    if @concluido.save
+      @tramite.update_estatus!("tram-conc",current_user)
+      render :text => "Expediente concluido correctamente"
+    else
+      render :text => "No se pudo concluir, verifique"
+    end
+  end
+
+
   def save
       #---- Si existe registro previo ---
       @comparecencia = Comparecencia.find(params[:id])
@@ -455,6 +490,11 @@ class TramitesController < ApplicationController
     #@users.delete(User.find(params[:sesion_mediador_id]))
     @users = @users.sort{|p1,p2| p1.nombre_completo <=> p2.nombre_completo}
     return render(:partial => 'comediadores', :layout => false) if request.xhr?
+  end
+
+  def get_descripcion_motivo_conclusion
+    @motivo_cancelacion = MotivoConclusion.find(params[:concluido_motivo_conclusion_id]) if params[:concluido_motivo_conclusion_id]
+    (@motivo_cancelacion) ? (return render(:partial => 'descripcion_motivo_conclusion', :layout => false)) :  (return render :text => "")
   end
 
   def only_orientacion
