@@ -42,7 +42,7 @@ class ExtraordinariaController < ApplicationController
              @save_num_expediente = false
           end
         else
-           @tramite.generar_folio_expediente!
+           @tramite.generar_folio_expediente! if @tramite.save
            @save_num_expediente = true
       end
 
