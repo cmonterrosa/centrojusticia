@@ -78,7 +78,11 @@ class Participante < ActiveRecord::Base
    def originario
      mexico = Pais.find_by_clave("MX")
      pais = (self.pais) ? (self.pais) : mexico
-     (pais == mexico) ? self.municipio.descripcion_jerarquica : self.pais.descripcion
+     ## Si es mexicano ##
+     (desc = (pais == mexico) ? self.municipio.descripcion_jerarquica : nil) if self.municipio_id
+     ## Si es extranjero ##
+     (desc ||= (pais) ? self.pais.descripcion : '') if self.pais_id
+     return desc
    end
 
   
