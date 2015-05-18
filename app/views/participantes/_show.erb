@@ -55,21 +55,26 @@
     </tr>
 
     <tr class="d1">
-      <td style="vertical-align: middle;"><b>Municipio:</b></td>
-      <td style="vertical-align: middle;"><%=h (@participante.municipio_id ? @participante.municipio.descripcion : "No existe información")%></td>
+      <td style="vertical-align: middle;"><b>País:</b></td>
+      <td style="vertical-align: middle;"><%=h (@participante.pais_id ? @participante.pais.descripcion : "No existe información")%></td>
     </tr>
 
     <tr class="d0">
+      <td style="vertical-align: middle;"><b>Estado / Municipio:</b></td>
+      <td style="vertical-align: middle;"><%=h (@participante.municipio_id ? @participante.municipio.descripcion_jerarquica : "No existe información")%></td>
+    </tr>
+
+    <tr class="d1">
       <td style="vertical-align: middle;"><b>Teléfono particular:</b></td>
       <td style="vertical-align: middle;"><%=h ((@participante.telefono_particular) ? @participante.telefono_particular : "No existe información")%></td>
     </tr>
 
-    <tr class="d1">
+    <tr class="d0">
       <td style="vertical-align: middle;"><b>Teléfono celular:</b></td>
       <td style="vertical-align: middle;"><%=h ((@participante.telefono_celular) ? @participante.telefono_celular  : "No existe información")%></td>
     </tr>
 
-    <tr class="d0">
+    <tr class="d1">
       <td style="vertical-align: middle;"><b>Correo electrónico:</b></td>
       <td style="vertical-align: middle;"><%=h ((@participante.correo) ? @participante.correo : "No existe información")%></td>
     </tr>

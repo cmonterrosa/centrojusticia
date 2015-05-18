@@ -89,9 +89,7 @@ class ComparecenciasController < ApplicationController
         (@involucrado.edad > 0) ? param["P_EDAD"]={:tipo=>"String", :valor=>"#{@involucrado.edad} AÑOS"} : param["P_EDAD"]={:tipo=>"String", :valor=>""}
        end
        param["P_SEXO"]={:tipo=>"String", :valor=>@involucrado.sexo_descripcion}
-       (@involucrado.municipio) ? param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@involucrado.municipio.descripcion} : ""
-       #param["P_DOMICILIO"]={:tipo=>"String", :valor=>@involucrado.domicilio}
-
+       param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@involucrado.originario}
        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio)}
        param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@involucrado.telefono_particular}
        param["P_TELEFONO_TRABAJO"]={:tipo=>"String", :valor=>@involucrado.telefono_celular_aux}
@@ -140,23 +138,15 @@ class ComparecenciasController < ApplicationController
         #-- Parametros
         param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
         param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
-
-        ##### Fecha ####
-
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora)}"}
-#       param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
-        #param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d/%m/%Y').upcase}"}
-
         @comparecencia.procedencia ? param["P_PROCEDENCIA"]={:tipo=>"String", :valor=>@comparecencia.procedencia.upcase} : param["P_PROCEDENCIA"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
         (@solicitante.tipopersona.descripcion == "MORAL") ?  param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.apoderado_legal} :  param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}
-        #param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}
-        #param["P_EDAD"]={:tipo=>"String", :valor=>@solicitante.edad}
         if @solicitante.edad
           (@solicitante.edad > 0) ? param["P_EDAD"]={:tipo=>"String", :valor=>"#{@solicitante.edad} AÑOS"} : param["P_EDAD"]={:tipo=>"String", :valor=>""}
         end
         param["P_SEXO"]={:tipo=>"String", :valor=>@solicitante.sexo_descripcion}
-        (@solicitante.municipio) ? param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.municipio.descripcion} : param["P_ORIGINARIO"]={:tipo=>"String", :valor=>""} 
-        #param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.municipio.descripcion}
+        #(@solicitante.municipio) ? param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.municipio.descripcion} : param["P_ORIGINARIO"]={:tipo=>"String", :valor=>""}
+        param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.originario}
         @comparecencia.caracter ? param["P_CARACTER"]={:tipo=>"String", :valor=>clean_string(@comparecencia.caracter).upcase} : param["P_CARACTER"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
         param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio)}
         param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@solicitante.telefono_particular}
@@ -202,7 +192,7 @@ class ComparecenciasController < ApplicationController
     @comparecencia.user = current_user unless @comparecencia.user
     if @comparecencia.save
        @tramite.generar_folio_expediente!
-       flash[:notice] = "Guardado correctamente, Carpeta de Atencion: #{@tramite.numero_expediente}"
+       flash[:notice] = "Guardado correctamente, Número de Expediente: #{@tramite.numero_expediente}"
       #redirect_to :controller => "tramites", :action => "menu", :id => @tramite
        #render :action => "new_or_edit"
        redirect_to :action => "show", :id => @tramite

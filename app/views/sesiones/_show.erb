@@ -1,23 +1,15 @@
 <div align="center" style="margin: auto;">
 <table style="margin: auto;" border="0" cellspacing="0" cellpadding="0">
+  <!-- Cancelar -->
   <tr align="center">
-    <!-- Cancelacion -->
     <%if current_user.has_role?("asignahorario") || current_user.has_role?("controlagenda") || current_user.has_role?("admindireccion")%>
-       <!--
-            <td>
-                 <= link_to image_tag("iconos/cancel.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post %><br />
-            </td>
-       -->
-       <!-- Cancelar -->
        <td>
           <%= link_to "Cancelar" , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar sesión", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post, :class => "boton" %><br />
        </td>
+    <%end%>
 
-     <%end%>
-
-      <!-- Eliminar -->
+    <!-- Eliminar -->
     <%if current_user.has_role?("asignahorario")%>
-
           <td>
               <%= link_to "Editar" , {:controller => "sesiones", :action => "edit_jquery", :id => @sesion, :t => @token}, :title => "Editar sesión", :confirm => '¿Esta seguro que quiere editar la sesión?', :method => :post, :class => "boton" %><br />
           </td>
@@ -33,26 +25,23 @@
               <%= link_to "Detalle del expediente" , {:controller => "tramites", :action => "show", :id => @sesion.tramite, :token => "show_sesion"}, :title => "Detalle del trámite", :method => :post, :class => "boton" %><br />
           </td>
 
-
-          <!-- solamente si es mediador o comediador -->
-
-          <%if current_user.id == @sesion.mediador_id || current_user.id == @sesion.comediador_id%>
-            <td>
-                <%= link_to "Capturar Resultado" , {:controller => "sesiones", :action => "add_result", :id => @sesion, :token => "show_sesion"}, :title => "Resultado de la sesion", :method => :post, :class => "boton" %><br />
-            </td>
+          <!-- Si es titular de la sesión o subdirector o jefe de convenios-->
+          <%if current_user.id == @sesion.mediador_id || current_user.has_role?("convenios") || current_user.has_role?("subdireccion")%>
+               <td>
+                  <%= link_to "Concluir Expediente" , {:controller => "tramites", :action => "opciones_conclusion", :id => @sesion, :token => "apply_conclusion"}, :title => "Concluir Expediente", :method => :post, :class => "boton" %><br />
+              </td>
           <%end%>
 
+          <!-- Captura de resultados -->
+          <%if current_user.id == @sesion.mediador_id || current_user.id == @sesion.comediador_id%>
+              <td>
+                  <%= link_to "Capturar Resultado" , {:controller => "sesiones", :action => "add_result", :id => @sesion, :token => "show_sesion"}, :title => "Resultado de la sesion", :method => :post, :class => "boton" %><br />
+              </td>
+          <%end%>
     <%end%>
 
    <br />
 
-    <!-- Reprogramar -->
-    <%#if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
-        <%#*<td>%>
-          <%#= link_to image_tag("iconos/edit.png", :border =>0, :size => "64x64") , {:controller => "sesiones", :action => "edit", :id => @sesion, :t => @token}, :title => "Cancelar", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post %><br />
-        <%#*</td>%>
-        <%#= link_to image_tag("iconos/edit.png", :border =>0) , {:controller => "sesiones", :action => "reprogramar", :id => @sesion, :t => @token, :style => "fancy"}, :html => { :target => "_blank"}, :title => "Reprogramar sesion" %>
-    <%#end%>
   </tr>
 </table>
 </div>
@@ -103,7 +92,7 @@
      <%if @sesion.tramite%>
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Número de expediente:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=@sesion.tramite.numero_expediente%></td>
+        <td style="vertical-align: middle; width: 70%;"><b><%=@sesion.tramite.numero_expediente%></b></td>
      </tr>
 
      <!-- Mostramos los participantes si encontramos registro -->

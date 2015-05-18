@@ -2,6 +2,7 @@ class Orientacion < ActiveRecord::Base
   belongs_to :user
   belongs_to :tramite
   belongs_to :municipio
+  belongs_to :pais
   belongs_to :estatu
   belongs_to :sala
   has_one :comparecencia

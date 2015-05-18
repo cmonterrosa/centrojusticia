@@ -8,7 +8,7 @@ class AddIndexToSesiones < ActiveRecord::Migration
 
   def self.down
     remove_index(:sesions, :sesion_busqueda_completa)
-     #remove_index(:sesions, :sesion_busqueda_activas)
+     remove_index(:sesions, :sesion_busqueda_activas)
     add_index :sesions, [:hora, :minutos, :sala_id], :name => "sesion_busqueda_diaria"
   end
 end

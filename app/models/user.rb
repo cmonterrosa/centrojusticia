@@ -116,7 +116,7 @@ class User < ActiveRecord::Base
        num_orientaciones= Orientacion.find_by_sql("select count(orientacions.id) as numero_orientaciones from orientacions orientacions inner join tramites t
       on orientacions.tramite_id=t.id inner join estatus e on t.estatu_id=e.id
       where (orientacions.especialista_id = #{self.id} )
-      AND e.clave in ('comp-conc', 'no-compar', 'mate-asig', 'tram-admi', 'fech-asig', 'camb-sesi')
+      AND e.clave in ('comp-conc', 'no-compar', 'mate-asig', 'tram-admi', 'fech-asig', 'camb-sesi', 'tram-conc')
       AND (orientacions.fechahora between '#{inicio}' AND '#{fin}')")
       return num_orientaciones.first.numero_orientaciones.to_i
      end

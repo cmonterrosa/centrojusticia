@@ -58,6 +58,16 @@ table.sample td.d99 {
 	background-color: #FF9900;
 }
 
+.watermark {
+    position: absolute;
+    opacity: 0.25;
+    font-size: 5em;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
+}
+
+
 
 </style>
 
@@ -87,7 +97,15 @@ table.sample td.d99 {
 
 <div id="divlista">
   <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-     <tr style="background-color:gray; color:white">
+
+    <!-- Si es concluido -->
+    <%if Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id])%>
+      <div class="watermark">Trámite concluido</div>
+    <%end%>
+
+
+
+    <tr style="background-color:gray; color:white">
       <th colspan="2">
         Datos generales
       </th>
@@ -138,9 +156,15 @@ table.sample td.d99 {
 
     <%if @tramite.orientacion%>
     <tr class="d1">
-       <td style="vertical-align: middle;"><b>Municipio:</b></td>
+       <td style="vertical-align: middle;"><b>Estado / Municipio:</b></td>
        <td style="vertical-align: middle;"><%=h(@tramite.orientacion.municipio ? @tramite.orientacion.municipio.descripcion : "---")%></td>
     </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b>País:</b></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion.pais ? @tramite.orientacion.pais.descripcion : "---")%></td>
+    </tr>
+
     <%end%>
 
     <tr class="d0">
@@ -264,4 +288,8 @@ table.sample td.d99 {
 
 <!-- detalle de sesiones -->
 <%= render :partial => "detalle_sesiones"%>
+
+<!-- detalle de conclusion -->
+<%=render :partial => "detalle_conclusion"%>
+
 </div>

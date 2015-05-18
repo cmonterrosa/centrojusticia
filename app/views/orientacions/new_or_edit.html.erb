@@ -12,18 +12,18 @@
                });
 </script>
 
-<script type="text/javascript">
-$j(document).ready(function() {
-  formulario = $j("#new_orientacion");
-  formulario.submit(function() {
-    $j.blockUI({
-            message: '<h1><img src="/images/busy.gif" /> Procesando, por favor espere ...</h1>'
-          });
+<%#*<script type="text/javascript">%>
+<%#*$j(document).ready(function() {%>
+  <%#*formulario = $j("#new_orientacion");%>
+  <%#*formulario.submit(function() {%>
+    <%#*$j.blockUI({%>
+            <%#*message: '<h1><img src="/images/busy.gif" /> Procesando, por favor espere ...</h1>'%>
+          <%#*});%>
 
-        setTimeout($.unblockUI, 3000);
-  })
-})
-</script>
+        <%#*setTimeout($.unblockUI, 2000);%>
+  <%#*})%>
+<%#*})%>
+<%#*</script>%>
 
 
 
@@ -60,7 +60,7 @@ $j(document).ready(function() {
 
 
 <% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
-  <table width="96%" border="0" align="center" cellpadding="2" cellspacing="1">
+  <table width="98%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr>
   <fieldset>
     <legend style="font-size: 16px;">CAPTURA&nbsp;DE&nbsp;NUEVA&nbsp;ORIENTACIÓN</legend>
@@ -118,7 +118,7 @@ $j(document).ready(function() {
        <div class="grid-3-12">
         <label style=" font-weight: bold;">Sexo: <em class="formee-req">*</em></label>
         <div class="grid-12-12">
-            <%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %>
+            <%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}, :include_blank => true) %>
         </div>
       </div>
 
@@ -134,10 +134,20 @@ $j(document).ready(function() {
          </div>
        </div>
 
-      <div class="grid-3-12">
-        <label style=" font-weight: bold;">Municipio:</label>
+        <div class="grid-8-12">
+        <label style=" font-weight: bold;">País:</label>
          <div class="grid-12-12">
-            <%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%>
+            <%default_pais =Pais.find(:first, :conditions => ["clave = ? ", 'MX'])%>
+            <%= f.select :pais_id, Pais.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, {:selected =>default_pais.id}, {:onchange => "showHideListadoDeEstados('orientacion_pais_id', 'estados_municipios', 'orientacion_municipio_id', 156);"}%>
+         </div>
+      </div>
+
+      <div id="estados_municipios" class="grid-8-12">
+        <label style=" font-weight: bold;">Estado / Municipio:</label>
+         <div class="grid-12-12">
+             <%estado_default = Estado.find_by_descripcion("CHIAPAS")%>
+             <%default = Municipio.find(:first, :conditions => ["estado_id = ? and descripcion like ?", estado_default.id, "%#{LUGAR}%"])%>
+            <%= f.select :municipio_id, Municipio.find(:all, :order => "estado_id").collect{|a| [a.descripcion_jerarquica, a.id]}, :prompt => 'Seleccione una opción', :selected =>default.id%>
          </div>
       </div>
 
@@ -202,4 +212,9 @@ $j(document).ready(function() {
   nombre.add( Validate.Presence );
   sexo.add( Validate.Presence );
   domicilio.add( Validate.Length, { maximum: 160 } );
+</script>
+
+
+<script type="text/javascript">
+  showHideListadoDeEstados('orientacion_pais_id', 'estados_municipios', 'orientacion_municipio_id', 156);
 </script>
