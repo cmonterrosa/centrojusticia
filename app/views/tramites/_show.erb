@@ -11,6 +11,24 @@
    </div>
 <%end%>
 
+<%if @tramite.concluido%>
+  <div class="titulocalendario">
+    <!-- Si es cancelado -->
+     <div class="watermark">CONCLUIDO </div>
+     <%if @tramite.concluido%>
+     <table width="88%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-family: 'Nexa Light'; font-size: 16px;">
+            <tr class="d1">
+                <td style="vertical-align: middle;" colspan="2"><%=h @tramite.concluido.motivo_conclusion.descripcion_completa%></td>
+            </tr>
+            <tr class="d0">
+              <td style="vertical-align: middle;"><b>Concluido por  /  fecha-hora:</b></td>
+              <td style="vertical-align: middle;"><%=h User.find(@tramite.concluido.user_id).nombre_completo%>  /   <%=h @tramite.concluido.updated_at.strftime("%d-%m-%Y - %H:%M %p")%></td>
+            </tr>
+     </table>
+      <%end%>
+   </div>
+<%end%>
+
 
 
 
