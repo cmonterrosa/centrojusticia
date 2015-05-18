@@ -337,7 +337,7 @@ end
                                :order => ["tramites.fechahora DESC, tramites.folio_expediente"])
     
     csv_string = FasterCSV.generate(:encoding => 'u') do |csv|
-      csv << ["NP", "NUMERO_TRAMITE", "ESTATUS_DEL TRAMITE",  "NUMERO_EXPEDIENTE",  "ESPECIALISTA_BRINDO_ORIENTACION",   "CATEGORIA",  "FECHA_HORA",  "SOLICITANTES", "INVOLUCRADOS"]
+      csv << ["NP", "NUMERO_TRAMITE", "ESTATUS_DEL TRAMITE",  "NUMERO_EXPEDIENTE",  "ESPECIALISTA_BRINDO_ORIENTACION",   "CATEGORIA",  "FECHA_HORA",  "SOLICITANTES", "INVOLUCRADOS", "MOTIVO_CONCLUIDO"]
       np=1
       @tramites.each do |t|
          especialista = (t.orientacion.especialista) ? t.orientacion.especialista.nombre_completo : "POR ESCRITO"
@@ -346,7 +346,8 @@ end
           solicitantes = (comparecencia) ? comparecencia.solicitantes : "-----"
           involucrados = (comparecencia) ? comparecencia.involucrados : "-----"
           fecha_hora = t.fechahora.strftime("%d de %B de %Y - %H:%M:%S")
-         csv << [ np, t.folio_integrado, t.estatus, t.numero_expediente,  especialista, categoria, fecha_hora, solicitantes, involucrados]
+          motivo_concluido = (t.concluido)? t.concluido.motivo_conclusion.descripcion_articulo : ""
+         csv << [ np, t.folio_integrado, t.estatus, t.numero_expediente,  especialista, categoria, fecha_hora, solicitantes, involucrados, motivo_concluido]
          np+=1 
       end
     end

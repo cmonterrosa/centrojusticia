@@ -99,13 +99,13 @@ class Tramite < ActiveRecord::Base
 
    def generar_folio_expediente!
      self.transaction do
-        self.reload(:lock => true)
+        #self.reload(:lock => true)
         unless self.folio_expediente
           anio = self.anio
           maximo=  Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", anio])
           folio = 1 unless maximo
           folio ||= maximo.to_i + 1
-          self.update_attributes!(:folio_expediente => folio)
+          self.update_attributes!(:folio_expediente => folio) if Tramite.find(self.id)
       end
      end
    end
@@ -127,6 +127,10 @@ class Tramite < ActiveRecord::Base
 
    def has_estatus?(estatus)
      (self.estatu == Estatu.find_by_clave(estatus)) ? true : false
+   end
+
+   def concluido
+     Concluido.find(:first, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") if self.id
    end
 
 
