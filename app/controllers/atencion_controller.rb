@@ -86,7 +86,7 @@ class AtencionController < ApplicationController
        redirect_to :controller => "comparecencias", :action => "new_or_edit", :id => @tramite
     else
       flash[:notice] = "No se pudo guardar, verifique"
-      render :action => "new_or_edit"
+      render :action => "por_escrito_new_or_edit"
     end
   end
 

@@ -60,7 +60,7 @@
              <%default_pais = Pais.find(:first, :conditions => ["id = ?", @participante.pais_id])%>
              <%default_pais ||=Pais.find(:first, :conditions => ["clave = ? ", 'MX'])%>
               <td align="center">
-                <%= check_box("p", "no_originario", {:onclick => "ena_originario(this, 'participante_pais_id', 'participante_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO
+                <%= f.check_box(:sabe_procedencia, {:onclick => "ena_originario(this, 'participante_pais_id', 'participante_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO
               </td>
              <td align="center"><%= f.select :pais_id, Pais.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, {:selected =>default_pais.id}, {:onchange => "showHideListadoDeEstados('participante_pais_id', 'estados_municipios', 'participante_municipio_id', 156);"}%></td>
              
@@ -170,6 +170,10 @@
 
   var observaciones = new LiveValidation( 'participante_observaciones' );
   observaciones.add( Validate.Length, { maximum: 350 } );
+</script>
+
+<script type="text/javascript">
+  ena_originario("participante_sabe_procedencia", 'participante_pais_id', 'participante_municipio_id');
 </script>
 
 

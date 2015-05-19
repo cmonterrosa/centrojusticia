@@ -534,3 +534,59 @@ function ena_originario(checkBox, elemento1, elemento2){
            document.getElementById(elemento2).disabled=false;
     }
 }
+
+
+// Deshabilita controladores de fecha de nacimiento y edad //
+
+function ena_edad(checkBox, elemento_fecha, elemento_edad){
+  var objeto_select, objeto_fecha1, objeto_fecha2, objeto_fecha3, cBox;
+
+  objeto_select = document.getElementById(elemento_edad);
+  objeto_fecha1 = document.getElementById(elemento_fecha + "_1i");
+  objeto_fecha2 = document.getElementById(elemento_fecha + "_2i");
+  objeto_fecha3 = document.getElementById(elemento_fecha + "_3i");
+
+
+    if(typeof checkBox == "object")
+        cBox = checkBox;
+    else
+        cBox = document.getElementById(checkBox)
+
+   if(cBox.checked)
+        if(cBox.value == "NO"){
+            objeto_select.style.display='none';
+            objeto_fecha1.style.display='none';
+            objeto_fecha2.style.display='none';
+            objeto_fecha3.style.display='none';
+            objeto_select.value='';
+            objeto_fecha1.value='';
+            objeto_fecha2.value='';
+            objeto_fecha3.value='';
+             objeto_select.disabled=true;
+            objeto_fecha1.disabled=true;
+            objeto_fecha2.disabled=true;
+            objeto_fecha3.disabled=true;
+            
+        }
+        else{
+            objeto_select.style.display='inline';
+            objeto_fecha1.style.display='inline';
+            objeto_fecha2.style.display='inline';
+            objeto_fecha3.style.display='inline';
+            objeto_select.disabled=false;
+            objeto_fecha1.disabled=false;
+            objeto_fecha2.disabled=false;
+            objeto_fecha3.disabled=false;
+        }
+    else{
+
+           objeto_select.style.display='inline';
+            objeto_fecha1.style.display='inline';
+            objeto_fecha2.style.display='inline';
+            objeto_fecha3.style.display='inline';
+            objeto_select.disabled=false;
+            objeto_fecha1.disabled=false;
+            objeto_fecha2.disabled=false;
+            objeto_fecha3.disabled=false;
+    }
+}
