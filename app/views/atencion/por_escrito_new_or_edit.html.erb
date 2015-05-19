@@ -45,6 +45,9 @@
       </tr>
 
     <!-- barra media -->
+
+
+
     <tr class="Estilo3">
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
@@ -52,20 +55,57 @@
             <td colspan="4" >DATOS DE UBICACION DEL SOLICITANTE</td>
           </tr>
         <tr align="center" class="pregunta">
-          <td>Dirección</td>
-          <td>Municipio</td>
           <td>Teléfono</td>
           <td>Correo</td>
+           <td>Dirección</td>
         </tr>
         <tr align="center">
-          <td><%= f.text_area :direccion, :class => "text", :size => "40x10"%></td>
-          <td><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           <td><%= f.text_field :telefono, :onKeyPress => "return CharNum(event, 'numero');", :class => "text"%></td>
           <td><%= f.text_field :correo%></td>
+          <td><%= f.text_area :direccion, :class => "text", :size => "40x10"%></td>
         </tr>
         </table>
       </td>
     </tr>
+
+
+
+
+    <!-- segunda barra inferior -->
+    <tr align="center">
+      <td align="center">
+         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="4">DATOS DE PROCEDENCIA</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">&nbsp;</td>
+          <td align="center">País</td>
+          <td align="center">Estado / Municipio</td>
+
+        </tr>
+        <tr>
+              <!-- pais -->
+              <%default_pais = Pais.find(:first, :conditions => ["id = ?", @orientacion.pais_id])%>
+             <%default_pais ||=Pais.find(:first, :conditions => ["clave = ? ", 'MX'])%>
+             <td align="center">
+                <%= check_box("p", "no_originario", {:onclick => "ena_originario(this, 'orientacion_pais_id', 'orientacion_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO
+              </td>
+              <td align="center"><%= f.select :pais_id, Pais.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, {:selected =>default_pais.id}, {:onchange => "showHideListadoDeEstados('orientacion_pais_id', 'estados_municipios', 'orientacion_municipio_id', 156);"}%></td>
+                  <div id="estados_municipios">
+                      <%estado_default = Estado.find_by_descripcion("CHIAPAS")%>
+                      <%default = Municipio.find(:first, :conditions => ["id = ?", @orientacion.municipio_id])%>
+                      <%default ||= Municipio.find(:first, :conditions => ["estado_id = ? and descripcion like ?", estado_default.id, "%#{LUGAR}%"])%>
+                      <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion_jerarquica, a.id]}, :prompt => 'Seleccione una opción', :selected =>default.id%></td>
+                  </div>
+
+        </tr>
+      </table></td>
+    </tr>
+
+
+
+
     <!-- espacio -->
     <tr>
       <td colspan="3"><hr /></td>
@@ -88,3 +128,6 @@
   </table>
 <% end %>
 
+<script type="text/javascript">
+    showHideListadoDeEstados('orientacion_pais_id', 'estados_municipios', 'orientacion_municipio_id', 156);
+</script>
