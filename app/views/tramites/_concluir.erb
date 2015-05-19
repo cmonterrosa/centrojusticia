@@ -1,0 +1,90 @@
+<% form_for :concluido, @concluido, :url => { :action => "concluir", :id => @tramite} do |f| -%>
+  <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;width: 100%; height: 80%; margin: auto;">
+    <tr align="center" >
+      <td align="center" colspan="4">CONCLUIR EXPEDIENTE</td>
+    </tr>
+
+    <tr align="center">
+      <td align="center" colspan="4">
+          <table style="width:100%">
+            <tr>
+               <td align="center">Número de Expediente</td>
+               <td align="center">Solicitante(s)</td>
+               <td align="center">Involucrados</td>
+            </tr>
+            <tr>
+              <td align="center"><%=h @tramite.numero_expediente%></td>
+                <%if @comparecencia%>
+                  <td align="center"><%=h @comparecencia.solicitantes%></td>
+                  <td align="center"><%=h @comparecencia.involucrados%></td>
+                <%else%>
+                  <td align="center" colspan="2">&nbsp;</td>
+              <%end%>
+            </tr>
+          </table>
+       </td>
+    </tr>
+
+    <tr>
+      <td align="center" colspan="4" style="text-align: center;">Motivo de conclusión:</td>
+    </tr>
+    <tr>
+        <td align="center" colspan="4">
+          <%= f.select(:motivo_conclusion_id, @motivos_conclusion.collect {|p| [ p.descripcion_articulo, p.id ] }, { :include_blank => true })%>
+        </td>
+    </tr>
+
+    
+<%= observe_field 'concluido_motivo_conclusion_id',
+    :on => "change",
+    :before => "Element.show('spinner')",
+    :success => "Element.hide('spinner')",
+    :url => {:controller => 'tramites',
+    :action => 'get_descripcion_motivo_conclusion'},
+    :update => 'descripcion_motivo',
+    :with => "concluido_motivo_conclusion_id"%>
+
+    <tr>
+      <td colspan="4"><img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" /></td>
+    </tr>
+
+    <tr>
+        <td align="center" colspan="4"><div id="descripcion_motivo"></div></td>
+    </tr>
+
+    <tr>
+      <td align="center" colspan="4">Observaciones de conclusión</td>
+    </tr>
+    <tr>
+      <td align="center" colspan="4"><%= f.text_area :observaciones_conclusion, :size => "90x3"%></td>
+    </tr>
+
+
+
+
+   <tr>
+    <td align="right" colspan="2">
+      <table>
+        <tr>
+          <th>
+            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar" />
+          </th>
+          <th>
+            <a href="/sesiones/show_window/<%=h @sesion.id%>" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+          </th>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+
+
+</table>
+<% end %>
+
+
+
+<script type="text/javascript">
+  var motivo = new LiveValidation( 'concluido_motivo_conclusion_id' );
+  motivo.add( Validate.Presence );
+</script>
