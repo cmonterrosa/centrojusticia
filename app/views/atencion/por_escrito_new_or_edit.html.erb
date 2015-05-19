@@ -89,7 +89,7 @@
               <%default_pais = Pais.find(:first, :conditions => ["id = ?", @orientacion.pais_id])%>
              <%default_pais ||=Pais.find(:first, :conditions => ["clave = ? ", 'MX'])%>
              <td align="center">
-                <%= check_box("p", "no_originario", {:onclick => "ena_originario(this, 'orientacion_pais_id', 'orientacion_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO
+                <%= f.check_box(:sabe_procedencia, {:onclick => "ena_originario(this, 'orientacion_pais_id', 'orientacion_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO
               </td>
               <td align="center"><%= f.select :pais_id, Pais.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, {:selected =>default_pais.id}, {:onchange => "showHideListadoDeEstados('orientacion_pais_id', 'estados_municipios', 'orientacion_municipio_id', 156);"}%></td>
                   <div id="estados_municipios">
@@ -127,6 +127,10 @@
     </tr>
   </table>
 <% end %>
+
+<script type="text/javascript">
+  ena_originario('orientacion_sabe_procedencia', 'orientacion_pais_id', 'orientacion_municipio_id');
+</script>
 
 <script type="text/javascript">
     showHideListadoDeEstados('orientacion_pais_id', 'estados_municipios', 'orientacion_municipio_id', 156);

@@ -25,13 +25,13 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4">DATOS PERSONALES</td>
+          <td align="center" colspan="5">DATOS PERSONALES</td>
         </tr>
         <tr align=" justify" class="pregunta">
             <td align="center">Rol <em class="formee-req">*</em></td>
             <td align="center">Paterno<em class="formee-req">*</em></td>
             <td align="center">Materno</td>
-            <td align="center">Nombre(s)<em class="formee-req">*</em></td>
+            <td align="center" colspan="2">Nombre(s)<em class="formee-req">*</em></td>
         </tr>
         <tr>
           <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción')%></td>
@@ -42,11 +42,16 @@
 
         <tr align=" justify" class="pregunta">
           <td align="center">Sexo</td>
+          <td align="center">&nbsp;</td>
           <td align="center" colspan="2">Fecha de Nacimiento</td>
           <td align="center">Edad</td>
         </tr>
         <tr>
           <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
+          <td align="center">
+                <%= f.check_box(:sabe_edad, {:onclick => "ena_edad(this, 'participante_fecha_nac', 'participante_anio_nac');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO EDAD
+          </td>
+
           <td align="center" colspan="2"><%=f.date_select :fecha_nac, :start_year => 1918, :end_year => Time.now.year%></td>
           <td align="center"><%= f.select(:anio_nac,  hash_of_years)%></td>
         </tr>
@@ -71,7 +76,7 @@
               <%default_pais = Pais.find(:first, :conditions => ["id = ?", @participante.pais_id])%>
              <%default_pais ||=Pais.find(:first, :conditions => ["clave = ? ", 'MX'])%>
              <td align="center">
-                <%= check_box("p", "no_originario", {:onclick => "ena_originario(this, 'participante_pais_id', 'participante_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO
+                <%= f.check_box(:sabe_procedencia, {:onclick => "ena_originario(this, 'participante_pais_id', 'participante_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO PROCEDENCIA
               </td>
               <td align="center"><%= f.select :pais_id, Pais.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, {:selected =>default_pais.id}, {:onchange => "showHideListadoDeEstados('participante_pais_id', 'estados_municipios', 'participante_municipio_id', 156);"}%></td>
                   <div id="estados_municipios">
@@ -186,7 +191,8 @@
 </script>
 
 <script type="text/javascript">
-  ena_originario("p_no_originario", 'participante_pais_id', 'participante_municipio_id');
+  ena_originario("participante_sabe_procedencia", 'participante_pais_id', 'participante_municipio_id');
+  ena_edad('participante_sabe_edad', 'participante_fecha_nac', 'participante_anio_nac');
 </script>
 
 
