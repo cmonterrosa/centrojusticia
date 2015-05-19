@@ -482,3 +482,55 @@ $(function() {
         lang:'es'
     });
 });
+
+// Habilita/Deshabilita Catalogo de Estados si selecciona diferente de Mexico
+function showHideListadoDeEstados(comboSelect, divField,divSub, clave){
+    var select = document.getElementById(comboSelect);
+    var subselect = document.getElementById(divSub);
+    var div = document.getElementById(divField);
+    var num = isNaN(parseInt(select.value)) ? 0 : parseInt(select.value)
+    if(num == parseInt(clave)){
+        div.style.display = 'inline';
+        subselect.disabled = false;
+        subselect.style.display = 'inline';
+        }
+    else{
+        div.style.display = 'none';
+        subselect.disabled = true;
+        subselect.style.display = 'none';
+        }
+}
+
+
+// Habilita/Deshabilita Paises y Municipios
+function ena_originario(checkBox, elemento1, elemento2){
+  var txtField1, txtField2, cBox;
+
+    if(typeof checkBox == "object")
+        cBox = checkBox;
+    else
+        cBox = document.getElementById(checkBox)
+
+   if(cBox.checked)
+        if(cBox.value == "NO"){
+            document.getElementById(elemento1).style.display='none';
+            document.getElementById(elemento2).style.display='none';
+            document.getElementById(elemento1).value="";
+            document.getElementById(elemento2).value="";
+            document.getElementById(elemento1).disabled=true;
+            document.getElementById(elemento2).disabled=true;
+        }
+        else{
+            document.getElementById(elemento1).style.display='inline';
+            document.getElementById(elemento2).style.display='inline';
+            document.getElementById(elemento1).disabled=false;
+            document.getElementById(elemento2).disabled=false;
+        }
+    else{
+    
+           document.getElementById(elemento1).style.display='inline';
+           document.getElementById(elemento2).style.display='inline';
+           document.getElementById(elemento1).disabled=false;
+           document.getElementById(elemento2).disabled=false;
+    }
+}

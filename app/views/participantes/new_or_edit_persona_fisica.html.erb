@@ -61,6 +61,7 @@
           <td align="center" colspan="4">DATOS DE PROCEDENCIA</td>
         </tr>
         <tr align=" justify" class="pregunta">
+          <td align="center">&nbsp;</td>
           <td align="center">País</td>
           <td align="center">Estado / Municipio</td>
           
@@ -69,7 +70,10 @@
               <!-- pais -->
               <%default_pais = Pais.find(:first, :conditions => ["id = ?", @participante.pais_id])%>
              <%default_pais ||=Pais.find(:first, :conditions => ["clave = ? ", 'MX'])%>
-             <td align="center"><%= f.select :pais_id, Pais.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, {:selected =>default_pais.id}, {:onchange => "showHideListadoDeEstados('participante_pais_id', 'estados_municipios', 'participante_municipio_id', 156);"}%></td>
+             <td align="center">
+                <%= check_box("p", "no_originario", {:onclick => "ena_originario(this, 'participante_pais_id', 'participante_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO
+              </td>
+              <td align="center"><%= f.select :pais_id, Pais.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, {:selected =>default_pais.id}, {:onchange => "showHideListadoDeEstados('participante_pais_id', 'estados_municipios', 'participante_municipio_id', 156);"}%></td>
                   <div id="estados_municipios">
                       <%estado_default = Estado.find_by_descripcion("CHIAPAS")%>
                       <%default = Municipio.find(:first, :conditions => ["id = ?", @participante.municipio_id])%>
@@ -179,6 +183,10 @@
 
   var observaciones = new LiveValidation( 'participante_observaciones' );
   observaciones.add( Validate.Length, { maximum: 350 } );
+</script>
+
+<script type="text/javascript">
+  ena_originario("p_no_originario", 'participante_pais_id', 'participante_municipio_id');
 </script>
 
 
