@@ -28,12 +28,16 @@
 
 
 <script  type="text/javascript">
-   function DisableButton(b)
-   {
-      b.disabled = true;
-      b.value = 'ENVIANDO DATOS..';
-      b.form.submit();
-   }
+  var statSend = false;
+  function checkSubmit() {
+    if (!statSend) {
+        statSend = true;
+        return true;
+    } else {
+        alert("El formulario ya se esta enviando...");
+        return false;
+    }
+}
 </script>
 
 
@@ -59,7 +63,7 @@
 
 
 
-<% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion"} do |f| -%>
+<% form_for :orientacion, @orientacion, :url => { :action => "save", :id => @orientacion }, :html => {:id => "new_orientacion", :onsubmit => "return checkSubmit();"} do |f| -%>
   <table width="98%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr>
   <fieldset>
@@ -170,7 +174,7 @@
       <div class="grid-12-12">
         <label style=" font-weight: bold;">Observaciones y/o comentarios: </label>
         <div class="grid-12-12">
-            <%= f.text_area :observaciones, :size => "88x4"%>
+            <%= f.text_area :observaciones, :size => "88x4",  :style=>"text-transform: uppercase", :type=>"text"%>
         </div>
       </div>
 </fieldset>
