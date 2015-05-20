@@ -101,21 +101,21 @@
      <div class="grid-3-12">
         <label style=" font-weight: bold;">Apellido Paterno: <em class="formee-req">*</em></label>
         <div class="grid-12-12">
-          <%= f.text_field :paterno, :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => 24%>
+          <%= f.text_field :paterno, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => 24%>
         </div>
      </div>
 
       <div class="grid-3-12">
         <label style=" font-weight: bold;">Apellido Materno:</label>
          <div class="grid-12-12">
-        <%= f.text_field :materno, :onKeyPress => "return CharNum(event, 'letra');", :size => 24%>
+        <%= f.text_field :materno, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onKeyPress => "return CharNum(event, 'letra');", :size => 24%>
          </div>
       </div>
       
       <div class="grid-3-12">
         <label style=" font-weight: bold;">Nombre(s): <em class="formee-req">*</em></label>
          <div class="grid-12-12">
-         <%= f.text_field :nombre,  :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => 32%>
+         <%= f.text_field :nombre, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => 32%>
          </div>
       </div>
 
@@ -134,7 +134,7 @@
       <div class="grid-3-12">
         <label style=" font-weight: bold;">Dirección: <em class="formee-req">*</em></label>
          <div class="grid-12-12">
-               <%= f.text_area :direccion, :class => "text", :size => "28x7", :required => true%>
+               <%= f.text_area :direccion, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :class => "text", :size => "28x7", :required => true%>
          </div>
        </div>
 
@@ -174,8 +174,7 @@
       <div class="grid-12-12">
         <label style=" font-weight: bold;">Observaciones y/o comentarios: </label>
         <div class="grid-12-12">
-            <%= f.text_area :observaciones, :size => "88x4",  :style=>"text-transform: uppercase", :type=>"text"%>
-        </div>
+            <%= f.text_area :observaciones, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "88x4"%>        </div>
       </div>
 </fieldset>
   </tr>
