@@ -6,7 +6,7 @@
 
 
 <%unless @comparecencia.participantes.empty?%>
-  <table class="tablakolaval">
+  <table class="tablakolaval" width="50%">
     
          <!-- Nombre de los integrantes -->
          <tr>
@@ -56,8 +56,11 @@
 <table class="table1">
   <thead>
     <tr>
-       <td align="center"><%= link_to image_tag("botones/agregar_persona_fisica.png", :width => 250, :height=>"40", :border =>0 ) , :action => "new_or_edit_persona_fisica", :controller => "participantes", :id => @comparecencia, :token => @comparecencia-%></td>
-       <td align="center"><%= link_to image_tag("botones/agregar_persona_moral.png", :width => 250, :height=>"40", :border =>0 ) , :action => "new_or_edit_persona_moral", :controller => "participantes", :id => @comparecencia, :token => @comparecencia-%></td>
+       <td align="center"><%=h (link_to "Agregar Persona Física", {:action => "new_or_edit_persona_fisica", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
+       <td align="center"><%=h (link_to "Agregar Persona Moral", {:action => "new_or_edit_persona_moral", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
+       <!--
+       <td align="center"><= link_to image_tag("botones/agregar_persona_moral.png", :width => 250, :height=>"40", :border =>0 ) , :action => "new_or_edit_persona_moral", :controller => "participantes", :id => @comparecencia, :token => @comparecencia-%></td>
+       -->
     </tr>
   </thead>
 </table>

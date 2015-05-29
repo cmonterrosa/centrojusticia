@@ -1,8 +1,10 @@
 <script>
   function verificar_rol(){
         b = document.getElementById("participante_perfil");
-        if(b.value == "")
-          alert("Primero seleccione si es involucrado o solicitante");
+        if(b.value == ""){
+           alert("Seleccione si es 'SOLICITANTE' o 'INVOLUCRADO'");
+          b.focus();
+        }
    }
 </script>
 
@@ -35,7 +37,7 @@
         <tr>
           <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%></td>
           <td align="center"><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción', :required => true)%></td>
-          <td align="center"><%= f.text_field :razon_social, :onKeyPress => "return CharNum(event, 'letra');", :onchange => "verificar_rol();",  :placeholder => "Es necesario capturarlo", :required => true%></td>
+          <td align="center"><%= f.text_field :razon_social, :onKeyPress => "return CharNum(event, 'letra');", :onBlur=>"javascript:{this.value = this.value.toUpperCase();};verificar_rol();",   :placeholder => "Es necesario capturarlo", :required => true%></td>
           <td align="center"><%= f.text_field :apoderado_legal, :onKeyPress => "return CharNum(event, 'letra');",  :placeholder => "Solo capturar si existe", :size => 60%></td>
         </tr>
       </table></td>
