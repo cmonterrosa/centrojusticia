@@ -252,10 +252,11 @@ label:before {
 }
 
 .LabelBusquedaTramite{
-   font-family: "Open Sans";
-    color: black;
-    font-size: 15px;
-    text-align: center;
+  font-family: "Nexa Light";
+  text-transform: uppercase;
+  color: black;
+  font-size: 12px;
+  text-align: center;
 }
 
 .SelectBusquedaTramite{
