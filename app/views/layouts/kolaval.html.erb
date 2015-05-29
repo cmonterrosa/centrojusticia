@@ -69,6 +69,11 @@
     <%=javascript_include_tag "formee/formee.js" %>
 
 
+    <!-- sweet alert -->
+    <%=javascript_include_tag "sweetalert.min.js" %>
+    <%= stylesheet_link_tag "sweetalert.css" %>
+
+
    <script type="text/javascript">
       window.onload=function(){enableTooltips()};
       // this allows jquery to be called along with scriptaculous and YUI without any conflicts
@@ -173,7 +178,9 @@ padding:2px;
   <div class="footer_wrap">
     <div class="footer_area">
       <br class="blank" />
-        <div style="text-align: center;">Copyright &copy; <a href="http://www.poderjudicialchiapas.gob.mx">Poder Judicial del Estado de Chiapas</a>, Todos los derechos reservados | Desarrollado por DDIT </div>
+        <div style="text-align: center;">
+          &nbsp; <!-- Copyright &copy; <a href="http://www.poderjudicialchiapas.gob.mx">Poder Judicial del Estado de Chiapas</a>, Todos los derechos reservados | Desarrollado por DDIT -->
+        </div>
       <br class="blank" />
     </div>
 </div>

@@ -11,13 +11,19 @@
 
 <div class="titulocalendario">
   <%if @comparecencia &&  @comparecencia.tramite.numero_expediente%>
-    <p>COMPARECENCIA DE NÚMERO DE EXPEDIENTE: <b><%=h @comparecencia.tramite.numero_expediente%></b></p><br />
+    <p>COMPARECENCIA DE NÚMERO DE EXPEDIENTE: 
+      <b><%=h @comparecencia.tramite.numero_expediente%></b>
+      <hr class="LineaHorizontalVerde" />
+    </p>
+    
   <%else%>
-    <p>COMPARECENCIA</p>
+    <p>COMPARECENCIA
+      <hr class="LineaHorizontalVerde" />
+    </p>
   <%end%>
 </div>
 
-<table width="50%" border="0" cellspacing="0" cellpadding="0">
+<table width="32%" border="0" cellspacing="0" cellpadding="0">
   <tr align="center">
     
       <td>
@@ -25,7 +31,7 @@
           :url => { :action => "show_informacion_general", :id => @tramite.id },
           :before => "Element.show('spinner')",
           :complete => "Element.hide('spinner')",
-          :html => {:title => "Más información"}%>
+          :html => {:title => "Información General"}%>
       </td>
 
       <%if @comparecencia%>
@@ -34,7 +40,7 @@
             :url => { :action => "show_participantes", :id => @tramite.id },
             :before => "Element.show('spinner')",
             :complete => "Element.hide('spinner')",
-            :html => {:title => "Participantes"}%>
+            :html => {:title => "Datos de los participantes"}%>
         </td>
 
         <%if current_user.has_role?("lecturaagenda") && HABILITADO_RESERVA_SESION%>
