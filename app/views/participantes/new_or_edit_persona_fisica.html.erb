@@ -3,14 +3,29 @@
         b = document.getElementById("participante_perfil");
         if(b.value == ""){
           alert("Seleccione si es 'SOLICITANTE' o 'INVOLUCRADO'");
+          b.style.border = "thick solid red";
           b.focus();
-          <%#*document.getElementById("btn_guardar").disabled= true;%>
-         }
-         else{
-          <%#*document.getElementById("btn_guardar").disabled= false;%>
-         }
+          return false
+        }
+        else
+          b.style.border = "";
    }
 </script>
+
+
+<script  type="text/javascript">
+  var statSend = false;
+  function checkSubmit() {
+    if (!statSend) {
+        statSend = true;
+        return true;
+    } else {
+        alert("El formulario ya se esta enviando...");
+        return false;
+    }
+}
+</script>
+
 
     <div class="formee-msg-info">
     <h3>Información importante</h3>
@@ -20,7 +35,7 @@
     <ul><li>&nbsp;</li></ul>
   </div>
 
-<% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id } do |f| -%>
+<% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id }, :html => {:id => "new_participante", :onsubmit => "return checkSubmit();"} do |f| -%>
   <table width="92%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="4" align="center" >PERSONA FÍSICA</td>
@@ -167,7 +182,7 @@
         <table>
           <tr>
             <td>
-              <input id="btn_guardar" title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
+              <input id="btn_guardar" title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onClick="return verificar_rol();"/>
             </td>
             <td>
               <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "comparecencias", :action => "new_or_edit", :id => @comparecencia.tramite-%>
