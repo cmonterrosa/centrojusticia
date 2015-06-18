@@ -99,10 +99,17 @@ class ComparecenciasController < ApplicationController
        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@involucrado.referencia_domiciliaria)}
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
        #--- Validacion de que existe al menos un solicitante ---
-       if @comparecencia.solicitante
-           (@comparecencia.solicitante.nombre) ?   param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@comparecencia.solicitante.nombre_completo} :    param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@comparecencia.solicitante.razon_social}
-       end
-        #(@comparecencia.solicitante) ?   param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@comparecencia.solicitante.nombre_completo} :    param["P_SOLICITANTE"]={:tipo=>"String", :valor=>" "}
+#       if @comparecencia.solicitante
+#           (@comparecencia.solicitante.nombre) ?   param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@comparecencia.solicitante.nombre_completo} :    param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@comparecencia.solicitante.razon_social}
+#       end
+        
+        if @comparecencia.solicitante
+          solicitante ={:tipo=>"String", :valor=>clean_string(@comparecencia.solicitante.nombre_completo)} if @comparecencia.solicitante.nombre && @comparecencia.solicitante.nombre.size > 0
+          solicitante ||= {:tipo=>"String", :valor=>clean_string(@comparecencia.solicitante.apoderado_legal)} if @comparecencia.solicitante.apoderado_legal && @comparecencia.solicitante.apoderado_legal.size > 0
+          solicitante ||= {:tipo=>"String", :valor=>clean_string(@comparecencia.solicitante.razon_social)} if @comparecencia.solicitante.razon_social && @comparecencia.solicitante.razon_social.size > 0
+        end
+        param["P_SOLICITANTE"] = solicitante if solicitante
+
         #---- Validación de tipo de persona ------
        (@involucrado.tipopersona) ?  param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=>@involucrado.tipopersona.descripcion} :  param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=> "" }
        (@involucrado.tipopersona.descripcion == "MORAL" && @involucrado.razon_social) ?  param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=>@involucrado.razon_social.upcase} :  param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=> " "}
