@@ -1,10 +1,10 @@
 <div class="titulocalendario">
-  Trámites extraordinarios de otras instituciones
+  <p>Trámites extraordinarios de otras instituciones</p>
 </div>
 
-<!-- Nuevo -->
+<!-- Nuevo e Instituciones-->
 <p>
-  <%=h (link_to "Nuevo", {:controller => "extraordinaria", :action => "new_or_edit"}, :class => 'boton') %>
+  <%=h (link_to "Nuevo", {:controller => "extraordinaria", :action => "new_or_edit"}, :class => 'boton') %> | <%=h (link_to "INSTITUCIONES", {:controller => "procedencias"}, :class => "boton")%>
 </p>
 
 <!-- contenido -->
