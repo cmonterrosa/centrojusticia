@@ -1,0 +1,15 @@
+<h1>Nueva Institución</h1>
+
+<% form_for(@procedencia) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    Anote la descripción:<br />
+    <%= f.text_field :descripcion, :size => 120, :required => true %>
+  </p>
+  <p>
+    <%= f.submit 'GUARDAR' %>
+  </p>
+<% end %>
+
+<%= link_to 'Atrás', procedencias_path, :class => "boton"%>

@@ -1,0 +1,25 @@
+<div class="titulocalendario">
+  <p>Instituciones que el CEJA Atiende</p>
+</div>
+
+
+<%=h (link_to "Regresar", {:controller => "extraordinaria"}, :class => "boton")%> | <%= link_to 'Registrar nueva institución', new_procedencia_path, :class => "boton"%>
+<p>&nbsp;</p>
+
+<table class="tablakolaval" style="text-align: center;">
+  <tr>
+    <td>Descripción</td>
+    <td colspan="2">Acciones</td>
+  </tr>
+
+<% @procedencias.each do |procedencia| %>
+  <tr>
+    <td><%=h procedencia.descripcion %></td>
+    <td><%= link_to 'Editar', edit_procedencia_path(procedencia), :class => "boton" %></td>
+    <td><%= link_to 'Eliminar', procedencia, :confirm => '¿Está seguro(a) que desea eliminar el registro?', :method => :delete, :class => "boton" %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
