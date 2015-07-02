@@ -152,7 +152,7 @@ class OrientacionsController < ApplicationController
         end
         redirect_to :controller => "home"
     else
-      flash[:error] = "No se pudo guardar, verifique"
+      flash[:error] = @orientacion.errors.full_messages { |msg| msg.join(",")  }
       render :action => "new_or_edit"
     end
    end

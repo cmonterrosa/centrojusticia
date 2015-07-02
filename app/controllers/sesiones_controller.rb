@@ -351,6 +351,7 @@ class SesionesController < ApplicationController
    @user = current_user ? current_user.id : nil
    flash[:error] = "No se pudo actualizar correctamente, verifique"
      if @sesion && @horario && @fecha && @mediador && @comediador
+        @sesion_registro_anterior = @sesion.clone
         if @sesion.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id, :sala_id => @sala, :user_id => @user)
            #---- Notificamos a especialistas ---
            @sesion.update_attributes!(:tiposesion_id => @tiposesion.id) if @tiposesion
@@ -364,6 +365,9 @@ class SesionesController < ApplicationController
               nuevo_estatus = (@sesion.tramite.has_estatus?("comp-conc") || @sesion.tramite.has_estatus?("mate-asig") ) ? "fech-asig" : nil
               nuevo_estatus ||= (@sesion.tramite.has_estatus?("fech-asig"))? "camb-sesi" : nil
               @sesion.tramite.update_estatus!(nuevo_estatus, current_user) if nuevo_estatus
+              @sesion_registro_anterior.cancel = true
+              @sesion_registro_anterior.cancel_user = current_user.id if current_user
+              @sesion_registro_anterior.save
            end
            flash[:notice] = "Hora de sesión actualizada correctamente"
         end
