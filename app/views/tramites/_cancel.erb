@@ -1,8 +1,8 @@
 <%= error_messages_for :user %>
  <div class="centered">
-        <table width="90%" align="center">
+        <table width="80%" align="center">
           <tr>
-            <td class="titulocalendario">:. CANCELACIÓN .:</td>
+            <td class="titulocalendario"><b>CANCELACION DE TRAMITE</b></td>
            </tr>
 
           <!--espacio -->
@@ -17,7 +17,7 @@
             <td class="titulocalendario">Número de expediente:</td>
            </tr>
            <tr>
-             <td><%=@tramite.numero_expediente%></td>
+             <td><h1><%=@tramite.numero_expediente%></h1></td>
            </tr>
 
            <!-- Espacio -->
@@ -37,24 +37,22 @@
               <td>&nbsp;</td>
             </tr>
 
-           
-          
-
-
-
-
           <tr>
-            <td class="titulocalendario">observaciones:</td>
+            <td class="titulocalendario">Escriba las observaciones o comentarios:</td>
           </tr>
           <tr>
             <td>
-            <%= f.text_area :cancelacion_observaciones, :size => "50x4"%>
+            <%= f.text_area :cancelacion_observaciones, :size => "60x4"%>
             </td>
           </tr>
+          <tr><th>&nbsp;</th></tr>
           
           <!-- boton -->
           <tr>
-           <td valign="bottom"><input title="inicio de sesión" alt="inicio de sesión" type="image"  src="/images/botones/btn_entrar.png"/></td>
+           <td>
+            <input id="button4" class="buttonText" type="submit" title="Cancelar" value="Cancelar"  />
+          </td>
+
           </tr>
         <%end%>
       </table>
@@ -68,3 +66,8 @@
 
 
 
+<script type="text/javascript">
+  var observaciones = new LiveValidation( 'tramite_cancelacion_observaciones' );
+  observaciones.add( Validate.Presence );
+  observaciones.add( Validate.Length, { maximum: 220 } );
+</script>
