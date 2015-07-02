@@ -85,6 +85,7 @@
     <tr>
       <td colspan="3">&nbsp;</td>
     </tr>
+
     <!-- FOOTER -->
     <tr>
       <td align="right">
@@ -111,7 +112,6 @@
 
 <!-- AJAX -->
 
-
 <%= observe_field :sesion_num_tramite,
                                 :frequency => 0.25,
                                 :before => "Element.show('spinner2')",
@@ -131,3 +131,9 @@
 %>
 
  
+<script type="text/javascript">
+  var mediador = new LiveValidation( 'sesion_mediador_id' );
+  var comediador = new LiveValidation( 'sesion_comediador_id' );
+  mediador.add( Validate.Presence );
+  comediador.add( Validate.Presence );
+</script>
