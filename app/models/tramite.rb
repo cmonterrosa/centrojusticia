@@ -97,7 +97,7 @@ class Tramite < ActiveRecord::Base
      end
    end
 
-   def generar_folio_expediente!
+   def generar_folio_expediente_anterior!
      self.transaction do
         #self.reload(:lock => true)
         unless self.folio_expediente
@@ -108,6 +108,10 @@ class Tramite < ActiveRecord::Base
           self.update_attributes!(:folio_expediente => folio) if Tramite.find(self.id)
       end
      end
+   end
+
+   def generar_folio_expediente!
+      ActiveRecord::Base.connection.execute("CALL update_folio_consecutivo(#{self.anio}, #{self.id})") if (self.anio && self.id) && !self.folio_expediente
    end
 
 
