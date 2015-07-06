@@ -430,7 +430,17 @@ end
     else
       render :action => "festivo"
     end
+  end
 
+  def verificar_integridad
+    anio=params[:id].to_i if params[:id]
+    anio ||= Time.now.year
+    @no_encontrados=[]
+    minimo = Tramite.minimum(:folio_expediente, :conditions => ["anio = ?", anio])
+    maximo = Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", anio])
+    (minimo..maximo).each do |folio_expediente|
+        @no_encontrados << folio_expediente unless Tramite.count(:folio_expediente, :conditions => ["anio = ? AND folio_expediente = ?", anio, folio_expediente]) > 0
+    end
   end
 
 
