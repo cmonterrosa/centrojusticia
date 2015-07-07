@@ -365,9 +365,7 @@ class SesionesController < ApplicationController
               nuevo_estatus = (@sesion.tramite.has_estatus?("comp-conc") || @sesion.tramite.has_estatus?("mate-asig") ) ? "fech-asig" : nil
               nuevo_estatus ||= (@sesion.tramite.has_estatus?("fech-asig"))? "camb-sesi" : nil
               @sesion.tramite.update_estatus!(nuevo_estatus, current_user) if nuevo_estatus
-              @sesion_registro_anterior.cancel = true
-              @sesion_registro_anterior.cancel_user = current_user.id if current_user
-              @sesion_registro_anterior.save
+              @sesion_registro_anterior.cancel_registro_anterior!(current_user) if @sesion_registro_anterior
            end
            flash[:notice] = "Hora de sesión actualizada correctamente"
         end

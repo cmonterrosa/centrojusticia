@@ -102,6 +102,28 @@ class Sesion < ActiveRecord::Base
     self.save
   end
 
+  def cancel_registro_anterior!(user=nil)
+    self.cancel = true
+    self.cancel_user = user.id if user
+    
+    ## Cancelamos los movimientos ####
+    @sesion = self
+    if @sesion.num_tramite
+      @ensesion = Situacion.find_by_descripcion("EN SESION")
+      @especialista = Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at).strftime("%y-%m-%d %H:%M:%S"), @sesion.mediador_id, @ensesion.id]) if @sesion.start_at
+      @comediador = Movimiento.find(:first, :conditions => ["(? between fecha_inicio AND fecha_fin) AND user_id = ? AND situacion_id = ?", (@sesion.start_at).strftime("%y-%m-%d %H:%M:%S"), @sesion.comediador_id, @ensesion.id]) if @sesion.start_at
+      @especialista2 = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?", @sesion.mediador_id, "ESPECIALISTA EN SESION, EXP. #{@sesion.num_tramite}%"])
+      @comediador2 = Movimiento.find(:first, :conditions => ["user_id = ? AND observaciones like ?",  @sesion.comediador_id, "COMEDIADOR EN SESION, EXP. #{@sesion.num_tramite}%"])
+    end
+    if self.save
+      @especialista.destroy if @especialista
+      @comediador.destroy if @comediador
+      @especialista2.destroy if @especialista2
+      @comediador2.destroy if @comediador2
+    end
+  end
+
+
   def canceled?
     (self.cancel == true || self.cancel == 1)? true : false
   end
