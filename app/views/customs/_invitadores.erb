@@ -1,59 +1,57 @@
 <%= render :partial => "barra_superior"%>
 
-<table width="50%" border="0" cellspacing="0" cellpadding="0">
-  <tr align="center">
-      <td>
-        <a href="/atencion" title="Trámites">
-          <img src="/images/iconos/tramites.png" width="128" height="128" alt="tramites" />
-        </a>
-      </td>
 
-      <!-- Listado de trámites -->
-       <td>
-            <a href="/tramites/list" title="Trámites">
-              <img src="/images/iconos/seguimiento.png" width="128" height="128" alt="Trámites" />
-            </a>
-       </td>
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+            <%= stylesheet_link_tag "menu_desplegable/default.css"%>
+            <%= stylesheet_link_tag "menu_desplegable/component.css"%>
+            <%= javascript_include_tag 'menu_desplegable/modernizr.custom.js'%>
+        </head>
+	<body>
+		<div class="container">
+                        <div class="main">
+				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+					<div class="cbp-hsinner">
+						<ul class="cbp-hsmenu">
+							<li>
+								 <!-- Tramites -->
+                                                                 <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
+								<ul class="cbp-hssubmenu">
+									<li><%=link_to image_tag('kolaval/ico-iniciartramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-iniciartramites.jpg") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Iniciar trámite"%></li>
+                                                                         <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
+                                                                </ul>
+							</li>
+
+                                                        <!-- Agenda -->
+                                                        <%if current_user.has_role?("lecturaagenda")%>
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
+                                                          </li>
+                                                        <%end%>
+
+                                                         <%if current_user.has_role?("invitadores")%>
+                                                              <li>
+                                                                  <ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "list_by_user", :controller => "invitaciones"}, :title => "Invitaciones"%></ul>
+                                                              </li>
+                                                         <%end%>
+
+                                                        <!-- Bitacora -->
+                                                        <%if current_user.has_role?("bitacora")%>
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-bitacora-aten.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-bitacora-aten.jpg") , {:action => "select_personas_atendidas", :controller => "estadisticas"}, :title => "Bitacora de atencion"%></ul>
+                                                          </li>
+                                                        <%end%>
 
 
-       <%if current_user.has_role?("controlinvitaciones")%>
-        <td>
-          <a href="/invitaciones/show_all" title="Invitaciones">
-            <img src="/images/iconos/invitaciones.png" width="128" height="128" alt="invitaciones" />
-          </a>
-        </td>
-       <%end%>
-
-
-       <!-- Agenda -->
-       <%if current_user.has_role?("lecturaagenda")%>
-       <td>
-         <a href="/agenda/calendario" title="Control de la agenda">
-           <img src="/images/iconos/calendario.png" width="128" height="128" alt="Control de la agenda" />
-         </a>
-       </td>
-       <%end%>
-
-       <!-- Invitaciones -->
-       <td>
-        <a href="/invitaciones/list_by_user" title="Invitaciones">
-          <img src="/images/iconos/addressbook.png" width="128" height="128" alt="invitaciones" />
-        </a>
-       </td>
-
-
-  </tr>
-  <tr align="center">
-    <td class="menu">Iniciar Trámite</td>
-    <td class="menu">Listado de trámites</td>
-
-     <%if current_user.has_role?("controlinvitaciones")%>
-       <td class="menu">Control de Invitaciones</td>
-     <%end%>
-
-    <%if current_user.has_role?("lecturaagenda")%>
-      <td class="menu">Lectura de Agenda</td>
-    <%end%>
-      <td class="menu">Invitaciones</td>
-  </tr>
-</table>
+						</ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<script src="/javascripts/menu_desplegable/cbpHorizontalSlideOutMenu.min.js"></script>
+		<script>
+			var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper' ) );
+		</script>
+	</body>
+</html>
