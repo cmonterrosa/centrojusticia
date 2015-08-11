@@ -1,0 +1,44 @@
+<div class="titulocalendario">
+  <p align="center">Editar</p>
+</div>
+
+<% form_for(@subdireccion) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :descripcion %><br />
+    <%= f.text_field :descripcion, :size => 90 %>
+  </p>
+  <p>
+    <%= f.label :titular %><br />
+    <%= f.text_field :titular, :size => 90 %>
+  </p>
+  <p>
+    <%= f.label :direccion %><br />
+    <%= f.text_field :direccion, :size => 90 %>
+  </p>
+  <p>
+    <%= f.label :codigo_postal %><br />
+    <%= f.text_field :codigo_postal, :size => 90 %>
+  </p>
+  <p>
+    <%= f.label :telefonos %><br />
+    <%= f.text_field :telefonos, :size => 90%>
+  </p>
+  <p>
+    <%= f.label :municipio_id%><br />
+    <%estado_default = Estado.find_by_descripcion("CHIAPAS")%>
+    <%municipios_default = Municipio.find(:all, :conditions => ["estado_id = ?", estado_default.id], :order => "descripcion")%>
+    <%= f.select("municipio_id", municipios_default.collect {|p| [ p.descripcion, p.id ] }, { :include_blank => true }, :selected => @subdireccion.municipio)%>
+  </p>
+  <p>
+    <%= f.label :cargo %><br />
+    <%= f.text_field :cargo, :size => 90 %>
+  </p>
+  <p>
+    <%= f.submit 'Actualizar' %>
+  </p>
+<% end %>
+
+<%= link_to 'Mostrar', @subdireccion %> |
+<%= link_to 'Atrás', subdireccions_path %>
