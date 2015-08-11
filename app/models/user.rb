@@ -100,7 +100,10 @@ class User < ActiveRecord::Base
   end
 
   def nombre_completo
-    "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip}"
+    string = ""
+    string << "#{self.nombre.strip}" if self.nombre
+    string << "#{self.paterno.strip}" if self.paterno
+    string << "#{self.materno.strip}" if self.materno
   end
 
   ##### Puntuaciones #######
