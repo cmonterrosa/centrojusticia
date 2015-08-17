@@ -12,9 +12,8 @@
 
 <!-- contenido -->
 
-
 <div id="divlista">
-    <table class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 90%;">
+    <table class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 95%;">
       <tr>
         <td style="vertical-align: middle;">&nbsp;</td>
         <td style="vertical-align: middle;">Login</td>
@@ -52,6 +51,11 @@
       <td style="vertical-align: middle;"><%=h (user.estatus_actual) ? user.estatus_actual : "----"%></td>
       <td style="vertical-align: middle;"><%=h (user.last_login) ? user.last_login.strftime("%d de %B de %Y - %H:%M:%S") : "Sin conexión"%></td>
 
+      <%if current_user.has_role?(:admin)%>
+          <td  style="vertical-align: middle;">
+              <%= (user.activo) ?  (link_to 'Bloquear usuario', { :action => "change_user_estatus", :controller => "admin", :id => user, :t => @token, :back => "show_users"}, {:title => "Bloquear usuario", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post)  : (link_to 'Reactivar usuario', { :action => "change_user_estatus", :controller => "admin", :id => user, :t => @token, :back => "show_users"}, {:title => "Reactivar usuario", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post) %>
+          </td>
+      <%end%>
 
        <%unless @baja%>
             <%if current_user.has_role?("admindireccion")%>
