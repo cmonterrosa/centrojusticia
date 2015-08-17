@@ -1,0 +1,34 @@
+<div class="titulocalendario">
+  <p align="center">Adscripciones del CEJA</p>
+</div>
+
+<table class="tablakolaval">
+  <tr>
+    <th>Descripción</th>
+    <th>Titular</th>
+    <th>Direccion</th>
+    <th>Código postal</th>
+    <th>Telefonos</th>
+    <th>Municipio</th>
+    <th>Cargo</th>
+  </tr>
+
+<% @subdireccions.each do |subdireccion| %>
+  <tr>
+    <td><%=h subdireccion.descripcion %></td>
+    <td><%=h subdireccion.titular %></td>
+    <td><%=h subdireccion.direccion %></td>
+    <td><%=h subdireccion.codigo_postal %></td>
+    <td><%=h subdireccion.telefonos %></td>
+    <td><%=h (subdireccion.municipio)? subdireccion.municipio.descripcion : "---" %></td>
+    <td><%=h subdireccion.cargo %></td>
+    <td><%= link_to 'Mostrar', subdireccion %></td>
+    <td><%= link_to 'Editar', edit_subdireccion_path(subdireccion) %></td>
+    <td><%= link_to 'Eliminar', subdireccion, :confirm => '¿Esta seguro?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= button_to 'Crear Subdirección', new_subdireccion_path %>

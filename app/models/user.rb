@@ -100,7 +100,10 @@ class User < ActiveRecord::Base
   end
 
   def nombre_completo
-    "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip}"
+    string = ""
+    string << "#{self.nombre.strip} " if self.nombre
+    string << "#{self.paterno.strip} " if self.paterno
+    string << "#{self.materno.strip}" if self.materno
   end
 
   ##### Puntuaciones #######
@@ -172,7 +175,7 @@ class User < ActiveRecord::Base
     if self.situacion
          "#{self.estatus_actual}".ljust(18) +   " | "  +   "#{self.nombre_completo}".ljust(40)  +  " | " +  "#{self.puntuacion_semana_actual}"
     else
-       "#{self.nombre.strip} #{self.paterno.strip} #{self.materno.strip}"
+      nombre_completo
     end
   end
 

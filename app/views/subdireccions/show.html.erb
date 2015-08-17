@@ -1,0 +1,57 @@
+<div class="titulocalendario">
+  <p align="center">Detalle</p>
+</div>
+
+ <table width="80%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+   <tr>
+      <td align="center"><%=h @subdireccion.descripcion %></td>
+    </tr>
+    <tr>
+      <td align="center"> <b>Titular: </b> <%=h @subdireccion.titular %></td>
+    </tr>
+
+    <tr>
+      <td align="center"><b>Dirección: </b> <%=h @subdireccion.direccion %></td>
+    </tr>
+
+    <tr>
+      <td align="center"><b>Código postal: </b> <%=h @subdireccion.codigo_postal %></td>
+    </tr>
+
+    <tr>
+      <td align="center"><b>Teléfonos: </b> <%=h @subdireccion.telefonos %></td>
+    </tr>
+
+    <tr>
+      <td align="center"><b>Municipio: </b>  <%=h (@subdireccion.municipio_id)? @subdireccion.municipio.descripcion : "---" %></td>
+    </tr>
+
+    <tr>
+      <td align="center"><b>Cargo: </b> <%=h @subdireccion.cargo %></td>
+    </tr>
+</table>
+
+<!-- Usuarios -->
+ <%@users = User.find(:all, :conditions => ["subdireccion_id = ?", @subdireccion])%>
+    <%unless @users.empty?%>
+        <table width="80%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+            <tr>
+                <td align="center">USUARIOS</td>
+            </tr>
+
+            <%@users.each do |u|%>
+              <tr>
+                  <td align="left"><%=h u.nombre_completo%></td>
+              </tr>
+            <%end%>
+        </table>
+     <%end%><br />
+
+
+
+
+
+
+
+<%= link_to 'Editar', edit_subdireccion_path(@subdireccion) %> |
+<%= link_to 'Atrás', subdireccions_path %>
