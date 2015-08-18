@@ -133,6 +133,27 @@ class TramitesController < ApplicationController
     end
   end
 
+
+  def show_numero_expediente
+      if params[:id] && params[:id] =~/^\d{1,5}\-\d{4}$/
+        folio_expediente,anio = params[:id].split("-")
+        unless @tramite=Tramite.find(:first, :conditions => ["anio = ? AND folio_expediente = ?", anio, folio_expediente])
+          flash[:error] = "No se encontro trámite, verifique"
+          redirect_back_or_default('/')
+        else
+          @layout_final=(params[:token] && params[:token]=="show_sesion")? "only_jquery" : "kolaval"
+            respond_to do |format|
+                    format.html { render :partial =>"show", :layout => @layout_final}
+                    format.json { render :partial => "tramites/show.json" }
+            end
+        end
+    else
+        redirect_back_or_default('/')
+    end
+  end
+
+
+
   def show_pdf
       if params[:id] && params[:id] =~/^\d{1,6}$/
         unless @tramite=Tramite.find(:first, :conditions => ["id = ?", params[:id]])
@@ -493,7 +514,7 @@ class TramitesController < ApplicationController
   end
 
   def get_descripcion_motivo_conclusion
-    @motivo_cancelacion = MotivoConclusion.find(params[:concluido_motivo_conclusion_id]) if params[:concluido_motivo_conclusion_id]
+    @motivo_cancelacion = MotivoConclusion.find(params[:concluido_motivo_conclusion_id]) if params[:concluido_motivo_conclusion_id] && params[:concluido_motivo_conclusion_id].size > 1
     (@motivo_cancelacion) ? (return render(:partial => 'descripcion_motivo_conclusion', :layout => false)) :  (return render :text => "")
   end
 
