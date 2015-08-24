@@ -85,7 +85,7 @@ class User < ActiveRecord::Base
   # We really need a Dispatch Chain here or something.
   # This will also let us return a human error message.
   #
-  def self.authenticate(login, password, last_ip)
+  def self.authenticate(login, password, last_ip=nil)
     return nil if login.blank? || password.blank?
     u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL and activo=true', login] # need to get the salt
     u && u.authenticated?(password) && u.update_attributes!(:last_login => Time.now, :last_ip => last_ip) ? u : nil
