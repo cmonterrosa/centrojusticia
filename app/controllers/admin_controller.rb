@@ -206,12 +206,13 @@ class AdminController < ApplicationController
      @mensaje = @user.activo ? "Usuario bloqueado" : "Usuario reactivado"
      @baja = Situacion.find_by_descripcion("BAJA")
      @disponible = Situacion.find_by_descripcion("DISPONIBLE")
+     url_regreso = (params[:back]) ? {:action => params[:back]} : {:action => "show_users_by_area"}
      (@user.activo) ? @user.update_attributes!(:activo => false, :situacion_id => @baja.id) : @user.update_attributes!(:activo => true, :situacion_id => @disponible.id)
      flash[:notice] = @mensaje
    else
      flash[:error] = "No se pudo bloquear usuario, verifique"
    end
-   redirect_to :action => "show_users_by_area"
+   redirect_to url_regreso
  end
 
 

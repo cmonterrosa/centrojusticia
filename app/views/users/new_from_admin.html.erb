@@ -40,8 +40,8 @@
           <td align="center">Teléfono Celular</td>
         </tr>
         <tr>
-          <td align="center"> <%= f.select :subdireccion_id, Subdireccion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
-          <td align="center"><%=f.text_field :email%></td>
+          <td align="center"> <%= f.select :subdireccion_id, Subdireccion.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+          <td align="center"><%=f.text_field :email, :required => true%></td>
           <td align="center"><%= f.text_field :direccion%></td>
           <td align="center"><%= f.text_field :tel_celular%></td>
         </tr>
@@ -57,11 +57,13 @@
         <tr align=" justify" class="pregunta">
           <td align="center">Contraseña</td>
           <td align="center">Confirmación de la contraseña</td>
+          <td align="center">Categoría</td>
           <td align="center">Estatus actual</td>
        </tr>
         <tr>
           <td align="center"><%= f.password_field :password %></td>
           <td align="center"><%= f.password_field :password_confirmation %></td>
+          <td align="center"><%= f.text_field :categoria %></td>
           <td align="center"> <%= f.select :situacion_id, Situacion.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
         </tr>
       </table></td>

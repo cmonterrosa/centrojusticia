@@ -24,7 +24,7 @@ BEGIN
 
  SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
  START TRANSACTION;
-    SET consecutivo=(SELECT Max(folio_expediente) + 1 FROM tramites WHERE anio = v_anio);
+    SET consecutivo=(SELECT COALESCE(SUM(folio_expediente),0) + 1 FROM tramites WHERE anio = v_anio);
     SET contador=(SELECT Count(folio_expediente) FROM tramites WHERE anio = v_anio AND folio_expediente = consecutivo);
 
     IF (contador < 1) THEN

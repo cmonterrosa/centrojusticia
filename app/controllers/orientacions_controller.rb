@@ -233,6 +233,14 @@ end
     return render(:partial => 'estadisticas/show_cargas_trabajo', :layout => 'only_jquery')
   end
 
+  def print_cargas_trabajo
+    @usuario = User.find(params[:id]) if params[:id]
+    @todos_especialistas = Role.find_by_name("ESPECIALISTAS").todos_usuarios
+    @todos_especialistas.each do |e| e["puntuacion_final"] = e.puntuacion_general end
+    @especialistas_semana = (@todos_especialistas.sort{|p1,p2| p1["puntuacion_final"] <=> p2["puntuacion_final"]}).reverse
+    return render(:partial => 'estadisticas/print_cargas_trabajo', :layout => 'pdf')
+  end
+
 
 
 protected
@@ -251,6 +259,5 @@ protected
       return (especialistas.sort{|p1,p2| p1["puntuacion_final"] <=> p2["puntuacion_final"]})
       #return (especialistas.sort{|p1,p2| p1.puntuacion_semana_actual <=> p2.puntuacion_semana_actual})
    end
-
 
 end

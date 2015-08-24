@@ -8,8 +8,15 @@
   <div class="titulocalendario">
   <p align="center">
    <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "show_cargas_trabajo"}, :title => "Recargar"%>
+   <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "print_cargas_trabajo", :id => "#{current_user.id}.pdf", :alt => "Impresión", :target => "_blank"}, :title => "Imprimir"%>
   </p
+  
  </div>
+
+   
+
+
+
   
 
   <div class="ultima_conexion" style="text-align: center;">

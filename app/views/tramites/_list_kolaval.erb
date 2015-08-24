@@ -69,7 +69,7 @@
 
         <!-- Cancelacion de tramites -->
         <%if (tramite.estatu_id == comparecencia_concluida.id || tramite.estatu_id == tramite_extraordinario.id || tramite.estatu_id == materia_asignada.id ) && (current_user.has_role?("cancelatramite") || current_user.has_role?("direccion"))%>
-             <td style="vertical-align: middle;"><%=h (link_to "Cancelar", {:controller => "tramites", :action => "cancel_form", :id => tramite.id}, :confirm => "¿Esta seguro que desea cancelar el trámite?", :class => "fancybox fancybox.iframe") %></td>
+             <td style="vertical-align: middle;"><%=h (link_to "Cancelar", {:controller => "tramites", :action => "cancel_form", :id => tramite.id}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea cancelar el registro?" )%></td>
         <%end%>
 
 

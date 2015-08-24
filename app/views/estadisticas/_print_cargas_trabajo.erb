@@ -1,0 +1,122 @@
+<%
+PDFKit.configure do |config|
+  config.default_options = {
+    :page_size => 'letter',
+    :margin_top => '0.3in',
+    :margin_right => '0.3in',
+    :margin_bottom => '0.3in',
+    :margin_left => '0.3in',
+    :encoding => 'utf-8',
+    :header_right => "FECHA DE CREACION: [date] [time]     ",
+    :footer_right => "PAGINA [page] DE [toPage]     "
+  }
+end
+
+%>
+
+<style type="text/css">
+  /* Estilo para las tablas */
+table.sample {
+	border: 6px inset #8B8378;
+	-moz-border-radius: 6px;
+        font-family: "Nexa Light";
+        font-size: 12px;
+        margin-left:auto;
+        margin-right:auto;
+}
+table.sample td {
+	border: 0px solid black;
+	padding: 0.2em 2ex 0.2em 2ex;
+	color: black;
+}
+table.sample tr.d0 td {
+	background-color: #e8f4f4;
+}
+table.sample tr.d1 td {
+	background-color: #FEFEF2;
+}
+table.sample td.d0 {
+	background-color: #FCF6CF;
+}
+table.sample td.d2 {
+	background-color: #FF8C00;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+table.sample td.d3 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas */
+table.sample td.d0 {
+	background-color: #FFE4C4;
+}
+
+/* para las columnas de error */
+table.sample td.d99 {
+	background-color: #FF9900;
+}
+
+.watermark {
+    position: absolute;
+    opacity: 0.25;
+    font-size: 5em;
+    width: 100%;
+    text-align: center;
+    z-index: 1000;
+}
+</style>
+
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+   <tr><th align="center"><%=SUBDIRECCION.titleize%></th></tr>
+</table>
+
+<div class="titulocalendario">
+    <p>Ranking de Actividad de Especialistas </p>
+    <p style="font-size: 17px;">Orientaciones y comparecencias levantadas del mes de <%=Time.now.strftime("%B de %Y")%></p>
+</div>
+
+<div class="ultima_conexion" style="text-align: center;">
+    <i>Ultima actualización: <%=Time.now.strftime("%d de %B de %Y - %H:%M:%S")%> | Impreso por: <%=h @usuario.nombre_completo%></i>
+  </div>
+  <br />
+
+
+<!-- contenido -->
+<div id="divlista">
+      <table  border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 95%">
+
+      <tr class="d1">
+        <td style="text-align: center;" width="4%" align="center"><b>#Rank</b></td>
+        <td style="text-align: center;" width="42%"><b>Especialista</b></td>
+        <td style="text-align: center;" width="18%" align="center"><b>Semana actual</b></td>
+        <td style="text-align: center;" width="18%" align="center"><b>Mes actual</b></td>
+        <td style="text-align: center;" width="18%" align="center"><b>Estatus actual</b></td>
+      </tr>
+
+      <%contador=1%>
+      <%@especialistas_semana.each do |e|%>
+      <tr class="d1">
+        <td style="vertical-align: middle;"><%=contador%></td>
+
+        <td style="vertical-align: middle;"><%=h(e.nombre_completo)%></td>
+
+        <!-- semana -->
+        <td style="vertical-align: middle;" style="text-align: center;"><%=h(e['puntuacion_final'].to_i)%></td>
+
+        <!-- mes -->
+        <td style="vertical-align: middle;"><%=h( (e['puntuacion_final'].modulo(1) * 100).to_i)%></td>
+
+        <!-- estatus -->
+        <td style="vertical-align: middle;"><%=h e.estatus_actual%></td>
+
+        <%contador+=1%>
+      </tr>
+    <%end%>
+    </table>
+</div>
+
+
+
+
