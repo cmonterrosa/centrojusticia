@@ -20,6 +20,11 @@
         <td style="vertical-align: middle;">Nombre</td>
         <td style="vertical-align: middle;">Estatus actual</td>
         <td style="vertical-align: middle;">Última conexión</td>
+
+        <%if current_user.has_role?(:admin)%>
+          <td style="vertical-align: middle;">IP</td>
+        <%end%>
+
         <td style="vertical-align: center;" colspan="4">Acciones</td>
       </tr>
     <%clase=0%>
@@ -52,6 +57,7 @@
       <td style="vertical-align: middle;"><%=h (user.last_login) ? user.last_login.strftime("%d de %B de %Y - %H:%M:%S") : "Sin conexión"%></td>
 
       <%if current_user.has_role?(:admin)%>
+          <td  style="vertical-align: middle;"><%=h user.last_ip%></td>
           <td  style="vertical-align: middle;">
               <%= (user.activo) ?  (link_to 'Bloquear usuario', { :action => "change_user_estatus", :controller => "admin", :id => user, :t => @token, :back => "show_users"}, {:title => "Bloquear usuario", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post)  : (link_to 'Reactivar usuario', { :action => "change_user_estatus", :controller => "admin", :id => user, :t => @token, :back => "show_users"}, {:title => "Reactivar usuario", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post) %>
           </td>
