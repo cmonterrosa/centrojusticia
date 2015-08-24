@@ -53,7 +53,7 @@ class User < ActiveRecord::Base
   # HACK HACK HACK -- how to do attr_accessible from here?
   # prevents a user from submitting a crafted form that bypasses activation
   # anything else you want your user to change should be added here.
-  attr_accessible :login, :email, :password, :password_confirmation, :paterno, :materno, :nombre, :direccion, :activo, :tel_celular, :last_login, :categoria, :num_orientaciones_por_semana, :full_description_for_especialistas, :num_orientaciones_dos_dias, :situacion_id, :empleado_id, :subdireccion_id
+  attr_accessible :login, :email, :password, :password_confirmation, :paterno, :materno, :nombre, :direccion, :activo, :tel_celular, :last_login, :categoria, :num_orientaciones_por_semana, :full_description_for_especialistas, :num_orientaciones_dos_dias, :situacion_id, :empleado_id, :subdireccion_id, :last_ip
 
 
   # Activates the user in the database.
@@ -85,10 +85,10 @@ class User < ActiveRecord::Base
   # We really need a Dispatch Chain here or something.
   # This will also let us return a human error message.
   #
-  def self.authenticate(login, password)
+  def self.authenticate(login, password, last_ip)
     return nil if login.blank? || password.blank?
     u = find :first, :conditions => ['login = ? and activated_at IS NOT NULL and activo=true', login] # need to get the salt
-    u && u.authenticated?(password) && u.update_attributes!(:last_login => Time.now) ? u : nil
+    u && u.authenticated?(password) && u.update_attributes!(:last_login => Time.now, :last_ip => last_ip) ? u : nil
   end
 
   def login=(value)
