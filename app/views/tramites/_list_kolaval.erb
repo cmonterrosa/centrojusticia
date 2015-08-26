@@ -23,10 +23,12 @@
 
     <table width="93%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-size:13px;">
       <tr>
+        <%if current_user.has_role?("admin")%>
+          <td style="vertical-align: middle;" align="center">&nbsp;</td>
+        <%end%>
          <td style="vertical-align: middle;" align="center">&nbsp;</td>
-         <td style="vertical-align: middle;" align="center">&nbsp;</td>
-         <td style="vertical-align: middle;" align="left">Folio</td>
-         <td style="vertical-align: middle;" align="left">Expediente</td>
+         <td style="vertical-align: middle;" align="left">Trámite</td>
+         <td style="vertical-align: middle;" align="left">Número de Expediente</td>
          <td style="vertical-align: middle;" align="center">Nombre del Solicitante</td>
          <td style="vertical-align: middle;" align="center"><%=h "Estatus"%></td>
          <td style="vertical-align: middle;" colspan="7" align="center">Acciones</td>
