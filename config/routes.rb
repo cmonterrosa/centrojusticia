@@ -1,4 +1,7 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :subdireccions
+  map.resources :procedencias
+
   map.resources :institucion_academicas
 
   map.resources :estudios
