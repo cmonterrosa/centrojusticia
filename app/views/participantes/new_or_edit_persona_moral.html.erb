@@ -57,7 +57,7 @@
           <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%></td>
           <td align="center"><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción', :required => true)%></td>
           <td align="center"><%= f.text_field :razon_social, :onKeyPress => "return CharNum(event, 'letra');", :onBlur=>"javascript:{this.value = this.value.toUpperCase();};verificar_rol();",   :placeholder => "Es necesario capturarlo", :required => true%></td>
-          <td align="center"><%= f.text_field :apoderado_legal, :onKeyPress => "return CharNum(event, 'letra');",  :placeholder => "Solo capturar si existe", :size => 60%></td>
+          <td align="center"><%= f.text_field :apoderado_legal, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onKeyPress => "return CharNum(event, 'letra');",  :placeholder => "Solo capturar si existe", :size => 60%></td>
         </tr>
       </table></td>
     </tr>
@@ -110,8 +110,8 @@
             <td align="center">Cuadrante</td>
           </tr>
           <tr>
-            <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true, :onchange => "verificar_rol();"%></td>
-            <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x11"%></td>
+            <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onchange => "verificar_rol();"%></td>
+            <td align="center"><%= f.text_area :referencia_domiciliaria, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }",  :size => "40x11"%></td>
             <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           </tr>
       </table>
