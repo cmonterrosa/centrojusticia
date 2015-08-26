@@ -71,7 +71,7 @@ window.onload = function() {
        </tr>
         <tr>
           <%enable = (@comparecencia.conocimiento) ? false : true%>
-          <td align="center"><%= f.text_area :datos, :class => "text", :size => "45x9", :disabled => enable%></td>
+          <td align="center"><%= f.text_area :datos,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "45x9", :disabled => enable%></td>
           <td align="center"><%= f.text_area :asunto,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :required => true, :size => "90x12"%></td>
         </tr>
       </table></td>
