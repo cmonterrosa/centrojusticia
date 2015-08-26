@@ -1,20 +1,53 @@
+<!DOCTYPE html>
+
 <%= render :partial => "barra_superior"%>
 
-<table width="80%" border="0" cellspacing="0" cellpadding="0">
-  <tr align="center">
-    <!-- Atencion extraordinaria -->
-    <td><%=link_to image_tag('tipo_atencion/tramite_extraordinario.png', :size => "128x128", :mouseover => "tipo_atencion/tramite_extraordinario_2.png") , {:action => "index", :controller => "extraordinaria"}, :title => "Atención por escrito de otras instancias"%></td
+<html lang="en" class="no-js">
+	<head>
+            <%= stylesheet_link_tag "menu_desplegable/default.css"%>
+            <%= stylesheet_link_tag "menu_desplegable/component.css"%>
+            <%= javascript_include_tag 'menu_desplegable/modernizr.custom.js'%>
+        </head>
+	<body>
+		<div class="container">
+                        <div class="main">
+				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+					<div class="cbp-hsinner">
+						<ul class="cbp-hsmenu">
 
-    <!-- Por escrito -->
-    <td><%=link_to image_tag('tipo_atencion/atencion_escrito.png',  :size => "128x128", :mouseover => "tipo_atencion/atencion_escrito_2.png") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito de particulares"%></td>
-  
-    <!-- Listado -->
-    <td><%=link_to image_tag('iconos/seguimiento.png',  :size => "128x128", :mouseover => "iconos/seguimiento.png") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></td>
-  </tr>
+                                                          <li>
+								 <!-- Tramites -->
+                                                                 <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
+								<ul class="cbp-hssubmenu">
+									 <%if current_user.has_role?("atencionpublico") || current_user.has_role?("jefeatencionpublico")%>
+                                                                            <li><%=link_to image_tag('kolaval/ico-iniciartramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-iniciartramites.jpg") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Iniciar trámite"%></li>
+                                                                         <%end%>
 
-    <tr align="center">
-     <td class="menu" align="center">Atención por escrito otras instituciones</td>
-     <td class="menu" align="center">Atención por escrito de particulares</td>
-     <td class="menu" align="center">Listado de trámites</td>
-  </tr>
-</table>
+                                                                          <!-- por escrito de instituciones y particulares -->
+                                                                         <%if current_user.has_role?("oficinasubdireccion")%>
+                                                                            <li><%=link_to image_tag('kolaval/ico-tramit-otras.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramit-otras.jpg") , {:action => "index", :controller => "extraordinaria"}, :title => "Trámites de otras instituciones"%></li>
+                                                                            <li><%=link_to image_tag('kolaval/ico-tramites-part.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites-part.jpg") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito de particulares"%></li>
+                                                                          <%end%>
+
+                                                                        <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
+                                                                </ul>
+							  </li>
+
+
+
+                                                          <!-- Agenda -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
+                                                          </li>
+
+                                                   </ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<script src="/javascripts/menu_desplegable/cbpHorizontalSlideOutMenu.min.js"></script>
+		<script>
+			var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper' ) );
+		</script>
+	</body>
+</html>
