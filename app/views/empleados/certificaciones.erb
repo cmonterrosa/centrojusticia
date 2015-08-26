@@ -57,9 +57,9 @@
 
      <%unless @certificaciones.empty?%>
      <tr class="d1">
-        <th style="vertical-align: middle;" width="40%">&nbsp;</th>
         <th style="vertical-align: middle;" width="10%">&nbsp;</th>
-        <th style="vertical-align: middle;" width="30%"><b>Categoria:</b></th>
+        <th style="vertical-align: middle;" width="20%">&nbsp;</th>
+        <th style="vertical-align: middle;" width="50%"><b>Categoria:</b></th>
         <th style="vertical-align: middle;" width="20%"><b>Fecha de impresion</b></th>
       </tr>
       <%end%>
@@ -69,9 +69,9 @@
 
         <tr class="d<%=h clase%>">
                 <!-- Si tiene archivo adjunto -->
-               <td align="center" width="40%"><%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , { :action => "print_certificacion", :controller => "empleados", :id => c }, :title => "Imprimir certificacion"%></td>
-                <td align="left" width="40%"><%=h link_to "Editar", :action => "new_or_edit_certificacion", :certificacion => c%></td>
-                <td align="left" width="40%"><%=h (c.categoria) ? c.categoria: ""%></td>
+               <td align="center" width="10%"><%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , { :action => "print_certificacion", :controller => "empleados", :id => c }, :title => "Imprimir certificacion"%></td>
+                <td align="left" width="20%"><%=h link_to "Editar", :action => "new_or_edit_certificacion", :certificacion => c%></td>
+                <td align="left" width="50%"><%=h (c.categoria) ? c.categoria: ""%></td>
                <td align="left" width="20%"><%=h (c.created_at) ? c.created_at.strftime('%d de %B de %Y / %H:%M %p'): ""%></td>
          </tr>
         <%clase=invert_class(clase)%>

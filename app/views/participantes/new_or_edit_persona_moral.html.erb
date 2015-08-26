@@ -111,7 +111,7 @@
           </tr>
           <tr>
             <td align="center"><%= f.text_area :domicilio, :size => "40x10", :required => true, :onchange => "verificar_rol();"%></td>
-            <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x10"%></td>
+            <td align="center"><%= f.text_area :referencia_domiciliaria, :size => "40x11"%></td>
             <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           </tr>
       </table>
@@ -187,7 +187,7 @@
   domicilio.add( Validate.Length, { maximum: 255 } );
 
   var referencia = new LiveValidation( 'participante_referencia_domiciliaria' );
-  referencia.add( Validate.Length, { maximum: 160 } );
+  referencia.add( Validate.Length, { maximum: 300 } );
 
   var observaciones = new LiveValidation( 'participante_observaciones' );
   observaciones.add( Validate.Length, { maximum: 350 } );

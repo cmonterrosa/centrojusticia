@@ -126,7 +126,7 @@
         </tr>
         <tr>
             <td align="center"><%= f.text_area :domicilio, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "40x10", :required => true%></td>
-            <td align="center"><%= f.text_area :referencia_domiciliaria, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "40x10"%></td>
+            <td align="center"><%= f.text_area :referencia_domiciliaria, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "40x11"%></td>
             <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
         </tr>
       </table></td>
@@ -205,7 +205,7 @@
 
   var referencia = new LiveValidation( 'participante_referencia_domiciliaria' );
   referencia.add( Validate.Presence );
-  referencia.add( Validate.Length, { maximum: 160 } );
+  referencia.add( Validate.Length, { maximum: 300 } );
 
   var observaciones = new LiveValidation( 'participante_observaciones' );
   observaciones.add( Validate.Length, { maximum: 350 } );
