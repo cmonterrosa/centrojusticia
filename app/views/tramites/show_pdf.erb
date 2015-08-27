@@ -2,10 +2,10 @@
 PDFKit.configure do |config|
   config.default_options = {
     :page_size => 'letter',
-    :margin_top => '0.3in',
-    :margin_right => '0.3in',
-    :margin_bottom => '0.3in',
-    :margin_left => '0.3in',
+    :margin_top => '0.2in',
+    :margin_right => '0.2in',
+    :margin_bottom => '0.2in',
+    :margin_left => '0.2in',
     :encoding => 'utf-8',
     :header_right => "FECHA DE CREACION: [date] [time]     ",
     :footer_right => "PAGINA [page] DE [toPage]     "
@@ -91,12 +91,12 @@ table.sample td.d99 {
 
 <div class="titulocalendario">
   <p>Resumen General</p>
-  <p><b>Número de expediente: <%=h (@tramite.numero_expediente) ? (@tramite.numero_expediente) : "----"%></b> | Folio: <%=link_to @tramite.folio_integrado, :action => "menu", :id => @tramite%></p>
+  <p><b>Número de expediente: <%=h (@tramite.numero_expediente) ? (@tramite.numero_expediente) : "----"%></b> | Folio de trámite: <%=link_to @tramite.folio_integrado, :action => "menu", :id => @tramite%></p>
 </div>
 
 
 <div id="divlista">
-  <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
 
     <!-- Si es concluido -->
     <%if Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id])%>
@@ -178,7 +178,7 @@ table.sample td.d99 {
 
 
     <%if @tramite.materia%>
-      <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
         <tr style="background-color:gray; color:white">
           <th colspan="2">
             Calificación de asunto:
@@ -232,7 +232,7 @@ table.sample td.d99 {
   
 
  <%if @comparecencia = @tramite.comparecencia%>
-    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
         <th colspan="2">
           Datos de la comparecencia
@@ -261,7 +261,7 @@ table.sample td.d99 {
     </table><br />
 
     <!-- detalle del asunto -->
-    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
        <th colspan="2">
            Detalle del asunto
@@ -269,11 +269,11 @@ table.sample td.d99 {
      </tr>
 
      <%tamanio = (@comparecencia.asunto) ? @comparecencia.asunto.size : 1564 %>
-     <%tamanio = (tamanio / 92) + 5%>
+     <%tamanio = (tamanio / 92) + 4%>
 
       <tr class="d0">
         <th colspan="2">
-          <%=text_area :comparecencia, :asunto, :size => "110x#{tamanio}", :disabled => true, :style => "text-align: justify"%>
+          <%=text_area :comparecencia, :asunto, :size => "140x#{tamanio}", :disabled => true, :style => "text-align: justify"%>
         </th>
       </tr>
      </table>
