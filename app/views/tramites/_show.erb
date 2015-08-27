@@ -234,10 +234,7 @@
             <div class="watermark">Trámite concluido</div>
           <end%>
            -->
-
-        <th colspan="2" width="95%">
-          <%=text_area :comparecencia, :asunto, :cols => 112, :disabled => true%>
-        </th>
+          <th colspan="2"><div style="overflow:hidden"> <%=h @comparecencia.asunto%></div></th>
       </tr>
      </table>
      <br /><br />

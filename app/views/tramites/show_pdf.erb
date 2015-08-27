@@ -272,9 +272,7 @@ table.sample td.d99 {
      <%tamanio = (tamanio / 92) + 4%>
 
       <tr class="d0">
-        <th colspan="2">
-          <%=text_area :comparecencia, :asunto, :cols => 122 , :disabled => true, :style => "text-align: justify"%>
-        </th>
+        <th colspan="2"><div style="overflow:hidden"> <%=h @comparecencia.asunto%></div></th>
       </tr>
      </table>
      <br />
