@@ -38,9 +38,15 @@
 
 
 <div class="titulocalendario">
-  <p style="font-size: 22px;"><b>Resumen General</b></p>
-  <p>Folio de trámite: <b><%=link_to @tramite.folio_integrado, {:action => "menu", :id => @tramite}, :style => "color: gray;"%></b></p>
-  <p>Número de expediente: <b><%=h (@tramite.numero_expediente) ? (@tramite.numero_expediente) : "----"%></b></p>
+  <p style="font-size: 18px;"><b>RESUMEN GENERAL</b></p>
+  <p style="font-size: 15px;"><b>FOLIO DE TRÁMITE:
+   <%if current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion)%>
+          <%=link_to @tramite.folio_integrado, {:action => "menu", :id => @tramite}, :style => "color: gray;"%>
+   <%else%>
+          <span style="color: gray;"><%=h @tramite.folio_integrado%></span>
+   <%end%>
+  </b> |
+  <b>NÚMERO DE EXPEDIENTE: <span style="color:gray;"><%=h (@tramite.numero_expediente) ? (@tramite.numero_expediente) : "----"%></span></b></p>
 </div>
 
 
@@ -65,7 +71,7 @@
 
     <tr style="background-color:gray; color:white">
       <th colspan="2">
-        Datos generales
+        DATOS GENERALES
       </th>
      </tr>
 
@@ -139,7 +145,7 @@
       <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
         <tr style="background-color:gray; color:white">
           <th colspan="2">
-            Calificación de asunto:
+            CALIFICACION DE ASUNTO:
           </th>
         </tr>
 
@@ -193,7 +199,7 @@
     <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
         <th colspan="2">
-          Datos de la comparecencia
+          DATOS DE LA COMPARECENCIA
         </th>
       </tr>
 
@@ -222,7 +228,7 @@
     <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
        <th colspan="2">
-           Detalle del asunto
+           DETALLE DEL ASUNTO
        </th>
      </tr>
 
