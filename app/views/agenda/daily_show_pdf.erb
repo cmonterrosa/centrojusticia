@@ -68,11 +68,11 @@ table.table1{
 </style>
 
 <table width="100%">
-  <tr><th align="center"><%=SUBDIRECCION.titleize%></th></tr>
+  <tr><th align="center"><%=SUBDIRECCION.upcase%></th></tr>
 </table>
 
-<div style="font-size: 12px; color: black;">
-  <p><%=@titulo%>; <%=day_of_the_week(@fecha.strftime("%u").to_i).titleize%>, <%=(@fecha.strftime("%d de %B de %Y"))%>   <%=h @impreso_por%></p>
+<div style="font-size: 11px; color: black;">
+  <p><%=@titulo.upcase%>; <%=day_of_the_week(@fecha.strftime("%u").to_i).upcase%>, <%=(@fecha.strftime("%d DE %B DE %Y").upcase)%>   <%=h @impreso_por.upcase%></p>
 </div>
 
 
@@ -92,7 +92,7 @@ table.table1{
       <!-- horarios -->
       <%@horarios.each do |horario|%>
       <tr>
-          <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa) : "--"%></th>
+          <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa.upcase) : "--"%></th>
               <%@salas.each do |sala|%>
 
              <%if @type%>

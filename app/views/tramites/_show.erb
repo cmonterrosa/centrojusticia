@@ -16,7 +16,7 @@
     <!-- Si es cancelado -->
      <div class="watermark">CONCLUIDO </div>
      <%if @tramite.concluido%>
-     <table width="88%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-family: 'Nexa Light'; font-size: 15px;">
+     <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-family: 'Nexa Light'; font-size: 15px;">
             <tr class="d1">
                 <td style="vertical-align: middle;" colspan="2"><b><%=h @tramite.concluido.motivo_conclusion.descripcion_completa%></b></td>
             </tr>
@@ -38,9 +38,15 @@
 
 
 <div class="titulocalendario">
-  <p style="font-size: 22px;"><b>Resumen General</b></p>
-  <p>Folio de trámite: <b><%=link_to @tramite.folio_integrado, {:action => "menu", :id => @tramite}, :style => "color: gray;"%></b></p>
-  <p>Número de expediente: <b><%=h (@tramite.numero_expediente) ? (@tramite.numero_expediente) : "----"%></b></p>
+  <p style="font-size: 18px;"><b>RESUMEN GENERAL</b></p>
+  <p style="font-size: 15px;"><b>FOLIO DE TRÁMITE:
+   <%if current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion)%>
+          <%=link_to @tramite.folio_integrado, {:action => "menu", :id => @tramite}, :style => "color: gray;"%>
+   <%else%>
+          <span style="color: gray;"><%=h @tramite.folio_integrado%></span>
+   <%end%>
+  </b> |
+  <b>NÚMERO DE EXPEDIENTE: <span style="color:gray;"><%=h (@tramite.numero_expediente) ? (@tramite.numero_expediente) : "----"%></span></b></p>
 </div>
 
 
@@ -51,7 +57,7 @@
   </p>
   
 
-  <table width="88%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid;">
+  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid;">
 
     <!-- Si es concluido -->
 
@@ -65,7 +71,7 @@
 
     <tr style="background-color:gray; color:white">
       <th colspan="2">
-        Datos generales
+        DATOS GENERALES
       </th>
      </tr>
 
@@ -136,10 +142,10 @@
 
 
     <%if @tramite.materia%>
-      <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
         <tr style="background-color:gray; color:white">
           <th colspan="2">
-            Calificación de asunto:
+            CALIFICACION DE ASUNTO:
           </th>
         </tr>
 
@@ -190,10 +196,10 @@
   <br />
 
  <%if @comparecencia = @tramite.comparecencia%>
-    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
         <th colspan="2">
-          Datos de la comparecencia
+          DATOS DE LA COMPARECENCIA
         </th>
       </tr>
 
@@ -219,10 +225,10 @@
     </table><br />
 
     <!-- detalle del asunto -->
-    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
        <th colspan="2">
-           Detalle del asunto
+           DETALLE DEL ASUNTO
        </th>
      </tr>
 
@@ -234,10 +240,7 @@
             <div class="watermark">Trámite concluido</div>
           <end%>
            -->
-
-        <th colspan="2" width="95%">
-          <%=text_area :comparecencia, :asunto, :cols => 64, :disabled => true%>
-        </th>
+          <th colspan="2"><div style="overflow:hidden"> <%=h @comparecencia.asunto%></div></th>
       </tr>
      </table>
      <br /><br />

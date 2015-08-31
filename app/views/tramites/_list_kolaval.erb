@@ -50,7 +50,14 @@
         <td style="vertical-align: middle; text-align: 'center';" width="4%"><%=link_to "X", :action => "destroy", :controller => "tramites", :id => tramite %></td>
        <%end%>
        <td style="vertical-align: middle; text-align: 'center';" width="4%"><%=link_to image_tag("kolaval/ico-print-tramite.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')-%></td>
-       <td style="vertical-align: middle;" width="6%" align="center"><%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%></td>
+       <td style="vertical-align: middle;" width="6%" align="center">
+
+         <%if current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion)%>
+             <%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%>
+         <%else%>
+             <%=h "##{tramite.folio_integrado}"%>
+         <%end%>
+       </td>
        <td style="vertical-align: middle;" align="center" width="9%"><b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b></td>
        <td style="vertical-align: middle;" width="30%"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
        <td style="vertical-align: middle;" width="21%"><b><%=tramite.estatus%></b></td>

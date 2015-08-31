@@ -19,7 +19,7 @@
   </p>
 
   <p>
-    <%=h @numero_total_sesiones = Sesion.count(:id, :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha])%> Sesiones
+    <%=h @numero_total_sesiones = Sesion.count(:id, :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha])%> SESIONES
   </p>
 
 </div>
@@ -56,7 +56,7 @@
       <!-- horarios -->
       <%@horarios.each do |horario|%>
       <tr>
-          <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa) : "--"%></th>
+          <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa.upcase) : "--"%></th>
               <%@salas.each do |sala|%>
 
              <%if @type%>
@@ -97,10 +97,10 @@
                   <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
                     <%if current_user.has_role?("asignahorario") || current_user.has_role?("direccion") || current_user.has_role?("subdireccion") || current_user.has_role?("admindireccion")%>
                         <td style="background-color: #D7F2FF;">
-                            <%=  link_to "Disponible", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
+                            <%=  link_to "DISPONIBLE", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
                         </td>
                     <%else%>
-                        <td style="background-color: #D7F2FF;">Disponible</td>
+                        <td style="background-color: #D7F2FF;">DISPONIBLE</td>
                     <%end%>
                  <%else%>
                     <td></td>
@@ -115,7 +115,7 @@
   <%else%>
 
 <div class="titulocalendario">
-  <p> Es un día no laborable</p>
+  <p style="font-size: 18px; text-align: center;"> ES UN DIA NO LABORABLE</p>
 </div>
 
 <%end%>
