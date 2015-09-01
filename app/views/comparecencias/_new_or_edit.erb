@@ -22,14 +22,14 @@ window.onload = function() {
         </tr>
         <tr>
           <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
-          <td align="center"><%= f.text_field :procedencia, :class => "text", :size => "50"%></td>
+          <td align="center"><%= f.text_field :procedencia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "50"%></td>
         </tr>
 
         <tr align=" justify" class="pregunta">
           <td align="center" colspan="4">Carácter con el que comparece <em class="formee-req">*</em></td>
         </tr>
         <tr>
-          <td align="center" colspan="4"><%= f.text_field :caracter, :class => "text", :size => "80"%></td>
+          <td align="center" colspan="4"><%= f.text_field :caracter, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "80"%></td>
         </tr>
 
 
@@ -48,8 +48,8 @@ window.onload = function() {
           <td align="center">¿Es del conocimiento de alguna autoridad?</td>
         </tr>
         <tr>
-          <td align="center"><%= f.text_field :hora_preferencia, :class => "text", :placeholder=> "Ej. 13-15"%></td>
-          <td align="center"><%= f.text_field :dia_preferencia, :class => "text", :placeholder => "Ej. Lunes, Martes"%></td>
+          <td align="center"><%= f.text_field :hora_preferencia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder=> "Ej. 13-15"%></td>
+          <td align="center"><%= f.text_field :dia_preferencia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder => "Ej. Lunes, Martes"%></td>
           <td align="center"><%=f.check_box :conocimiento, :onclick => "habilitar_datos();"%></td>
           
           <!--
