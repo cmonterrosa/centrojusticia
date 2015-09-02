@@ -5,16 +5,16 @@
 <div id="calendar">
   <h2 id="month">
     <%= link_to "<", :month => (@date.beginning_of_month-1).strftime("%Y-%m") %>
-    <%=h @date.strftime("%B %Y") %>
+    <%=h @date.strftime("%B DE %Y").upcase %>
     <%= link_to ">", :month => (@date.end_of_month+1).strftime("%Y-%m") %>
   </h2>
   <% calendar_for @sesiones, :year => @date.year, :month => @date.month do |calendar| %>
-    <%= calendar.head('Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado') %>
+    <%= calendar.head('DOMINGO', 'LUNES', 'MARTES', 'MIÉRCOLES', 'JUEVES', 'VIERNES', 'SÁBADO') %>
     <% calendar.day(:day_method => :start_at) do |date, sesiones| %>
        <%=(date.month == @date.month && (1..5).include?(date.wday)) ? (link_to date.day, {:action => "daily_show", :controller => "agenda", :year => date.year, :month=> date.month, :day => date.day, :origin => params[:controller], :type => "custom"}, {:title => date.strftime("%d de %B de %Y"), :class => "titulocalendario"}) : date.day %>
            <ul>
         <%if sesiones.size > 0%>
-        <li><%=  sesiones.size%> sesiones</li>
+        <li><%=  sesiones.size%> SESIONES</li>
         <%end%>
         <!--
         < for sesion in sesiones %>

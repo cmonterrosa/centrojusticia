@@ -19,7 +19,7 @@ class AgendaController < ApplicationController
      #@sesiones =  Sesion.find(:all, :select=> ["s.*"], :joins => "s, horarios h", :conditions => ["(cancel is NULL OR cancel=0) AND s.horario_id=h.id"], :order => "s.fecha, h.hora,h.minutos")
       @sesiones = []
      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
-     @title = "Control de agenda"
+     @title = "CONTROL DE AGENDA"
   end
 
   def search_sesiones
