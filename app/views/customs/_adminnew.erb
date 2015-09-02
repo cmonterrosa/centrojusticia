@@ -80,6 +80,11 @@
                                                                             <!-- Instituciones -->
                                                                             <%=link_to image_tag('kolaval/capacitacion/ico-insti-academ.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-insti-academ.jpg") , {:action => "index", :controller => "institucion_academicas"}, :title => "Instituciones académicas"%>
                                                                         </li>
+
+                                                                        <!-- Ausencias de personal -->
+                                                                        <li>
+                                                                              <ul><%=link_to image_tag('kolaval/ausencia-personal.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ausencia-personal.jpg") , {:action => "select_bitacora_ausencias_personal", :controller => "estadisticas"}, :title => "Reporte de ausencias de personal"%></ul>
+                                                                        </li>
                                                           </ul>
 
                                                           
