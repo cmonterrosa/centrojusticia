@@ -35,7 +35,7 @@
     <ul><li>&nbsp;</li></ul>
   </div>
 
-<% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id }, :html => {:id => "new_participante", :onsubmit => "return checkSubmit();"} do |f| -%>
+<% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id, :invitacion => @invitacion, :sesion => @sesion }, :html => {:id => "new_participante", :onsubmit => "return checkSubmit();"} do |f| -%>
   <table width="90%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="3" align="center" >PERSONA MORAL</td>
