@@ -35,32 +35,27 @@
 
                                                          <!-- Administracion de Usuarios -->
                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/admon-usuarios.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/admon-usuarios.jpg") , {:action => "show_users", :controller => "admin"}, :title => "Control de Usuarios"%></ul>
+                                                            <%=link_to image_tag('kolaval/admon-usuarios.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/admon-usuarios.jpg") , {:action => "show_users", :controller => "admin"}, :title => "Control de Usuarios"%>
+                                                            <ul class="cbp-hssubmenu">
+                                                              <li><%=link_to image_tag('kolaval/capacitacion/ico-empleados.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-empleados.jpg") , {:action => "show_users", :controller => "admin"}, :title => "Control de Empleados"%></li>
+                                                              <li><%=link_to image_tag('kolaval/dias-inha.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/dias-inha.jpg") , {:action => "festivos", :controller => "admin"}, :title => "Control de días inhábiles"%></li>
+                                                              <li><%=link_to image_tag('kolaval/ausencia-personal.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ausencia-personal.jpg") , {:action => "select_bitacora_ausencias_personal", :controller => "estadisticas"}, :title => "Reporte de ausencias de personal"%></li>
+                                                            </ul>
                                                          </li>
 
-                                                          <!-- Ausencias de personal -->
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/ausencia-personal.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ausencia-personal.jpg") , {:action => "select_bitacora_ausencias_personal", :controller => "estadisticas"}, :title => "Reporte de ausencias de personal"%></ul>
-                                                          </li>
+                                                         <%if current_user.has_role?(:controlinvitaciones)%>
+                                                         <li>
+                                                           <ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "index", :controller => "invitaciones"}, :title => "Invitaciones"%></ul>
+                                                         </li>
+                                                         <%end%>
 
+                                                          
                                                           <!-- Agenda -->
                                                           <li>
                                                             <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
                                                           </li>
 
-                                                          
-
-                                                          <!-- Dias inhabiles-->
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/dias-inha.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/dias-inha.jpg") , {:action => "festivos", :controller => "admin"}, :title => "Control de días inhábiles"%></ul>
-                                                          </li>
-
-
-
-							
-
-
-						</ul>
+                                                    </ul>
 					</div>
 				</nav>
 			</div>
