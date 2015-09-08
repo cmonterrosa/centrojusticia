@@ -1,0 +1,152 @@
+<script language="javascript">
+window.onload = function() {
+ habilitar_datos();
+}
+</script>
+
+<% form_for :datosinvitacion, @datosinvitacion, :url => { :action => "save_datos", :sesion => @sesion, :id => @datosinvitacion }, :method => :post do |f| -%>
+
+  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr bgcolor="#CCCCCC" class="titulo">
+      <td colspan="3" align="center" >DATOS DE LA INVITACION</td>
+    </tr>
+    <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="4">DATOS GENERALES DEL EXPEDIENTE</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Número de expediente</td>
+          <td align="center">Materia<em class="formee-req">*</em></td>
+          <td align="center">Fecha Actual</td>
+          <td align="center">Lugar</td>
+        </tr>
+        <tr>
+          <td align="center"><%=h (@sesion.tramite) ? @sesion.tramite.numero_expediente : "--"%></td>
+          <td align="center"><%=f.text_field :materia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }"%></td>
+          <td align="center"><%=f.date_select :fecha_actual, :start_year => 2011%></td>
+          <td align="center"><%=f.text_field :lugar,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => 50%></td>
+        </tr>
+      </table>
+     </td>
+    </tr>
+    <!-- segunda barra inferior -->
+      <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="4" >DATOS DE LA SOLICITUD</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Nombre del solicitante <em class="formee-req">*</em></td>
+          <td align="center">Sexo solicitante (M=Masculino, F=Femenino)<em class="formee-req">*</em></td>
+          <td align="center">Fecha de la solicitud</td>
+        </tr>
+        <tr>
+          <td align="center"><%= f.text_field :solicitante, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder=> "", :size => 60%></td>
+          <td align="center"><%= f.select(:genero_solicitante, { "F" => "LA", "M" => "EL"}, :selected => @datosinvitacion.genero_solicitante) %></td>
+          <td align="center"><%= f.text_field :fecha_solicitud, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder => ""%></td>
+        </tr>
+      </table></td>
+     </tr>
+
+       <!-- tercera barra -->
+      <tr align="center">
+        <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr bgcolor="#E8E8E8" class="subtitulo">
+           <td align="center" colspan="4" >DATOS DE LA SESIÓN</td>
+          </tr>
+          <tr align=" justify" class="pregunta">
+            <td align="center">Especialista <em class="formee-req">*</em></td>
+            <td align="center">Fecha/hora de la sesión <em class="formee-req">*</em></td>
+          </tr>
+          <tr>
+            <td align="center"><%= f.text_field :especialista, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => 55%></td>
+            <td align="center"><%= f.text_field :fechahora_sesion, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder => "", :size => 65%></td>
+          </tr>
+        </table>
+        </td>
+     </tr>
+
+
+
+     <!-- barra inferior -->
+       <tr align="center">
+      <td align="center">
+        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr bgcolor="#E8E8E8" class="subtitulo">
+          <td align="center" colspan="4" >EXPEDIDA POR</td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center">Subdirección <em class="formee-req">*</em></td>
+           <td align="center">Subdirector <em class="formee-req">*</em></td>
+           <td align="center">Cargo <em class="formee-req">*</em></td>
+       </tr>
+        <tr>
+          <td align="center"><%= f.text_field :subdireccion, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "45"%></td>
+          <td align="center"><%= f.text_field :subdirector,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "45"%></td>
+          <td align="center"><%= f.text_field :cargo,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :required => true, :size => "40"%></td>
+        </tr>
+      </table>
+      </td>
+     </tr>
+
+
+
+    <!-- espacio -->
+    <tr>
+      <td colspan="3"><hr /></td>
+    </tr>
+    <!-- FOOTER -->
+
+
+   <tr>
+    <td align="right">
+      <table>
+        <tr>
+          <td>
+            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar" />
+          </td>
+          <td>
+            <a href="/invitaciones/list_by_sesion/<%=@sesion.id%>" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" >&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+
+
+
+<% end %>
+</table>
+
+<script type="text/javascript">
+  var especialista = new LiveValidation( 'datosinvitacion_especialista' );
+  especialista.add( Validate.Presence );
+  especialista.add( Validate.Length, { maximum: 1005 } );
+
+  var subdireccion = new LiveValidation('datosinvitacion_subdireccion' );
+  subdireccion.add( Validate.Presence );
+  subdireccion.add( Validate.Length, { maximum: 70 } );
+
+  var cargo = new LiveValidation('datosinvitacion_cargo' );
+  cargo.add( Validate.Presence );
+  cargo.add( Validate.Length, { maximum: 70 } );
+
+  var solicitante = new LiveValidation( 'datosinvitacion_solicitante' );
+  solicitante.add( Validate.Length, { maximum: 40 } );
+
+  var materia = new LiveValidation('datosinvitacion_materia' );
+  materia.add( Validate.Presence );
+  materia.add( Validate.Length, { maximum: 140 } );
+
+  var fechasolicitud = new LiveValidation('datosinvitacion_fecha_solicitud' );
+  fechasolicitud.add( Validate.Presence );
+
+</script>

@@ -1,0 +1,61 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+
+<div class="titulocalendario">
+  <%if @sesion%>
+    <p>INVITACION DEL  EXPEDIENTE:
+      <b><%=h (@sesion.tramite) ? @sesion.tramite.numero_expediente : nil%></b>
+      <%=(@sesion.num_invitacion) ? ((@sesion.num_invitacion == 1) ? ' -  PRIMERA INVITACION' : ' -  SEGUNDA INVITACION') : ''%>
+      <hr class="LineaHorizontalVerde" />
+    </p>
+
+  <%else%>
+    <p>INVITACION
+      <hr class="LineaHorizontalVerde" />
+    </p>
+  <%end%>
+</div>
+
+<table width="32%" border="0" cellspacing="0" cellpadding="0">
+  <tr align="center">
+
+      <td>
+          <%=link_to_remote image_tag("kolaval/ico-infogeneral.jpg", :size => "128x128", :alt => "Informacion", :title => "Informacion"), :update => "divcontenido",
+          :url => { :action => "show_datos_generales", :id => @sesion.id },
+          :before => "Element.show('spinner')",
+          :complete => "Element.hide('spinner')",
+          :html => {:title => "Datos Generales"}%>
+      </td>
+
+      <%if @datosinvitacion &&  @sesion%>
+        <td>
+           <%=link_to_remote image_tag("kolaval/ico-invitados.jpg", :size => "128x128", :alt => "Participantes", :title => "Participantes"), :update => "divcontenido",
+            :url => { :action => "show_invitados", :id => @sesion.id },
+            :before => "Element.show('spinner')",
+            :complete => "Element.hide('spinner')",
+            :html => {:title => "Datos de los invitados"}%>
+        </td>
+
+     <%end%>
+ </tr>
+
+</table>
+
+<!-- spinner -->
+<img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" /><br />
+
+<!-- contenido -->
+<div id="divcontenido">
+
+</div>
+
+
+

@@ -1,6 +1,8 @@
 class Invitacion < ActiveRecord::Base
+  belongs_to :datosinvitacion
   belongs_to :sesion
   belongs_to :participante
+  belongs_to :user
 
   def signed?
     (self.sesion.signed_at)? (return true) : (return false)

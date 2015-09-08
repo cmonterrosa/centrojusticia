@@ -1,0 +1,85 @@
+<div class="titulocalendario">
+  <p>
+    LISTA DE INVITADOS
+  </p>
+</div>
+
+
+<%if  !@comparecencia.participantes.empty? && @datosinvitacion%>
+  <table class="tablakolaval" width="92%">
+    
+         <!-- Nombre de los integrantes -->
+         <tr>
+           <td scope="col" abbr="Starter">&nbsp;</td>
+             <td scope="col" abbr="Starter">Rol</td>
+             <td scope="col" abbr="Starter">Nombre completo o Razón Social</td>
+             <td scope="col" abbr="Starter" colspan="5">Acciones</td>
+         </tr>
+    
+    
+          <%contador=1%>
+          <% @comparecencia.participantes.each do |participante| %>
+                              <tr>
+
+                                <!-- si existe invitacion y fue entregada -->
+                                <%invitacion = Invitacion.find(:first, :conditions => ["participante_id = ? AND sesion_id = ?", participante, @datosinvitacion.sesion])%>
+                                <%if invitacion && invitacion.entregada%>
+                                   <td><%=h(image_tag("iconos/disponible2.png", :border =>0))%></td>
+                                <%else%>
+                                  <td>&nbsp;</td>
+                                <%end%>
+              
+                                <td> <%=h (participante.perfil) ? participante.perfil : "---"%></td>
+                                <%if participante.tipopersona%>
+                                  <td><%=h (participante.tipopersona.descripcion == 'MORAL') ? participante.razon_social : participante.nombre_completo%></td>
+                                  <td> <%=link_to 'Editar', {:action => "new_or_edit_persona_#{participante.tipopersona.descripcion.downcase}", :controller => "participantes", :id => @comparecencia, :participante => participante, :origin => "invitaciones", :sesion => @sesion}, :class => 'boton'%></td>
+                                <%else%>
+                                  <td><%=h "-----"%></td>
+                                <%end%>
+
+                                 <%if participante.perfil=="SOLICITANTE"%>
+                                    <td>&nbsp;</td>
+                                <%else%>
+                                    <td> <%=link_to 'Imprimir Invitacion', {:action => "imprimir", :controller => "invitaciones", :id => @sesion, :participante => participante}, :class => 'boton'%></td>
+                                <%end%>
+                                   
+                                 <%if invitacion%>
+                                    <td> <%=link_to 'Detalle de invitación', {:action => "show", :controller => "invitaciones", :id => invitacion}, :class => 'boton'%></td>
+                                 
+                                    <%if invitacion.invitador_id == current_user.id || current_user.has_role?(:jefeatencionpublico)%>
+                                        <td><%=link_to 'Razonar',{:action => "razonar", :id => invitacion, :p => invitacion.participante_id}, :title => "Razonar invitación", :class => 'boton'%></td>
+                                     <%end%>
+
+                                     <%if current_user.has_role?(:controlinvitaciones) || current_user.has_role?(:jefeatencionpublico)%>
+                                          <td><%=link_to "Asignar", {:action => "asignar_invitador", :id => invitacion}, :title => "Asignar la invitación", :class => 'boton'%></td>
+                                     <%end%>
+
+
+                                 <%else%>
+                                    <td>&nbsp;</td>
+                                 <%end%>
+
+                                <% if current_user.has_role?(:especialista) && current_user == @comparecencia.user %>
+                                    <td> <%=link_to 'Eliminar', {:action => "delete", :controller => "participantes", :id => participante}, :confirm => '¿Seguro que desea eliminarlo?', :class => 'boton'%></td>
+                                <%else%>
+                                    <td>&nbsp;</td>
+                                <%end%>
+                              </tr>
+            <%contador+=1%>
+            <%end%>
+     
+  </table>
+
+<%else%>
+<div class="titulocalendario">
+  <p>Para ver la lista de invitados, es necesario guardar los datos generales de la invitación</p>
+</div>
+
+<%end%>
+
+<br />
+
+
+
+
+          

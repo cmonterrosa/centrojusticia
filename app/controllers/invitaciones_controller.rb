@@ -2,10 +2,99 @@
 # encoding: utf-8
 include SendDocHelper
 class InvitacionesController < ApplicationController
-  require_role [:direccion, :subdireccion, :invitadores, :controlinvitaciones]
+  require_role [:direccion, :subdireccion, :invitadores, :controlinvitaciones, :jefeatencionpublico]
   
 
   def index
+    @user = (params[:id])? User.find(params[:id]) : current_user
+    if @user.has_role?(:controlinvitaciones)
+        ### Si recibe parametros ###
+        @carpeta_atencion = (params[:carpeta_atencion] =~ /^\d{1,4}\/\d{4}$/) ? params[:carpeta_atencion].strip : nil if params[:carpeta_atencion]
+        folio_expediente, anio=@carpeta_atencion.split("/") if @carpeta_atencion
+        ## Filtrado de tramites ###
+        @tramites = (folio_expediente && anio)?  Tramite.find(:all, :conditions => ["folio_expediente =? AND anio=?", folio_expediente, anio], :order => "anio DESC, folio_expediente DESC") : nil
+        @tramites = @tramites.sort{|a,b| a.numero_expediente <=> b.numero_expediente}.reverse if @tramites
+        @tramites = @tramites.paginate(:page => params[:page], :per_page => 25) if @tramites
+        @destino = "index"
+        render :partial => "busqueda_expediente", :layout => "kolaval"
+    else
+      flash[:notice]= "El usuario no tiene privilegios suficientes, contacte al administrador"
+      redirect_to :controller => "home"
+    end
+  end
+
+  def save_datos
+    @datosinvitacion = Datosinvitacion.find(params[:id]) if params[:id]
+    @datosinvitacion ||= Datosinvitacion.new
+    @datosinvitacion.update_attributes(params[:datosinvitacion])
+    @sesion = Sesion.find(params[:sesion]) if params[:sesion]
+    @datosinvitacion.sesion = @sesion if @sesion
+    @datosinvitacion.user = current_user if current_user
+    if @datosinvitacion.save
+      flash[:notice] = "Datos de la Invitacion guardados correctamente"
+      redirect_to :action => "list_by_sesion", :datosinvitacion => @datos_invitacion, :id => @sesion
+    else
+      flash[:error] = "No se puedo guadar, verifique"
+      render :action => "list_by_sesion", :id => @sesion
+    end
+  end
+
+
+    #--- ajax actions ----
+  def show_datos_generales
+    @sesion = Sesion.find(params[:id])
+    @datosinvitacion = Datosinvitacion.find_by_sesion_id(@sesion) if @sesion
+    @datosinvitacion = Datosinvitacion.find(params[:datosinvitacion]) if params[:datosinvitacion]
+    @datosinvitacion ||= Datosinvitacion.new
+    ##### Prellenado de parametros ######
+    @subdireccion = current_user.subdireccion
+    @datosinvitacion.subdireccion ||= (@subdireccion.descripcion) ? @subdireccion.descripcion : nil if @subdireccion
+    @datosinvitacion.subdirector ||= @subdireccion.titular if @subdireccion
+    @datosinvitacion.cargo ||= @subdireccion.cargo if @subdireccion
+    @datosinvitacion.fechahora_sesion ||= @sesion.fechahora_completa
+    @datosinvitacion.materia ||= (@sesion.tramite && @sesion.tramite.materia)? @sesion.tramite.materia.descripcion : nil if @sesion.tramite
+    @datosinvitacion.especialista ||= (@sesion.mediador) ? @sesion.mediador.nombre_completo : nil
+    @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d DE %B DE %Y").upcase
+    @datosinvitacion.lugar ||= LUGAR
+    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d DE")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month]}".upcase : nil
+    @datosinvitacion.solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.full_name : nil
+    @datosinvitacion.genero_solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.sexo : nil
+    @datosinvitacion.genero_solicitante = (@datosinvitacion.genero_solicitante == 'F')? 'LA' : 'EL' if @datosinvitacion.genero_solicitante
+    return render(:partial => 'show_datos_invitacion', :layout => 'only_jquery')
+  end
+
+  def show_invitados
+    @sesion = Sesion.find(params[:id])
+    @tramite ||= @sesion.tramite
+    @datosinvitacion = Datosinvitacion.find(:first, :conditions => ["sesion_id = ?", @sesion]) if @sesion
+    @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?",  @tramite])
+    return render(:partial => 'list_invitados', :layout => 'only_jquery')
+  end
+
+
+
+
+  def list_by_sesion
+    @sesion = Sesion.find(params[:id])
+    @datosinvitacion = Datosinvitacion.find_by_sesion_id(@sesion) if @sesion
+    @datosinvitacion = Datosinvitacion.find(params[:datosinvitacion]) if params[:datosinvitacion]
+    @datosinvitacion ||= Datosinvitacion.new
+    ##### Prellenado de parametros ######
+    @subdireccion = current_user.subdireccion
+    @datosinvitacion.subdireccion ||= (@subdireccion.descripcion) ? @subdireccion.descripcion : nil if @subdireccion
+    @datosinvitacion.subdirector ||= @subdireccion.titular if @subdireccion
+    @datosinvitacion.cargo ||= @subdireccion.cargo if @subdireccion
+    @datosinvitacion.fechahora_sesion ||= @sesion.fechahora_completa
+    @datosinvitacion.materia ||= (@sesion.tramite && @sesion.tramite.materia)? @sesion.tramite.materia.descripcion : nil if @sesion.tramite
+    @datosinvitacion.especialista ||= (@sesion.mediador) ? @sesion.mediador.nombre_completo : nil
+    @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d DE %B DE %Y").upcase
+    @datosinvitacion.lugar ||= LUGAR
+    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d DE")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month]}".upcase : nil
+    @datosinvitacion.solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.full_name : nil
+    @datosinvitacion.genero_solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.sexo : nil
+    unless @sesion
+      redirect_to :controller => "home"
+    end
   end
 
 
@@ -21,8 +110,16 @@ class InvitacionesController < ApplicationController
      #@invitaciones = Invitacion.find(:all, :conditions => ["entregada IS NULL and participante_id IS NOT NULL"], :order => ["created_at DESC"])
      @invitaciones = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
                                     :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
-                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?)", ["invi-firm", "invi-proc"]],
-                                    :order => "t.anio DESC, t.folio_expediente DESC").paginate(:page => params[:page], :per_page => 15)
+                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND invitacions.entregada IS NULL", ["invi-firm", "invi-proc"]],
+                                    :order => "t.anio DESC, t.folio_expediente DESC").paginate(:page => params[:page], :per_page => 25)
+
+  end
+
+  def show_entregadas
+    @invitaciones = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
+                                    :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
+                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND invitacions.entregada IS NOT NULL", ["invi-firm", "invi-proc"]],
+                                    :order => "t.anio DESC, t.folio_expediente DESC").paginate(:page => params[:page], :per_page => 25)
 
   end
 
@@ -153,6 +250,84 @@ class InvitacionesController < ApplicationController
 
   end
 
+  
+  def imprimir
+    @participante = Participante.find(params[:participante])
+    @sesion = Sesion.find(params[:id])
+    @datosinvitacion = Datosinvitacion.find(:first, :conditions => ["sesion_id = ?", @sesion]) if @sesion
+    @invitacion = Invitacion.find(:first, :conditions => ["participante_id = ?", @participante ]) if @participante
+    @invitacion ||= Invitacion.new
+    @invitacion.datosinvitacion = @datosinvitacion if @datosinvitacion
+    @invitacion.participante ||= @participante if @participante
+    @invitacion.sesion ||= @sesion if @sesion
+    @invitacion.user = current_user if current_user
+    @invitacion.numero_invitacion ||= @sesion.num_invitacion if @sesion.num_invitacion
+    @tramite = @sesion.tramite
+    @configuracion = Configuracion.find(:all).first
+    @configuracion.pie_pagina
+    
+    if @sesion && @datosinvitacion
+       if current_user.has_role?("invitadores")
+         @tramite.update_estatus!("invi-proc",current_user) if @invitacion.printed_at.nil?
+         @invitacion.update_attributes!(:printed_at => Time.now) if @invitacion.printed_at.nil?
+       end
+
+        ############## PARAMETROS ###################
+       param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
+       param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+       param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>(@sesion.tramite) ? @sesion.tramite.numero_expediente : nil}
+       #param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=>(@datosinvitacion.fecha_actual) ? @datosinvitacion.fecha_actual.strftime("%d DE %B DE %Y").upcase : nil}
+       param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=> (@datosinvitacion.fecha_actual)? "#{@datosinvitacion.fecha_actual.strftime("%d DE")} #{Date::MONTHNAMES[@datosinvitacion.fecha_actual.month]} DE #{@datosinvitacion.fecha_actual.year}".upcase.gsub(/^0/,'') : nil}
+       param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>@datosinvitacion.especialista}
+       param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>@datosinvitacion.subdireccion}
+       param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@datosinvitacion.solicitante}
+       param["P_INVITADO"]={:tipo=>"String", :valor=>@participante.nombre_completo}
+       param["P_FECHA_SOLICITUD"]={:tipo=>"String", :valor=>@datosinvitacion.fecha_solicitud}
+       param["P_FECHAHORA_SESION"]={:tipo=>"String", :valor=>@datosinvitacion.fechahora_sesion}
+       param["P_MATERIA"]={:tipo=>"String", :valor=>@datosinvitacion.materia}
+       param["P_LUGAR"]={:tipo=>"String", :valor=>(@datosinvitacion.lugar)? "#{@datosinvitacion.lugar}, CHIAPAS" : nil }
+       param["P_GENERO"]={:tipo=>"String", :valor=>@datosinvitacion.genero_solicitante}
+       param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@datosinvitacion.subdirector}
+       param["P_CARGO"]={:tipo=>"String", :valor=>@datosinvitacion.cargo}
+       param["P_DIRECCION_OFICINAS"]=(@configuracion.pie_pagina)? {:tipo=>"String", :valor=>@configuracion.pie_pagina} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+       
+       ### Numero de invitacion ###
+      if @invitacion && @invitacion.numero_invitacion
+        case @invitacion.numero_invitacion
+          when 2
+            @leyenda_invitacion="SEGUNDA INVITACIÓN"
+          when 3
+            @leyenda_invitacion="TERCERA INVITACIÓN"
+          when 4
+            @leyenda_invitacion="CUARTA INVITACIÓN"
+       else
+         @leyenda_invitacion=nil
+       end
+      end
+      
+#      param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
+#
+#       if current_user.has_role?("direccion")
+#          d = Subdireccion.find_by_cargo("Director General")
+#          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular}
+#          param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo}
+#       else
+#          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@invitacion.subdireccion.titular}
+#          param["P_CARGO"]={:tipo=>"String", :valor=>@invitacion.subdireccion.cargo}
+#       end
+       if File.exists?(REPORTS_DIR + "/nueva_invitacion.jasper")
+          if @invitacion.save
+             send_doc_jdbc("nueva_invitacion", "nueva_invitacion", param, output_type = 'pdf')
+          end
+       else
+          render :text => "Error"
+       end
+    else
+      render :text => "Imposible generar invitación, verifique los parámetros"
+    end
+  end
+
+
   def list_by_tramite
     @tramite = Tramite.find(params[:id])
     @sesiones = Sesion.find(:all, :conditions => ["tramite_id = ?", @tramite.id])
@@ -176,13 +351,20 @@ class InvitacionesController < ApplicationController
 
   def razonar
     @invitacion = Invitacion.find(params[:id])
-    @invitadores = Role.find_by_name("invitadores").users
-    #if @invitacion && (@invitacion.invitador_id == current_user.id || current_user.has_role?(Role.find_by_name("admin")))
-        
-    #else
-     # render :text => "No tiene privilegios de razonar la invitación o no existe"
-    #end
+    @invitadores = Role.find_by_name("invitadores").users.sort { |a, b| a.nombre_completo <=> b.nombre_completo  }
+    unless @invitacion
+      flash[:error] =  "La invitación no existe"
+      redirect_to :action => "index"
+    end
   end
+
+  def destroy
+    if params[:id] && @invitacion = Invitacion.find(params[:id])
+      (@invitacion.destroy) ? flash[:notice] = "Registro eliminado correctamente" : flash[:error] = "No se pudo eliminar, verique"
+        redirect_to :action => "show_all"
+      end
+   end
+  
 
 
   def save
@@ -235,16 +417,16 @@ class InvitacionesController < ApplicationController
 
   def show_entregadas_by_user
     @cuadrantes = current_user.cuadrantes
-    @invitaciones_cuadrantes = Invitacion.find(:all, :select => "invitacions.*, cu.descripcion as cuadrante, t.id as tramite_id",
-                                    :joins => ["invitacions,participantes p, cuadrantes cu, sesions s, tramites t, estatus e"],
-                                    :conditions => ["invitacions.participante_id=p.id AND p.cuadrante_id=cu.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ? AND invitacions.invitador_id = ?", "invi-razo", current_user.id],
-                                    :order => "cu.descripcion")
+#    @invitaciones_cuadrantes = Invitacion.find(:all, :select => "invitacions.*, cu.descripcion as cuadrante, t.id as tramite_id",
+#                                    :joins => ["invitacions,participantes p, cuadrantes cu, sesions s, tramites t, estatus e"],
+#                                    :conditions => ["invitacions.participante_id=p.id AND p.cuadrante_id=cu.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ? AND invitacions.invitador_id = ?", "invi-razo", current_user.id],
+#                                    :order => "cu.descripcion")
 
     @invitaciones_asignadas = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id as cuadrante, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
                                     :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
                                     :conditions => ["invitador_id = ? AND invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ?", current_user.id, "invi-razo"],
                                     :order => "t.anio DESC, t.folio_expediente DESC")
-    @invitaciones = @invitaciones_cuadrantes + @invitaciones_asignadas
+    @invitaciones =  @invitaciones_asignadas
     #@invitaciones = Invitacion.find(:all, :conditions => ["entregada = ? AND invitador_id = ?", true, current_user.id], :order => "fecha_hora_entrega DESC")
   end
 

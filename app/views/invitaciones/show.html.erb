@@ -28,6 +28,12 @@
     </tr>
 
     <tr class="d1">
+      <td style="vertical-align: middle;"><b>Última impresión:</b></td>
+      <td style="vertical-align: middle;"><%=h((@invitacion.printed_at) ? "#{@invitacion.printed_at.strftime("%d de %B de %Y / %H:%M")}  #{(@invitacion.user) ?  " POR #{@invitacion.user.nombre_completo}" : ''}" : "---")%></td>
+    </tr>
+
+
+    <tr class="d1">
       <td style="vertical-align: middle;"><b>Entregada por:</b></td>
       <td style="vertical-align: middle;"><%=h((@invitacion.invitador_id) ? User.find(@invitacion.invitador_id).nombre_completo : "---")%></td>
     </tr>
