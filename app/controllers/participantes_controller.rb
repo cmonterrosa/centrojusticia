@@ -6,6 +6,9 @@ class ParticipantesController < ApplicationController
      #@participante.anio_nac = (Time.now.year.to_i - @participante.anio_nac.to_i) if  @participante.anio_nac
      @comparecencia = Comparecencia.find(params[:id])
      @tipo_persona = Tipopersona.find_by_descripcion("FISICA")
+     ## Recibe dato de edicion desde invitacion ###
+     @invitacion = (params[:origin] && params[:origin] == 'invitaciones') ? 1 : false
+     @sesion = (params[:sesion])? params[:sesion] : false if @invitacion
   end
   
    def new_or_edit_persona_moral
@@ -14,6 +17,9 @@ class ParticipantesController < ApplicationController
      @participante ||= Participante.new
      @comparecencia = Comparecencia.find(params[:id])
      @tipo_persona = Tipopersona.find_by_descripcion("MORAL")
+     ## Recibe dato de edicion desde invitacion ###
+     @invitacion = (params[:origin] && params[:origin] == 'invitaciones') ? 1 : false
+     @sesion = (params[:sesion])? params[:sesion] : false if @invitacion
   end
 
 
@@ -26,9 +32,10 @@ class ParticipantesController < ApplicationController
     @participante ||= Participante.new(params[:participante])
     @participante.comparecencia = Comparecencia.find(params[:id])
     @participante.user = current_user
+    url_regreso = (params[:invitacion] && params[:sesion]) ? {:action => "list_by_sesion", :controller => "invitaciones", :id => params[:sesion]} : {:controller => "comparecencias", :action => "new_or_edit", :id => @participante.comparecencia.tramite}
     if @participante.save
       flash[:notice] = "Guardado correctamente"
-      redirect_to :controller => "comparecencias", :action => "new_or_edit", :id => @participante.comparecencia.tramite
+      redirect_to url_regreso
     else
       flash[:error] = "No se pudo guardar, verifique"
       render :action => "new_or_edit"
