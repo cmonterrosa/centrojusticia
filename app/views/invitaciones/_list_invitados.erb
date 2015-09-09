@@ -51,7 +51,7 @@
                                      <%end%>
 
                                      <%if current_user.has_role?(:controlinvitaciones) || current_user.has_role?(:jefeatencionpublico)%>
-                                          <td><%=link_to "Asignar", {:action => "asignar_invitador", :id => invitacion}, :title => "Asignar la invitación", :class => 'boton'%></td>
+                                          <td><%=link_to "Asignar invitador", {:action => "asignar_invitador", :id => invitacion}, :title => "Asignar la invitación", :class => 'boton'%></td>
                                      <%end%>
 
 

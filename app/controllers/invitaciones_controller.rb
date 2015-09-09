@@ -351,7 +351,7 @@ class InvitacionesController < ApplicationController
 
   def razonar
     @invitacion = Invitacion.find(params[:id])
-    @invitadores = Role.find_by_name("invitadores").users.sort { |a, b| a.nombre_completo <=> b.nombre_completo  }
+    @invitadores = Role.find_by_name("invitadores").todos_usuarios.sort { |a, b| a.nombre_completo <=> b.nombre_completo  }
     unless @invitacion
       flash[:error] =  "La invitación no existe"
       redirect_to :action => "index"
