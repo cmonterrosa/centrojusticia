@@ -37,17 +37,14 @@
                                   <td><%=h "-----"%></td>
                                 <%end%>
 
-                                 <%if participante.perfil=="SOLICITANTE"%>
-                                    <td>&nbsp;</td>
-                                <%else%>
-                                    <td> <%=link_to 'Imprimir Invitacion', {:action => "imprimir", :controller => "invitaciones", :id => @sesion, :participante => participante}, :class => 'boton'%></td>
-                                <%end%>
-                                   
+                                  <!-- impresion de invitacion -->
+                                 <td> <%=link_to 'Imprimir Invitacion', {:action => "imprimir", :controller => "invitaciones", :id => @sesion, :participante => participante}, :class => 'boton'-%></td>
+                                
                                  <%if invitacion%>
                                     <td> <%=link_to 'Detalle de invitación', {:action => "show", :controller => "invitaciones", :id => invitacion}, :class => 'boton'%></td>
                                  
                                     <%if invitacion.invitador_id == current_user.id || current_user.has_role?(:jefeatencionpublico)%>
-                                        <td><%=link_to 'Razonar',{:action => "razonar", :id => invitacion, :p => invitacion.participante_id}, :title => "Razonar invitación", :class => 'boton'%></td>
+                                        <td><%=link_to 'Razonar',{:action => "razonar", :id => invitacion, :p => invitacion.participante_id}, :title => "Razonar invitación", :class => 'boton'-%></td>
                                      <%end%>
 
                                      <%if current_user.has_role?(:controlinvitaciones) || current_user.has_role?(:jefeatencionpublico)%>

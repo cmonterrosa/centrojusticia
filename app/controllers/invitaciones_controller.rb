@@ -253,6 +253,7 @@ class InvitacionesController < ApplicationController
   
   def imprimir
     @participante = Participante.find(params[:participante])
+    @perfil = @participante.perfil
     @sesion = Sesion.find(params[:id])
     @datosinvitacion = Datosinvitacion.find(:first, :conditions => ["sesion_id = ?", @sesion]) if @sesion
     @invitacion = Invitacion.find(:first, :conditions => ["participante_id = ?", @participante ]) if @participante
@@ -287,41 +288,41 @@ class InvitacionesController < ApplicationController
        param["P_MATERIA"]={:tipo=>"String", :valor=>@datosinvitacion.materia}
        param["P_LUGAR"]={:tipo=>"String", :valor=>(@datosinvitacion.lugar)? "#{@datosinvitacion.lugar}, CHIAPAS" : nil }
        param["P_GENERO"]={:tipo=>"String", :valor=>@datosinvitacion.genero_solicitante}
-       param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@datosinvitacion.subdirector}
-       param["P_CARGO"]={:tipo=>"String", :valor=>@datosinvitacion.cargo}
        param["P_DIRECCION_OFICINAS"]=(@configuracion.pie_pagina)? {:tipo=>"String", :valor=>@configuracion.pie_pagina} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
        
        ### Numero de invitacion ###
       if @invitacion && @invitacion.numero_invitacion
-        case @invitacion.numero_invitacion
-          when 2
-            @leyenda_invitacion="SEGUNDA INVITACIÓN"
-          when 3
-            @leyenda_invitacion="TERCERA INVITACIÓN"
-          when 4
-            @leyenda_invitacion="CUARTA INVITACIÓN"
-       else
-         @leyenda_invitacion=nil
-       end
-      end
-      
-#      param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
-#
-#       if current_user.has_role?("direccion")
-#          d = Subdireccion.find_by_cargo("Director General")
-#          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular}
-#          param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo}
-#       else
-#          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@invitacion.subdireccion.titular}
-#          param["P_CARGO"]={:tipo=>"String", :valor=>@invitacion.subdireccion.cargo}
-#       end
-       if File.exists?(REPORTS_DIR + "/nueva_invitacion.jasper")
-          if @invitacion.save
-             send_doc_jdbc("nueva_invitacion", "nueva_invitacion", param, output_type = 'pdf')
+          case @invitacion.numero_invitacion
+            when 2
+              @leyenda_invitacion="SEGUNDA INVITACIÓN"
+            when 3
+              @leyenda_invitacion="TERCERA INVITACIÓN"
+            when 4
+              @leyenda_invitacion="CUARTA INVITACIÓN"
+          else
+          @leyenda_invitacion=nil
           end
+      end
+
+      #param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
+       if current_user.has_role?("direccion")
+          d = Subdireccion.find_by_cargo("Director General")
+          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular}
+          param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo}
        else
-          render :text => "Error"
+          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@datosinvitacion.subdirector}
+          param["P_CARGO"]={:tipo=>"String", :valor=>@datosinvitacion.cargo}
        end
+       @comparecencia = @invitacion.sesion.tramite.comparecencia if @invitacion.sesion.tramite
+       if @invitacion.save
+            if @perfil == 'SOLICITANTE'
+                param["P_INVOLUCRADOS_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.descripcion_involucrados_con_articulo} if @comparecencia && @comparecencia.descripcion_involucrados_con_articulo
+                (File.exists?(REPORTS_DIR + "/nueva_invitacion.jasper"))?  send_doc_jdbc("nueva_invitacion", "nueva_invitacion", param, output_type = 'pdf') : (render :text => "<h3>Error de invitación del solicitante, contacte al administrador del sistema</h3>")
+            else
+                param["P_SOLICITANTES_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.descripcion_solicitantes_con_articulo} if @comparecencia && @comparecencia.descripcion_solicitantes_con_articulo
+                (File.exists?(REPORTS_DIR + "/nueva_invitacion_involucrado.jasper"))?  send_doc_jdbc("nueva_invitacion_involucrado", "nueva_invitacion", param, output_type = 'pdf') : (render :text => "<h3>Error de invitación del involucrado, contacte al administrador del sistema</h3>")
+            end
+        end
     else
       render :text => "Imposible generar invitación, verifique los parámetros"
     end

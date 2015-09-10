@@ -85,6 +85,10 @@ class Participante < ActiveRecord::Base
      return desc
    end
 
+   def articulo_por_su_genero
+      (self.sexo == 'F')? 'LA' : 'EL' if self.sexo
+   end
+
   
 
 
