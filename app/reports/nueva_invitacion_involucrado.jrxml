@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="20"/>
-	<property name="ireport.y" value="134"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="182"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -34,51 +34,51 @@
 	<title>
 		<band height="802" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="12" y="195" width="522" height="38"/>
+				<reportElement mode="Transparent" x="43" y="222" width="491" height="38"/>
 				<textElement lineSpacing="1_1_2">
-					<font fontName="Arial" size="12" isBold="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+					<font fontName="Arial" size="11" isBold="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["C. " + $P{P_INVITADO} + "\n" + "PRESENTE."]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="12" y="611" width="522" height="20"/>
+				<reportElement x="43" y="601" width="491" height="20"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ATENTAMENTE]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="12" y="110" width="522" height="22" forecolor="#000000"/>
+				<reportElement x="43" y="123" width="491" height="22" forecolor="#000000"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["EXPEDIENTE NÚMERO: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="12" y="133" width="522" height="21" forecolor="#000000"/>
+				<reportElement x="43" y="146" width="491" height="21" forecolor="#000000"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_LUGAR}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="12" y="154" width="522" height="21" forecolor="#000000"/>
+				<reportElement x="43" y="167" width="491" height="21" forecolor="#000000"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FECHA_ACTUAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="12" y="252" width="522" height="346"/>
+				<reportElement x="43" y="275" width="491" height="314"/>
 				<textElement textAlignment="Justified" lineSpacing="1_1_2">
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["EN ATENCIÓN A SOLICITUD " + $P{P_SOLICITANTES_DESCRIPCION} + ". REALIZADA EL DÍA " + $P{P_FECHA_SOLICITUD} + " DEL AÑO EN CURSO Y CON FUNDAMENTO EN EL ARTÍCULO 55 DE LA LEY DE JUSTICIA ALTERNATIVA DEL ESTADO, SE LE CITA A COMPARECER A LA SESIÓN PROGRAMADA PARA EL DÍA " + $P{P_FECHAHORA_SESION} + " EN  NUESTRAS INSTALACIONES  UBICADAS EN " + $P{P_DIRECCION_OFICINAS} + ", CON LA FINALIDAD DE DIRIMIR UNA CONTROVERSIA JURÍDICA DE CARÁCTER " + $P{P_MATERIA} + "." + "\n\n" +
 "NO OMITO MANIFESTARLE QUE PODRÁ ACOMPAÑARSE DE PERSONA DE  SU CONFIANZA Y PRESENTAR LA DOCUMENTACIÓN QUE CONSIDERE NECESARIA PARA EL DESAHOGO DE LA SESIÓN. ASÍ  MISMO, SERÁ NECESARIO PRESENTARSE CON UNA IDENTIFICACIÓN OFICIAL Y COPIA FOTOSTÁTICA DE LA MISMA." + "\n\n" +
-"LE HACEMOS SABER QUE  HA SIDO DESIGNADO PARA ATENDER EL ASUNTO EL (LA) ESPECIALISTA PÚBLICO: " + $P{P_ESPECIALISTA}]]></textFieldExpression>
+"LE HACEMOS SABER QUE  HA SIDO DESIGNADO PARA ATENDER EL ASUNTO EL (LA) ESPECIALISTA PÚBLICO: " + $P{P_ESPECIALISTA} + "."]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="12" y="666" width="520" height="72"/>
+				<reportElement mode="Transparent" x="43" y="655" width="489" height="72"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle" lineSpacing="1_1_2">
 					<font fontName="Arial" size="11" isBold="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -103,7 +103,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECCION}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="12" y="766" width="522" height="20"/>
+				<reportElement x="43" y="762" width="491" height="20"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
