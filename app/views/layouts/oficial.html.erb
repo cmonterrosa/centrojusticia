@@ -6,6 +6,7 @@
   <%= stylesheet_link_tag "oficial"%>
   <%= stylesheet_link_tag "kolaval_login"%>
   <%= stylesheet_link_tag "kolaval_main"%>
+  <%= stylesheet_link_tag "kolaval_tables"%>
 
    <%= javascript_include_tag 'prototype'%>
     <%= javascript_include_tag 'BubbleTooltips' %>
@@ -21,12 +22,14 @@
 
     <!-- validaciones -->
     <%=javascript_include_tag "validaciones"%>
-
     <%= stylesheet_link_tag "login-box"%>
     <%= stylesheet_link_tag "oficial"%>
     <%= stylesheet_link_tag "bt"%>
     <%= stylesheet_link_tag "search"%>
     <%= stylesheet_link_tag "calendario"%>
+    <%=javascript_include_tag "validate/jquery.validate.js" %>
+    <%=javascript_include_tag "validate/jquery.validation.functions.js" %>
+    <%= stylesheet_link_tag "validate/jquery.validate.css" %>
 
     <!-- Paginate -->
     <%= stylesheet_link_tag "paginate/style.css" %>
@@ -56,6 +59,11 @@
     <!-- Live Validation -->
     <%=javascript_include_tag "livevalidation/livevalidation_standalone.js" %>
     <%= stylesheet_link_tag "livevalidation/validation.css" %>
+
+     <!-- formee -->
+   <%= stylesheet_link_tag "formee/formee-structure.css" %>
+   <%= stylesheet_link_tag "formee/formee-style.css" %>
+    <%=javascript_include_tag "formee/formee.js" %>
 
 
    <script type="text/javascript">

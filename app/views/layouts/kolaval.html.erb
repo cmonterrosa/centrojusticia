@@ -31,6 +31,10 @@
     <%= stylesheet_link_tag "bt"%>
     <%= stylesheet_link_tag "search"%>
     <%= stylesheet_link_tag "calendario"%>
+    <%=javascript_include_tag "validate/jquery.validate.js" %>
+    <%=javascript_include_tag "validate/jquery.validation.functions.js" %>
+    <%= stylesheet_link_tag "validate/jquery.validate.css" %>
+
 
     <!-- Paginate -->
     <%= stylesheet_link_tag "paginate/style.css" %>
@@ -70,8 +74,10 @@
 
 
     <!-- sweet alert -->
-    <%=javascript_include_tag "sweetalert.min.js" %>
-    <%= stylesheet_link_tag "sweetalert.css" %>
+    <!--
+    <=javascript_include_tag "sweetalert.min.js" %>
+    <= stylesheet_link_tag "sweetalert.css" %>
+    -->
 
 
    <script type="text/javascript">
