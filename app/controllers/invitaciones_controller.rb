@@ -3,7 +3,8 @@
 include SendDocHelper
 class InvitacionesController < ApplicationController
   require_role [:direccion, :subdireccion, :invitadores, :controlinvitaciones, :jefeatencionpublico]
-  
+
+  before_filter :invitaciones_habilitadas
 
   def index
     @user = (params[:id])? User.find(params[:id]) : current_user
@@ -442,6 +443,15 @@ class InvitacionesController < ApplicationController
        @tramite.update_estatus!("invi-pers",current_user) if @tramite
        flash[:notice] = "Se actualizo registro correctamente"
        redirect_to :action => "list_by_tramite", :id=> @tramite
+    end
+  end
+
+ protected
+
+  def invitaciones_habilitadas
+    unless (INVITACIONES)
+        flash[:info] = "El módulo de invitaciones no se encuentra autorizado, verifique con el administrador"
+        redirect_to :controller => "home"
     end
   end
 
