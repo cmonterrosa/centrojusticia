@@ -1,34 +1,53 @@
 <!-- layout de ficha -->
-<div id="scroll">
-      <table class="tablakolaval" width="90%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-                <tr align="center" class="d0">
-                  <td width="20%">Número de expediente</td>
-                  <td width="40%" bgcolor="#E8E8E8">Solicitante</td>
-                  <td width="30%" bgcolor="#E8E8E8">Fecha Reservada / Tipo de Sesión</td>
-                  <td width="10%" bgcolor="#E8E8E8">Materia</td>
+<table class="tablakolaval" width="85%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+                <tr align="center">
+                  <td width="20%" >NÚMERO DE EXPEDIENTE</td>
+                  <td width="40%" >SOLICITANTE</td>
+                  <td width="30%" >PRÓXIMA FECHA / TIPO DE SESIÓN</td>
+                  <td width="10%" >MATERIA</td>
                 </tr>
                 <!-- Registros -->
-                <tr align="center" class="d1">
+                <tr align="center">
                   <td>
                       <%numero_expediente = (@tramite.numero_expediente) ? @tramite.numero_expediente : @tramite.folio%>
                       <%=link_to "#{numero_expediente}", {:action => "show", :id => @tramite}, :target => "_blank"%>
                   </td>
-                  <td bgcolor="#f3f3f3"><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
+                  <td><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
 
                   <!-- Si tiene fecha reservada -->
                   <%if @sesion = Sesion.find_by_tramite_id(@tramite)%>
                     <%if @sesion.start_at%>
-                      <td bgcolor="#f3f3f3"><%=@sesion.start_at.strftime('%d de %B de %Y')%> (<%=@sesion.hora_completa%>) / <%=@sesion.tiposesion.descripcion%> &nbsp; <%=link_to "Eliminar reservacion", :action => "destroy_reserva", :controller => "sesiones", :id =>  @sesion, :tramite => @tramite, :new_st => @new_st%> </td>
+                      <td bgcolor="#f3f3f3">
+                                <%=@sesion.start_at.strftime('%d de %B de %Y')%> (<%=@sesion.hora_completa%>) <br /> <%=@sesion.tiposesion.descripcion%> &nbsp;
+                                <%if current_user.has_role?(:subdireccion) || current_user.has_role?(:controlagenda)%>
+                                      <%=link_to "Eliminar reservacion", :action => "destroy_reserva", :controller => "sesiones", :id =>  @sesion, :tramite => @tramite, :new_st => @new_st%> </td>
+                                 <%end%>
                     <%else%>
-                      <td bgcolor="#f3f3f3">&nbsp;</td>
+                        <td>&nbsp;</td>
                     <%end%>
                   <%else%>
-                    <td bgcolor="#f3f3f3">&nbsp;</td>
+                    <td>&nbsp;</td>
                   <%end%>
 
-                  <td bgcolor="#f3f3f3">
+                  <td>
                     <div id="materia"><%=h(@tramite.materia ? @tramite.materia.descripcion : "No asignada")%></div>
                   </td>
                 </tr>
-        </table>
-</div><br /><br />
+
+                <!-- Descripcion del asunto -->
+                <%@comparecencia = @tramite.comparecencia%>
+                  <%if @comparecencia%>
+                        <tr>
+                           <td style="text-align: center;" colspan="4">
+                              <b>ASUNTO</b>
+                          </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="4" align="justify">
+                              <%=h @comparecencia.asunto%>
+                            </td>
+                        </tr>
+                  <%end%>
+  </table>
+<br /><br />
