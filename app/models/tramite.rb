@@ -78,13 +78,14 @@ class Tramite < ActiveRecord::Base
        ids = []
        usuario.roles.each do |role| ids << role.id end
        @flujo = Flujo.find(:first, :conditions => ["old_status_id = ? and role_id in (?)", self.estatu_id, ids])
-       new_estatus = (new_st) ? new_st.id : @flujo.new_status_id
+       new_estatus = (new_st) ? new_st.id : @flujo.new_status_id if (@flujo || new_st)
        @history = Historia.new(:tramite_id => self.id, :estatu_id => new_estatus, :user_id => usuario.id ) if new_estatus
-       if @history.save
-          #---- actualizacion del registro principal --
-          self.update_attributes!(:estatu_id => @history.estatu_id)
-          return true
-      end
+       if @history && @history.save
+            #---- actualizacion del registro principal --
+            self.update_attributes!(:estatu_id => @history.estatu_id)
+            return true
+       end
+       
   end
 
    def generar_folio

@@ -349,8 +349,10 @@ class TramitesController < ApplicationController
       if params.has_key?(:tramite)
           @primera_asignacion_materia = (@tramite.materia_id) ? true : false
           @tramite.update_attributes(params[:tramite])
-          @tramite.procedente=true if params[:tramite]["procedente"] == "1"
+          @tramite.procedente=true if params[:tramite]["procedente"] == "SI"
+          @tramite.noprocedente_id = nil if @tramite.procedente
           unless @tramite.procedente
+                @tramite.update_attributes!(:materia_id => nil)
                 @tramite.update_estatus!("tram-noad",current_user)
                 flash[:notice] = "Registro actualizado correctamente"
                 redirect_to :action => "list"

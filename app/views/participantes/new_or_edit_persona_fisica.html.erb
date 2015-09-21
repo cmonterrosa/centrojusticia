@@ -35,7 +35,7 @@
     <ul><li>&nbsp;</li></ul>
   </div>
 
-<% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id }, :html => {:id => "new_participante", :onsubmit => "return checkSubmit();"} do |f| -%>
+<% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id, :invitacion => @invitacion, :sesion => @sesion }, :html => {:id => "new_participante", :onsubmit => "return checkSubmit();"} do |f| -%>
   <table width="92%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
       <td colspan="4" align="center" >PERSONA FÍSICA</td>
@@ -185,7 +185,11 @@
               <input id="btn_guardar" title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;" onClick="return verificar_rol();"/>
             </td>
             <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "comparecencias", :action => "new_or_edit", :id => @comparecencia.tramite-%>
+              <%if @invitacion && @sesion%>
+                  <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "invitaciones", :action => "list_by_sesion", :id => @sesion-%>
+              <%else%>
+                  <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "comparecencias", :action => "new_or_edit", :id => @comparecencia.tramite-%>
+              <%end%>
             </td>
           </tr>
         </table>

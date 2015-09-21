@@ -1,0 +1,17 @@
+
+<%=render :partial => "encabezado_botones"%>
+
+<div class="titulocalendario">
+  <p>MIS INVITACIONES PENDIENTES DE ENTREGAR</p>
+</div>
+
+<%= render :partial => "list"%>
+
+
+<br />
+
+<%if @tramite%>
+  <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "tramites", :action => "menu", :id => @tramite%><br />
+<%else%>
+  <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
+<%end%>

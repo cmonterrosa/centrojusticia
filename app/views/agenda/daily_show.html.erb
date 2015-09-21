@@ -88,7 +88,12 @@
 
                        <!-- reprogramacion de sesion -->
                        <%if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
-                          &nbsp;<%= link_to image_tag("kolaval/ico-calen-edicion.png", :border =>0, :size => "24x24") , {:controller => "sesiones", :action => "reprogramar", :id => sesion}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post %>
+                          &nbsp;<%= link_to image_tag("kolaval/ico-calen-edicion.png", :border =>0, :size => "24x24") , {:controller => "sesiones", :action => "reprogramar", :id => sesion}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post -%>
+                      <%end%>
+
+                       <!-- invitaciones -->
+                       <%if current_user.has_role?("controlinvitaciones") || current_user.has_role?("subdireccion")%>
+                          &nbsp;<%= link_to image_tag("kolaval/ico-invitaciones.png", :border =>0, :size => "24x24") , {:controller => "invitaciones", :action => "list_by_sesion", :id => sesion}, :title => "Invitaciones", :confirm => '¿Esta seguro que quiere visualizar las invitaciones?', :method => :post -%>
                       <%end%>
 
                       </td>
