@@ -5,6 +5,7 @@
               <ul>
                 <li><%=flash[:notice]%></li>
               </ul>
+              <ul><li>&nbsp;</li></ul>
          </div>
 
            <%elsif flash[:warning]%>
@@ -13,6 +14,7 @@
                 <ul>
                   <li><%=flash[:warning]%></li>
                 </ul>
+                <ul><li>&nbsp;</li></ul>
               </div>
 
               <%elsif flash[:info]%>
@@ -21,6 +23,7 @@
                 <ul>
                   <li><%=flash[:info]%></li>
                 </ul>
+                <ul><li>&nbsp;</li></ul>
               </div>
 
 
@@ -30,5 +33,6 @@
                 <ul>
                   <li><%=flash[:error]%></li>
                 </ul>
+                <ul><li>&nbsp;</li></ul>
               </div>
             <%end%>
