@@ -83,11 +83,11 @@
                 </div>
                 <!-- Línea campo -->
                 <div class="grid-12-12">
-                  <span id="objeto_solicitud" class="InputGroup">
-                    <label class="uper"> <%= f.text_area "objeto_solicitud", :size => "125x3"%></label>&nbsp;&nbsp;
+                  <span id="objeto_solicitud">
+                    <label class="uper"> <%= f.text_area "objeto_solicitud", :size => "132x3"%></label>&nbsp;&nbsp;
                   </span>
                 </div>
-                <div class="grid-12-12 clean"></div>
+                
                 </td><!-- pregunta 2 -->
           </tr>
 
@@ -99,11 +99,11 @@
                 </div>
                 <!-- Línea campo -->
                 <div class="grid-12-12">
-                  <span id="observaciones_generales" class="InputGroup">
-                    <label class="uper">   <%= f.text_area "observaciones_generales", :size => "125x3"%></label>&nbsp;&nbsp;
+                  <span id="observaciones_generales">
+                    <label class="uper">   <%= f.text_area "observaciones_generales", :size => "132x3"%></label>&nbsp;&nbsp;
                   </span>
                 </div>
-                <div class="grid-12-12 clean"></div>
+                
                 </td><!-- pregunta 2 -->
           </tr>
 
@@ -115,11 +115,11 @@
                 </div>
                 <!-- Línea campo -->
                 <div class="grid-12-12">
-                  <span id="documentacion_anexa" class="InputGroup">
-                    <label class="uper"> <%= f.text_area "documentacion_anexa", :size => "125x3"%></label>&nbsp;&nbsp;
+                  <span id="documentacion_anexa">
+                    <label class="uper"> <%= f.text_area "documentacion_anexa", :size => "132x3"%></label>&nbsp;&nbsp;
                   </span>
                 </div>
-                <div class="grid-12-12 clean"></div>
+                
                 </td><!-- pregunta 2 -->
           </tr>
 
@@ -131,8 +131,8 @@
                 </div>
                 <!-- Línea campo -->
                 <div class="grid-12-12">
-                  <span id="materia" class="InputGroup">
-                    <label class="uper"> <%= f. collection_select("materia_id", Materia.all, :id, :descripcion, :include_blank => true)%></label>&nbsp;&nbsp;
+                  <span id="materia" class="InputGroup" style="text-align: center;">
+                     <%= f. collection_select("materia_id", Materia.all, :id, :descripcion, :include_blank => true)%>&nbsp;&nbsp;
                   </span>
                 </div>
                 <div class="grid-12-12 clean"></div>
@@ -169,9 +169,9 @@
 
 <script type="text/javascript">
     jQuery(function(){
-      jQuery("#tramite_objeto_solicitud").validate({ expression: "if   ( isNoEmpty(SelfID) || ElementIsChecked('tramite_procedente_no')) return true; else return false;", message: "Seleccione una opción!" });
-      jQuery("#tramite_noprocedente_id").validate({ expression: "if   ( isSelectedC(SelfID) || ElementIsChecked('tramite_procedente_si')) return true; else return false;", message: "Seleccione una opción!" });
-      jQuery("#tramite_materia_id").validate({ expression: "if   ( isSelectedC(SelfID) || ElementIsChecked('tramite_procedente_no')) return true; else return false;", message: "Seleccione una opción!" });
+      jQuery("#tramite_objeto_solicitud").validate({ expression: "if   ( isNoEmpty(SelfID) || ElementIsChecked('tramite_procedente_no')) return true; else return false;", message: "No puede estar en blanco" });
+      jQuery("#tramite_noprocedente_id").validate({ expression: "if   ( isSelectedC(SelfID) || ElementIsChecked('tramite_procedente_si')) return true; else return false;", message: "Seleccione una opción" });
+      jQuery("#tramite_materia_id").validate({ expression: "if   ( isSelectedC(SelfID) || ElementIsChecked('tramite_procedente_no')) return true; else return false;", message: "Seleccione una opción" });
     });
 </script>
 
