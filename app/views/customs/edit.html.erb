@@ -55,11 +55,13 @@
           <td align="center" colspan="4" ></td>
         </tr>
         <tr align=" justify" class="pregunta">
+          <td align="center">Sexo</td>
           <td align="center">Contraseña</td>
           <td align="center">Confirmación de la contraseña</td>
           <td align="center">Categoría</td>
        </tr>
         <tr>
+          <td align="center"><%= f.select :sexo, { "Femenino" => "F", "Masculino" => "M"}, :include_blank => true, :selected => @user.sexo %></td>
           <td align="center"><%= f.password_field :password %></td>
           <td align="center"><%= f.password_field :password_confirmation %></td>
           <td align="center"><%= f.text_field :categoria %></td>
