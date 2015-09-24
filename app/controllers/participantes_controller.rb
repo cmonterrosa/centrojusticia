@@ -31,6 +31,11 @@ class ParticipantesController < ApplicationController
     end
     @participante ||= Participante.new(params[:participante])
     @participante.comparecencia = Comparecencia.find(params[:id])
+
+    ## Si no sabe o no respondio edad y procedencia ###
+    (@participante.sabe_edad && @participante.sabe_edad == 'NO')? @participante.fecha_nac=nil : nil
+    (@participante.sabe_edad && @participante.sabe_edad == 'NO')? @participante.anio_nac=nil : nil
+    (@participante.sabe_procedencia && @participante.sabe_procedencia == 'NO')? (@participante.municipio_id=nil) : nil
     @participante.user = current_user
     url_regreso = (params[:invitacion] && params[:sesion]) ? {:action => "list_by_sesion", :controller => "invitaciones", :id => params[:sesion]} : {:controller => "comparecencias", :action => "new_or_edit", :id => @participante.comparecencia.tramite}
     if @participante.save
