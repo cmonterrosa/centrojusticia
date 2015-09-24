@@ -1,15 +1,11 @@
 <div id="divlista">
-  <table width="90%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-     <tr style="background-color:gray; color:white">
-        <th style="vertical-align: middle;" align="center">NP</th>
-        <th style="vertical-align: middle;" align="center">Número de Expediente</th>
-        <th style="vertical-align: middle;" align="center">Fecha/Hora&nbsp;de&nbsp;Captura</th>
-        <th style="vertical-align: middle;" align="center">Participante(s)</th>
-        <!--
-        <th style="vertical-align: middle;" align="center">Carácter con el que comparece</th>
-        <th style="vertical-align: middle;" align="center"><%=h "Estatus"%></th>
-        -->
-        <th style="vertical-align: middle;" colspan="4" align="center">Acciones</th>
+  <table width="95%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr>
+        <td style="vertical-align: middle;" align="center">NP</td>
+        <td style="vertical-align: middle;" align="center">Número de Expediente</td>
+        <td style="vertical-align: middle;" align="center">Fecha/Hora&nbsp;de&nbsp;Captura</td>
+        <td style="vertical-align: middle;" align="center">Participante(s)</td>
+        <td style="vertical-align: middle;" colspan="4" align="center">Acciones</td>
     </tr>
      <%clase=0%>
      <%counter=1%>
@@ -18,9 +14,6 @@
         <td style="vertical-align: middle;"><%=h counter%></td>
         <td style="vertical-align: middle;"><b><%=h (comparecencia.tramite) ? comparecencia.tramite.numero_expediente : "--"%></b></td>
         <td style="vertical-align: middle;"><%=comparecencia.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
-        <!--
-        <td style="vertical-align: middle;"><=comparecencia.tramite.orientacion.solicitante%></td>
-        -->
         <td style="vertical-align: middle;">
           <%participantes=[]%>
           <%comparecencia.participantes.each do |p|%>
