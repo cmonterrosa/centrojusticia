@@ -32,15 +32,17 @@
   
 
    <tr>
-     
     <th class="LabelBusquedaTramite">Estatus del trámite: <br /></th>
+    
+      <%
+         @estatuses = Estatu.find(:all, :select => "estatus.*", 
+           :joins => "estatus, estatus_roles er, roles r, roles_users ru, users u",
+           :conditions => ["estatus.id=er.estatu_id AND er.role_id=r.id AND
+                                    r.id=ru.role_id AND ru.user_id = u.id AND
+                                    u.id = ?", current_user.id])
+        %>
 
-    <%ids = []%>
-       <%current_user.roles.each do |role| ids << role.id end%>
-       <%@estatuses = Estatu.find(:all, :conditions => ["id in (?)",  ids])%>
-       
-       <th><%=select("busqueda", "estatu_id", @estatuses.collect {|mt| [ mt.descripcion, mt.id ] }, {:include_blank => 'Selecciona el estatus'})%></th>
-   
+       <th><%=select("busqueda", "estatu_id", @estatuses.collect {|mt| [ mt.descripcion, mt.id ] }, {:include_blank => 'Selecciona una opción'})%></th>
   </tr>
 
    
