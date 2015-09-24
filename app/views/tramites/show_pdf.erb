@@ -75,6 +75,18 @@ table.sample td.d99 {
    <tr><th align="center"><%=SUBDIRECCION.upcase%></th></tr>
 </table>
 
+<div>
+  <p><%= qrcode("#{@tramite.folio_integrado}", 2, 2, 'qrkolaval') %></p>
+
+  <%
+  FileUtils::mkdir_p "#{RAILS_ROOT}/tmp/QR"
+  f = File.new("#{RAILS_ROOT}/tmp/QR/#{@tramite.folio_integrado}.png", "wb")
+  f.write  qrcode("#{@tramite.folio_integrado}", 2, 2, 'qrkolaval')
+  f.close
+  %>
+
+</div>
+
 
 
 <%if @tramite.estatu.clave == "tram-canc"%>
@@ -294,6 +306,9 @@ table.sample td.d99 {
 
 <!-- detalle de sesiones -->
 <%= render :partial => "detalle_sesiones"%>
+
+<!-- detalle de sesiones canceladas -->
+<%= render :partial => "detalle_sesiones_canceladas"%>
 
 <!-- detalle de conclusion -->
 <%=render :partial => "detalle_conclusion"%>
