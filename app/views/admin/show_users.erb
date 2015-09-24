@@ -34,7 +34,7 @@
         
       <%=case user.estatus_actual
         when "INCAPACIDAD"
-            h(image_tag("iconos/licencia2.png", :border =>0))
+            h(image_tag("iconos/incapacidad.png", :border =>0))
         when "LICENCIA"
             h(image_tag("iconos/licencia2.png", :border =>0))
         when "PERMISO"
@@ -42,7 +42,7 @@
         when "EN SESION"
            h(image_tag("iconos/ensesion.png", :border =>0))
         when "GUARDIA"
-            h(image_tag("iconos/ensesion.png", :border =>0))
+            h(image_tag("iconos/guardia.png", :border =>0))
         when "BAJA"
             h(image_tag("iconos/baja.png", :border =>0))
         else
