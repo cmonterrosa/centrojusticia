@@ -64,25 +64,25 @@ class TramitesController < ApplicationController
      ### CARPETA DE ATENCION ###
      @tramites = (@carpeta_atencion) ? Tramite.find(:all, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) : nil
     
-    ### PARTICIPANTE ###
-    if @participante
+    ### PARTICIPANTE O SOLICITANTE###
+    if @participante && !@carpeta_atencion
       id_tramites=Array.new
-      @participantes_comparecencia ||= Participante.find(:all, :conditions => ["full_name like ? OR full_name like ?", "#{@participante}%",  "%#{@participante}"])
-      @solicitante ||= Orientacion.find(:all, :conditions => ["full_name like ? OR full_name like ?", "#{@participante}%", "%#{@participante}"])
+      @participantes_comparecencia ||= Participante.find(:all, :select => "id,comparecencia_id",:conditions => ["full_name like ? OR full_name like ?", "#{@participante}%",  "%#{@participante}"])
+      @solicitantes ||= Orientacion.find(:all, :select => "id, tramite_id", :conditions => ["full_name like ? OR full_name like ? OR paterno like ? OR paterno like ?", "#{@participante}%", "%#{@participante}", "#{@participante}%", "%#{@participante}"])
+      
       if @participantes_comparecencia
           @participantes_comparecencia.each do |p|
             @comparecencia = (p.comparecencia)? p.comparecencia.tramite : nil
             (@comparecencia) ? id_tramites << @comparecencia : nil
           end
       end
-      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}]) unless id_tramites.empty?
-      id_tramites = []
+      
       if @solicitantes
             @solicitantes.each do |s|
-              (s.tramite) ? id_tramites << s.tramite.id : nil
+              (s.tramite) ? id_tramites << s.tramite : nil
             end
       end
-      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}]) unless id_tramites.empty?
+      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}], :order => "anio DESC,folio_expediente DESC") unless id_tramites.empty?
       #@tramites = @tramites.sort{|a,b| a.created_at <=> b.created_at}.reverse unless id_tramites.empty?
     end
 
@@ -90,19 +90,19 @@ class TramitesController < ApplicationController
 
    if @razon_social
       id_tramites=Array.new
-      @participantes_comparecencia ||= Participante.find(:all, :conditions => ["razon_social like ?", "#{@razon_social}%"])
+      @participantes_comparecencia ||= Participante.find(:all, :select => "id,comparecencia_id,razon_social", :conditions => ["razon_social IS NOT NULL AND razon_social like ?", "#{@razon_social}%"])
       if @participantes_comparecencia
           @participantes_comparecencia.each do |p|
             @comparecencia = (p.comparecencia)? p.comparecencia.tramite : nil
             (@comparecencia) ? id_tramites << @comparecencia : nil
           end
       end
-      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}]) unless id_tramites.empty?
+      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}], :order => "anio DESC,folio_expediente DESC") unless id_tramites.empty?
    end
 
     ### Estatus ###
     @estatus = Estatu.find(@estatus) if (@estatus && params[:estatus])&&(params[:estatus].size > 0)
-    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id = ?", @estatus]) if @estatus
+    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id = ?", @estatus], :order => "anio DESC,folio_expediente DESC") if @estatus
 
     ## Default ###
     @tramites ||= Array.new
