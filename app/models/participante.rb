@@ -82,7 +82,8 @@ class Participante < ActiveRecord::Base
      (desc = (pais == mexico) ? self.municipio.descripcion_jerarquica : nil) if self.municipio_id
      ## Si es extranjero ##
      (desc ||= (pais) ? self.pais.descripcion : '') if self.pais_id
-     return desc
+     ## Si especifico que no sabe procedencia
+     (self.sabe_procedencia && self.sabe_procedencia == "NO") ? "" : desc
    end
 
    def articulo_por_su_genero
