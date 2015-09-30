@@ -1,82 +1,67 @@
 <div class="titulocalendario">
-  <p>RESUMEN DE INVITACION</p>
-  <p>Número de expediente: <%=link_to @tramite.numero_expediente, :action => "show", :id => @tramite, :controller => "tramites"%></p>
-  <!--
-  <p>Folio de Trámite: <=link_to @tramite.folio_integrado, :action => "menu", :id => @tramite%></p>
-  -->
+  <p style="font-family: 'Nexa Bold'; font-size: 17px;">RESUMEN DE LA INVITACION</p>
+  <p style="font-family: 'Nexa Light'; font-size: 17px;"><%=(@invitacion.sesion) ? "SESIÓN PARA EL DÍA #{@invitacion.sesion.fechahora_completa}" : ''-%></p>
+  <p style="font-family: 'Nexa Light'; font-size: 15px;">NÚMERO DE EXPEDIENTE: <%=link_to @tramite.numero_expediente, {:action => "show", :id => @tramite, :controller => "tramites"}, :class=> "fancybox fancybox.iframe"%></p>
 </div>
 
 
-
-<%if @invitacion.entregada == true%>
-    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
         <th colspan="4">
-          Detalle de la invitación
+          DETALLE DE LA INVITACIÓN
         </th>
       </tr>
-    <!--
-    <tr class="d1">
-      <td style="vertical-align: middle;"><b>Fecha de impresión de invitaciones:</b></td>
-      <td style="vertical-align: middle;"><((@invitacion.printed_at) ? @invitacion.printed_at.strftime("%d de %B de %Y / %H:%M") : "")%></td>
-    </tr>
-    -->
 
-    <tr class="d0">
-      <td style="vertical-align: middle;"><b>Fecha de entrega:</b></td>
-      <td style="vertical-align: middle;"><%=h((@invitacion.fecha_hora_entrega) ? @invitacion.fecha_hora_entrega.strftime("%d de %B de %Y / %H:%M") : "No se ha entregado")%></td>
-    </tr>
-
-    <tr class="d1">
-      <td style="vertical-align: middle;"><b>Entregada por:</b></td>
-      <td style="vertical-align: middle;"><%=h((@invitacion.invitador_id) ? User.find(@invitacion.invitador_id).nombre_completo : "---")%></td>
-    </tr>
-
-    <tr class="d0">
-      <td style="vertical-align: middle;"><b>Cuadrante:</b></td>
-      <td style="vertical-align: middle;"><%=h((@invitacion.participante.cuadrante_id) ? Cuadrante.find(@invitacion.participante.cuadrante_id).descripcion : "---")%></td>
-    </tr>
-
-
- </table>
-
-
-<br /><br />
-
-
-     <!-- detalle de la justificacion -->
-    <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
-     <tr style="background-color:gray; color:white">
-       <th colspan="2">
-           Justificación
-       </th>
-     </tr>
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b>Última impresión:</b></td>
+        <td style="vertical-align: middle;"><%=h((@invitacion.printed_at) ? @invitacion.printed_at.strftime("%d de %B de %Y / %H:%M") :  "---")%></td>
+      </tr>
 
       <tr class="d0">
-        <th colspan="2"><%=text_area(:invitacion, :justificacion, :size => "90x10", :disabled => 'disabled')%></th>
+        <td style="vertical-align: middle;"><b>Impreso por:</b></td>
+        <td style="vertical-align: middle;"><%=h((@invitacion.printed_at) ? "#{(@invitacion.user) ?  @invitacion.user.nombre_completo: ''}" : "---")%></td>
       </tr>
-     </table>
 
-<%end%>
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b>Cuadrante:</b></td>
+        <td style="vertical-align: middle;"><%=h((@invitacion.participante.cuadrante_id) ? Cuadrante.find(@invitacion.participante.cuadrante_id).descripcion : "---")%></td>
+      </tr>
 
- <br />
- <!-- Detalle de la sesión-->
+    <%if @invitacion.entregada == true%>
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Fecha de entrega:</b></td>
+        <td style="vertical-align: middle;"><%=h((@invitacion.fecha_hora_entrega) ? @invitacion.fecha_hora_entrega.strftime("%d de %B de %Y / %H:%M") : "No se ha entregado")%></td>
+      </tr>
+
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b>Entregada por:</b></td>
+        <td style="vertical-align: middle;"><%=h((@invitacion.invitador_id) ? User.find(@invitacion.invitador_id).nombre_completo : "---")%></td>
+      </tr>
+    
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Justificación:</b></td>
+        <td><%=text_area(:invitacion, :justificacion, :size => "90x10", :disabled => 'disabled')%></td>
+      </tr>
+   <%end%>
+  </table>
+
+<br />
+
+  <!-- Detalle de la sesión-->
   <%if @invitacion.sesion%>
     <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
         <th colspan="4">
-          Detalle de la sesión
+            DETALLE DE LA SESIÓN
         </th>
       </tr>
 
-       <!-- descripcion -->
        <tr class="d0">
          <td style="vertical-align: middle;"><b>Descripción</b></td>
          <td style="vertical-align: middle;"><%=h(@invitacion.sesion.tiposesion_id ? @invitacion.sesion.tiposesion.descripcion : "---")%></td>
        </tr>
 
-       <!-- fecha de inicio -->
-       <tr class="d1">
+      <tr class="d1">
           <td style="vertical-align: middle;"><b>Fecha/hora de inicio</b></td>
           <td style="vertical-align: middle;"><%=h(@invitacion.sesion.start_at ? @invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---")%></td>
        </tr>
@@ -85,9 +70,16 @@
         <td style="vertical-align: middle;"><b>Especialista</b></td>
         <td style="vertical-align: middle;"><%=h(@invitacion.sesion.mediador ? @invitacion.sesion.mediador.nombre_completo : "---")%></td>
       </tr>
+      
       <tr class="d1">
         <td style="vertical-align: middle;"><b>Comediador</b></td>
         <td style="vertical-align: middle;"><%=h(@invitacion.sesion.comediador ? @invitacion.sesion.comediador.nombre_completo : "---")%></td>
+      </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Número de invitación</b></td>
+        <%invitaciones = {1 => "PRIMERA", 2=> "SEGUNDA"}%>
+        <td style="vertical-align: middle;"><%=h(@invitacion.sesion.num_invitacion ? invitaciones[@invitacion.sesion.num_invitacion] : "---")%></td>
       </tr>
 
   </table><br /><br />
@@ -99,7 +91,7 @@
   <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr style="background-color:gray; color:white">
       <th colspan="2">
-        Datos generales del solicitante
+        DATOS GENERALES DEL SOLICITANTE
       </th>
      </tr>
 
@@ -108,47 +100,45 @@
        <td style="vertical-align: middle;"><b>Solicitante:</b></td>
        <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
     </tr>
-
     
     <!-- Datos de ubicacion -->
-    <tr class="d1">
-       <td style="vertical-align: middle;"><b>Correo electrónico:</b></td>
-       <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.correo : "---")%></td>
-
-    </tr>
     <tr class="d0">
       <td style="vertical-align: middle;"><b>Dirección:</b></td>
       <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.direccion : "---")%></td>
     </tr>
 
     <tr class="d1">
+       <td style="vertical-align: middle;"><b>Correo electrónico:</b></td>
+       <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.correo : "---")%></td>
+    </tr>
+    
+    <tr class="d0">
        <td style="vertical-align: middle;"><b>Municipio:</b></td>
        <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.municipio.descripcion : "---")%></td>
     </tr>
 
-    <tr class="d0">
+    <tr class="d1">
        <td style="vertical-align: middle;"><b>Teléfono:</b></td>
        <td style="vertical-align: middle;"><%=h(@tramite.orientacion ? @tramite.orientacion.telefono : "---")%></td>
     </tr>
  </table>
-  <br /><br />
+ <br /><br />
 
-
-    <!-- Participantes del trámite -->
+  <!-- Participantes del trámite -->
   <% if @tramite.comparecencia %>
     
       <table width="60%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
         <tr style="background-color:gray; color:white">
           <th colspan="2">
-            Datos del participante
+            DATOS DE LOS PARTICIPANTES
           </th>
         </tr>
 
         <%clase=0%>
         <% if participante = Participante.find(@invitacion.participante_id)%>
           <tr class="d<%=invert_class(clase)%>">
-            <td align="center">
-                <%=link_to "#{participante.nombre_completo}", :action => "show", :controller => "participantes", :id => participante%>
+            <td align="center" width="60%">
+                <%=link_to "#{participante.nombre_completo}", {:action => "show", :controller => "participantes", :id => participante}, :class => "fancybox fancybox.iframe"-%>
             </td>
             <td>
                 <%=h participante.domicilio%>
@@ -157,19 +147,9 @@
           <%clase = invert_class(clase)%>
         <%end%>
       </table><br /><br />
-   
-  <%end%>
-
-
-
-
-
-
-
-
-
-
+    <%end%>
 </div>
 
+
 <br />
-  <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "invitaciones", :action => "list_by_user"%><br />
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "invitaciones", :action => "list_by_user"%><br />

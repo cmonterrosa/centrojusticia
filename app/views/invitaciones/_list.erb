@@ -1,61 +1,60 @@
 
-<%if current_user.has_role?("invitadores")%>
-  <%=link_to "Invitaciones sin entregar", :action => "list_by_user"%> | <%=link_to "Invitaciones entregadas", :action => "show_entregadas_by_user"%><br /><br/>
-<%end%>
 
 <%if @invitaciones%>
-<table class="table1" width="80%" style="text-align: left;">
-    <thead>
+<table class="tablakolaval" width="94%" style="text-align: center;">
+    
          <!-- Titulos -->
          <tr>
-            <th>&nbsp;</th>
-            <th>Número de expediente</th>
-            <th scope="col" abbr="Starter">Participante</th>
-            <th scope="col" abbr="Starter">Fecha de sesión</th>
-            <th scope="col" abbr="Starter">Cuadrante</th>
-            <th scope="col" abbr="Starter" colspan="4">Acciones</th>
+            <td>&nbsp;</td>
+            <td>Número de expediente</td>
+            <td scope="col" abbr="Starter">Participante</td>
+            <td scope="col" abbr="Starter">Fecha de sesión</td>
+            <td scope="col" abbr="Starter">Cuadrante</td>
+            <td scope="col" abbr="Starter">Invitador</td>
+            <td scope="col" abbr="Starter" colspan="5">Acciones</td>
          </tr>
-    </thead>
+    
 
-    <tbody>
+    
         <%@invitaciones.each do |invitacion|%>
           <tr>
             <td><%=h (invitacion.entregada)? (image_tag "iconos/true.png", :border =>0): "-"%></td>
             <td><%=h (invitacion.sesion.tramite) ? (link_to "#{invitacion.sesion.tramite.numero_expediente}", :action => "show", :controller => "tramites", :id => invitacion.sesion.tramite.id, :target => "_blank") : ""%></td>
             <td><%=h (invitacion.participante) ? invitacion.participante.nombre_completo : "----"%></td>
             <td><%=h (invitacion.sesion.start_at)? invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---"%></td>
-            <!--
-            <td><= (invitacion.fecha_hora_entrega)? (invitacion.fecha_hora_entrega.strftime("%d de %B de %Y / %H:%M")) : "---"%></td>
-            -->
-            <td><%=h (invitacion.cuadrante_id) ? (Cuadrante.find(invitacion.cuadrante_id).descripcion) : "N/A"%></td>
-             <%if invitacion.signed?%>
-            <td><%=link_to 'Imprimir', {:action => "generar", :id => invitacion.id, :p => invitacion.participante_id, :token => "h9jqwo8h7s" }, :title => "Imprimir invitaciones de trámite", :class => 'boton'%></td>
+            <!-- cuadrante -->
+            <%participante = invitacion.participante%>
+            <td><%=h (participante && participante.cuadrante) ? (Cuadrante.find(participante.cuadrante).descripcion) : "N/A"%></td>
+            <td><%=h (invitacion.invitador_id)? invitacion.invitador.nombre_completo : "SIN ASIGNAR"%></td>
+            <%sesion = invitacion.sesion%>
+            <%if sesion%>
+                <td><%=link_to 'Imprimir', {:action => "imprimir", :id =>sesion.id, :participante => invitacion.participante_id, :token => "h9jqwo8h7s" }, :title => "Imprimir invitaciones de trámite", :class => 'boton'%></td>
             <%unless invitacion.fecha_hora_entrega%>
-                
                 <!-- Si es director podra entregarlas personalmente -->
                 <%if current_user.has_role?("direccion")%>
                     <td><%=link_to 'Se entrego personalmente',{:action => "notificar_entrega_personal", :id => invitacion, :p => invitacion.participante_id}, :title => "Notificar entrega personal", :class => 'boton'%></td>
                 <%else%>
                     <td><%=link_to 'Razonar',{:action => "razonar", :id => invitacion, :p => invitacion.participante_id}, :title => "Razonar invitación", :class => 'boton'%></td>
                 <%end%>
-
-
               <%end%>
-            <%else%>
-              <td><%=link_to 'No se puede imprimir por falta de firma', :title => "Imprimir invitacion de trámite #{invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
-            <%end%>
-          <!-- detalle -->
-          <td><%=link_to 'Detalle', {:action => "show", :id => invitacion}, :title => "Detalle de invitación", :class => 'boton'%></td>
+                <%else%>
+                    <td><%=link_to 'No se puede imprimir por falta de firma', :title => "Imprimir invitacion de trámite #{invitacion.sesion.tramite.folio_integrado}", :class => 'boton'%></td>
+             <%end%>
+            
+            <td><%=link_to 'Detalle', {:action => "show", :id => invitacion}, :title => "Detalle de invitación", :class => 'boton'%></td>
 
-          <%if current_user.has_role?("controlinvitaciones")%>
-            <td><%=link_to "Asignar", {:action => "asignar_invitador", :id => invitacion}, :title => "Asignar la invitación", :class => 'boton'%></td>
-          <%end%>
+            <%if current_user.has_role?("controlinvitaciones")%>
+              <td><%=link_to "Eliminar", {:action => "destroy", :id => invitacion}, :confirm => "¿Esta seguro(a) que desea eliminar la invitación?", :title => "Eliminar invitación", :class => 'boton'%></td>
+              <td><%=link_to "Asignar", {:action => "asignar_invitador", :id => invitacion}, :title => "Asignar la invitación", :class => 'boton'%></td>
+            <%end%>
 
 
           </tr>
         <%end%>
-    </tbody>
+    
 </table>
+
+<br />
 
 <%unless @invitaciones.empty?%>
 <table>

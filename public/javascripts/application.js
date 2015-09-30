@@ -590,3 +590,67 @@ function ena_edad(checkBox, elemento_fecha, elemento_edad){
             objeto_fecha3.disabled=false;
     }
 }
+
+/* Funciones para asignacion de materia */
+
+function enaPreguntasAsignacionMateria(radioButton, comboSelect){
+    var select = document.getElementById(comboSelect);
+
+    if(typeof radioButton == "object")
+        var radio = radioButton;
+    else
+        if(document.getElementById(radioButton+'_si').checked)
+            {
+              radio = document.getElementById(radioButton+'_si');
+              document.getElementById("pregunta2").style.display = "none";
+              document.getElementById("pregunta3").style.display = "inline";
+              document.getElementById("pregunta4").style.display = "inline";
+              document.getElementById("pregunta5").style.display = "inline";
+              document.getElementById("pregunta6").style.display = "inline";
+              document.getElementById("tramite_noprocedente_id").value = "";
+            }
+            
+        else
+            {
+            radio = document.getElementById(radioButton+'_no');
+            document.getElementById("pregunta2").style.display = "inline";
+            document.getElementById("pregunta3").style.display = "none";
+            document.getElementById("pregunta4").style.display = "none";
+            document.getElementById("pregunta5").style.display = "none";
+            document.getElementById("pregunta6").style.display = "none";
+            /* Limpiamos los campos */
+            document.getElementById("tramite_objeto_solicitud").value = "";
+            document.getElementById("tramite_documentacion_anexa").value = "";
+            document.getElementById("tramite_observaciones_generales").value = "";
+            document.getElementById("tramite_materia_id").value = "";
+            }
+
+    if(radio.checked && radio.id.match('_no')){
+        enableSelect(select);
+    }
+    else{
+        clearSelect(select);
+        disableSelect(select);
+    }
+}
+
+function clearSelect(select){
+    var element = select;
+    var tamano = element.length;
+    for(i = 0; i < tamano; i++){
+        element[i].selected = false;
+    }
+}
+
+
+function enableSelect(select){
+    var element = select;
+    element.style.display = '';
+    element.disabled = false;
+}
+
+function disableSelect(select){
+    var element = select;
+    element.style.display = 'none';
+    element.disabled = true;
+}

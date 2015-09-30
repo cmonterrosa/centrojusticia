@@ -1,0 +1,26 @@
+
+
+<!-- Botones de encabezado  -->
+<%if current_user.has_role?(:invitadores)%>
+ <!-- contenido -->
+<div class="titulocalendario">
+  <p style="font-family: 'Nexa Bold';">MIS INVITACIONES</p>
+</div>
+
+ <p align="center">
+  <%=link_to "Búsqueda de Expedientes", {:action => "index"}, :class => "boton"%> | <%=link_to "Invitaciones sin entregar", {:action => "list_by_user"}, :class => "boton"%> | <%=link_to "Invitaciones entregadas", {:action => "show_entregadas_by_user"}, :class => "boton"%><br /><br/>
+ </p>
+
+ <%else%>
+    <%if current_user.has_role?(:jefeatencionpublico) || current_user.has_role?(:controlinvitaciones)%>
+          <!-- contenido -->
+          <div class="titulocalendario">
+              <p style="font-family: 'Nexa Bold';">INVITACIONES</p>
+          </div>
+
+           <p align="center">
+            <%=link_to "Búsqueda de Expedientes", {:action => "index"}, :class => "boton"%> | <%=link_to "Invitaciones sin entregar", {:action => "show_all"}, :class => "boton"%> | <%=link_to "Invitaciones entregadas", {:action => "show_entregadas"}, :class => "boton"%><br /><br/>
+          </p>
+    <%end%>
+<%end%>
+

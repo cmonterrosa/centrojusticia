@@ -183,26 +183,18 @@ table.sample td.d99 {
 
   <!-- Calificación de asunto -->
 
-
-    <%if @tramite.materia%>
+   <%if @tramite.materia || @tramite.noprocedente%>
       <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
         <tr style="background-color:gray; color:white">
           <th colspan="2">
-            CALIFICACIÓN DE ASUNTO:
+            CALIFICACION DE ASUNTO:
           </th>
         </tr>
 
         <tr class="d0">
            <td style="vertical-align: middle;"><b>Procedente:</b></td>
-          <td style="vertical-align: middle;"><%=h (@tramite.procedente == true) ? "Procedente" : "No procedente"%></td>
+          <td style="vertical-align: middle;"><%=h (@tramite.procedente == true) ? "PROCEDENTE" : "NO PROCEDENTE"%></td>
         </tr>
-
-        <%if @tramite.materia%>
-          <tr class="d1">
-            <td style="vertical-align: middle;"><b>Materia:</b></td>
-            <td style="vertical-align: middle;"><%=h  @tramite.materia.descripcion%></td>
-          </tr>
-        <%end%>
 
         <%if @tramite.noprocedente%>
           <tr class="d1">
@@ -210,31 +202,40 @@ table.sample td.d99 {
             <td style="vertical-align: middle;"><%=h @tramite.noprocedente.descripcion%></td>
           </tr>
         <%end%>
-   
-        <!--- objeto de la solicitud -->
-        <%if @tramite.objeto_solicitud%>
-          <tr class="d0">
-            <td style="vertical-align: middle;"><b>Objeto de la solicitud:</b></td>
-            <td style="vertical-align: middle;"><%=h @tramite.objeto_solicitud%></td>
-          </tr>
-        <%end%>
 
-        <!--- observaciones generales -->
-        <%if @tramite.observaciones_generales%>
-          <tr class="d1">
-            <td style="vertical-align: middle;"><b>Observaciones generales:</b></td>
-            <td style="vertical-align: middle;"><%=h @tramite.observaciones_generales%></td>
-          </tr>
-        <%end%>
-        <!--- observaciones generales -->
-        <%if @tramite.documentacion_anexa%>
-          <tr class="d0">
-            <td style="vertical-align: middle;"><b>Documentación anexa:</b></td>
-            <td style="vertical-align: middle;"><%=h @tramite.documentacion_anexa%></td>
-          </tr>
+        <%if @tramite.materia%>
+            <tr class="d1">
+              <td style="vertical-align: middle;"><b>Materia:</b></td>
+              <td style="vertical-align: middle;"><%=h  @tramite.materia.descripcion%></td>
+            </tr>
+
+
+            <!--- objeto de la solicitud -->
+            <%if @tramite.objeto_solicitud%>
+            <tr class="d0">
+              <td style="vertical-align: middle;"><b>Objeto de la solicitud:</b></td>
+              <td style="vertical-align: middle;"><%=h @tramite.objeto_solicitud%></td>
+            </tr>
+            <%end%>
+
+          <!--- observaciones generales -->
+          <%if @tramite.observaciones_generales%>
+            <tr class="d1">
+              <td style="vertical-align: middle;"><b>Observaciones generales:</b></td>
+              <td style="vertical-align: middle;"><%=h @tramite.observaciones_generales%></td>
+            </tr>
+          <%end%>
+
+           <!--- observaciones generales -->
+          <%if @tramite.documentacion_anexa%>
+            <tr class="d0">
+              <td style="vertical-align: middle;"><b>Documentación anexa:</b></td>
+              <td style="vertical-align: middle;"><%=h @tramite.documentacion_anexa%></td>
+            </tr>
+          <%end%>
         <%end%>
       </table>
-  <%end%>
+    <%end%><br />
 
   
 

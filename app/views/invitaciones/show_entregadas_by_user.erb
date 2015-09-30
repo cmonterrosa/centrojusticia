@@ -1,47 +1,45 @@
+<%=render :partial => "encabezado_botones"%>
+
+
 <div class="titulocalendario">
-  <p>Mis invitaciones entregadas</p>
+  <p style="font-family: 'Nexa Light';">MIS INVITACIONES ENTREGADAS</p>
 </div>
 
 
-<%=link_to "Invitaciones sin entregar", :action => "list_by_user"%> | <%=link_to "Invitaciones entregadas", :action => "show_entregadas_by_user"%><br /><br/>
-
-
-
-
 <%if @invitaciones%>
-<table class="table1" width="85%">
-    <thead>
+<table class="tablakolaval" width="92%" style="text-align: center;">
+    
          <!-- Titulos -->
          <tr>
-            <th>Número de expediente</th>
-            <th scope="col" abbr="Starter">Participante</th>
-            <th scope="col" abbr="Starter">Fecha de sesión</th>
-            <th scope="col" abbr="Starter">Fecha de entrega</th>
-            <th scope="col" abbr="Starter">Cuadrante</th>
-            <th scope="col" abbr="Starter" colspan="2">&nbsp</th>
+            <td>Número de expediente</td>
+            <td scope="col" abbr="Starter">Participante</td>
+            <td scope="col" abbr="Starter">Fecha de sesión</td>
+            <td scope="col" abbr="Starter">Fecha de entrega</td>
+            <td scope="col" abbr="Starter">Cuadrante</td>
+            <td scope="col" abbr="Starter" colspan="2">&nbsp</td>
          </tr>
-    </thead>
+    
 
-    <tbody>
+   
         <%@invitaciones.each do |invitacion|%>
           <tr>
             
-            
-            <td><%=h (invitacion.sesion_id) ? (link_to "#{Tramite.find(invitacion.sesion.tramite.id).numero_expediente}", :action => "show", :controller => "tramites", :id => invitacion.sesion.tramite.id, :target => "_blank") : ""%></td>
-
-
+            <td><%=h (invitacion.sesion_id) ? (link_to "#{Tramite.find(invitacion.sesion.tramite.id).numero_expediente}", {:action => "show", :controller => "tramites", :id => invitacion.sesion.tramite.id}, :target => "_blank") : ""%></td>
             <td><%=h (invitacion.participante) ? invitacion.participante.nombre_completo : "----"%></td>
             <td><%=h (invitacion.sesion.start_at)? invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---"%></td>
             <td><%=h (invitacion.fecha_hora_entrega)? (invitacion.fecha_hora_entrega.strftime("%d de %B de %Y / %H:%M")) : "---"%></td>
-            <td><%=h (invitacion.cuadrante) ? (invitacion.cuadrante) : "---"%></td>
-             <%if invitacion.signed?%>
-              <td><%=link_to 'Imprimir', {:action => "generar", :id => invitacion.id, :p => invitacion.participante_id }, :title => "Imprimir invitaciones de trámite", :class => 'boton'%></td>
+             <%participante = invitacion.participante%>
+             <td><%=h (participante && participante.cuadrante) ? (participante.cuadrante.descripcion) : "---"%></td>
+             <%sesion = invitacion.sesion%>
+            <%if sesion%>
+            <td><%=link_to 'Imprimir', {:action => "imprimir", :id =>sesion.id, :participante => invitacion.participante_id, :token => "h9jqwo8h7s" }, :title => "Imprimir invitaciones de trámite", :class => 'boton'%></td>
             <%end%>
-          <!-- detalle -->
-          <td><%=link_to 'Detalle', {:action => "show", :id => invitacion}, :title => "Detalle de invitación", :class => 'boton'%></td>
+
+            <!-- detalle -->
+            <td><%=link_to 'Detalle', {:action => "show", :id => invitacion}, :title => "Detalle de invitación", :class => 'boton'%></td>
           </tr>
         <%end%>
-    </tbody>
+    
 </table>
 
 <%else%>

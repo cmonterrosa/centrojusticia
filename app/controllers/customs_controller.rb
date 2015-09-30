@@ -113,6 +113,7 @@ class CustomsController < ApplicationController
         @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", @tramites_ids], :order => "anio DESC, folio_expediente DESC") if @tramites_ids
         @tramites = @tramites.sort{|a,b| a.numero_expediente <=> b.numero_expediente}.reverse
         @tramites = @tramites.paginate(:page => params[:page], :per_page => 25)
+        @destino = "mis_expedientes"
         render :partial => "mis_expedientes", :layout => "kolaval"
     else
       flash[:notice]= "El usuario no es especialista"
