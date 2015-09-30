@@ -241,6 +241,22 @@ end
     return render(:partial => 'estadisticas/print_cargas_trabajo', :layout => 'pdf')
   end
 
+  def update_lista_especialistas
+    @orientacion = Orientacion.find(params[:id]) if params[:id]
+    @orientacion ||= Orientacion.new
+    @extra = params[:extra] if params[:extra]
+    if @extra
+      @caption = (@extra) ? "CON PERSONAL EXTRAORDINARIO" : ""
+      @caption_type_specialist = (@extra) ? "Extraordinario" : ""
+      @especialistas = Role.find_by_name("convenios").users.sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
+      @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
+    else
+      @especialistas = seleccionar_especialistas
+      @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
+    end
+    render :partial => "update_lista_especialistas", :layout => "only_jquery"
+  end
+
 
 
 protected
@@ -250,14 +266,19 @@ protected
       ### Leemos configuracion de cambio de turno ###
       max_id_conf = Configuracion.maximum(:id)
       @hora_cambio_turno = (Configuracion.find(max_id_conf)) ? Configuracion.find(max_id_conf).hora_cambio_turno : "20:00:00"
-      
       limite = DateTime.parse("#{Time.now.year}-#{Time.now.month}-#{Time.now.day} #{@hora_cambio_turno}")
       ahora = Time.parse("#{norm_date} #{DateTime.now.strftime "%H:%M:%S"}")
       hora_limite = Time.parse("#{norm_date} #{limite.strftime "%H:%M:%S"}")
       especialistas = (ahora >= hora_limite) ? Role.find_by_name("especialistas").usuarios_disponibles_vespertinos : Role.find_by_name("especialistas").usuarios_disponibles
       especialistas.each do |e| e["puntuacion_final"] = e.puntuacion_general end
-      return (especialistas.sort{|p1,p2| p1["puntuacion_final"] <=> p2["puntuacion_final"]})
-      #return (especialistas.sort{|p1,p2| p1.puntuacion_semana_actual <=> p2.puntuacion_semana_actual})
+      especialistas = especialistas.sort{|p1,p2| p1["puntuacion_final"] <=> p2["puntuacion_final"]}
+      finales = []
+      especialistas.each_with_index do |e, index|
+         finales << e && especialistas.delete_at(index) if e.tiene_actividad_reciente?
+     end
+     finales.each do |f| especialistas.push(f) end
+     return especialistas
+     #return (especialistas.sort{|p1,p2| p1["puntuacion_final"] <=> p2["puntuacion_final"]})
    end
 
 end

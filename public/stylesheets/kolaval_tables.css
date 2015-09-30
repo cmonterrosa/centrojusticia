@@ -23,11 +23,18 @@
 	src: url('/NexaLight.otf');
 }
 
+@font-face {
+	font-family: "Nexa Bold";
+	src: url('/NexaBold.otf');
+}
+
 .tablakolaval {
 	margin:0px;padding:0px;
 	width:100%;
 	box-shadow: 10px 10px 5px #888888;
 	border:1px solid #000000;
+
+        line-height: 136%;
 
 	-moz-border-radius-bottomleft:8px;
 	-webkit-border-bottom-left-radius:8px;
@@ -81,7 +88,7 @@
 	text-align:left;
 	padding:8px;
 	font-size:12px;
-	font-family: "Nexa Light";
+	font-family: "Nexa Bold";
         text-transform: uppercase;
 	font-weight:normal;
 	color:#000000;
@@ -103,7 +110,7 @@
 	text-align:center;
 	border-width:0px 0px 0px 0px;
 	font-size:12px;
-	font-family: "Nexa Light";
+	font-family: "Nexa Bold";
         text-transform: uppercase;
 	color:#ffffff;
 }
