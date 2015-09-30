@@ -1,0 +1,10 @@
+
+            <%if @extra%>
+                <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%>
+            <%else%>
+                <%if @especialista%>
+                      &nbsp;
+                  <%else%>
+                        <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%>
+                  <%end%>
+            <%end%>
