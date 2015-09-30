@@ -11,6 +11,13 @@ div, h1, h2, h3, h4, p, span, a, img, form, label, input, textarea {
        
 }
 
+input[type=text]:focus, textarea:focus {
+  /*box-shadow: 0 0 5px rgba(81, 203, 238, 1);*/
+  box-shadow: 0 0 5px rgba(1, 147, 147, 1);
+  /*padding: 3px 0px 3px 3px;*/
+  border: 1px solid rgba(1, 147, 147, 1);
+}
+
 @font-face {
   font-family: 'Open Sans';
   font-style: normal;
