@@ -77,6 +77,8 @@ table.sample td.d99 {
 
 
 
+
+
 <%if @tramite.estatu.clave == "tram-canc"%>
   <div class="titulocalendario">
     <h2>TRAMITE CANCELADO</h2>
@@ -294,6 +296,9 @@ table.sample td.d99 {
 
 <!-- detalle de sesiones -->
 <%= render :partial => "detalle_sesiones"%>
+
+<!-- detalle de sesiones canceladas -->
+<%= render :partial => "detalle_sesiones_canceladas"%>
 
 <!-- detalle de conclusion -->
 <%=render :partial => "detalle_conclusion"%>

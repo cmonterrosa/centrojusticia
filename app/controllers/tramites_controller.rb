@@ -64,25 +64,25 @@ class TramitesController < ApplicationController
      ### CARPETA DE ATENCION ###
      @tramites = (@carpeta_atencion) ? Tramite.find(:all, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) : nil
     
-    ### PARTICIPANTE ###
-    if @participante
+    ### PARTICIPANTE O SOLICITANTE###
+    if @participante && !@carpeta_atencion
       id_tramites=Array.new
-      @participantes_comparecencia ||= Participante.find(:all, :conditions => ["full_name like ? OR full_name like ?", "#{@participante}%",  "%#{@participante}"])
-      @solicitante ||= Orientacion.find(:all, :conditions => ["full_name like ? OR full_name like ?", "#{@participante}%", "%#{@participante}"])
+      @participantes_comparecencia ||= Participante.find(:all, :select => "id,comparecencia_id",:conditions => ["full_name like ? OR full_name like ?", "#{@participante}%",  "%#{@participante}"])
+      @solicitantes ||= Orientacion.find(:all, :select => "id, tramite_id", :conditions => ["full_name like ? OR full_name like ? OR paterno like ? OR paterno like ?", "#{@participante}%", "%#{@participante}", "#{@participante}%", "%#{@participante}"])
+      
       if @participantes_comparecencia
           @participantes_comparecencia.each do |p|
             @comparecencia = (p.comparecencia)? p.comparecencia.tramite : nil
             (@comparecencia) ? id_tramites << @comparecencia : nil
           end
       end
-      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}]) unless id_tramites.empty?
-      id_tramites = []
+      
       if @solicitantes
             @solicitantes.each do |s|
-              (s.tramite) ? id_tramites << s.tramite.id : nil
+              (s.tramite) ? id_tramites << s.tramite : nil
             end
       end
-      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}]) unless id_tramites.empty?
+      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}], :order => "anio DESC,folio_expediente DESC") unless id_tramites.empty?
       #@tramites = @tramites.sort{|a,b| a.created_at <=> b.created_at}.reverse unless id_tramites.empty?
     end
 
@@ -90,19 +90,19 @@ class TramitesController < ApplicationController
 
    if @razon_social
       id_tramites=Array.new
-      @participantes_comparecencia ||= Participante.find(:all, :conditions => ["razon_social like ?", "#{@razon_social}%"])
+      @participantes_comparecencia ||= Participante.find(:all, :select => "id,comparecencia_id,razon_social", :conditions => ["razon_social IS NOT NULL AND razon_social like ?", "#{@razon_social}%"])
       if @participantes_comparecencia
           @participantes_comparecencia.each do |p|
             @comparecencia = (p.comparecencia)? p.comparecencia.tramite : nil
             (@comparecencia) ? id_tramites << @comparecencia : nil
           end
       end
-      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}]) unless id_tramites.empty?
+      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}], :order => "anio DESC,folio_expediente DESC") unless id_tramites.empty?
    end
 
     ### Estatus ###
-    @estatus = Estatu.find(@estatus) if @estatus && params[:estatus]
-    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id = ?", @estatus]) if @estatus
+    @estatus = Estatu.find(@estatus) if (@estatus && params[:estatus])&&(params[:estatus].size > 0)
+    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id = ?", @estatus], :order => "anio DESC,folio_expediente DESC") if @estatus
 
     ## Default ###
     @tramites ||= Array.new
@@ -570,11 +570,23 @@ class TramitesController < ApplicationController
           @nuevo_tramite.update_attributes(params[:tramite])
           @nuevo_tramite.anio = anio
           @nuevo_tramite.folio_expediente = folio
+          @nuevo_tramite.user = current_user
           if @nuevo_tramite.save
-             if @comparecencia = Comparecencia.create(:asunto => params[:tramite][:objeto_solicitud], :tramite_id => @nuevo_tramite)
+             @orientacion = Orientacion.new
+             @orientacion.update_attributes(:user_id => current_user, :tramite_id => @nuevo_tramite.id)
+             if @comparecencia = Comparecencia.new(:asunto => params[:tramite][:objeto_solicitud], :tramite_id => @nuevo_tramite.id)
                @participante = Participante.create(params[:participante])
-               @participante.comparecencia_id = @comparecencia if @comparecencia
+               (@comparecencia && @comparecencia.save) ? @participante.comparecencia_id = @comparecencia.id : nil
                 if @participante.save
+                  @orientacion.paterno = @participante.paterno
+                  @orientacion.materno = @participante.materno
+                  @orientacion.nombre = @participante.nombre
+                  @orientacion.direccion = @participante.domicilio
+                  @orientacion.correo = @participante.correo
+                  @orientacion.municipio_id = @participante.municipio_id
+                  @orientacion.pais_id = @participante.pais_id
+                  @orientacion.sexo = @participante.sexo_descripcion
+                  @orientacion.save
                   @nuevo_tramite.update_estatus!("tram-hist", current_user)
                   flash[:notice] = "Expediente registrado correctamente"
                end
@@ -584,7 +596,10 @@ class TramitesController < ApplicationController
         end
     else
       ### Formato invalido
-      flash[:error] = "Error de captura, verifique formatos"
+      @materias = Materia.find(:all)
+      @tipopersonas = Tipopersona.find(:all)
+      @fecha = Time.now.strftime("%Y/%m/%d %H:%M")
+      flash[:error] = "Error de captura, verifique los datos"
       render :action => "new_or_edit"
     end
   end

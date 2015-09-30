@@ -22,14 +22,19 @@
                                                             <ul><%=link_to image_tag('kolaval/comparecencias.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/comparecencias.jpg") , {:action => "list_by_user", :controller => "comparecencias"}, :title => "Comparecencias"%></ul>
                                                           </li>
 
-                                                          <!-- listado de tramites -->
 
-                                                         <li>
-                                                             <ul><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></ul>
-                                                         </li>
+                                                          <!-- Tramites -->
+                                                          <li>
+                                                              <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
+                                                              <ul class="cbp-hssubmenu">
+								<%if  current_user.has_role?("atencionpublico")%>
+                                                                    <li><%=link_to image_tag('kolaval/ico-iniciartramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-iniciartramites.jpg") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Iniciar trámite"%></li>
+                                                                <%end%>
+                                                                <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
+                                                              </ul>
+                                                          </li>
 
 
-                                                         
                                                          <!-- Agenda -->
                                                         <%if current_user.has_role?("lecturaagenda")%>
                                                           <li>

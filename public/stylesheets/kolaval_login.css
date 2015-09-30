@@ -90,6 +90,12 @@
     margin: 0 auto;
    padding-top: 12px;
     color: #019595;
+    border-width: 1.5px;
+}
+
+TextBoxMenu:hover {
+  background-color: #019595;
+  color: #ffffff;
 }
 
 

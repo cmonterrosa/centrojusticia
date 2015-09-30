@@ -258,7 +258,7 @@
 			</staticText>
 			<textField>
 				<reportElement x="265" y="47" width="266" height="20" forecolor="#7C2425"/>
-				<textElement textAlignment="Center">
+				<textElement textAlignment="Right">
 					<font fontName="Arial" size="10" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECCION}]]></textFieldExpression>

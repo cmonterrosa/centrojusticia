@@ -1,14 +1,14 @@
-#**KOLAVAL**
+# **KOLAVAL**
 
 
-##**Descripcion**
+## **Descripcion**
 
 La aplicación web "Kolaval" esta desarrollada a la medida del  CEJA (Centro Estatal de Justicia Alternativa).
 Es una institución pública del gobierno que tiene como finalidad brindar y facilitar los medios alternativos para la solución
 de conflictos entre particulares y/o personas morales.
 
 
-##**Funcionalidades**
+## **Funcionalidades**
 
 Este sistema informático sirve de referencia para agilizar y organizar la información referente a las actividades
 propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de las característica son las siguientes:
@@ -20,12 +20,15 @@ propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de l
 * Impresión de comparecencias
 * Notificaciones vía correo electrónico para especialistas
 * Consulta de datos estadísticos
+* Impresión de invitaciones
+* Asignación de invitadores
+* Razón de invitaciones (captura de notificacion a los involucrados)
 
 
-##**Acerca de**
+## **Acerca de**
 
-- *Autor:* Carlos Monterrosa López (cmonterrosa at gmail.com)
-- *Version:* 1.0.0 (2014-10-30)
-- *Copyright:* Copyright (c) 2013 Poder Judicial del Estado de Chiapas. Todos los derechos reservados.
-- *Licencia:* GPL
-- *Website:* (http://www.poderjudicialchiapas.gob.mx)
+- Autor: Carlos Monterrosa López (cmonterrosa at gmail.com)
+- Version: 1.1.1 (2015-09-11)
+- Copyright: Copyright (c) 2015 Poder Judicial del Estado de Chiapas. Todos los derechos reservados.
+- Licencia: GPL
+- Website: (http://www.poderjudicialchiapas.gob.mx)
