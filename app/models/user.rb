@@ -124,9 +124,18 @@ class User < ActiveRecord::Base
        num_orientaciones= Orientacion.find_by_sql("select count(orientacions.id) as numero_orientaciones from orientacions orientacions inner join tramites t
       on orientacions.tramite_id=t.id inner join estatus e on t.estatu_id=e.id
       where (orientacions.especialista_id = #{self.id} )
-      AND e.clave in ('comp-conc', 'no-compar', 'mate-asig', 'tram-admi', 'fech-asig', 'camb-sesi', 'tram-conc')
+      AND e.clave in ('comp-conc', 'no-compar', 'mate-asig', 'tram-admi', 'fech-asig', 'camb-sesi', 'tram-canc', 'tram-conc')
       AND (orientacions.fechahora between '#{inicio}' AND '#{fin}')")
       return num_orientaciones.first.numero_orientaciones.to_i
+     end
+
+     def numero_solo_orientaciones_recientes(inicio=14.minutes.ago,fin=Time.now)
+       num_orientaciones_recientes =Orientacion.find_by_sql("select count(orientacions.id) as numero_orientaciones_recientes from orientacions orientacions inner join tramites t
+      on orientacions.tramite_id=t.id inner join estatus e on t.estatu_id=e.id
+      where (orientacions.user_id = #{self.id} )
+      AND e.clave = 'tram-inic'
+      AND (orientacions.fechahora between '#{inicio.strftime('%Y-%m-%d %H:%M:%S')}' AND '#{fin.strftime('%Y-%m-%d %H:%M:%S')}')")
+       return num_orientaciones_recientes.first.numero_orientaciones_recientes.to_i
      end
 
 
@@ -175,10 +184,14 @@ class User < ActiveRecord::Base
       return ((puntuacion_semana_actual.to_i) + ((puntuacion_mes_actual.to_i) * 0.01))
   end
 
+  def tiene_actividad_reciente?
+    (numero_solo_orientaciones_recientes > 0)?  true : false
+  end
 
+  
   def full_description_for_especialistas
     if self.situacion
-         "#{self.estatus_actual}".ljust(18) +   " | "  +   "#{self.nombre_completo}".ljust(40)  +  " | " +  "#{self.puntuacion_semana_actual}"
+         "#{self.estatus_actual}".ljust(18) +   " | "  +   "#{self.nombre_completo}".ljust(40)  +  " | " +  "#{self.puntuacion_semana_actual} | #{self.numero_solo_orientaciones_recientes}"
     else
       nombre_completo
     end

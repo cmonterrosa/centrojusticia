@@ -1,7 +1,12 @@
 <!-- Validate Plugin -->
 <%=javascript_include_tag "validations/jquery_validate.js"%>
-
 <%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
+
+<!-- prototype -->
+<%=javascript_include_tag "prototype.js"%>
+
+
+
 <script type="text/javascript">
 		$j(document).ready(function() {
 			/*
@@ -78,18 +83,20 @@
       </div>
 
      <div class="grid-8-12">
-    <label style=" font-weight: bold;">Estado | Especialista  | Actividad en semana actual: <em class="formee-req">*</em></label>
-         <div class="grid-12-12">
+    <label style=" font-weight: bold;">Estado | Especialista  | Actividad en semana actual | Reciente (últimos 14 minutos)<em class="formee-req">*</em></label>
+         <div id ="divespecialistas" class="grid-12-12">
             <%if @extra%>
-                <%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%>
+                <%= select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%>
             <%else%>
                 <%if @especialista%>
                       &nbsp;
                   <%else%>
-                        <%= f.select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%>
+                        <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%>
                   <%end%>
             <%end%>
          </div>
+    <div id ="prueba"></div>
+     <p><%=link_to_remote "Actualizar listado", :update => "divespecialistas", :url => { :action => "update_lista_especialistas", :controller => "orientacions", :orientacion => @orientacion, :tramite_id => @tramite, :extra => @extra }, 404 => "alert('Not found...? Wrong URL...?')", :failure => "alert('HTTP Error ' + request.status + '!')"%></p>
     </div>
 
      <div class="grid-12-12 clear"></div>
