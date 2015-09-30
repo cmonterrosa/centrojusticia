@@ -570,11 +570,23 @@ class TramitesController < ApplicationController
           @nuevo_tramite.update_attributes(params[:tramite])
           @nuevo_tramite.anio = anio
           @nuevo_tramite.folio_expediente = folio
+          @nuevo_tramite.user = current_user
           if @nuevo_tramite.save
-             if @comparecencia = Comparecencia.create(:asunto => params[:tramite][:objeto_solicitud], :tramite_id => @nuevo_tramite)
+             @orientacion = Orientacion.new
+             @orientacion.update_attributes(:user_id => current_user, :tramite_id => @nuevo_tramite.id)
+             if @comparecencia = Comparecencia.new(:asunto => params[:tramite][:objeto_solicitud], :tramite_id => @nuevo_tramite.id)
                @participante = Participante.create(params[:participante])
-               @participante.comparecencia_id = @comparecencia if @comparecencia
+               (@comparecencia && @comparecencia.save) ? @participante.comparecencia_id = @comparecencia.id : nil
                 if @participante.save
+                  @orientacion.paterno = @participante.paterno
+                  @orientacion.materno = @participante.materno
+                  @orientacion.nombre = @participante.nombre
+                  @orientacion.direccion = @participante.domicilio
+                  @orientacion.correo = @participante.correo
+                  @orientacion.municipio_id = @participante.municipio_id
+                  @orientacion.pais_id = @participante.pais_id
+                  @orientacion.sexo = @participante.sexo_descripcion
+                  @orientacion.save
                   @nuevo_tramite.update_estatus!("tram-hist", current_user)
                   flash[:notice] = "Expediente registrado correctamente"
                end
@@ -584,7 +596,10 @@ class TramitesController < ApplicationController
         end
     else
       ### Formato invalido
-      flash[:error] = "Error de captura, verifique formatos"
+      @materias = Materia.find(:all)
+      @tipopersonas = Tipopersona.find(:all)
+      @fecha = Time.now.strftime("%Y/%m/%d %H:%M")
+      flash[:error] = "Error de captura, verifique los datos"
       render :action => "new_or_edit"
     end
   end
