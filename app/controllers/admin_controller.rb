@@ -440,7 +440,7 @@ end
     minimo = Tramite.minimum(:folio_expediente, :conditions => ["anio = ?", anio])
     maximo = Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", anio])
     (minimo..maximo).each do |folio_expediente|
-        @no_encontrados << folio_expediente unless Tramite.count(:folio_expediente, :conditions => ["anio = ? AND folio_expediente = ?", anio, folio_expediente]) > 0
+        @no_encontrados << "#{anio}/#{folio_expediente}" unless Tramite.count(:folio_expediente, :conditions => ["anio = ? AND folio_expediente = ?", anio, folio_expediente]) > 0
     end
   end
 
