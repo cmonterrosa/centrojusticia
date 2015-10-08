@@ -18,9 +18,17 @@
     <%=link_to ">", {:action => "daily_show", :day => @after.day, :month => @after.month, :year => @after.year, :origin => @origin, :type => @type}, :class => "flecha_calendario"-%>
   </p>
 
-  <p>
-    <%=h @numero_total_sesiones = Sesion.count(:id, :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha])%> SESIONES
-  </p>
+  <%if current_user.has_role?("asignahorario") || @token == "all"%>
+    <p>
+      <%=h @numero_total_sesiones = Sesion.count(:id, :select => "DISTINCT tramite_id,mediador_id,comediador_id,hora,minutos,sala_id", :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha])%> SESIONES
+    </p>
+  <%else%>
+      <p>
+        <%=h @numero_total_sesiones = Sesion.count(:id, :select => "DISTINCT tramite_id,mediador_id,comediador_id,hora,minutos,sala_id", :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND fecha = ? AND (cancel IS NULL or cancel=false)", current_user, current_user, @fecha])%> SESIONES
+      </p>
+  <%end%>
+
+  
 
 </div>
 
