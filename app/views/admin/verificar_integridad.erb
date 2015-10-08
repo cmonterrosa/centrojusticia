@@ -1,4 +1,12 @@
-<h2>Folios no encontrados:</h2>
-<%@no_encontrados.each do |f|%>
-<p><%=h f%></p>
-<%end%>
+
+<p align="center">
+<%=link_to "#{(DateTime.now.year.to_i) -1}", {:action => "verificar_integridad", :id =>   "#{(DateTime.now.year) -1}"}-%> | <%=link_to "#{DateTime.now.year}", { :action => "verificar_integridad", :id => DateTime.now.year}-%>
+</p>
+
+<br />
+<table class="tablakolaval" style="text-align: center; width: 28%; margin: auto;">
+  <tr><td>Expedientes no encontrados</td></tr>
+  <%@no_encontrados.each do |f|%>
+      <tr><td style="text-align: center;"><%=h f%></td></tr>
+   <%end%>
+</table>
