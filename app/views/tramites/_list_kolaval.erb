@@ -85,8 +85,14 @@
         <!-- Reasignacion -->
         <%if current_user.has_role?("atencionpublico")%>
           <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("admin")))%>
-            <td style="vertical-align: middle;"><%=h (link_to "Reasignar", {:controller => "orientacions", :action => "reasignar", :id => tramite.id}, :class => 'boton') %></td>
-          <%end%>
+             <td style="vertical-align: middle;"><%=h (link_to "Reasignar", {:controller => "orientacions", :action => "reasignar", :id => tramite.id}, :class => 'boton') %></td>
+          <%else%>
+
+             <!-- Editar orientacion si fue el usuario que capturo -->
+             <%if Orientacion.find(:first, :select => "t.id", :joins => "o, tramites t", :conditions => ["o.tramite_id=t.id AND o.tramite_id = ? AND t.user_id = ?", tramite.id, current_user.id])%>
+                  <td style="vertical-align: middle;"><%=h (link_to "Editar Orientación", {:controller => "orientacions", :action => "new_or_edit", :id => tramite.id}, :class => 'boton') %></td>
+             <%end%>
+         <%end%>
         <%end%>
 
         <!-- Confirmación -->
@@ -121,9 +127,11 @@
         <%end%>
 
          <!-- Edicion si es solo captura -->
-        <%if (tramite.estatu_id ==solo_orientacion.id && tramite.user_id == current_user.id)%>
-          <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "orientacions", :action => "captura_historica", :id => tramite.id}, :class => 'boton') %></td>
-        <%end%>
+        <!--
+        <if (tramite.estatu_id ==solo_orientacion.id && tramite.user_id == current_user.id)%>
+          <td style="vertical-align: middle;"><=h (link_to "Editar", {:controller => "orientacions", :action => "captura_historica", :id => tramite.id}, :class => 'boton') %></td>
+        <end%>
+        -->
 
         <!-- Mostrar o modificar número de expediente -->
         <%if (tramite.estatu_id ==comparecencia_concluida.id && (current_user.has_role?("captura") || current_user.has_role?("jefeatencionpublico")))%>
