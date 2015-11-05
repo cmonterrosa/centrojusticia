@@ -432,16 +432,16 @@ $(function() {
 
 
   function habilitar_datos(){
-      if (document.getElementById("comparecencia_conocimiento").checked == true)
+      if (document.getElementById("comparecencia_conocimiento_si").checked == true)
         {
-          /* No es procedente */
           document.getElementById("comparecencia_datos").disabled = false;
-
         }
       else
-        {
-        document.getElementById("comparecencia_datos").disabled = true;
-        }
+          if (document.getElementById("comparecencia_conocimiento_no").checked == true)
+           {
+                document.getElementById("comparecencia_datos").value = "";
+                document.getElementById("comparecencia_datos").disabled = true;
+            }
   }
 
 
