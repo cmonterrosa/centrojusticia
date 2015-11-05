@@ -160,7 +160,7 @@ class ComparecenciasController < ApplicationController
         param["P_TELEFONO_TRABAJO"]={:tipo=>"String", :valor=>@solicitante.telefono_celular_aux}
         param["P_TELEFONO_CELULAR"]={:tipo=>"String", :valor=>@solicitante.telefono_celular}
         param["P_CORREO"]={:tipo=>"String", :valor=>@solicitante.correo}
-        param["P_HORARIO_PREFERENCIA"]={:tipo=>"String", :valor=>@comparecencia.dia_preferencia.upcase + " (#{@comparecencia.hora_preferencia} HRS.)"}
+        param["P_HORARIO_PREFERENCIA"]= (@comparecencia.disponibilidad_horario && @comparecencia.disponibilidad_horario == 'SI') ? {:tipo=>"String", :valor=> "DISPONIBILIDAD DE HORARIO"} : {:tipo=>"String", :valor=>@comparecencia.dia_preferencia.upcase + " (#{@comparecencia.hora_preferencia} HRS.)"}
         conocimiento = (@comparecencia.conocimiento) ? "SÍ" : "NO"
         param["P_CONOCIMIENTO"]={:tipo=>"String", :valor=>conocimiento}
         param["P_DATOS"]={:tipo=>"String", :valor=>clean_string(@comparecencia.datos)}
@@ -189,6 +189,7 @@ class ComparecenciasController < ApplicationController
     @tramite = Tramite.find(params[:tramite])
     if @tramite.comparecencia
        @comparecencia= @tramite.comparecencia
+       @comparecencia.datos = (params[:comparecencia][:datos] && params[:comparecencia][:datos].size > 0) ? params[:comparecencia][:datos] : nil
        @comparecencia.update_attributes(params[:comparecencia])
     else
       @tramite.update_estatus!("comp-conc", current_user) # update estatus of tramite
@@ -197,6 +198,7 @@ class ComparecenciasController < ApplicationController
       @comparecencia.tramite = @tramite
     end
     @comparecencia.user = current_user unless @comparecencia.user
+    @comparecencia.conocimiento = (params[:comparecencia] && params[:comparecencia][:conocimiento] == 'SI') ? true : false
     if @comparecencia.save
        @tramite.generar_folio_expediente!
        flash[:notice] = "Guardado correctamente, Número de Expediente: #{@tramite.numero_expediente}"

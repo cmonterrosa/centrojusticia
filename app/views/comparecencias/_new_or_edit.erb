@@ -43,13 +43,22 @@ window.onload = function() {
           <td align="center" colspan="4" >&nbsp;</td>
         </tr>
         <tr align=" justify" class="pregunta">
-          <td align="center">Hora(s) de preferencia</td>
-          <td align="center">Día(s) de preferencia</td>
+          <td align="center">&nbsp;</td>
+          <td align="center"><label id="horap">Hora(s) de preferencia</label></td>
+          <td align="center"><label id="diap">Día(s) de preferencia</label></td>
           <td align="center">¿Es del conocimiento de alguna autoridad?</td>
         </tr>
         <tr>
+
+          <td align="center">
+                <%= f.check_box(:disponibilidad_horario, {:onclick => "ena_disponibilidad(this, 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');" }, "SI", "NO") %>&nbsp;¿Disponibilidad de horario para las sesiones?
+          </td>
+
+        <div id="disponibilidad">
           <td align="center"><%= f.text_field :hora_preferencia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder=> "Ej. 13-15"%></td>
           <td align="center"><%= f.text_field :dia_preferencia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder => "Ej. Lunes, Martes"%></td>
+        </div>
+
           <td align="center">
             <label class="uper">SI <%= f.radio_button :conocimiento, "SI", :checked => @comparecencia.conocimiento == true, :onclick => "habilitar_datos();" %></label>&nbsp;&nbsp;
             <label class="uper">NO <%= f.radio_button :conocimiento, "NO", :checked => @comparecencia.conocimiento == false, :onclick => "habilitar_datos();" %></label>
@@ -111,6 +120,12 @@ window.onload = function() {
 
 <% end %>
 </table>
+
+<!-- disponibilidad de horario -->
+<script type="text/javascript">
+  ena_disponibilidad('comparecencia_disponibilidad_horario', 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');
+</script>
+
 
 <script type="text/javascript">
   var asunto = new LiveValidation( 'comparecencia_asunto' );

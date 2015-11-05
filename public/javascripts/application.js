@@ -591,6 +591,53 @@ function ena_edad(checkBox, elemento_fecha, elemento_edad){
     }
 }
 
+
+
+// Habilita los campos de hora y dias de preferencias //
+function ena_disponibilidad(checkBox, elemento_hora, elemento_dia, label_hora, label_dia){
+  var objeto_hora, objeto_dia, objeto_label_dia, objeto_label_hora, cBox;
+
+  objeto_hora = document.getElementById(elemento_hora);
+  objeto_dia = document.getElementById(elemento_dia);
+  objeto_label_hora = document.getElementById(label_hora);
+  objeto_label_dia = document.getElementById(label_dia);
+  
+
+    if(typeof checkBox == "object")
+        cBox = checkBox;
+    else
+        cBox = document.getElementById(checkBox)
+
+   if(cBox.checked)
+        if(cBox.value == "SI"){
+            objeto_hora.style.display='none';
+            objeto_dia.style.display='none';
+            objeto_label_hora.style.display='none';
+            objeto_label_dia.style.display='none';
+            objeto_hora.value='';
+            objeto_dia.value='';
+            objeto_hora.disabled=true;
+            objeto_dia.disabled=true;
+        }
+        else{
+            objeto_hora.style.display='inline';
+            objeto_dia.style.display='inline';
+            objeto_label_hora.style.display='inline';
+            objeto_label_dia.style.display='inline';
+            objeto_hora.disabled=false;
+            objeto_dia.disabled=false;
+        }
+    else{
+           objeto_hora.style.display='inline';
+           objeto_dia.style.display='inline';
+           objeto_label_hora.style.display='inline';
+            objeto_label_dia.style.display='inline';
+           objeto_hora.disabled=false;
+           objeto_dia.disabled=false;
+        }
+}
+
+
 /* Funciones para asignacion de materia */
 
 function enaPreguntasAsignacionMateria(radioButton, comboSelect){
