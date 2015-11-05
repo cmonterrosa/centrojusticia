@@ -429,18 +429,22 @@ $(function() {
 
 /* Habilita datos de expedientes en comparecencias */
 
-
-
-  function habilitar_datos(){
+  function habilitar_datos(datos, label_datos){
+      objeto_datos = document.getElementById(datos);
+      objeto_label_datos = document.getElementById(label_datos);
       if (document.getElementById("comparecencia_conocimiento_si").checked == true)
         {
-          document.getElementById("comparecencia_datos").disabled = false;
+          objeto_datos.style.display = 'inline';
+          objeto_label_datos.style.display = 'inline';
+          objeto_datos.disabled = false;
         }
       else
           if (document.getElementById("comparecencia_conocimiento_no").checked == true)
            {
-                document.getElementById("comparecencia_datos").value = "";
-                document.getElementById("comparecencia_datos").disabled = true;
+                objeto_datos.style.display = 'none';
+                objeto_label_datos.style.display = 'none';
+                objeto_datos.value = "";
+                objeto_datos.disabled = true;
             }
   }
 

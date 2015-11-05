@@ -1,6 +1,6 @@
 <script language="javascript">
 window.onload = function() {
- habilitar_datos();
+ habilitar_datos('comparecencia_datos', 'ldatos');
 }
 </script>
 
@@ -60,8 +60,8 @@ window.onload = function() {
         </div>
 
           <td align="center">
-            <label class="uper">SI <%= f.radio_button :conocimiento, "SI", :checked => @comparecencia.conocimiento == true, :onclick => "habilitar_datos();" %></label>&nbsp;&nbsp;
-            <label class="uper">NO <%= f.radio_button :conocimiento, "NO", :checked => @comparecencia.conocimiento == false, :onclick => "habilitar_datos();" %></label>
+            <label class="uper">SI <%= f.radio_button :conocimiento, "SI", :checked => @comparecencia.conocimiento == true, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos');" %></label>&nbsp;&nbsp;
+            <label class="uper">NO <%= f.radio_button :conocimiento, "NO", :checked => @comparecencia.conocimiento == false, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos');" %></label>
           </td>
           <!--
           <td align="center"><= f.text_field :observaciones, :class => "text"%></td>
@@ -77,12 +77,12 @@ window.onload = function() {
           <td align="center" colspan="4" >Detalle de Datos y Asunto</td>
         </tr>
         <tr align=" justify" class="pregunta">
-           <td align="center">Datos</td>
+           <td align="center"><label id="ldatos" style="display:none;">Datos</label></td>
           <td align="center">Anote la descripción del asunto <em class="formee-req">*</em></td>
        </tr>
         <tr>
           <%enable = (@comparecencia.conocimiento) ? false : true%>
-          <td align="center"><%= f.text_area :datos,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "45x9", :disabled => enable%></td>
+          <td align="center"><%= f.text_area :datos,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "45x9", :disabled => enable, :style => "display:none;"%></td>
           <td align="center"><%= f.text_area :asunto,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :required => true, :size => "90x12"%></td>
         </tr>
       </table></td>
@@ -123,6 +123,7 @@ window.onload = function() {
 
 <!-- disponibilidad de horario -->
 <script type="text/javascript">
+  habilitar_datos('comparecencia_datos', 'ldatos');
   ena_disponibilidad('comparecencia_disponibilidad_horario', 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');
 </script>
 
