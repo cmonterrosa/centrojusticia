@@ -622,6 +622,7 @@ function ena_disponibilidad(checkBox, elemento_hora, elemento_dia, label_hora, l
             objeto_dia.value='';
             objeto_hora.disabled=true;
             objeto_dia.disabled=true;
+            
         }
         else{
             objeto_hora.style.display='inline';
@@ -630,14 +631,16 @@ function ena_disponibilidad(checkBox, elemento_hora, elemento_dia, label_hora, l
             objeto_label_dia.style.display='inline';
             objeto_hora.disabled=false;
             objeto_dia.disabled=false;
+            
         }
     else{
-           objeto_hora.style.display='inline';
-           objeto_dia.style.display='inline';
-           objeto_label_hora.style.display='inline';
-            objeto_label_dia.style.display='inline';
+           objeto_hora.style.display='none';
+           objeto_dia.style.display='none';
+           objeto_label_hora.style.display='none';
+            objeto_label_dia.style.display='none';
            objeto_hora.disabled=false;
            objeto_dia.disabled=false;
+           
         }
 }
 

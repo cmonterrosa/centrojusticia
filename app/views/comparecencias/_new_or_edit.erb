@@ -1,8 +1,9 @@
-<script language="javascript">
-window.onload = function() {
- habilitar_datos('comparecencia_datos', 'ldatos');
-}
-</script>
+<%#*<script language="javascript">%>
+<%#*window.onload = function() {%>
+  <%#*habilitar_datos('comparecencia_datos', 'ldatos');%>
+  <%#*ena_disponibilidad('comparecencia_disponibilidad_horario_si', 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');%>
+<%#*}%>
+<%#*</script>%>
 
 <% form_for :comparecencia, @comparecencia, :url => { :action => "save", :tramite => @comparecencia.tramite }, :method => :post do |f| -%>
 
@@ -17,77 +18,95 @@ window.onload = function() {
           <td align="center" colspan="4">DATOS GENERALES</td>
         </tr>
         <tr align=" justify" class="pregunta">
-          <td align="center">Fecha/hora</td>
-          <td align="center">Procedencia</td>
+          <td align="center"><b>Fecha/hora</b></td>
+          <td align="center"><b>Procedencia</b></td>
         </tr>
         <tr>
           <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
           <td align="center"><%= f.text_field :procedencia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "50"%></td>
         </tr>
+        
+        <tr align=" justify" class="pregunta">
+          <td align="center" colspan="4">&nbsp;</td>
+        </tr>
 
         <tr align=" justify" class="pregunta">
-          <td align="center" colspan="4">Carácter con el que comparece <em class="formee-req">*</em></td>
+          <td align="center" colspan="4"><b>Carácter con el que comparece </b> <em class="formee-req">*</em></td>
         </tr>
         <tr>
-          <td align="center" colspan="4"><%= f.text_field :caracter, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "80"%></td>
+          <td align="center" colspan="4"><%= f.text_field :caracter, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "90"%></td>
         </tr>
 
 
       </table></td>
     </tr>
-    <!-- segunda barra inferior -->
+
+
+
+
+       <!-- Sobre disponibilidad de horario -->
       <tr align="center">
-      <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4" >&nbsp;</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">&nbsp;</td>
-          <td align="center"><label id="horap">Hora(s) de preferencia</label></td>
-          <td align="center"><label id="diap">Día(s) de preferencia</label></td>
-          <td align="center">¿Es del conocimiento de alguna autoridad?</td>
-        </tr>
-        <tr>
+        <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
 
-          <td align="center">
-                <%= f.check_box(:disponibilidad_horario, {:onclick => "ena_disponibilidad(this, 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');" }, "SI", "NO") %>&nbsp;¿Disponibilidad de horario para las sesiones?
-          </td>
-
-        <div id="disponibilidad">
-          <td align="center"><%= f.text_field :hora_preferencia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder=> "Ej. 13-15"%></td>
-          <td align="center"><%= f.text_field :dia_preferencia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder => "Ej. Lunes, Martes"%></td>
-        </div>
-
-          <td align="center">
-            <label class="uper">SI <%= f.radio_button :conocimiento, "SI", :checked => @comparecencia.conocimiento == true, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos');" %></label>&nbsp;&nbsp;
-            <label class="uper">NO <%= f.radio_button :conocimiento, "NO", :checked => @comparecencia.conocimiento == false, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos');" %></label>
-          </td>
-          <!--
-          <td align="center"><= f.text_field :observaciones, :class => "text"%></td>
-          -->
-        </tr>
-      </table></td>
+          <tr align=" justify" class="pregunta">
+            <td align="center" colspan="2"><b>¿Tiene disponibilidad de horario para las sesiones? </b><em class="formee-req">*</em></td>
+            <td align="center"><label id="horap"><b>Hora(s) de preferencia</b></label></td>
+            <td align="center"><label id="diap"><b>Día(s) de preferencia</b></label></td>
+          </tr>
+          <tr>
+            <td align="center" colspan="2">
+              <span id="comparecencia_disponibilidad_horario" class="InputGroup">
+                <label class="uper">SI <%= f.radio_button :disponibilidad_horario, "SI", :checked => @comparecencia.disponibilidad_horario=='SI', :onclick => "ena_disponibilidad(this, 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');" %></label>&nbsp;&nbsp;
+                <label class="uper">NO <%= f.radio_button :disponibilidad_horario, "NO", :checked => @comparecencia.disponibilidad_horario=='NO' , :onclick => "ena_disponibilidad(this, 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');" %></label>
+              </span>
+            </td>
+            
+            <div id="disponibilidad">
+              <td align="center"><%= f.text_field :hora_preferencia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder=> "Ejemplo: 13-15 o 8-20"%></td>
+              <td align="center"><%= f.text_field :dia_preferencia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder => "Ejemplo. Lunes-Viernes o Lunes,Viernes"%></td>
+            </div>
+          </tr>
+        </table>
+        </td>
      </tr>
-     <!-- barra inferior -->
+
+      <!-- conocimiento de la autoridad -->
+      <tr align="center">
+        <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+            <tr align=" justify" class="pregunta">
+              <td align="center" colspan="2"><b>¿Es del conocimiento de alguna autoridad? </b><em class="formee-req">*</em></td>
+              <td align="center" colspan="2"><label id="ldatos" style="display:none;"><b>Datos</b></label></td>
+            </tr>
+            <tr>
+              <td align="center" colspan="2">
+                <span id="comparecencia_conocimiento" class="InputGroup">
+                  <label class="uper">SI <%= f.radio_button :conocimiento, "SI", :checked => @comparecencia.conocimiento == true, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos');" %></label>&nbsp;&nbsp;
+                  <label class="uper">NO <%= f.radio_button :conocimiento, "NO", :checked => @comparecencia.conocimiento == false, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos');" %></label>
+                </span>
+             </td>
+              <%enable = (@comparecencia.conocimiento) ? false : true%>
+              <td align="center" colspan="2"><%= f.text_area :datos,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "75x4", :disabled => enable, :style => "display:none;"%></td>
+            </tr>
+          </table>
+      </td>
+     </tr>
+
+
+     <!-- datos y asunto -->
        <tr align="center">
-      <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4" >Detalle de Datos y Asunto</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-           <td align="center"><label id="ldatos" style="display:none;">Datos</label></td>
-          <td align="center">Anote la descripción del asunto <em class="formee-req">*</em></td>
-       </tr>
-        <tr>
-          <%enable = (@comparecencia.conocimiento) ? false : true%>
-          <td align="center"><%= f.text_area :datos,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "45x9", :disabled => enable, :style => "display:none;"%></td>
-          <td align="center"><%= f.text_area :asunto,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :required => true, :size => "90x12"%></td>
-        </tr>
-      </table></td>
+        <td align="center">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr bgcolor="#E8E8E8" class="subtitulo">
+            <td align="center" colspan="4" >DESCRIPCIÓN DEL ASUNTO</td>
+          </tr>
+          <tr>
+              <td align="center" colspan="4"><%= f.text_area :asunto,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :required => true, :size => "130x11"%></td>
+          </tr>
+        </table>
+        </td>
      </tr>
-
 
 
     <!-- espacio -->
@@ -115,16 +134,14 @@ window.onload = function() {
     </td>
   </tr>
 
-
-    
-
 <% end %>
 </table>
 
 <!-- disponibilidad de horario -->
 <script type="text/javascript">
   habilitar_datos('comparecencia_datos', 'ldatos');
-  ena_disponibilidad('comparecencia_disponibilidad_horario', 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');
+  ena_disponibilidad('comparecencia_disponibilidad_horario_si', 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');
+  ena_disponibilidad('comparecencia_disponibilidad_horario_no', 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');
 </script>
 
 
@@ -142,4 +159,14 @@ window.onload = function() {
 
   var datos = new LiveValidation( 'comparecencia_datos' );
   datos.add( Validate.Length, { maximum: 140 } );
+
+
+   jQuery(function(){
+      jQuery("#comparecencia_disponibilidad_horario").validate({ expression: "if (isChecked(SelfID)) return true; else return false;", message: "Seleccione una opción!" });
+      jQuery("#comparecencia_conocimiento").validate({ expression: "if (isChecked(SelfID)) return true; else return false;", message: "Seleccione una opción!" });
+      <%#*jQuery("#comparecencia_hora_preferencia").validate({ expression: "if (ElementIsChecked('comparecencia_disponibilidad_horario_no')) return true; else return false;", message: "No puede estar en blanco!" });%>
+      <%#*jQuery("#comparecencia_dia_preferencia").validate({ expression: "if (ElementIsChecked('comparecencia_disponibilidad_horario_no')) return true; else return false;", message: "No puede estar en blanco!" });%>
+      <%#*jQuery("#comparecencia_conocimiento").validate({ expression: "if (ElementIsChecked('comparecencia_conocimiento_si')) return true; else return false;", message: "No puede estar en blanco!" });%>
+      
+  });
 </script>
