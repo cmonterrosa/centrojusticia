@@ -146,9 +146,9 @@ class OrientacionsController < ApplicationController
       @tramite.update_estatus!("tram-inic", current_user)
         if @orientacion.notificacion
            NotificationsMailer.deliver_tramite_created(@tramite, @orientacion.especialista) #sends the email
-           flash[:notice] = "Guardado correctamente y envío de notificación por email" 
+           flash[:notice] = "ORIENTACION GUARDADA CORRECTAMENTE Y ASIGNADA A:  <b>#{@orientacion.especialista.nombre_completo}</b>"
         else
-          flash[:notice] = "Guardado correctamente, sin envío de notificación por email"
+          flash[:notice] = "ORIENTACION GUARDADA CORRECTAMENTE Y ASIGNADA A: <b>#{@orientacion.especialista.nombre_completo}</b>"
         end
         redirect_to :controller => "home"
     else
