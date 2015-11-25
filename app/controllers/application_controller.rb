@@ -4,6 +4,8 @@
 # Likewise, all the methods added will be available for all controllers.
 require 'will_paginate'
 require 'will_paginate/array'
+require 'net/http'
+require 'uri'
 
 
 class ApplicationController < ActionController::Base
@@ -12,6 +14,9 @@ class ApplicationController < ActionController::Base
   include AuthenticatedSystem
   # You can move this into a different controller, if you wish.  This module gives you the require_role helpers, and others.
   include RoleRequirementSystem
+
+  ### Si existen mensajes ###
+  before_filter :check_if_mensaje_exists?
 
   # Security functions
   include Security
@@ -71,7 +76,36 @@ class ApplicationController < ActionController::Base
   end
 
 
+
+  def check_if_mensaje_exists?
+      if MENSAJE
+        if current_user && MENSAJE.has_key?(current_user.login.to_sym)
+            require 'date'
+            flash[:warning] = MENSAJE[current_user.login.to_sym][:texto] if DateTime.now < Date.parse(MENSAJE[current_user.login.to_sym][:expiracion])
+        end
+      end
+    end
+
+  def url_is_active?(host='localhost', port=3000)
+    targetIp = host
+    targetPort = port
+    begin
+        if server = TCPSocket.open(targetIp, targetPort)
+          puts "Connected to Server => " + targetIp + ":" + targetPort
+          server.close
+          return true
+        end
+    rescue => ex
+        puts "Connection to Server Failed:
+        #{ex.class}: #{ex.message}"
+        return false
+      end
+    end
+
+end
+
+
  
 
 
-end
+

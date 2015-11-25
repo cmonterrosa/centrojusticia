@@ -3,11 +3,14 @@
 require 'rubygems'
 require 'gruff'
 require 'fastercsv'
+require 'httparty'
+
+
 
 class EstadisticasController < ApplicationController
   layout :set_layout
 
-  require_role [:admin, :direccion, :subdireccion, :bitacora, :admindireccion]
+  require_role [:admin, :direccion, :subdireccion, :bitacora, :admindireccion], :except => [:estadisticas_generales]
   
 
      def index
@@ -40,8 +43,13 @@ class EstadisticasController < ApplicationController
 
     def estadisticas_generales
           if params[:fecha_inicio] && params[:fecha_fin]
+            #@titulo ||= SUBDIRECCION
              calculo_estadisticas_generales
-             return render(:partial => 'estadisticas_generales', :layout => 'kolaval')
+             respond_to do |format|
+                  format.html { render(:partial => 'estadisticas_generales', :layout => 'kolaval')}
+                  format.xml  {render :xml => @resultados.to_xml}
+                  format.json {render :json => @resultados.to_json}
+             end
           end
     end
 
@@ -54,12 +62,75 @@ class EstadisticasController < ApplicationController
     end
 
 
+
+    def remote_calculo_estadisticas
+      begin
+        @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+        unless AREAS_CONFIG.empty?
+          @objeto_total = 0
+          @listado_areas_activas = Array.new
+          AREAS_CONFIG.each do |url|
+                host, port = url[1].split("http://").last.split(":")
+                if url_is_active?(host, port)
+                    puts("=> Connecting to GET RESOURCE IN : #{url[0]} WITH: #{url[1]}")
+                    response = HTTParty.get( "#{url[1]}/estadisticas/estadisticas_generales.xml?fecha_inicio='#{@inicio}'&fecha_fin='#{@fin}'", :timeout => 5000)
+                    instance_variable_set('@' + "#{url[0]}",response['hash']['CEJA'])
+                    if eval("@#{url[0]}")
+                      @listado_areas_activas << url[0]
+                      puts("=> OBJECT #{url[0]} ADD TO ARRAY")
+                    end
+                end
+            end
+         end
+        rescue => ex
+            puts "#{ex.class}: #{ex.message}"
+        rescue Timeout::Error => e
+            puts "update timeout error"
+        end
+      @titulo = "Estadísticas generales de: #{@listado_areas_activas.join(", ").upcase}"
+      
+      ### INICIALIZACION DE VARIABLES ###
+      @total_materias = @total_expedientes_generados =  @personas_morales =@participantes_hombres =  @participantes_mujeres = 0
+      @procedencias = @especialistas = @materias = Array.new
+      @contador_materias = Hash.new
+      Materia.find(:all).each do |m|
+        @contador_materias[m.descripcion] = 0
+      end
+
+      ### SUMATORIA DE VALORES #####
+      @listado_areas_activas.each do |a|
+        if eval("@#{a}")
+            @total_expedientes_generados += eval("@#{a}")['total_expedientes_generados']  if (eval("@#{a}")['total_expedientes_generados'])
+            @personas_morales += eval("@#{a}")['personas_morales']  if (eval("@#{a}")['personas_morales'])
+            @participantes_hombres += eval("@#{a}")['participantes_hombres']  if (eval("@#{a}")['participantes_hombres'])
+            @participantes_mujeres += eval("@#{a}")['participantes_mujeres']  if (eval("@#{a}")['participantes_mujeres'])
+            @especialistas += eval("@#{a}")['especialistas']  if (eval("@#{a}")['especialistas'])
+            @total_materias += eval("@#{a}")['total_materias']  if (eval("@#{a}")['total_materias'])
+            if (eval("@#{a}")['materias'])
+              @materias += eval("@#{a}")['materias']
+              @materias.each do |m|
+                  @contador_materias[m['nombre']] +=m['total']
+              end
+            end
+        end
+      end
+      @especialistas = @especialistas.sort{|a,b| a['orientaciones'] <=> b['orientaciones']}
+      respond_to do |format|
+        format.html { render(:partial => 'estadisticas_remotas', :layout => 'kolaval')}
+      end
+    end
+
+
     def calculo_estadisticas_generales
              params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
              @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
              @estatus = Estatu.find(:all, :conditions => ["clave not in ('tram-inic')"], :order => "descripcion")
-             ## Procedencias de atenciones extraordinarfias
-             @procedencias = Procedencia.find_by_sql ["select p.descripcion, count(extraordinarias.id) as numero_atenciones from extraordinarias extraordinarias inner join procedencias p  on extraordinarias.procedencia_id=p.id where (extraordinarias.fechahora between ? AND ?) group by p.descripcion", @inicio, @fin]
+             ## Procedencias de atenciones extraordinarias
+             @procedencias = Procedencia.find(:all,
+               :select => "count(extraordinarias.id) as numero_atenciones, p.descripcion",
+               :joins => "p, extraordinarias extraordinarias",
+               :conditions => ["extraordinarias.procedencia_id=p.id AND (extraordinarias.fechahora between ? AND ?)", @inicio, @fin],
+               :group => "p.descripcion")
              @orientaciones_hombres = Orientacion.count(:sexo, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.fechahora between ? AND ?) AND orientacions.sexo = ?", @inicio, @fin, 'M'])
              @orientaciones_mujeres = Orientacion.count(:sexo, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc', 'no-compar') AND (orientacions.fechahora between ? AND ?) AND orientacions.sexo = ?", @inicio, @fin, 'F'])
              @comparecencias_concluidas = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in ('comp-conc') AND (orientacions.fechahora between ? AND ?)", @inicio, @fin])
@@ -79,14 +150,47 @@ class EstadisticasController < ApplicationController
              @total_expedientes_generados = Tramite.count(:id, :conditions => ["folio_expediente IS NOT NULL and fechahora between ? AND ?", @inicio, @fin])
              @total_orientaciones = @comparecencias_concluidas + @solo_orientacion
              @atenciones_extraordinarias = Extraordinaria.count(:id, :conditions => ["fechahora between ? AND ?", @inicio, @fin])
-             especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
+             #especialistas = User.find_by_sql("select u.* from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
+             especialistas = Role.find_by_name('especialistas').todos_usuarios
              @comparecencias_conocimiento = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND e.clave in ('comp-conc') AND (c.conocimiento = ? ) AND (c.fechahora between ? AND ?)", true, @inicio, @fin])
              @comparecencias_noconocimiento = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND e.clave in ('comp-conc') AND (c.conocimiento = ? ) AND (c.fechahora between ? AND ?)", false, @inicio, @fin])
              @especialistas = especialistas.sort{|p1,p2| p1.num_orientaciones_periodo(@inicio,@fin) <=> p2.num_orientaciones_periodo(@inicio,@fin)}
              @participantes_hombres = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c, participantes p", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND c.id = p.comparecencia_id AND e.clave in ('comp-conc', 'mate-asig', 'fech-asig') AND (p.sexo = ? ) AND (c.fechahora between ? AND ?)", "M", @inicio, @fin])
              @participantes_mujeres = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c, participantes p", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND c.id = p.comparecencia_id AND e.clave in ('comp-conc', 'mate-asig', 'fech-asig') AND (p.sexo = ? ) AND (c.fechahora between ? AND ?)", "F", @inicio, @fin])
              @personas_morales = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c, participantes p, tipopersonas tp", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND c.id = p.comparecencia_id AND p.tipopersona_id = tp.id AND e.clave in ('comp-conc', 'mate-asig', 'fech-asig') AND (tp.descripcion = ? ) AND (c.fechahora between ? AND ?)", "MORAL", @inicio, @fin])
+
+             #especialistas_compact = User.find_by_sql("select u.id, u.paterno, u.materno, u.nombre from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
+             especialistas_array = Array.new
+             especialistas.each do |e|
+                  especialistas_array << { 'nombre' => e.nombre_completo.inspect, 'orientaciones' => e.num_orientaciones_periodo(@inicio, @fin) }
+             end
+
+             ### FORMATO DE XML ###
+             @resultados= {
+                       "CEJA" =>
+                                    {
+                                        "nombre-adscripcion" => SUBDIRECCION.inspect,
+                                        "inicio" => @inicio,
+                                        "fin" => @fin,
+                                        "total-expedientes_generados" => @total_expedientes_generados,
+                                        "personas-morales" => @personas_morales,
+                                        "participantes-hombres" => @participantes_hombres,
+                                        "participantes-mujeres" => @participantes_mujeres,
+                                        "atenciones-extraordinarias" => @atenciones_extraordinarias,
+                                        "comparecencias-conocimiento" => @comparecencias_conocimiento,
+                                        "comparecencias-noconocimiento" => @comparecencias_noconocimiento,
+                                        "total_materias" => @total_materias,
+                                        "materias" => @detalle_materias.each do |dm| dm end,
+                                        "especialistas" => especialistas_array.each do |e| e end,
+                                        "procedencias" => @procedencias.each do |p| 
+                                          {p.descripcion => p.numero_atenciones.to_i }
+                                        end
+                                    }
+                                }
     end
+
+
+
 
 #--- Inicia gráfica de orientaciones ----
   def grafica_orientaciones_especialistas_old

@@ -1,0 +1,15 @@
+#################################################
+#   Conexiones remotas para estadistica
+#################################################
+
+development:
+  tapachula: http://localhost:3001
+  sancristobal: http://localhost:3002
+  tuxtla: http://localhost:3003
+  
+
+production:
+  tuxtla: http://localhost:3000
+  tapachula: http://localhost:3001
+  sancristobal: http://localhost:3002
+  
