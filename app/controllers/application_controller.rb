@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
   include RoleRequirementSystem
 
   ### Si existen mensajes ###
-  before_filter :check_if_mensaje_exists?
+  #before_filter :check_if_mensaje_exists?
 
   # Security functions
   include Security
@@ -78,7 +78,6 @@ class ApplicationController < ActionController::Base
 
 
   def check_if_mensaje_exists?
-       MENSAJE ||= "" 
        if MENSAJE
         if current_user && MENSAJE.has_key?(current_user.login.to_sym)
             require 'date'
