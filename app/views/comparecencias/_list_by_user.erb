@@ -13,7 +13,7 @@
      <tr class="d<%=invert_class(clase)%>">
         <td style="vertical-align: middle;"><%=h counter%></td>
         <td style="vertical-align: middle;"><b><%=h (comparecencia.tramite) ? comparecencia.tramite.numero_expediente : "--"%></b></td>
-        <td style="vertical-align: middle;"><%=comparecencia.fechahora.strftime('%d de %B de %Y - %H:%M:%S')%></td>
+        <td style="vertical-align: middle;"><%=h (comparecencia.fechahora) ? comparecencia.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "No existe información"%></td>
         <td style="vertical-align: middle;">
           <%participantes=[]%>
           <%comparecencia.participantes.each do |p|%>
