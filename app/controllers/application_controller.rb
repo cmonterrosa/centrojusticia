@@ -78,7 +78,7 @@ class ApplicationController < ActionController::Base
 
 
   def check_if_mensaje_exists?
-       MENSAJE||= "" 
+       MENSAJE ||= "" 
        if MENSAJE
         if current_user && MENSAJE.has_key?(current_user.login.to_sym)
             require 'date'
