@@ -6,7 +6,7 @@ require 'will_paginate'
 require 'will_paginate/array'
 require 'net/http'
 require 'uri'
-require 'socket'
+
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
