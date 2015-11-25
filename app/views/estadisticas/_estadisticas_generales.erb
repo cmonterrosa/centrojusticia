@@ -1,9 +1,17 @@
  <p align="center">
    <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "estadisticas_generales_pdf.pdf", :fecha_inicio => @inicio.strftime('%Y/%m/%d'), :fecha_fin => @fin.strftime('%Y/%m/%d')}, :title => "Imprimir estadistica general"-%>
-</p>
+
+   <%if current_user.has_role?(:admin)%>
+   | <%=link_to 'XML', :controller => "estadisticas", :action => "estadisticas_generales.xml", :fecha_inicio => @inicio, :fecha_fin => @fin%>
+   | <%=link_to "GLOBALES", :action => "remote_calculo_estadisticas", :fecha_inicio => @inicio, :fecha_fin => @fin%>
+   <%end%>
+
+ </p>
 
 
-<h2 align="center">Estadísticas generales</h2>
+
+<%@titulo ||= SUBDIRECCION%>
+<h2 align="center">Estadísticas de: <%=@titulo%></h2>
 <h3 align="center">Del período del <%=@inicio.strftime('%d de %B de %Y')%> al <%=@fin.strftime('%d de %B de %Y')%></h3>
 
 
