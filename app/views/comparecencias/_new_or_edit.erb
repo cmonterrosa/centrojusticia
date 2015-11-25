@@ -56,7 +56,7 @@
           </tr>
           <tr>
             <td align="center" colspan="2">
-              <span id="comparecencia_disponibilidad_horario" class="InputGroup">
+              <span id="comparecencia_disponibilidad_horario_agrupado" class="InputGroup">
                 <label class="uper">SI <%= f.radio_button :disponibilidad_horario, "SI", :checked => @comparecencia.disponibilidad_horario=='SI', :onclick => "ena_disponibilidad(this, 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');" %></label>&nbsp;&nbsp;
                 <label class="uper">NO <%= f.radio_button :disponibilidad_horario, "NO", :checked => @comparecencia.disponibilidad_horario=='NO' , :onclick => "ena_disponibilidad(this, 'comparecencia_hora_preferencia', 'comparecencia_dia_preferencia', 'horap', 'diap');" %></label>
               </span>
@@ -81,13 +81,18 @@
             </tr>
             <tr>
               <td align="center" colspan="2">
-                <span id="comparecencia_conocimiento" class="InputGroup">
-                  <label class="uper">SI <%= f.radio_button :conocimiento, "SI", :checked => @comparecencia.conocimiento == true, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos');" %></label>&nbsp;&nbsp;
-                  <label class="uper">NO <%= f.radio_button :conocimiento, "NO", :checked => @comparecencia.conocimiento == false, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos');" %></label>
+                <span id="comparecencia_conocimiento_agrupado" class="InputGroup">
+                  <label class="uper">SI <%= f.radio_button :conocimiento, "SI", :checked => @comparecencia.conocimiento == true, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos'); " %></label>&nbsp;&nbsp;
+                  <label class="uper">NO <%= f.radio_button :conocimiento, "NO", :checked => @comparecencia.conocimiento == false, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos'); ValidarConocimientoAutoridad();" %></label>
                 </span>
              </td>
               <%enable = (@comparecencia.conocimiento) ? false : true%>
-              <td align="center" colspan="2"><%= f.text_area :datos,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "75x4", :disabled => enable, :style => "display:none;"%></td>
+            
+               <td align="center" colspan="2">
+                 <div id="comparecencia_datos_span">
+                  <%= f.text_area :datos,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "75x4", :disabled => enable, :style => "display:none;"%>
+                 </div>
+                 </td>
             </tr>
           </table>
       </td>
@@ -162,11 +167,11 @@
 
 
    jQuery(function(){
-      jQuery("#comparecencia_disponibilidad_horario").validate({ expression: "if (isChecked(SelfID)) return true; else return false;", message: "Seleccione una opción!" });
-      jQuery("#comparecencia_conocimiento").validate({ expression: "if (isChecked(SelfID)) return true; else return false;", message: "Seleccione una opción!" });
+      jQuery("#comparecencia_disponibilidad_horario_agrupado").validate({ expression: "if (isChecked(SelfID)) return true; else return false;", message: "Seleccione una opción!" });
+      jQuery("#comparecencia_conocimiento_agrupado").validate({ expression: "if (isChecked(SelfID)) return true; else return false;", message: "Seleccione una opción!" });
       <%#*jQuery("#comparecencia_hora_preferencia").validate({ expression: "if (ElementIsChecked('comparecencia_disponibilidad_horario_no')) return true; else return false;", message: "No puede estar en blanco!" });%>
       <%#*jQuery("#comparecencia_dia_preferencia").validate({ expression: "if (ElementIsChecked('comparecencia_disponibilidad_horario_no')) return true; else return false;", message: "No puede estar en blanco!" });%>
-      <%#*jQuery("#comparecencia_conocimiento").validate({ expression: "if (ElementIsChecked('comparecencia_conocimiento_si')) return true; else return false;", message: "No puede estar en blanco!" });%>
+      jQuery("#comparecencia_conocimiento").validate({ expression: "if (ValidarConocimientoAutoridad()) return true; else return false;", message: "Datos no pueden estar en blanco!" });
       
   });
 </script>
