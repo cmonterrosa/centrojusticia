@@ -209,9 +209,9 @@ class OrientacionsController < ApplicationController
         if User.authenticate(params[:login], params[:password]) && (@user.has_role?("especialistas") || @user.has_role?("convenios") || @user.has_role?("direccion"))
             if @tramite
                 @orientacion = Orientacion.find_by_tramite_id(@tramite.id)
-                @user = User.find_by_login(params[:login])
                 @orientacion.especialista_id = @user.id
-                @text = (@orientacion.save && @tramite.update_estatus!("orie-conf", current_user)) ? ("Confirmado exitosamente por #{@user.nombre_completo}") : ("No se pudo confirmar, intente de nuevo")
+                @sucess = @orientacion.save || @tramite.update_estatus!("orie-conf", @user)
+                @text = (@sucess) ? ("Confirmado exitosamente por #{@user.nombre_completo}") : ("No se pudo confirmar, intente de nuevo")
                 return render(:partial => 'success_confirmation', :layout => "only_jquery")
             end
         end
