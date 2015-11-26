@@ -1,8 +1,9 @@
  <p align="center">
-   <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "estadisticas_generales_pdf.pdf", :fecha_inicio => @inicio.strftime('%Y/%m/%d'), :fecha_fin => @fin.strftime('%Y/%m/%d')}, :title => "Imprimir estadistica general"-%>
-
+   <!--
+   <= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "estadisticas_generales_pdf.pdf", :fecha_inicio => @inicio.strftime('%Y/%m/%d'), :fecha_fin => @fin.strftime('%Y/%m/%d')}, :title => "Imprimir estadistica general"-%>
+    -->
    <%if current_user.has_role?(:admin)%>
-   | <%=link_to 'MENU', :controller => "estadisticas", :action => "estadisticas_generales.xml", :fecha_inicio => @inicio, :fecha_fin => @fin%>
+   | <%=link_to 'LOCALES', :controller => "estadisticas", :action => "estadisticas_generales", :fecha_inicio => @inicio, :fecha_fin => @fin%>
    | <%=link_to "GLOBALES", :action => "remote_calculo_estadisticas", :fecha_inicio => @inicio, :fecha_fin => @fin%>
    <%end%>
 
