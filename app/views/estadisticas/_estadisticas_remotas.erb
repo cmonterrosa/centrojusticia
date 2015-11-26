@@ -20,7 +20,7 @@
       <!-- totales -->
        <tr class="d<%=h clase%>" align="center">
               <td style="vertical-align: middle;" colspan="2"><b> => Total de expedientes</b></td>
-              <td style="vertical-align: middle;"><%=h @total_expedientes%></td>
+              <td style="vertical-align: middle;"><%=h @total_expedientes_generados%></td>
               <%clase=(clase==0)? 1 : 0%>
        </tr>
 
@@ -64,7 +64,10 @@
               <%if valor > 0%>
                 <tr class="d<%=h clase%>">
                     <td style="vertical-align: middle;" colspan="2" align="center"><%=nombre%></td>
-                    <td style="vertical-align: middle;"><%=valor%> (<%=  "%.2f" % ((valor / @total_materias.to_f) * 100)%>)%</td>
+                    <td style="vertical-align: middle;"><%=valor%> 
+                      
+                      <%#*(<%=  "%.2f" % ((valor / @total_materias.to_f) * 100)>)%>
+                  </td>
                     <%clase=(clase==0)? 1 : 0%>
                 </tr>
               <%end%>
