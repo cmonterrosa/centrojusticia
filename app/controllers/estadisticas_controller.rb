@@ -64,20 +64,33 @@ class EstadisticasController < ApplicationController
 
 
     def remote_calculo_estadisticas
+      @listado_areas_activas = Array.new
+      raw_config = File.read(RAILS_ROOT + "/config/areas.yml")
+      areas = AREAS_CONFIG
+      areas ||= YAML.load(raw_config)[RAILS_ENV]
       begin
         @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
-        unless AREAS_CONFIG.empty?
+        (areas) ? (puts "archivo de areas existe") : (puts "No existe archivo de configuracion")
+        unless areas.empty?
           @objeto_total = 0
-          @listado_areas_activas = Array.new
           AREAS_CONFIG.each do |url|
                 host, port = url[1].split("http://").last.split(":")
                 if url_is_active?(host, port)
-                    puts("=> Connecting to GET RESOURCE IN : #{url[0]} WITH: #{url[1]}")
-                    response = HTTParty.get( "#{url[1]}/estadisticas/estadisticas_generales.xml?fecha_inicio='#{@inicio}'&fecha_fin='#{@fin}'", :timeout => 5000)
-                    instance_variable_set('@' + "#{url[0]}",response['hash']['CEJA'])
-                    if eval("@#{url[0]}")
-                      @listado_areas_activas << url[0]
-                      puts("=> OBJECT #{url[0]} ADD TO ARRAY")
+                  response = nil
+                  intentos=0
+                   while (intentos < 10)
+                        #puts("=> Connecting to GET RESOURCE IN : #{url[0]} WITH: #{url[1]}")
+                        puts( "#{intentos} - Trying: #{url[1]}/estadisticas/estadisticas_generales.xml?fecha_inicio='#{@inicio}'&fecha_fin='#{@fin}'")
+                        response = HTTParty.get( "#{url[1]}/estadisticas/estadisticas_generales.xml?fecha_inicio='#{@inicio}'&fecha_fin='#{@fin}'", :timeout => 50000)
+                        break if response
+                        intentos+=1
+                   end 
+                   if response 
+                        instance_variable_set('@' + "#{url[0]}",response['hash']['CEJA'])
+                        if eval("@#{url[0]}")
+                            @listado_areas_activas << url[0]
+                            puts("=> OBJECT #{url[0]} ADD TO ARRAY")
+                        end
                     end
                 end
             end
@@ -87,8 +100,8 @@ class EstadisticasController < ApplicationController
         rescue Timeout::Error => e
             puts "update timeout error"
         end
-      @titulo = "Estadísticas generales de: #{@listado_areas_activas.join(", ").upcase}"
-      
+      @titulo = "Estadísticas generales de: #{@listado_areas_activas.join(", ").upcase}" if @listado_areas_activas && !@listado_areas_activas.empty?
+      @titulo  ||= "No pudo realizar la conexión exitosamente, intente nuevamente"
       ### INICIALIZACION DE VARIABLES ###
       @total_materias = @total_expedientes_generados =  @personas_morales =@participantes_hombres =  @participantes_mujeres = 0
       @procedencias = @especialistas = @materias = Array.new
