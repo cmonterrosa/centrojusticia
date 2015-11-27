@@ -5,13 +5,13 @@ class TramitesController < ApplicationController
   before_filter :login_required
   require_role [:cancelatramite, :direccion], :for => [:cancel]
   require_role [:especialistas, :subdireccion, :direccion, :convenios, :asignahorario], :for => [:menu]
-  require_role [:admin], :for => [:destroy]
+  require_role [:admin], :for => [:destroy, :show_numero_expediente]
 
 
   def index
   end
 
-  def show_numero_expediente
+  def show_info_expediente
     if @tramite = Tramite.find(params[:id])
        @orientacion = Orientacion.find_by_tramite_id(@tramite.id)
     end
@@ -37,9 +37,15 @@ class TramitesController < ApplicationController
   def save_numero_expediente
     if params[:id] && params[:tramite][:folio_expediente] =~ /^\d{1,}$/
       @tramite = Tramite.find(params[:id])
-      @tramite.update_attributes!(:folio_expediente => params[:tramite][:folio_expediente])
-      flash[:notice] = "Número de expediente actualizado correctamente"
-      redirect_to :action => "list", :controller => "tramites"
+      @tramite.update_attributes(:folio_expediente => params[:tramite][:folio_expediente])
+      success = @tramite && @tramite.save
+      if success && @tramite.errors.empty?
+        flash[:notice] = "Número de expediente actualizado correctamente"
+        redirect_to :action => "list", :controller => "tramites"
+      else
+        @orientacion = Orientacion.find_by_tramite_id(@tramite.id)
+        render :action => "show_info_expediente"
+      end
     else
       flash[:error] = "El formato no es válido, verifique"
       render :action => "show_numero_expediente"
@@ -516,7 +522,7 @@ class TramitesController < ApplicationController
   end
 
   def get_descripcion_motivo_conclusion
-    @motivo_cancelacion = MotivoConclusion.find(params[:concluido_motivo_conclusion_id]) if params[:concluido_motivo_conclusion_id] && params[:concluido_motivo_conclusion_id].size > 1
+    @motivo_cancelacion = MotivoConclusion.find(params[:concluido_motivo_conclusion_id]) if params[:concluido_motivo_conclusion_id] && params[:concluido_motivo_conclusion_id].size >= 1
     (@motivo_cancelacion) ? (return render(:partial => 'descripcion_motivo_conclusion', :layout => false)) :  (return render :text => "")
   end
 
