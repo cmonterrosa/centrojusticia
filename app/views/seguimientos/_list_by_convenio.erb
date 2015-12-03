@@ -1,0 +1,19 @@
+<div class="titulocalendario">
+  <%if @convenio && @convenio.tramite%>
+    <%=link_to "SEGUIMIENTO DE CONVENIOS", {:controller => "seguimientos"}, :class => "boton"%> >>
+    <%=link_to "EXPEDIENTE: #{@convenio.tramite.numero_expediente}", {:controller => "seguimientos", :action => "list_by_convenio", :c => @convenio}, :class => "boton"%>
+  <%end%>
+</div><br />
+
+
+<%=render :partial => "list_seguimiento"%>
+
+
+<%if current_user.has_role?(:convenios) && @convenio%>
+    <br /><%=link_to "NUEVO SEGUIMIENTO", {:action => "new_or_edit", :c => @convenio}, :title => "Nuevo registro", :class => 'boton'  -%>
+<%end%>
+
+
+
+
+

@@ -238,9 +238,9 @@ class TramitesController < ApplicationController
     @concluido.user = current_user
     if @concluido.save
       @tramite.update_estatus!("tram-conc",current_user)
-      render :text => "Expediente concluido correctamente"
+      render :text => "<h2 style='color: green;'>Expediente concluido correctamente</h2>"
     else
-      render :text => "No se pudo concluir, verifique"
+      render :text => "<h2 style='color:red;'>No se pudo concluir, verifique</h2>"
     end
   end
 

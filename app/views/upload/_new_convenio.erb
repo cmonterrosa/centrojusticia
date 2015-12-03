@@ -1,0 +1,39 @@
+<!-- Carga de Evidencias -->
+<div class="container" style="width: 94%">
+
+ <%=render :partial => "mensaje_informativo"%>
+
+
+<%form_for(@uploaded_file, :url => {:action => "create_convenio", :id => @convenio}, :html => {:multipart => true, :class => "formee" }) do |f| -%>
+  <fieldset>
+
+    <legend>Cargar&nbsp;Nuevo&nbsp;Convenio&nbsp;-&nbsp;Expediente:&nbsp;<%=h (@convenio.tramite)? @convenio.tramite.numero_expediente : ''%>&nbsp;</legend>
+
+    <div class="grid-form">
+      <label>Archivo: <em class="formee-req">*</em></label>
+       <%= f.file_field :inputfile %>
+    </div>
+    
+
+    <div class="grid-form">
+       <label>Descripción detallada: <em class="formee-req">*</em></label>
+      <%= f.text_area :descripcion, :placeholder => "Escriba la descripción del archivo", :style => "height: 11em;" %>
+    </div>
+
+    <div class="grid-12-12 clear"></div>
+
+    <div class="grid-form">
+      <input class="right" type="submit" title="CARGAR ARCHIVO" value="CARGAR ARCHIVO" />
+    </div>
+  </fieldset>
+<%end%>
+</div>
+
+<script type="text/javascript">
+ var inputfile = new LiveValidation( 'adjunto_inputfile', {onlyOnSubmit: true} );
+  inputfile.add( Validate.Presence );
+
+  var descripcion = new LiveValidation( 'adjunto_descripcion', {onlyOnSubmit: true} );
+  descripcion.add( Validate.Presence );
+  descripcion.add( Validate.Length, { maximum: 300 } );
+</script>

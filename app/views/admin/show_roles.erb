@@ -1,4 +1,7 @@
-<h1><%=link_to "Listado de Perfiles",{:action => "show_roles"}, :class => "boton" %> | <%=link_to "Listado de usuarios", {:action => "show_users"}, :class => "boton"%></h1><br />
+<%if current_user.has_role?(:admin)%>
+  <%=h link_to 'ADMINISTRACION', {:controller => "admin"}, :class => "boton"%> >>
+<%end%>
+<%=h link_to "Listado de Perfiles",{:action => "show_roles"}, :class => "boton" %> | <%=link_to "Listado de usuarios", {:action => "show_users"}, :class => "boton"%><br />
 
 
 <div class="titulocalendario">

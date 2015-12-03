@@ -32,6 +32,76 @@ class UploadController < ApplicationController
     end
   end
 
+ ###########################
+ #          CONVENIOS                                  #
+ ###########################
+    
+  def new_convenio
+    @uploaded_file = Adjunto.new
+    @convenio = Convenio.find(params[:id]) if params[:id]
+    @especialista = current_user
+    return render(:partial => 'new_convenio', :layout => "only_jquery")
+  end
+
+  def list_convenios
+    @user = current_user
+    @convenio = Convenio.find(params[:id]) if params[:id]
+    @adjuntos = Adjunto.find(:all, :conditions => ["convenio_id = ?", @convenio])
+    @adjunto = Adjunto.new
+    unless @adjuntos.empty?
+        return render(:partial => 'show_convenios', :layout => "only_jquery")
+    else
+       @uploaded_file = Adjunto.new
+       @user = current_user
+       return render(:partial => 'new_convenio', :layout => "only_jquery")
+    end
+  end
+
+  def create_convenio
+    @uploaded_file =Adjunto.new(params[:adjunto])
+    @convenio = params[:c] if params[:c]
+    @uploaded_file.convenio_id = @convenio
+    @uploaded_file.user_id = current_user.id if current_user
+    @convenio = Convenio.find(params[:id]) if params[:id]
+    @uploaded_file.convenio = @convenio if @convenio
+    begin
+      if @uploaded_file.valid?
+          if @uploaded_file.save
+            flash[:notice] = "Evidencia cargada correctamente"
+            redirect_to :action => "list_convenios", :id => @convenio
+          end
+      else
+         @errores = @uploaded_file.errors.full_messages
+         return render(:partial => 'carga_convenio_error', :layout => "only_jquery")
+      end
+    rescue ActiveRecord::RecordInvalid => invalid
+        @errores = invalid.record.errors.full_messages
+        return render(:partial => 'carga_convenio_error', :layout => "only_jquery")
+    end
+  end
+
+  def destroy_convenio
+    if @uploaded_file = Adjunto.find(params[:id])
+      @convenio = @uploaded_file.convenio_id
+      @adjuntos ||= Array.new
+    end
+    if (current_user.has_role?(:subdireccion) || @uploaded_file.user == current_user) && (@uploaded_file.destroy)
+      @adjuntos = Adjunto.find(:all, :conditions => ["convenio_id = ?", @convenio]) if @convenio
+      flash[:notice] = "Convenio eliminado correctamente"
+      return render(:partial => 'show_convenios', :layout => "only_jquery")
+    else
+      return render(:partial => 'eliminar_convenio_error', :layout => "only_jquery")
+    end
+  end
+
+  ################################################
+  #
+  #                           ACCIONES CRUD
+  #
+  ################################################
+
+
+
    def destroy
       @uploaded_file = Adjunto.find(params[:id])
       flash[:notice] = (@uploaded_file.destroy) ?   "Archivo eliminado correctamente" :  "No se puedo eliminar, verifique"

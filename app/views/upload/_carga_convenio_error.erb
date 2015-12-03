@@ -1,0 +1,27 @@
+<div class="titulos">
+ <div id="error_carga_evidencias" class="formee-msg-error">
+              <h2 style="text-align: center;">El archivo no se cargó correctamente:</h2>
+              <%if @errores%>
+                <%@errores.each do |e|%>
+                    <ul>
+                       <li style="font-size: 16px;">
+                        <%campo, mensaje = e.split(":")%>
+                          <%=h mensaje%>
+                       </li>
+                       <li>&nbsp;</li>
+                    </ul>
+                <%end%>
+              <%end%>
+
+
+              <%case params[:action]
+                    when 'create_convenio'
+                      url = {:controller => "upload", :action => "new_convenio",  :id => @convenio}
+                    end
+               %>
+
+
+              <ul><li><%=link_to "VOLVER A INTENTAR", url%></li></ul>
+
+  </div>
+</div>

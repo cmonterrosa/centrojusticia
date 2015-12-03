@@ -8,6 +8,7 @@ class Participante < ActiveRecord::Base
   belongs_to :tipopersona
   belongs_to :cuadrante
   has_many :invitacions
+  has_many :seguimientos
 
   #def before_save
     #self.paterno.upcase! if self.paterno
@@ -36,6 +37,10 @@ class Participante < ActiveRecord::Base
     else
       "#{self.nombre} #{self.paterno} #{self.materno}"
     end
+  end
+
+  def rol_nombre_completo
+    "#{self.perfil}  /  #{nombre_completo}"
   end
    
 

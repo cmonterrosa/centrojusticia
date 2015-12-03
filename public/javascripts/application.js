@@ -409,6 +409,20 @@ $(function() {
     });
 });
 
+$(function() {
+    $j('#convenio_fechahora').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'es'
+    });
+});
+
+$(function() {
+    $j('#seguimiento_fechahora').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'es'
+    });
+});
+
 
 
 
@@ -708,3 +722,29 @@ function disableSelect(select){
     element.style.display = 'none';
     element.disabled = true;
 }
+
+
+
+function ValidarConocimientoAutoridad(){
+    var ReturnVal = false;
+    if (ElementIsChecked("comparecencia_conocimiento_si") == true){
+        if (isEmpty('comparecencia_datos') == true){
+           ReturnVal = false;
+        }
+        else
+            ReturnVal = true;
+    }
+    else {
+        if (ElementIsChecked("comparecencia_conocimiento_no") == true){
+            JQuery("#comparecencia_datos_span").html("");
+            ReturnVal = true;
+        }
+        else
+            {
+               ReturnVal = true;
+            }
+    }
+    return ReturnVal;
+}
+
+

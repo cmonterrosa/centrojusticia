@@ -20,6 +20,7 @@ class User < ActiveRecord::Base
   belongs_to :subdireccion
   belongs_to :situacion
   belongs_to :empleado
+  has_many :seguimientos
   
   # has_role? simply needs to return true or false whether a user has a role or not.  
   # It may be a good idea to have "admin" roles return true always
@@ -124,7 +125,7 @@ class User < ActiveRecord::Base
        num_orientaciones= Orientacion.find_by_sql("select count(orientacions.id) as numero_orientaciones from orientacions orientacions inner join tramites t
       on orientacions.tramite_id=t.id inner join estatus e on t.estatu_id=e.id
       where (orientacions.especialista_id = #{self.id} )
-      AND e.clave in ('comp-conc', 'no-compar', 'mate-asig', 'tram-admi', 'fech-asig', 'camb-sesi', 'tram-canc', 'tram-conc')
+      AND e.clave in ('comp-conc', 'no-compar', 'mate-asig', 'tram-admi', 'fech-asig', 'camb-sesi', 'tram-canc', 'tram-conc', 'proc-conv', 'en-sesion', 'conv-vali')
       AND (orientacions.fechahora between '#{inicio}' AND '#{fin}')")
       return num_orientaciones.first.numero_orientaciones.to_i
      end

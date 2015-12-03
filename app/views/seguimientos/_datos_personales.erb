@@ -1,0 +1,46 @@
+<div style="background-color:  #FFF6BF;">
+  <div class="grid-4-12">
+        <div class="grid-8-12">
+          <label><b style="color: black;">TELÉFONO PARTICULAR: </b></label>
+        </div>
+        <div class="grid-4-12"><label><i><%=h @participante.telefono_particular%></i></label></div>
+      </div>
+
+      <div class="grid-4-12">
+        <div class="grid-8-12">
+          <label><b style="color: black;">TELÉFONO CELULAR: </b></label>
+        </div>
+        <div class="grid-4-12"><label><i> <%=h @participante.telefono_celular%></i></label></div>
+      </div>
+
+      <div class="grid-4-12">
+        <div class="grid-8-12">
+          <label><b style="color: black;">TELÉFONO CELULAR ADICIONAL: </b></label>
+        </div>
+        <div class="grid-4-12"><label><i> <%=h @participante.telefono_celular_aux%></i></label></div>
+      </div>
+
+      <div class="grid-12-12">
+        <div class="grid-4-12">
+          <label><b style="color: black;">REFERENCIAS DOMICILIARIAS: </b></label>
+        </div>
+        <div class="grid-8-12"><label><i> <%=h @participante.referencia_domiciliaria%></i></label></div>
+      </div>
+
+      <div class="grid-12-12">
+        <div class="grid-4-12">
+          <label><b style="color: black;">DOMICILIO: </b><em class="formee-req">*</em></label>
+        </div>
+        <div class="grid-8-12"><label><i> <%=h @participante.domicilio%></i></label>
+            <div><%=hidden_field :participante, :id%></div>
+        </div>
+      </div>
+
+       <div class="grid-12-12">
+        <div class="grid-4-12">
+          <label><b style="color: black;">OBSERVACIONES DE LA COMPARECENCIA: </b></label>
+        </div>
+        <div class="grid-8-12"><label><i> <%=h @participante.observaciones%></i></label></div>
+      </div>
+
+</div>

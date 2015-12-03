@@ -34,6 +34,16 @@
                                                         <li>
                                                             <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
                                                         </li>
+
+                                                         <!-- Convenios -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%></ul>
+                                                          </li>
+
+                                                          <!-- Bitacora  de seguimiento de convenios -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/Icono-bitacora-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Icono-bitacora-seguimiento.jpg") , {:action => "bitacora", :controller => "seguimientos"}, :title => "Bitacora de seguimiento de convenios"%></ul>
+                                                          </li>
                                                 </ul>
 					</div>
 				</nav>

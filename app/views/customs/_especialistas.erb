@@ -30,6 +30,11 @@
                                                             <ul><%=link_to image_tag('kolaval/ico-mis-expedientes.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-mis-expedientes.jpg") , {:action => "mis_expedientes", :controller => "customs"}, :title => "Expedientes donde intervengo"-%></ul>
                                                           </li>
 
+                                                          <!-- Mis convenios -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Mis convenios"-%></ul>
+                                                          </li>
+
                                                           
                                                         <!-- Agenda -->
                                                         <%if current_user.has_role?("lecturaagenda")%>
