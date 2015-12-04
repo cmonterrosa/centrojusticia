@@ -1,0 +1,29 @@
+<!-- Historial de sesiones-->
+<%@convenios = Convenio.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "fechahora")%>
+<%unless@sesiones_activas.empty?%>
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+        <th colspan="7">
+          CONVENIOS
+        </th>
+      </tr>
+      <tr class="d0">
+          <td style="vertical-align: middle;"><b>Folio</b></td>
+          <td style="vertical-align: middle;"><b>Capturado por:</b></td>
+          <td style="vertical-align: middle;"><b>Cantidad monetaria</b></td>
+          <td style="vertical-align: middle;"><b>Plazo</b></td>
+          <td style="vertical-align: middle;"><b>Fecha/hora firma</b></td>
+          <td style="vertical-align: middle;"><b>Observaciones</b></td>
+      </tr>
+      <%@convenios.each do |row|%>
+        <tr class="d1">
+          <td style="vertical-align: middle;"><%=h (row.folio) ? (link_to "#{row.folio}", {:controller => "convenios", :action => "show", :id => row}, :class => "fancybox fancybox.iframe") : "---"%></td>
+          <td style="vertical-align: middle;"><%=h(row.especialista ? row.especialista.nombre_completo : "---")%></td>
+          <td style="vertical-align: middle;"><%=h(row.cantidad_monetaria ? row.cantidad_monetaria : "--")%></td>
+          <td style="vertical-align: middle;"><%=h(row.plazo ? row.plazo : "--")%></td>
+          <td style="vertical-align: middle;"><%=h(row.fechahora ? row.fechahora.strftime("%d de %B de %Y - %H:%M %p") : "---")%></td>
+          <td style="vertical-align: middle;"><%=h(row.observaciones ? row.observaciones : "---")%></td>
+        </tr>
+     <%end%>
+  </table><br /><br />
+  <%end%>

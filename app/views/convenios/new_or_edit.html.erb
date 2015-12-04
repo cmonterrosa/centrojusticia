@@ -1,0 +1,133 @@
+<!-- Validate Plugin -->
+<%=javascript_include_tag "validations/jquery_validate.js"%>
+<%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
+
+<script  type="text/javascript">
+  var statSend = false;
+  function checkSubmit() {
+    if (!statSend) {
+        statSend = true;
+        return true;
+    } else {
+        alert("El formulario ya se esta enviando...");
+        return false;
+    }
+}
+</script>
+
+<div class="titulocalendario">
+  <%if current_user.has_role?(:especialistas)%>
+    <%=link_to 'MIS EXPEDIENTES', {:controller => "customs", :action => "mis_expedientes"}, :class => "boton"%> >>
+  <%else%>
+    <%=link_to 'SEGUIMIENTO DE EXPEDIENTES', {:controller => "seguimientos"}, :class => "boton"%> >>
+  <%end%>
+  <%=link_to "CONVENIOS DEL EXPEDIENTE: #{@tramite.numero_expediente}", {:action => "list_by_tramite", :id => @tramite}, :class => "boton"%>
+</div><br />
+
+<div class="container">
+  <div class="formee-msg-info">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
+
+<% form_for :convenio, @convenio, :url => { :action => "save", :id => @convenio, :tramite => @tramite }, :html => {:class => "formee", :onsubmit => "return checkSubmit();" } do |f| -%>
+  <table width="9%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr>
+  <fieldset>
+    <legend style="font-size: 16px;">CAPTURA&nbsp;DE&nbsp;CONVENIO</legend>
+
+     <!-- primera linea -->
+     <div class="grid-4-12">
+        <label style=" font-weight: bold;">Fecha/hora de la firma: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%=f.text_field :fechahora, :value => @fecha%>
+         </div>
+      </div>
+
+
+     <!-- segunda linea -->
+      <div class="grid-4-12">
+        <label style=" font-weight: bold;">Tipo de acuerdo: </label>
+        <div class="grid-12-12">
+          <%= f.text_field :tipo_acuerdo, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }",  :size => 24%>
+        </div>
+     </div>
+
+
+     <!-- segunda linea -->
+      <div class="grid-4-12">
+        <label style=" font-weight: bold;">Plazo: </label>
+        <div class="grid-12-12">
+          <%= f.text_field :plazo, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }",  :size => 24%>
+        </div>
+     </div>
+
+     
+     <!-- segunda linea -->
+      <div class="grid-4-12">
+        <label style=" font-weight: bold;">Cantidad monetaria ($): </label>
+        <div class="grid-12-12">
+          <%= f.text_field :cantidad_monetaria, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }",  :size => 24%>
+        </div>
+     </div>
+
+      <!-- segunda linea -->
+      <div class="grid-8-12">
+        <label style=" font-weight: bold;">Descripción: <em class="formee-req">*</em></label>
+        <div class="grid-12-12">
+          <%= f.text_area :descripcion, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => 24%>
+        </div>
+     </div>
+
+      
+
+      <div class="grid-12-12">
+        <label style=" font-weight: bold;">Observaciones:</label>
+         <div class="grid-12-12">
+            <%= f.text_area :observaciones, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onKeyPress => "return CharNum(event, 'letra');", :size => 24%>
+         </div>
+      </div>
+
+      <div class="grid-12-12 clear"></div>
+ </fieldset>
+  </tr>
+
+    <tr>
+    <td align="right">
+      <table>
+        <tr>
+          <td>
+            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar"  />
+          </td>
+          <td>
+            <a href="/home" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" >&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  </table>
+
+
+
+<%end%>
+
+ <script type="text/javascript">
+  var fechahora = new LiveValidation( 'convenio_fechahora' );
+  var descripcion = new LiveValidation( 'convenio_fechahora' );
+  fechahora.add( Validate.Presence );
+  descripcion.add( Validate.Presence );
+</script>
+
+</div>
+
+
+
+

@@ -31,6 +31,12 @@
                                                                     <li><%=link_to image_tag('kolaval/ico-iniciartramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-iniciartramites.jpg") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Iniciar trámite"%></li>
                                                                 <%end%>
                                                                 <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
+                                                                <!-- Bitacora -->
+                                                                  <%if current_user.has_role?("bitacora")%>
+                                                                    <li>
+                                                                          <%=link_to image_tag('kolaval/ico-bitacora-aten.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-bitacora-aten.jpg") , {:action => "select_personas_atendidas", :controller => "estadisticas"}, :title => "Bitacora de atencion"%>
+                                                                    </li>
+                                                                    <%end%>
                                                               </ul>
                                                           </li>
 
@@ -43,13 +49,24 @@
                                                         <%end%>
 
 
-                                                        <!-- Bitacora -->
-                                                        <%if current_user.has_role?("bitacora")%>
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/ico-bitacora-aten.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-bitacora-aten.jpg") , {:action => "select_personas_atendidas", :controller => "estadisticas"}, :title => "Bitacora de atencion"%></ul>
+                                                       <!-- convenios -->
+                                                       <li>
+                                                              <%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%>
+                                                              <ul class="cbp-hssubmenu">
+                                                                <!-- Seguimiento de convenios -->
+                                                                <li>
+                                                                    <%=link_to image_tag('kolaval/ico-convenio-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio-seguimiento.jpg") , {:action => "index", :controller => "seguimientos"}, :title => "Seguimiento de Convenios"%>
+                                                                </li>
+
+                                                                <!-- Bitacora  de seguimiento de convenios -->
+                                                                <%if current_user.has_role?("bitacora") || current_user.has_role?("subdireccion")%>
+                                                                    <li>
+                                                                        <%=link_to image_tag('kolaval/Icono-bitacora-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Icono-bitacora-seguimiento.jpg") , {:action => "bitacora", :controller => "seguimientos"}, :title => "Bitacora de seguimiento de convenios"%>
+                                                                    </li>
+                                                                 <%end%>
+                                                              </ul>
                                                           </li>
-                                                        <%end%>
-                                                  </ul>
+                                                    </ul>
 					</div>
 				</nav>
 			</div>

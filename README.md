@@ -23,12 +23,16 @@ propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de l
 * Impresión de invitaciones
 * Asignación de invitadores
 * Razón de invitaciones (captura de notificacion a los involucrados)
+* Captura de resultados de las sesiones y cambio de estatus
+* Captura de Convenios y de los documentos que lo contienen
+* Seguimiento telefónico de los convenios, asi como el motivo de respuesta de la llamada
+* Listado de llamadas telefónicas de seguimiento
 
 
 ## **Acerca de**
 
 - Autor: Carlos Monterrosa López (cmonterrosa at gmail.com)
-- Version: 1.1.1 (2015-09-11)
+- Version: 1.2.0 (2015-12-03)
 - Copyright: Copyright (c) 2015 Poder Judicial del Estado de Chiapas. Todos los derechos reservados.
 - Licencia: GPL
 - Website: (http://www.poderjudicialchiapas.gob.mx)

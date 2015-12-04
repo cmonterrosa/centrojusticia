@@ -1,0 +1,148 @@
+<!-- Validate Plugin -->
+<%=javascript_include_tag "validations/jquery_validate.js"%>
+<%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
+
+<%=javascript_include_tag :defaults%>
+
+<script  type="text/javascript">
+  var statSend = false;
+  function checkSubmit() {
+    if (!statSend) {
+        statSend = true;
+        return true;
+    } else {
+        alert("El formulario ya se esta enviando...");
+        return false;
+    }
+}
+</script>
+
+
+<div class="titulocalendario">
+  <%if @convenio && @convenio.tramite%>
+    <%=link_to "SEGUIMIENTO DE CONVENIOS", {:controller => "seguimientos"}, :class => "boton"%> >>
+    <%=link_to "EXPEDIENTE: #{@convenio.tramite.numero_expediente}", {:controller => "seguimientos", :action => "list_by_convenio", :c => @convenio}, :class => "boton"%>
+  <%end%>
+</div><br />
+
+
+<div class="container">
+  <div class="formee-msg-info">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
+
+<% form_for :seguimiento, @seguimiento, :url => { :action => "save", :c => @convenio, :id => @seguimiento}, :html => {:class => "formee", :onsubmit => "return checkSubmit();" } do |f| -%>
+  <table width="9%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr>
+  <fieldset>
+    <legend style="font-size: 16px;">CAPTURA&nbsp;DE&nbsp;SEGUIMIENTO&nbsp;DE&nbsp;CONVENIO</legend>
+
+       <!-- primera linea -->
+     <div class="grid-12-12">
+        <label style=" font-weight: bold;">Participante: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%= f.select :participante_id, @participantes.collect{|a| [a.rol_nombre_completo, a.id]}, :include_blank => true%>
+         </div>
+      </div>
+
+       <div class="grid-12-12"><img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" /></div>
+       
+       <div id="datos_personales">
+        <%if @participante%>
+            <%=render :partial => "datos_personales"%>
+        <%end%>
+      </div>
+
+     <!-- primera linea -->
+     <div class="grid-6-12">
+        <label style=" font-weight: bold;">Manifiesta: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%= f.select :manifestacion_seguimiento_id, @manifestaciones.collect{|a| [a.descripcion, a.id]}%>
+         </div>
+      </div>
+
+
+
+     <!-- primera linea -->
+     <div class="grid-6-12">
+        <label style=" font-weight: bold;">Fecha/hora de la llamada: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%=f.text_field :fechahora, :value => @fecha%>
+         </div>
+      </div>
+
+
+     <!-- segunda linea -->
+      <div class="grid-6-12">
+        <label style=" font-weight: bold;">Número marcado: </label>
+        <div class="grid-12-12">
+          <%= f.text_field :numero_marcado, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }",  :size => 24%>
+        </div>
+     </div>
+
+      
+     
+      <!-- segunda linea -->
+      <div class="grid-12-12">
+        <label style=" font-weight: bold;">Descripción: <em class="formee-req">*</em></label>
+        <div class="grid-12-12">
+          <%= f.text_area :descripcion, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => 24%>
+        </div>
+     </div>
+
+    <div class="grid-12-12 clear"></div>
+ </fieldset>
+  </tr>
+
+    <tr>
+    <td align="right">
+      <table>
+        <tr>
+          <td>
+            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar"  />
+          </td>
+          <td>
+            <a href="/home" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" >&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  </table>
+
+
+
+<%end%>
+
+ <script type="text/javascript">
+  var fechahora = new LiveValidation( 'seguimiento_fechahora' );
+  var participante = new LiveValidation( 'seguimiento_participante_id' );
+  fechahora.add( Validate.Presence );
+  participante.add( Validate.Presence );
+</script>
+
+
+  <%= observe_field 'seguimiento_participante_id',
+    :on => "change",
+    :before => "Element.show('spinner')",
+    :success => "Element.hide('spinner')",
+    :url => {
+    :action => 'get_datos_participante',
+    :controller => 'seguimientos'},
+    :update => 'datos_personales',
+    :with => "seguimiento_participante_id"%>
+
+</div>
+
+
+
+
+

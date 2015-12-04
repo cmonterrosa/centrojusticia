@@ -92,4 +92,12 @@ function isNoEmpty(id){
    return ReturnVal;
 }
 
+function isEmpty(id){
+   var ReturnVal = false;
+   var value = jQuery('#' + id).val().toString().trim(value);
+   if(value === '' || value === null || value === undefined)
+       ReturnVal = true;
+   return ReturnVal;
+}
+
 

@@ -101,15 +101,15 @@ class Sesion < ActiveRecord::Base
     if nueva_fecha
       case self.hora
           when (1..11)
-            return "#{nueva_fecha.strftime('%d DE %B')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} HORAS".gsub(/^0/, '').upcase
+            return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} HORAS".gsub(/^0/, '').upcase
           when (12)
-            return "#{nueva_fecha.strftime('%d DE %B')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} HORAS".gsub(/^0/, '').upcase
+            return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} HORAS".gsub(/^0/, '').upcase
           when (13)
-            return "#{nueva_fecha.strftime('%d DE %B')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} HORAS".gsub(/^0/, '').upcase
+            return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} HORAS".gsub(/^0/, '').upcase
           when (12..18)
-            return "#{nueva_fecha.strftime('%d DE %B')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} HORAS".gsub(/^0/, '').upcase
+            return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} HORAS".gsub(/^0/, '').upcase
           when (19..24)
-            return "#{nueva_fecha.strftime('%d DE %B')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} HORAS".gsub(/^0/, '').upcase
+            return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} HORAS".gsub(/^0/, '').upcase
       end
     end
    end

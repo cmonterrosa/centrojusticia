@@ -1,0 +1,112 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+<%if @tramite%>
+  <div class="titulocalendario">
+    <%if current_user.has_role?(:especialistas)%>
+      <%=link_to 'MIS EXPEDIENTES', {:controller => "customs", :action => "mis_expedientes"}, :class => "boton"%> >>
+    <%else%>
+      <%=link_to 'SEGUIMIENTO DE EXPEDIENTES', {:controller => "seguimientos"}, :class => "boton"%> >>
+    <%end%>
+    <%=link_to "CONVENIOS DEL EXPEDIENTE: #{@tramite.numero_expediente}", {:action => "list_by_tramite", :id => @tramite}, :class => "boton"%>
+  </div><br />
+
+<%else%>
+  <div class="titulocalendario">
+    <p><%=h (@title)? @title: ''%></p>
+
+    <p>
+    <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => params[:action]}, :title => "Actualizar"%>
+   </p>
+  </div>
+<%end%>
+
+<!-- contenido -->
+<div id="divlista">
+    <table width="98%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+         <th style="vertical-align: middle;" align="center">&nbsp;</th>
+         <th style="vertical-align: middle;" align="center">Folio:</th>
+          <th style="vertical-align: middle;" align="center">Capturado o modificado por:</th>
+          <th style="vertical-align: middle;" align="center">Fecha/Hora de Firma</th>
+          <th style="vertical-align: middle;" align="center">Descripción</th>
+          <th style="vertical-align: middle;" align="center"><%=h "Estatus actual"%></th>
+          <th style="vertical-align: middle;" colspan="5" align="center">Acciones</th>
+      </tr>
+    <%clase=1%>
+
+
+    <%@convenios.each do |c|%>
+    <tr class="d<%=invert_class(clase)%>">
+      <td>
+      <%=case c.validado
+        when true
+            h(image_tag("iconos/convenio_valido.png", :border =>0, :title => "Validado"))
+        else
+            h(image_tag("iconos/convenio_invalido.png", :border =>0, :title => "Aún sin validar"))
+        end%>
+      </td>
+      <td style="vertical-align: middle;"><%=h (c.folio)? c.folio : '--'%></td>
+       <td style="vertical-align: middle;"><%=h (c.especialista) ? c.especialista.nombre_completo : "----"%></td>
+       <td style="vertical-align: middle;"><%=h (c.fechahora) ? c.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "---"%></td>
+       <td style="vertical-align: middle;"><%=h (c.descripcion)? c.descripcion : '---'%></td>
+       <%@adjuntos = Adjunto.find(:all, :conditions => ["convenio_id = ?", c.id])%>
+        <%clase = invert_class(clase)%>
+
+       <!-- Acciones -->
+        <%if current_user.has_role?(:subdireccion) || current_user.has_role?(:validacion_convenios)%>
+            <%if c.validado%>
+                  <td style="vertical-align: middle;"><%=h link_to "Invalidar", {:controller => "convenios", :action => "validar_invalidar", :id => c.id}, :class => 'boton',  :confirm => "¿Está seguro que desea invalidar el convenio?" %></td>
+            <%else%>
+                  <td style="vertical-align: middle;"><%=h link_to "Validar", {:controller => "convenios", :action => "validar_invalidar", :id => c.id}, :class => 'boton', :confirm => "¿Está seguro que desea validar el convenio?" %></td>
+            <%end%>
+        <td style="vertical-align: middle;"><%=h (link_to "Seguimiento", {:controller => "seguimientos", :action => "list_by_convenio", :c => c.id}, :class => 'boton') %></td>
+        <%else%>
+                    <%if current_user.has_role?(:convenios)%>
+                          <td style="vertical-align: middle;"><%=h (link_to "Seguimiento", {:controller => "seguimientos", :action => "list_by_convenio", :c => c.id}, :class => 'boton') %></td>
+                    <%end%>
+        <%end%>
+
+        <td style="vertical-align: middle;"><%=h (link_to "Archivos adjuntos", {:controller => "upload", :action => "list_convenios", :id => c.id}, :class => 'boton fancybox fancybox.iframe') %></td>
+        <td style="vertical-align: middle;"><%=h (link_to "Detalle", {:controller => "convenios", :action => "show", :id => c.id}, :class => 'boton') %></td>
+        <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "convenios", :action => "new_or_edit", :id => c.id, :t => c.tramite}, :class => 'boton') %></td>
+        <td style="vertical-align: middle;"><%=h (link_to "Eliminar", {:controller => "convenios", :action => "destroy", :id => c.id, :t => c.tramite}, :class => 'boton', :confirm => "¿Está seguro que desea eliminar el registro?") %></td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+
+<br />
+
+ <% if @convenios.total_entries > @convenios.per_page.to_i %>
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @convenios %>
+          </div>
+          <%= will_paginate @convenios %>
+        </div>
+      </td>
+    </tr>
+</table>
+<%end%>
+
+<%if @tramite%>
+  <br /><%=link_to "NUEVO CONVENIO", {:action => "new_or_edit", :t => @tramite, :u => @user}, :class => 'boton'  -%>
+<%else%>
+  <br /><%=link_to "REGRESAR AL MENU", {:controller => "home"}, :class => "boton"%>
+<%end%>
+
+<!--
+<= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "atencion", :action => "index"%><br />
+-->
+

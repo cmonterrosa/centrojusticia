@@ -24,6 +24,7 @@
         <td style="vertical-align: middle;" align="center">Participantes</td>
         <td style="vertical-align: middle;" align="center">Sesion(es)</td>
         <td style="vertical-align: middle;" align="center"><%=h "Estatus"%></td>
+        <td style="vertical-align: middle;" align="center">&nbsp;</td>
       </tr>
     
 
@@ -60,6 +61,7 @@
           </td>
 
        <td style="vertical-align: middle; text-align: center;" width="20%"><b><%=tramite.estatus%></b></td>
+       <td style="vertical-align: middle; text-align: center;"><%=link_to "CONVENIOS", {:action => "list_by_tramite", :controller => "convenios", :id =>tramite}, :class => "boton" %></td>
       </tr>
     <%end%>
   </table>

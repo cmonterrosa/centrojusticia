@@ -588,10 +588,12 @@ class SesionesController < ApplicationController
     @sesion.update_attributes(params[:sesion])
     @sesion.concluida = true if @sesion.resultado && @sesion.resultado.size > 2
     if @sesion.save
+      @sesion.tramite.update_estatus!("en-sesion",current_user) if @sesion.tramite && current_user
       flash[:notice] = "Resultado guardado correctamente"
-      redirect_to :action => "show_window", :id => @sesion
+    else
+      flash[:error] = "No se pudo guardar el resultado, verifique"
     end
-    
+    redirect_to :action => "show_window", :id => @sesion
   end
 
 

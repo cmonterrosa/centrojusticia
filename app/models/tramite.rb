@@ -11,10 +11,11 @@ class Tramite < ActiveRecord::Base
   has_many :historias
   has_many :adjuntos
   has_many :sesions
+  has_many :convenios
 
 
   #---- Validaciones ----
-  #validates_uniqueness_of :folio, :scope => :anio
+  validates_uniqueness_of :folio_expediente, :scope => :anio, :allow_blank => true,  :message => "ya se encuentra registrado"
   #validates_presence_of :subdireccion_id, :message => "Seleccione una subdireccion"
 
 
@@ -51,7 +52,7 @@ class Tramite < ActiveRecord::Base
     @history = Historia.new(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id ) if @estatus
     #### Verificamos si existe un estatus superior #####
     tiene_historia = Historia.find(:all, :conditions => ["tramite_id = ? AND estatu_id = ?", self.id, @estatus.id])
-    unless self.estatu_id == @estatus.id
+    unless (self.estatu_id == @estatus.id)
       if @history.save
         #---- actualizacion del registro principal --
         self.update_attributes!(:estatu_id => @estatus.id) if tiene_historia.empty?
@@ -116,9 +117,6 @@ class Tramite < ActiveRecord::Base
    end
 
 
-
-
-
    def numero_expediente
      (self.folio_expediente) ?  "#{self.folio_expediente.to_s.rjust(4, '0')}/#{self.anio}" : nil
    end
@@ -137,6 +135,19 @@ class Tramite < ActiveRecord::Base
    def concluido
      Concluido.find(:first, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") if self.id
    end
+
+  def self.search(search, perfil=nil)
+    if search && search  =~ /^\d{1,4}\/20\d{2}$/
+      folio, anio = search.split("/")
+      find(:all,  :conditions => ['anio = ? AND folio_expediente = ?', anio, folio])
+    else
+      if perfil && perfil == 'convenios'
+        find(:all, :select => "t.*", :joins => "t, convenios c", :conditions => "t.id=c.tramite_id", :group => "t.id")
+      else
+        find(:all, :conditions => ["folio_expediente IS NOT NULL"], :order => "anio DESC, folio_expediente DESC")
+      end
+    end
+  end
 
 
 

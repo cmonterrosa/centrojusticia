@@ -1,0 +1,72 @@
+<div class="titulocalendario">
+   <%=h (@title) ? @title.upcase : ''%>
+</div><br />
+
+
+<% form_tag({:action => "search"}, {:class => "search"}) do -%>
+  <p>
+    <%= text_field_tag :search, params[:search], :limit => 140, :placeholder => "Escriba el número de expediente 999/2015" %>
+    <%= submit_tag "Buscar", :name => nil %>
+  </p>
+<% end %>
+
+
+<!-- contenido -->
+<div id="divlista">
+    <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+         <th style="vertical-align: middle;" align="center">Número de Exp.</th>
+          <th style="vertical-align: middle;" align="center">Solicitante(s)</th>
+          <th style="vertical-align: middle;" align="center">Especialista:</th>
+          <th style="vertical-align: middle;" align="center">Fecha/Hora inicial</th>
+          <th style="vertical-align: middle;" align="center"><%=h "Estatus actual"%></th>
+          <th style="vertical-align: middle;" colspan="3" align="center">Acciones</th>
+      </tr>
+    <%clase=1%>
+
+      <!-- Estatus no procedentes -->
+      <%tramite_no_admitido = Estatu.find_by_clave("tram-noad").id%>
+      <%tramite_concluido = Estatu.find_by_clave("tram-conc").id%>
+
+    <%@tramites.each do |e|%>
+    <tr class="d<%=invert_class(clase)%>">
+       <td style="vertical-align: middle;"><%=h (e.numero_expediente) ? e.numero_expediente : "----"%></td>
+       <td style="vertical-align: middle;"><%=h (e.comparecencia)? e.comparecencia.solicitantes : '---'%></td>
+       <%ultima_sesion = Sesion.find(:first, :conditions => ["tramite_id = ?", e.id], :order => "fecha DESC")%>
+       <td style="vertical-align: middle;"><%=h (ultima_sesion && ultima_sesion.mediador) ? ultima_sesion.mediador.nombre_completo : "No existe información"%></td>
+       <td style="vertical-align: middle;"><%=h (e.fechahora) ? e.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "---"%></td>
+       <td style="vertical-align: middle;"><%=h (e.estatus) ? e.estatus : "---"%></td>
+       <%clase = invert_class(clase)%>
+
+        <!-- Edicion -->
+        <td style="vertical-align: middle;"><%=h (link_to "Convenios", {:controller => "convenios", :action => "list_by_tramite", :id => e.id}, :class => 'boton') %></td>
+        
+        <!-- resumen general -->
+        <td style="vertical-align: middle;"><%=link_to "Resumen", {:controller => "tramites", :action => "show", :id => e.id}, :class => 'boton'  -%></td>
+
+     </tr>
+    <%end%>
+  </table>
+</div>
+
+<br />
+
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @tramites %>
+          </div>
+          <%= will_paginate @tramites %>
+        </div>
+      </td>
+    </tr>
+</table>
+
+
+
+<br/>
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
+
+

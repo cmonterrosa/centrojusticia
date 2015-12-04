@@ -18,9 +18,9 @@
         </tr>
         <tr>
           <td align="center"><%=h (@sesion.tramite) ? @sesion.tramite.numero_expediente : "--"%></td>
-          <td align="center"><%=f.text_field :materia, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }"%></td>
+          <td align="center"><%=f.text_field :materia%></td>
           <td align="center"><%=f.date_select :fecha_actual, :start_year => 2011%></td>
-          <td align="center"><%=f.text_field :lugar,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => 50%></td>
+          <td align="center"><%=f.text_field :lugar, :size => 50%></td>
         </tr>
       </table>
      </td>
@@ -38,9 +38,9 @@
           <td align="center">Fecha de la solicitud</td>
         </tr>
         <tr>
-          <td align="center"><%= f.text_field :solicitante, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder=> "", :size => 60%></td>
-          <td align="center"><%= f.select(:genero_solicitante, { "F" => "LA", "M" => "EL"}, :selected => @datosinvitacion.genero_solicitante) %></td>
-          <td align="center"><%= f.text_field :fecha_solicitud, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder => ""%></td>
+          <td align="center"><%= f.text_field :solicitante, :placeholder=> "", :size => 60%></td>
+          <td align="center"><%= f.select(:genero_solicitante, { "F" => "la", "M" => "el"}, :selected => @datosinvitacion.genero_solicitante) %></td>
+          <td align="center"><%= f.text_field :fecha_solicitud, :placeholder => ""%></td>
         </tr>
       </table></td>
      </tr>
@@ -57,8 +57,8 @@
             <td align="center">Fecha/hora de la sesión <em class="formee-req">*</em></td>
           </tr>
           <tr>
-            <td align="center"><%= f.text_field :especialista, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => 55%></td>
-            <td align="center"><%= f.text_field :fechahora_sesion, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :placeholder => "", :size => 65%></td>
+            <td align="center"><%= f.text_field :especialista, :size => 55%></td>
+            <td align="center"><%= f.text_field :fechahora_sesion, :placeholder => "", :size => 65%></td>
           </tr>
         </table>
         </td>
@@ -79,9 +79,9 @@
            <td align="center">Cargo <em class="formee-req">*</em></td>
        </tr>
         <tr>
-          <td align="center"><%= f.text_field :subdireccion, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "45"%></td>
-          <td align="center"><%= f.text_field :subdirector,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "45"%></td>
-          <td align="center"><%= f.text_field :cargo,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :required => true, :size => "40"%></td>
+          <td align="center"><%= f.text_field :subdireccion, :size => "45"%></td>
+          <td align="center"><%= f.text_field :subdirector, :size => "45"%></td>
+          <td align="center"><%= f.text_field :cargo, :required => true, :size => "40"%></td>
         </tr>
       </table>
       </td>
