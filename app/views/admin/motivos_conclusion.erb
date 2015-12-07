@@ -1,0 +1,30 @@
+<%if current_user.has_role?(:admin)%>
+  <%=h link_to 'ADMINISTRACION', {:controller => "admin"}, :class => "boton"%> >>
+<%end%>
+<%=h link_to "MOTIVOS DE CONCLUSION",{:action => "motivos_conclusion"}, :class => "boton" %>
+
+
+<div class="titulocalendario">
+  <p align="center">MOTIVOS DE CONCLUSION</p>
+</div>
+
+<!-- contenido -->
+<div id="divlista">
+    <table width="80%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <tr>
+       <td style="vertical-align: middle;">Fundamento</td>
+       <td style="vertical-align: middle;">Causa</td>
+       <td style="vertical-align: middle;">&nbsp;</td>
+    </tr>
+    <%@motivos_conclusion.each do |m|%>
+    <tr>
+        <td style="vertical-align: middle;"><%=m.fundamento%></td>
+        <td style="vertical-align: middle;"><%=m.causa%></td>
+        <td style="vertical-align: middle;"><%=link_to 'Editar', {:action => "motivos_conclusion_new_or_edit", :id => m}, :class => "boton"%></td>
+    </tr>
+    <%end%>
+  </table>
+</div>
+
+
+<br /><%=link_to "Crear motivo", {:action => "motivos_conclusion_new_or_edit", :controller => "admin"}, :class => 'boton'  -%>
