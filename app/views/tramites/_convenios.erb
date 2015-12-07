@@ -1,6 +1,6 @@
-<!-- Historial de sesiones-->
+<!-- Historial de convenios-->
 <%@convenios = Convenio.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "fechahora")%>
-<%unless@sesiones_activas.empty?%>
+<%unless @convenios.empty?%>
     <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
         <th colspan="7">
