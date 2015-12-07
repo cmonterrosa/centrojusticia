@@ -20,6 +20,7 @@ propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de l
 * Impresión de comparecencias
 * Notificaciones vía correo electrónico para especialistas
 * Consulta de datos estadísticos
+* Seleccion del motivo especifico de conclusion del expediente
 * Impresión de invitaciones
 * Asignación de invitadores
 * Razón de invitaciones (captura de notificacion a los involucrados)
@@ -32,7 +33,7 @@ propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de l
 ## **Acerca de**
 
 - Autor: Carlos Monterrosa López (cmonterrosa at gmail.com)
-- Version: 1.2.0 (2015-12-03)
+- Version: 1.2.1 (2015-12-07)
 - Copyright: Copyright (c) 2015 Poder Judicial del Estado de Chiapas. Todos los derechos reservados.
 - Licencia: GPL
 - Website: (http://www.poderjudicialchiapas.gob.mx)
