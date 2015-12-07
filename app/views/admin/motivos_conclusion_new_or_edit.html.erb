@@ -1,0 +1,107 @@
+<!-- Validate Plugin -->
+<%=javascript_include_tag "validations/jquery_validate.js"%>
+<%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
+
+<%=javascript_include_tag :defaults%>
+
+<script  type="text/javascript">
+  var statSend = false;
+  function checkSubmit() {
+    if (!statSend) {
+        statSend = true;
+        return true;
+    } else {
+        alert("El formulario ya se esta enviando...");
+        return false;
+    }
+}
+</script>
+
+
+<%if current_user.has_role?(:admin)%>
+  <%=h link_to 'ADMINISTRACION', {:controller => "admin"}, :class => "boton"%> >>
+<%end%>
+<%=h link_to "MOTIVOS DE CONCLUSION",{:action => "motivos_conclusion"}, :class => "boton" %>
+
+
+<div class="container">
+  <div class="formee-msg-info">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
+
+<% form_for :motivo_conclusion, @motivo_conclusion, :url => { :action => "motivos_conclusion_save", :id => @motivo_conclusion}, :html => {:class => "formee", :onsubmit => "return checkSubmit();" } do |f| -%>
+  <table width="9%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr>
+  <fieldset>
+    <legend style="font-size: 16px;">CAPTURA&nbsp;DE&nbsp;MOTIVO&nbsp;DE&nbsp;CONCLUSION</legend>
+
+      <!-- primera linea -->
+     <div class="grid-12-12">
+        <label style=" font-weight: bold;">Fundamento: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%=f.text_field :fundamento%>
+         </div>
+      </div>
+
+       <!-- segunda linea -->
+     <div class="grid-12-12">
+        <label style=" font-weight: bold;">Causa: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%=f.text_area :causa%>
+         </div>
+      </div>
+
+       <!-- tercera linea -->
+     <div class="grid-12-12">
+        <label style=" font-weight: bold;">Resumen: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%=f.text_area :resumen%>
+         </div>
+      </div>
+
+      <div class="grid-12-12 clear"></div>
+ </fieldset>
+  </tr>
+
+    <tr>
+    <td align="right">
+      <table>
+        <tr>
+          <td>
+            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar"  />
+          </td>
+          <td>
+            <a href="/home" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" >&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  </table>
+
+
+
+<%end%>
+
+ <script type="text/javascript">
+  var fundamento = new LiveValidation( 'motivo_conclusion_fundamento' );
+  var causa = new LiveValidation('motivo_conclusion_causa');
+  var resumen = new LiveValidation( 'motivo_conclusion_resumen');
+  fundamento.add( Validate.Presence );
+  causa.add( Validate.Presence );
+  resumen.add( Validate.Presence );
+</script>
+</div>
+
+
+
+
+
