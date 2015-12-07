@@ -445,6 +445,38 @@ end
   end
 
 
+  ####################################################
+  #  Motivos de conclusion
+  #
+  #
+  #####################################################
+
+  def motivos_conclusion
+    @motivos_conclusion = MotivoConclusion.find(:all)
+  end
+
+  def motivos_conclusion_new_or_edit
+    @motivo_conclusion = MotivoConclusion.find(params[:id]) if params[:id]
+    @motivo_conclusion ||= MotivoConclusion.new
+  end
+
+  def motivos_conclusion_save
+    begin
+      @motivo_conclusion = MotivoConclusion.find(params[:id]) if params[:id]
+       @motivo_conclusion ||= MotivoConclusion.new
+       @motivo_conclusion.update_attributes(params[:motivo_conclusion])
+       if @motivo_conclusion.save
+         flash[:notice] = "Motivo guardado correctamente"
+       else
+         flash[:error] = "Motivo no guardado, verifique"
+       end
+       redirect_to :action => "motivos_conclusion"
+    rescue
+        flash[:error] = "Ocurrio un error, contacte al administrador"
+        redirect_to  :action => "motivos_conclusion"
+    end
+  end
+
 
 
 end
