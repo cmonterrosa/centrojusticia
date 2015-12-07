@@ -14,6 +14,10 @@
     <!-- Eliminar -->
     <%if current_user.has_role?("asignahorario")%>
           <td>
+              <%= link_to "Detalle del expediente" , {:controller => "tramites", :action => "show", :id => @sesion.tramite, :token => "show_sesion"}, :title => "Detalle del trámite", :method => :post, :class => "boton" %><br />
+          </td>
+
+          <td>
               <%= link_to "Editar" , {:controller => "sesiones", :action => "edit_jquery", :id => @sesion, :t => @token}, :title => "Editar sesión", :confirm => '¿Esta seguro que quiere editar la sesión?', :method => :post, :class => "boton" %><br />
           </td>
 
@@ -36,7 +40,7 @@
           <%end%>
 
           <!-- Captura de resultados -->
-          <%if current_user.id == @sesion.mediador_id || current_user.id == @sesion.comediador_id%>
+          <%if current_user.id == @sesion.mediador_id || current_user.id == @sesion.comediador_id || current_user.has_role?("subdireccion")%>
               <td>
                   <%= link_to "Capturar Resultado" , {:controller => "sesiones", :action => "add_result", :id => @sesion, :token => "show_sesion"}, :title => "Resultado de la sesion", :method => :post, :class => "boton" %><br />
               </td>
