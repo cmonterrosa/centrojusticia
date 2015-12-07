@@ -30,7 +30,7 @@
     </tr>
     <tr>
         <td align="center" colspan="4">
-          <%= f.select(:motivo_conclusion_id, @motivos_conclusion.collect {|p| [ p.descripcion_articulo, p.id ] }, { :include_blank => true })%>
+          <%= f.select(:motivo_conclusion_id, @motivos_conclusion.collect {|p| [ p.fundamento, p.id ] }, { :include_blank => true })%>
         </td>
     </tr>
 
