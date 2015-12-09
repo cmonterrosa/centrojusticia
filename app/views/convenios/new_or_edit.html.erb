@@ -78,7 +78,7 @@
       <div class="grid-8-12">
         <label style=" font-weight: bold;">Descripción: <em class="formee-req">*</em></label>
         <div class="grid-12-12">
-          <%= f.text_area :descripcion, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => 24%>
+          <%= f.text_area :descripcion, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => 24%>
         </div>
      </div>
 
@@ -87,7 +87,7 @@
       <div class="grid-12-12">
         <label style=" font-weight: bold;">Observaciones:</label>
          <div class="grid-12-12">
-            <%= f.text_area :observaciones, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onKeyPress => "return CharNum(event, 'letra');", :size => 24%>
+            <%= f.text_area :observaciones, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => 24%>
          </div>
       </div>
 
@@ -122,9 +122,11 @@
  <script type="text/javascript">
   var fechahora = new LiveValidation( 'convenio_fechahora' );
   var descripcion = new LiveValidation( 'convenio_fechahora' );
+  var observaciones = new LiveValidation( 'convenio_observaciones' );
   fechahora.add( Validate.Presence );
   descripcion.add( Validate.Presence );
-</script>
+  observaciones.add( Validate.Length, { maximum: 255 } );
+ </script>
 
 </div>
 
