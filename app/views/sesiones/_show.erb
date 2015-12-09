@@ -2,7 +2,7 @@
 
 
 <div align="center" style="margin: auto;">
-<table style="margin: auto;" border="0" cellspacing="0" cellpadding="0">
+<table style="margin: auto;" border="0" cellspacing="0" cellpadding="0" width="94%">
   <!-- Cancelar -->
   <tr align="center">
     <%if current_user.has_role?("asignahorario") || current_user.has_role?("controlagenda") || current_user.has_role?("admindireccion")%>
@@ -37,6 +37,11 @@
                <td>
                   <%= link_to "Concluir Expediente" , {:controller => "tramites", :action => "opciones_conclusion", :id => @sesion, :token => "apply_conclusion"}, :title => "Concluir Expediente", :method => :post, :class => "boton" %><br />
               </td>
+
+              <td>
+                  <%= link_to "Mecanismo alternativo" , {:controller => "tramites", :action => "select_mecanismo_alternativo", :id => @sesion, :token => "select_mecanismo_alternativo"}, :title => "Mecanismo alternativo", :method => :post, :class => "boton" %><br />
+              </td>
+
           <%end%>
 
           <!-- Captura de resultados -->
@@ -87,17 +92,29 @@
                   <td style="vertical-align: middle; width: 100%; text-align: center;" colspan="2" ><b>NÚMERO DE EXPEDIENTE <%=@sesion.tramite.numero_expediente%> CONCLUIDO:</b></td>
               </tr>
               <tr>
-                <td style="vertical-align: middle; width: 100%;" colspan="2"><%=h @sesion.tramite.concluido.motivo_conclusion.descripcion_completa%></td>
+                <td style="vertical-align: middle; width: 100%;" colspan="2">
+                    <b class="descripcion_detalle_sesion"><%=h @sesion.tramite.concluido.motivo_conclusion.descripcion_completa%></b>
+                </td>
               </tr>
               <tr>
                 <td style="vertical-align: middle; width: 30%;"><b>Concluido por  /  fecha-hora:</b></td>
-                <td style="vertical-align: middle; width: 70%;"><%=h User.find(@sesion.tramite.concluido.user_id).nombre_completo%>  /   <%=h @sesion.tramite.concluido.updated_at.strftime("%d-%m-%Y - %H:%M %p")%></td>
+                <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h User.find(@sesion.tramite.concluido.user_id).nombre_completo%>  /   <%=h @sesion.tramite.concluido.updated_at.strftime("%d-%m-%Y - %H:%M %p")%></b></td>
               </tr>
           <%else%>
               <tr>
-                <td style="vertical-align: middle; width: 100%; text-align: center;" colspan="2"><b>NÚMERO DE EXPEDIENTE:<%=@sesion.tramite.numero_expediente%></b></td>
+                <td style="vertical-align: middle; width: 30%;"><b>NÚMERO DE EXPEDIENTE: </b></td>
+                <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.tramite.numero_expediente%></b></td>
               </tr>
          <%end%>
+
+          <%if @sesion.tramite.mecanismo_alternativo%>
+               <tr>
+                 <td style="vertical-align: middle; width: 30%;">MECANISMO ALTERNATIVO: </td>
+                 <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.tramite.mecanismo_alternativo.descripcion%></b></td>
+              </tr>
+          <%end%>
+
+
               <tr>
                 <td style="vertical-align: middle; width: 100%; text-align: center;" colspan="2"><hr /></td>
               </tr>
@@ -107,18 +124,18 @@
   <%if @sesion.cancel == 1%>
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Cancelada por:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=User.find(@sesion.cancel_user).nombre_completo%></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=User.find(@sesion.cancel_user).nombre_completo%></b></td>
      </tr>
      <%end%>
 
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Capturada inicialmente por:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=h (@sesion.user_id)?  User.find(@sesion.user_id).nombre_completo : "No existe informacion"%></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.user_id)?  User.find(@sesion.user_id).nombre_completo : "No existe informacion"%></b></td>
      </tr>
 
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Ultima modificación:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=h (@sesion.updated_at)?  @sesion.updated_at.strftime("%d de %B de %Y / %H:%M %p") : "No existe informacion"%></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.updated_at)?  @sesion.updated_at.strftime("%d de %B de %Y / %H:%M %p") : "No existe informacion"%></b></td>
      </tr>
 
      <%if @sesion.tramite%>
@@ -128,13 +145,13 @@
         <% if comparecencia.solicitantes %>
           <tr>
               <td style="vertical-align: middle; width: 30%;"><b>Solicitante(s):</b></td>
-              <td style="vertical-align: middle; width: 70%;"><%=h comparecencia.solicitantes%></td>
+              <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h comparecencia.solicitantes%></b></td>
           </tr>
         <%end%>
         <% if comparecencia.involucrados %>
           <tr>
             <td style="vertical-align: middle; width: 30%;"><b>Involucrado(s):</b></td>
-            <td style="vertical-align: middle; width: 70%;"><%=h comparecencia.involucrados%></td>
+            <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h comparecencia.involucrados%></b></td>
           </tr>
         <%end%>
      <%end%>
@@ -143,54 +160,50 @@
     <%if @sesion.clave%>
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Identificador de sesión:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=@sesion.clave%></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.clave%></b></td>
      </tr>
      <%end%>
 
 
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Descripción:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=h (@sesion.tiposesion) ? @sesion.tiposesion.descripcion : "---"%></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.tiposesion) ? @sesion.tiposesion.descripcion : "---"%></b></td>
      </tr>
 
      <%if @sesion.start_at%>
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Hora de inicio:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><b><%=@sesion.start_at.strftime("%d de %B de %Y   -   %H:%M  %p")%></b></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.start_at.strftime("%d de %B de %Y   -   %H:%M  %p")%></b></td>
      </tr>
      <%end%>
 
      <%if @sesion.mediador%>
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Especialista:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=@sesion.mediador.nombre_completo%></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.mediador.nombre_completo%></b></td>
      </tr>
      <%end%>
 
      <%if @sesion.comediador%>
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Comediador:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=@sesion.comediador.nombre_completo%></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.comediador.nombre_completo%></b></td>
      </tr>
      <%end%>
 
-
-
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Numero de invitacion:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=h (@sesion.num_invitacion)?  @sesion.num_invitacion : "No existe informacion"%></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.num_invitacion)?  @sesion.num_invitacion : "No existe informacion"%></b></td>
      </tr>
-
-    
 
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Observaciones:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=@sesion.observaciones%></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.observaciones%></b></td>
      </tr>
 
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Resultado:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><%=@sesion.resultado%></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.resultado%></b></td>
      </tr>
 
    </table>

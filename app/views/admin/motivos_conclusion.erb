@@ -14,13 +14,17 @@
     <tr>
        <td style="vertical-align: middle;">Fundamento</td>
        <td style="vertical-align: middle;">Causa</td>
-       <td style="vertical-align: middle;">&nbsp;</td>
+       <td style="vertical-align: middle;" colspan="2">&nbsp;</td>
     </tr>
     <%@motivos_conclusion.each do |m|%>
     <tr>
         <td style="vertical-align: middle;"><%=m.fundamento%></td>
         <td style="vertical-align: middle;"><%=m.causa%></td>
         <td style="vertical-align: middle;"><%=link_to 'Editar', {:action => "motivos_conclusion_new_or_edit", :id => m}, :class => "boton"%></td>
+        <%if current_user.has_role?("admin")%>
+          <td style="vertical-align: middle;"><%=link_to 'Eliminar', {:action => "motivos_conclusion_destroy", :id => m}, :class => "boton"%></td>
+        <%end%>
+
     </tr>
     <%end%>
   </table>

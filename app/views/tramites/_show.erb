@@ -75,6 +75,20 @@
       </th>
      </tr>
 
+      <tr class="d1">
+          <td style="vertical-align: middle;"><b>Estatus actual en el sistema KOLAVAL:</b></td>
+          <td style="vertical-align: middle;"> <%=h(@tramite.estatu) ? @tramite.estatu.descripcion : '--'%></td>
+        </tr>
+
+
+    <%if @tramite.mecanismo_alternativo%>
+        <tr class="d0">
+          <td style="vertical-align: middle;"><b>Mecanismo alternativo:</b></td>
+          <td style="vertical-align: middle;"> <%=h(@tramite.mecanismo_alternativo.descripcion)%></td>
+        </tr>
+    <%end%>
+
+
     <tr class="d1">
        <td style="vertical-align: middle;"><b>Trámite iniciado por:</b></td>
        <td style="vertical-align: middle;"> <%=h(@tramite.user_id ? User.find(@tramite.user_id).nombre_completo : "No existe información")%></td>

@@ -43,6 +43,7 @@
     <%tramite_extraordinario = Estatu.find_by_clave("tram-extr")%>
     <%tramite_no_admitido = Estatu.find_by_clave("tram-noad")%>
     <%tramite_en_proceso_convenio = Estatu.find_by_clave("proc-conv")%>
+    <%tramite_concluido = Estatu.find_by_clave("tram-conc")%>
 
     <%contador=1%>
     <%@tramites.each do |tramite|%>
@@ -80,6 +81,12 @@
        <%end%>
 
         <%clase = invert_class(clase)%>
+
+        <!-- Liberar expediente concluido -->
+         <%if (tramite.estatu_id == tramite_concluido.id) && (current_user.has_role?("admindireccion") || current_user.has_role?("direccion") ||  current_user.has_role?("subdireccion"))%>
+             <td style="vertical-align: middle;"><%=h (link_to "Liberar concluido", {:controller => "tramites", :action => "concluir_undo", :id => tramite.id}, :confirm => "¿Está seguro que desea liberar expediente ya concluido?" , :class => "boton")%></td>
+        <%end%>
+
 
         <!-- Cancelacion de tramites -->
         <%if (tramite.estatu_id == comparecencia_concluida.id || tramite.estatu_id == tramite_extraordinario.id || tramite.estatu_id == materia_asignada.id ) && (current_user.has_role?("cancelatramite") || current_user.has_role?("direccion"))%>

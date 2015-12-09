@@ -18,18 +18,22 @@
     <%=link_to ">", {:action => "daily_show", :day => @after.day, :month => @after.month, :year => @after.year, :origin => @origin, :type => @type}, :class => "flecha_calendario"-%>
   </p>
 
+  <!-- Contador de sesiones -->
   <%if current_user.has_role?("asignahorario") || @token == "all"%>
-    <p>
-      <%=h @numero_total_sesiones = Sesion.count(:id, :select => "DISTINCT tramite_id,mediador_id,comediador_id,hora,minutos,sala_id", :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha])%> SESIONES
-    </p>
+      <% @numero_total_sesiones = Sesion.count(:id, :select => "DISTINCT tramite_id,mediador_id,comediador_id,hora,minutos,sala_id", :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha])%>
   <%else%>
-      <p>
-        <%=h @numero_total_sesiones = Sesion.count(:id, :select => "DISTINCT tramite_id,mediador_id,comediador_id,hora,minutos,sala_id", :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND fecha = ? AND (cancel IS NULL or cancel=false)", current_user, current_user, @fecha])%> SESIONES
-      </p>
+      <% @numero_total_sesiones = Sesion.count(:id, :select => "DISTINCT tramite_id,mediador_id,comediador_id,hora,minutos,sala_id", :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND fecha = ? AND (cancel IS NULL or cancel=false)", current_user, current_user, @fecha])%>
   <%end%>
 
-  
-
+  <%if @numero_total_sesiones > 0%>
+          <p>
+             <%if @numero_total_sesiones == 1%>
+                    <%=h @numero_total_sesiones%> SESION
+              <%else%>
+                    <%=h @numero_total_sesiones%> SESIONES
+              <%end%>
+          </p>
+  <%end%>
 </div>
 
 
