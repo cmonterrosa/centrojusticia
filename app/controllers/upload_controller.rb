@@ -1,4 +1,9 @@
 class UploadController < ApplicationController
+  
+  def index_convenios_all
+    @uploaded_files = Adjunto.find(:all, :conditions => ["convenio_id IS NOT NULL"], :order => "created_at DESC").paginate(:page => params[:page], :per_page => 25)
+  end
+
   def index
     @tramite = Tramite.find(params[:id])
     @uploaded_files = @tramite.adjuntos
