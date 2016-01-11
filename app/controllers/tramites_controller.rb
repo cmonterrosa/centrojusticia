@@ -232,18 +232,81 @@ class TramitesController < ApplicationController
 
   def concluir
     @tramite = Tramite.find(params[:id])
+    @sesion = Sesion.find(params[:sesion]) if params[:sesion]
     @concluido = Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id]) if @tramite
     @concluido ||= Concluido.new(:tramite_id => @tramite.id)
     @concluido.update_attributes(params[:concluido])
     @concluido.user = current_user
     if @concluido.save
       @tramite.update_estatus!("tram-conc",current_user)
-      render :text => "<h2 style='color: green;'>Expediente concluido correctamente</h2>"
+      flash[:notice] = "Expediente concluido correctamente"
+       #render :text => "<h2 style='color: green;'>Expediente concluido correctamente</h2>"
     else
-      render :text => "<h2 style='color:red;'>No se pudo concluir, verifique</h2>"
+      flash[:error] = "No se pudo concluir correctamente"
+      #render :text => "<h2 style='color:red;'>No se pudo concluir, verifique</h2>"
+    end
+    redirect_to :controller => "sesiones", :action => "show_window", :id => @sesion
+  end
+
+  def concluir_undo
+    begin
+        @se_concluyo = false
+        @tramite = Tramite.find(params[:id]) if params[:id]
+        @concluido = Concluido.find_by_tramite_id(@tramite) if @tramite
+        if current_user.has_role?(:subdireccion) || current_user.has_role?(:admindireccion) || (@concluido && @concluido.user == current_user)
+          @se_concluyo = true if @concluido.destroy
+          @estatu_concluido = Estatu.find_by_clave("tram-conc")
+          @historico_estatus = Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id != ?", @tramite.id, @estatu_concluido.id], :order => "created_at DESC")
+          if @historico_estatus
+                @tramite.update_attributes(:estatu_id => @historico_estatus.estatu_id)
+                @old_concluidos = Historia.find(:all, :conditions => ["tramite_id = ? AND estatu_id = ?", @tramite.id, @estatu_concluido.id])
+                @old_concluidos.each{|c|c.destroy} unless @old_concluidos.empty?
+          end
+        end
+        flash[:notice] = "Se liberó expediente: #{@tramite.numero_expediente}" if @se_concluyo
+        flash[:error] = "No se pudo liberar expediente, contacte al administrador" unless @se_concluyo
+        redirect_to :controller => "tramites", :action => "list"
+      rescue ActiveRecord::RecordInvalid => invalid
+          flash[:error] = invalid.record.errors.full_messages
+          redirect_to :controller => "tramites", :action => "list"
+      end
+  end
+
+
+  ###################################################
+  #
+  #     SELECCION DE MECANISMO ALTERNATIVO
+  #
+  ###################################################
+
+   def select_mecanismo_alternativo
+    if params[:token] == "select_mecanismo_alternativo"
+      @sesion = Sesion.find(params[:id])
+      if current_user.id == @sesion.mediador_id || current_user.has_role?("convenios") || current_user.has_role?("subdireccion")
+          @tramite = @sesion.tramite if @sesion
+          @mecanismos_alternativos = MecanismoAlternativo.all
+          render :partial => "select_mecanismo_alternativo", :layout => "only_jquery"
+      else
+          render :text => "No tiene permisos para realizar la acción"
+      end
+    else
+      render :text => "Error, consulte al administrador"
     end
   end
 
+  def save_mecanismo_alternativo
+    @sesion = Sesion.find(params[:sesion]) if params[:sesion]
+    @tramite = Tramite.find(params[:id])
+    if @tramite && @tramite.update_attributes(params[:tramite])
+      if @tramite.save
+        @tramite.update_estatus!("meca-asig", current_user) if @tramite.mecanismo_alternativo
+        flash[:notice] = "Mecanismo alternativo seleccionado correctamente"
+      else
+        flash[:error] = "No se pudo asignar, verifique"
+      end
+      redirect_to :action => "show_window", :controller => "sesiones", :id => @sesion
+    end
+  end
 
   def save
       #---- Si existe registro previo ---
