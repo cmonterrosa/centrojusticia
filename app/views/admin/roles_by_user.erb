@@ -1,0 +1,47 @@
+
+<div class="titulocalendario">
+  <p>PERFILES DE: <%=h @user.nombre_completo%></p><br />
+</div>
+
+<div id="scroll">
+      <table class="tablakolaval" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 60%; margin: auto;">
+                <tr align="center" class="d0">
+                  <td width="70%" bgcolor="#E8E8E8">PERFIL</td>
+                  <td width="30%" bgcolor="#E8E8E8" colspan="3">ACCIÓN</td>
+                </tr>
+            <!-- Registros -->
+            <%contador=1%>
+            <% for role in @roles.sort{|p1,p2| p1.name <=> p2.name} %>
+               <tr align="center" class="d1">
+                  <td>
+                      <%=role.descripcion%>
+                  </td>
+                  <td>
+                      <%= button_to 'Quitar', { :action => 'delete_role_to_user', :controller => "admin", :id => @user, :role => role.id}, :confirm => '¿Esta seguro?', :method => :post %>
+                  </td>
+                </tr>
+                <%contador+=1%>
+              <%end%>
+       </table>
+</div><br /><br /><br />
+
+
+<div id="scroll">
+<% form_tag :action => 'add_role_to_user', :user => @user, :role =>@role do -%>
+<table class="sample" width="50%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+          <th colspan="2">
+              AGREGAR A PERFIL
+          </th>
+      </tr>
+
+      <tr class="d1">
+          <th><%= collection_select("role", "role_id", @roles_no_incluidos, :id, :descripcion, :prompt => '>> Seleccione usuario')    %></th>
+          <th class="boton"><%= submit_tag "Agregar", :onclick => "return comprobar();" %></th>
+      </tr>
+</table>
+<% end %>
+</div>
+
+
+<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "show_users"%><br />
