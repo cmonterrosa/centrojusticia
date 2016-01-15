@@ -13,7 +13,7 @@
 <!-- contenido -->
 
 <div id="divlista">
-    <table class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 95%;">
+    <table class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 98%;">
       <tr>
         <td style="vertical-align: middle;">&nbsp;</td>
         <td style="vertical-align: middle;">Login</td>
@@ -25,7 +25,7 @@
           <td style="vertical-align: middle;">IP</td>
         <%end%>
 
-        <td style="vertical-align: center;" colspan="4">Acciones</td>
+        <td style="vertical-align: center;" colspan="5">Acciones</td>
       </tr>
     <%clase=0%>
     <%@usuarios.each do |user|%>
@@ -58,10 +58,16 @@
 
       <%if current_user.has_role?(:admin)%>
           <td  style="vertical-align: middle;"><%=h user.last_ip%></td>
+          
+          <!-- Roles -->
+          <td  style="vertical-align: middle;">
+            <%=link_to "Roles", {:action => "roles_by_user", :id => user}, {:title => "Perfiles a los que pertenece", :class => "boton"}%>
+          </td>
+
           <td  style="vertical-align: middle;">
               <%= (user.activo) ?  (link_to 'Bloquear usuario', { :action => "change_user_estatus", :controller => "admin", :id => user, :t => @token, :back => "show_users"}, {:title => "Bloquear usuario", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post)  : (link_to 'Reactivar usuario', { :action => "change_user_estatus", :controller => "admin", :id => user, :t => @token, :back => "show_users"}, {:title => "Reactivar usuario", :class => 'boton'}, :confirm => '¿Esta seguro?', :method => :post) %>
           </td>
-      <%end%>
+       <%end%>
 
        <%unless @baja%>
             <%if current_user.has_role?("admindireccion")%>

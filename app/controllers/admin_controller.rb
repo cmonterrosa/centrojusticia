@@ -97,6 +97,30 @@ class AdminController < ApplicationController
     redirect_to :action => "members_by_materia", :id => @materia
   end
 
+
+    def add_role_to_user
+    @user = User.find(params[:user])
+    @user.roles << Role.find(params[:role][:role_id])
+    if @user.save
+      flash[:notice] = "Perfil agregado correctamente al usuario"
+    else
+      flash[:error] = "El perfil no fue agregado al usuario"
+    end
+      redirect_to :action => "roles_by_user", :id => @user
+  end
+
+    def delete_role_to_user
+    @user = User.find(params[:id])
+    @role = Role.find(params[:role])
+    if @user.roles.delete(@role)
+      flash[:notice] = "Perfil removido correctamente al usuario"
+    else
+      flash[:error] = "El perfil no fue removido al usuario"
+    end
+      redirect_to :action => "roles_by_user", :id => @user
+    end
+
+
     def delete_user_materia
       @materia = Materia.find(params[:materia])
       @user = User.find(params[:id])
@@ -189,6 +213,14 @@ class AdminController < ApplicationController
      @token = generate_token
      render :layout => false
  end
+
+ def roles_by_user
+   @user = User.find(params[:id])
+   @roles = @user.roles
+   @roles_no_incluidos = Role.find(:all, :conditions => ["id NOT IN (?)", @roles.map{|i|i.id}])
+ end
+
+
 
  def change_horario_estatus
    if validate_token(params[:t]) && @horario= Horario.find(params[:id])
@@ -458,6 +490,14 @@ end
   def motivos_conclusion_new_or_edit
     @motivo_conclusion = MotivoConclusion.find(params[:id]) if params[:id]
     @motivo_conclusion ||= MotivoConclusion.new
+  end
+
+   def motivos_conclusion_destroy
+    @motivo_conclusion = MotivoConclusion.find(params[:id]) if params[:id]
+    if @motivo_conclusion.destroy
+      flash[:notice] = "Registro eliminado correctamente"
+      redirect_to :action => "motivos_conclusion"
+    end
   end
 
   def motivos_conclusion_save
