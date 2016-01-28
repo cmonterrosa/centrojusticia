@@ -84,7 +84,7 @@
 
         <!-- Liberar expediente concluido -->
          <%if (tramite.estatu_id == tramite_concluido.id) && (current_user.has_role?("admindireccion") || current_user.has_role?("direccion") ||  current_user.has_role?("subdireccion"))%>
-             <td style="vertical-align: middle;"><%=h (link_to "Liberar concluido", {:controller => "tramites", :action => "concluir_undo", :id => tramite.id}, :confirm => "¿Está seguro que desea liberar expediente ya concluido?" , :class => "boton")%></td>
+             <td style="vertical-align: middle;"><%=h (link_to "Deshacer conclusión", {:controller => "tramites", :action => "concluir_undo", :id => tramite.id}, :confirm => "¿Está seguro que desea liberar expediente ya concluido?" , :class => "boton")%></td>
         <%end%>
 
 
