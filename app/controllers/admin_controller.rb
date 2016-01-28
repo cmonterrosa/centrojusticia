@@ -186,24 +186,30 @@ class AdminController < ApplicationController
   end
 
   def show_users
-    if current_user.has_role?("adminusuarios")
-      #@especialistas = Role.find_by_name("especialistas").todos_usuarios
-      #@convenios = Role.find_by_name("convenios").todos_usuarios
-      #@invitadores = Role.find_by_name("invitadores").todos_usuarios
-      #@atencionpublico = Role.find_by_name("atencionpublico").todos_usuarios
-      @roles = ["especialistas", "convenios", "atencionpublico", "jefeatencionpublico", "controlagenda", "invitadores"]
-      @usuarios = User.find(:all, :select => "u.id, u.login, u.paterno, u.materno, u.nombre, u.last_login", :joins => "u, roles_users ru, roles r", :conditions => ["u.activo = true AND u.id=ru.user_id AND ru.role_id=r.id AND r.name in (?)", @roles], :group => "u.id", :order => "u.nombre, u.paterno, u.materno")
-      @usuarios = User.find(:all, :order => "login, paterno, materno, nombre") if current_user.has_role?("admin")
-      #@usuarios ||= (@especialistas + @convenios).sort{|a,b| a.nombre_completo <=> b.nombre_completo}
-    else
-      @usuarios = User.find(:all,  :order => "login, paterno, materno, nombre") if (params[:token] && params[:token]  == 'all' )
-      @usuarios ||= User.find(:all, :conditions => ["activo = ?", true], :order => "login, paterno, materno, nombre")
-    end
-    @usuarios = @usuarios.paginate(:page => params[:page], :per_page => 25)
+    case params[:token]
+        when 'esp'
+          @usuarios = Role.find_by_name("especialistas").todos_usuarios
+          @title = "LISTADO DE ESPECIALISTAS"
+        when 'conv'
+          @usuarios = Role.find_by_name("convenios").todos_usuarios
+          @title = "LISTADO DE CONVENIOS"
+        else
+            @title = "LISTADO DE TODOS LOS USUARIOS"
+            if current_user.has_role?(:admin)
+              @usuarios = User.find(:all, :order => "login, paterno, materno, nombre")
+            else
+              @roles = ["especialistas", "convenios", "atencionpublico", "jefeatencionpublico", "controlagenda", "invitadores", "lecturaagenda"]
+              @usuarios = User.find(:all,
+                :select => "u.id, u.login, u.paterno, u.materno, u.nombre, u.last_login",
+                :joins => "u, roles_users ru, roles r",
+                :conditions => ["u.activo = true AND u.id=ru.user_id AND ru.role_id=r.id AND r.name in (?)", @roles],
+                :group => "u.id",
+                :order => "u.nombre, u.paterno, u.materno")
+            end
+     end
+    @usuarios = @usuarios.sort{|a,b| a.nombre_completo <=> b.nombre_completo}.paginate(:page => params[:page], :per_page => 25)
     @token = generate_token
   end
-
-
 # -- termina modulo de administracion de usuarios ----
 
 #--- listado de usuarios por area ---
