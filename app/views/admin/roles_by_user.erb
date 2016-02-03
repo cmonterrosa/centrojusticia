@@ -36,7 +36,7 @@
       </tr>
 
       <tr class="d1">
-          <th><%= collection_select("role", "role_id", @roles_no_incluidos, :id, :descripcion, :prompt => '>> Seleccione usuario')    %></th>
+          <th><%= collection_select("role", "role_id", @roles_no_incluidos, :id, :descripcion, :prompt => '>> SELECCIONE PERFIL')    %></th>
           <th class="boton"><%= submit_tag "Agregar", :onclick => "return comprobar();" %></th>
       </tr>
 </table>
