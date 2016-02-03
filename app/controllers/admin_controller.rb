@@ -227,7 +227,8 @@ class AdminController < ApplicationController
  def roles_by_user
    @user = User.find(params[:id])
    @roles = @user.roles
-   @roles_no_incluidos = Role.find(:all, :conditions => ["id NOT IN (?)", @roles.map{|i|i.id}])
+   @roles_no_incluidos = Role.find(:all) if @user && @user.roles.empty?
+   @roles_no_incluidos ||= Role.find(:all, :conditions => ["id NOT IN (?)", @roles.map{|i|i.id}])
  end
 
 
