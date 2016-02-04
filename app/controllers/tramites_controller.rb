@@ -180,7 +180,7 @@ class TramitesController < ApplicationController
     @tramite = Tramite.find(params[:id])
     @orientacion = Orientacion.find_by_tramite_id(params[:id])
     @historico = Historia.find_by_tramite_id(params[:id])
-    @extraordinario = Extraordinaria.find_by_tramite_id(params[:id])
+    @extraordinaria = Extraordinaria.find_by_tramite_id(params[:id])
     if ((@orientacion) ? @orientacion.destroy : true) && ((@historico) ? @historico.destroy : true) && ((@tramite) ? @tramite.destroy : false) && ((@extraordinaria)? @extraordinaria.destroy : false)
       flash[:notice] = "Registro eliminado correctamente"
     else
