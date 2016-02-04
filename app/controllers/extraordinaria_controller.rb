@@ -1,7 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 class ExtraordinariaController < ApplicationController
-     require_role [:direccion,:admindireccion,:oficinasubdireccion]
+     require_role [:direccion,:admindireccion,:oficinasubdireccion, :captura_inicios_externos]
      require_role :admin, :only => [:destroy]
 
     def index
@@ -12,7 +12,11 @@ class ExtraordinariaController < ApplicationController
       @extraordinaria = Extraordinaria.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
       @extraordinaria ||= Extraordinaria.new
       @procedencias = Procedencia.find(:all, :order => "descripcion")
-      @especialistas = Role.find_by_name("especialistas").users.sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
+      @especialista = @extraordinaria.especialista_id
+       ### Ordenamiento de lista de especialistas ###
+      @especialistas_externos = Role.find_by_name("especialistas_externos").todos_usuarios
+      @especialistas = Role.find_by_name("especialistas").todos_usuarios
+      @especialistas=(@especialistas_externos + @especialistas).sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
     end
 
     def save
@@ -20,7 +24,9 @@ class ExtraordinariaController < ApplicationController
     @extraordinaria = Extraordinaria.find(:first, :conditions => ["id = ?", params[:id]]) if params[:id]
     (@extraordinaria) ? @extraordinaria.update_attributes(params[:extraordinaria]) : @extraordinaria = Extraordinaria.new(params[:extraordinaria])
     @tramite = (@extraordinaria.tramite) ? @extraordinaria.tramite : Tramite.new
-    @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
+    @especialistas = Role.find_by_name("especialistas").todos_usuarios
+    @especialistas_externos = Role.find_by_name("especialistas_externos").todos_usuarios
+    @especialistas=(@especialistas_externos + @especialistas).sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
     @tramite.anio = params[:extraordinaria][:fechahora].split("/")[0] if params[:extraordinaria][:fechahora]
     @tramite.anio ||= Time.now.year
     @tramite.generar_folio unless @tramite.folio

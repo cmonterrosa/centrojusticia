@@ -3,7 +3,7 @@
 include SendDocHelper
 class ComparecenciasController < ApplicationController
   layout 'kolaval'
-  require_role [:especialistas, :convenios, :oficinasubdireccion, :direccion]
+  require_role [:especialistas, :especialistas_externos, :convenios, :oficinasubdireccion, :direccion, :captura_inicios_externos]
   
 
   def show
@@ -197,9 +197,18 @@ class ComparecenciasController < ApplicationController
       @comparecencia = Comparecencia.new(params[:comparecencia])
       @comparecencia.tramite = @tramite
     end
-    @comparecencia.user = current_user unless @comparecencia.user
     @comparecencia.conocimiento = (params[:comparecencia] && params[:comparecencia][:conocimiento] == 'SI') ? true : false
-    if @comparecencia.save
+     ###########################################################
+     # Verificamos si el registro se inicio como extraordinaria para establecerle el usuario seleccionado
+     ###########################################################
+     if current_user.has_role?(:captura_inicios_externos)
+        if @extraordinaria = Extraordinaria.find(:first, :conditions => ["tramite_id = ?", @comparecencia.tramite.id])
+          @comparecencia.user = @extraordinaria.especialista  if @extraordinaria.especialista
+        end
+      end
+      @comparecencia.user = current_user unless @comparecencia.user
+      
+      if @comparecencia.save
        @tramite.generar_folio_expediente!
        flash[:notice] = "Guardado correctamente, Número de Expediente: #{@tramite.numero_expediente}"
       #redirect_to :controller => "tramites", :action => "menu", :id => @tramite

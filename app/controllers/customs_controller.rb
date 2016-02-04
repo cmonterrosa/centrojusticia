@@ -15,6 +15,8 @@ class CustomsController < ApplicationController
         return render(:partial => 'subdireccion', :layout => "oficial")
     elsif @usuario.has_role?(:especialistas)
         return render(:partial => 'especialistas', :layout => "oficial")
+    elsif @usuario.has_role?(:especialistas_externos)
+        return render(:partial => 'especialistas_externos', :layout => "oficial")
     elsif @usuario.has_role?(:oficinasubdireccion)
         return render(:partial => 'oficinasubdireccion', :layout => "oficial")
     elsif @usuario.has_role?(:jefeatencionpublico)
@@ -100,7 +102,7 @@ class CustomsController < ApplicationController
 
   def mis_expedientes
     @user = (params[:id])? User.find(params[:id]) : current_user
-    if @user.has_role?("especialistas")
+    if @user.has_role?(:especialistas) || @user.has_role?(:especialistas_externos)
         ### Si recibe parametros ###
         @carpeta_atencion = (params[:carpeta_atencion] =~ /^\d{1,4}\/\d{4}$/) ? params[:carpeta_atencion].strip : nil if params[:carpeta_atencion]
         folio_expediente, anio=@carpeta_atencion.split("/") if @carpeta_atencion
@@ -112,7 +114,7 @@ class CustomsController < ApplicationController
         @tramites = (folio_expediente && anio)?  Tramite.find(:all, :conditions => ["folio_expediente =? AND anio=? AND id in (?)", folio_expediente, anio, @tramites_ids], :order => "anio DESC, folio_expediente DESC") : nil
         @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", @tramites_ids], :order => "anio DESC, folio_expediente DESC") if @tramites_ids
         #@tramites = @tramites.sort{|a,b| a.numero_expediente <=> b.numero_expediente}.reverse
-        @tramites = @tramites.paginate(:page => params[:page], :per_page => 25)
+        @tramites = @tramites.paginate(:page => params[:page], :per_page => 15)
         @destino = "mis_expedientes"
         render :partial => "mis_expedientes", :layout => "kolaval"
     else
