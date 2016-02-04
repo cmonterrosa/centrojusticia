@@ -2,6 +2,13 @@
   <p>Trámites extraordinarios de otras instituciones</p>
 </div>
 
+
+<div class="grid-12-12">
+   <p>
+    <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "index"}, :title => "Recargar"%>
+   </p>
+</div>
+
 <!-- Nuevo e Instituciones-->
 <p>
   <%=h (link_to "Nuevo", {:controller => "extraordinaria", :action => "new_or_edit"}, :class => 'boton') %> | <%=h (link_to "INSTITUCIONES", {:controller => "procedencias"}, :class => "boton")%>
@@ -36,7 +43,11 @@
 
         <!-- Comparecencia -->
         <%if (Comparecencia.find_by_tramite_id(e.tramite_id))%>
-          <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
+          <td style="vertical-align: middle;"><%=h (link_to "Editar Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
+        <%else%>
+            <%unless e.tramite.numero_expediente%>
+              <td style="vertical-align: middle;"><%=h (link_to "Levantar Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
+            <%end%>
         <%end%>
 
         <!-- Eliminar si es inicio de tramite-->
