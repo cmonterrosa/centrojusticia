@@ -20,20 +20,14 @@
         <tr align=" justify" class="pregunta">
           <td align="center">Fecha/hora</td>
           <td align="center">Especialistas</td>
-          <td align="center">¿Notificar especialista vía correo?</td>
         </tr>
         <tr>
-          <td align="center"><%=f.datetime_select :fechahora, :start_year => 2011, :ampm => true%></td>
-          <!--
-            <td align="center"><=f.text_field :fechahora%></td>
-          -->
-
+          <td align="center"><%=f.text_field :fechahora%></td>
           <%unless @especialista%>
               <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :include_blank => true%></td>
           <%else%>
               <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, {:include_blank => true, :selected => @especialista}%></td>
           <%end%>
-          <td align="center"><%=f.check_box :notificacion%> </td>
         </tr>
       </table></td>
     </tr>

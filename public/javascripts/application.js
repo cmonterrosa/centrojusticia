@@ -501,6 +501,14 @@ $(function() {
     });
 });
 
+/* Tramite extraordinario */
+$(function() {
+    $j('#extraordinaria_fechahora').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'es'
+    });
+});
+
 // Habilita/Deshabilita Catalogo de Estados si selecciona diferente de Mexico
 function showHideListadoDeEstados(comboSelect, divField,divSub, clave){
     var select = document.getElementById(comboSelect);
