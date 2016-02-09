@@ -3,6 +3,8 @@
 # Security functions
 include Security
 # Methods added to this helper will be available to all templates in the application.
+require 'fileutils'
+
 module ApplicationHelper
 
   def day_of_the_week(day)
