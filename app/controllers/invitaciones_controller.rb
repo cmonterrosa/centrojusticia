@@ -52,12 +52,12 @@ class InvitacionesController < ApplicationController
     @datosinvitacion.subdireccion ||= (@subdireccion.descripcion) ? @subdireccion.descripcion : nil if @subdireccion
     @datosinvitacion.subdirector ||= @subdireccion.titular if @subdireccion
     @datosinvitacion.cargo ||= @subdireccion.cargo if @subdireccion
-    @datosinvitacion.fechahora_sesion ||= @sesion.fechahora_completa
+    @datosinvitacion.fechahora_sesion ||= @sesion.fechahora_completa.camelize
     @datosinvitacion.materia ||= (@sesion.tramite && @sesion.tramite.materia)? @sesion.tramite.materia.descripcion : nil if @sesion.tramite
     @datosinvitacion.especialista ||= (@sesion.mediador) ? @sesion.mediador.nombre_completo : nil
-    @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d DE %B DE %Y").upcase
+    @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '')
     @datosinvitacion.lugar ||= LUGAR
-    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d DE")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month]}".upcase : nil
+    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d DE")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month]}".gsub(/^0/, '') : nil
     @datosinvitacion.solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.full_name : nil
     @datosinvitacion.genero_solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.sexo : nil
     @datosinvitacion.genero_solicitante = (@datosinvitacion.genero_solicitante == 'F')? 'LA' : 'EL' if @datosinvitacion.genero_solicitante
@@ -88,9 +88,9 @@ class InvitacionesController < ApplicationController
     @datosinvitacion.fechahora_sesion ||= @sesion.fechahora_completa
     @datosinvitacion.materia ||= (@sesion.tramite && @sesion.tramite.materia)? @sesion.tramite.materia.descripcion : nil if @sesion.tramite
     @datosinvitacion.especialista ||= (@sesion.mediador) ? @sesion.mediador.nombre_completo : nil
-    @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d DE %B DE %Y").upcase
+    @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d de %B de %Y")
     @datosinvitacion.lugar ||= LUGAR
-    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d DE")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month]}".upcase : nil
+    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d de")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month]}" : nil
     @datosinvitacion.solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.full_name : nil
     @datosinvitacion.genero_solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.sexo : nil
     unless @sesion
@@ -290,8 +290,9 @@ class InvitacionesController < ApplicationController
        param["P_LUGAR"]={:tipo=>"String", :valor=>(@datosinvitacion.lugar)? "#{@datosinvitacion.lugar}, CHIAPAS" : nil }
        param["P_GENERO"]={:tipo=>"String", :valor=>@datosinvitacion.genero_solicitante}
        param["P_DIRECCION_OFICINAS"]=(@configuracion.pie_pagina)? {:tipo=>"String", :valor=>@configuracion.pie_pagina} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
-       
-       ### Numero de invitacion ###
+       param["P_ESPECIALISTA_SEXO"]={:tipo=>"String", :valor=>@sesion.mediador.articulo_segun_genero} if @datosinvitacion.especialista && @sesion.mediador
+
+      ### Numero de invitacion ###
       if @invitacion && @invitacion.numero_invitacion
           case @invitacion.numero_invitacion
             when 2

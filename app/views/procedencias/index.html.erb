@@ -1,12 +1,12 @@
 <div class="titulocalendario">
-  <p>Instituciones que el CEJA Atiende</p>
+  <p>INSTITUCIONES QUE EL CEJA ATIENDE</p>
 </div>
 
 
 <%=h (link_to "Regresar", {:controller => "extraordinaria"}, :class => "boton")%> | <%= link_to 'Registrar nueva institución', new_procedencia_path, :class => "boton"%>
 <p>&nbsp;</p>
 
-<table class="tablakolaval" style="text-align: center;">
+<table class="tablakolaval" style="text-align: center; margin: auto;">
   <tr>
     <td>Descripción</td>
     <td colspan="2">Acciones</td>
@@ -23,3 +23,16 @@
 
 <br />
 
+
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @procedencias %>
+          </div>
+          <%= will_paginate @procedencias %>
+        </div>
+      </td>
+    </tr>
+</table>

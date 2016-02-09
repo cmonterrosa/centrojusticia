@@ -55,21 +55,12 @@
   <p align="center">
     <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , { :action => "show_pdf", :controller => "tramites", :id => "#{@tramite.id}.pdf", :method => "post"}, :title => "Imprimir",  :html => { :target => "_blank"} %>
   </p>
-  
+
+   <%=render :partial => "extraordinario"%>
 
   <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid;">
 
-    <!-- Si es concluido -->
-
-    <!--
-    <if Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id])%>
-      <div class="watermark">Trámite concluido</div>
-    <end%>
-    -->
-
-
-
-    <tr style="background-color:gray; color:white">
+      <tr style="background-color:gray; color:white">
       <th colspan="2">
         DATOS GENERALES
       </th>
@@ -239,10 +230,16 @@
         <td style="vertical-align: middle;"><%=h (@comparecencia.datos)? @comparecencia.datos : "No existe información"%></td>
       </tr>
 
+      <!-- disponibilidad de horario -->
       <tr class="d1">
         <td style="vertical-align: middle;"><b>Día/hora de preferencia:</b></td>
-        <td style="vertical-align: middle;"><%=@comparecencia.dia_preferencia%> / <%=@comparecencia.hora_preferencia%></td>
+          <%if (@comparecencia.disponibilidad_horario && @comparecencia.disponibilidad_horario == 'SI') %>
+              <td style="vertical-align: middle;">DISPONIBILIDAD DE HORARIO</td>
+        <%else%>
+                <td style="vertical-align: middle;"><%=@comparecencia.dia_preferencia%> / <%=@comparecencia.hora_preferencia%> HRS.</td>
+        <%end%>
       </tr>
+      
     </table><br />
 
     <!-- detalle del asunto -->

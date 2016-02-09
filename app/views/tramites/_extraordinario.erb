@@ -1,0 +1,37 @@
+ <%@extraordinaria = Extraordinaria.find(:first, :conditions => ["tramite_id = ?", @tramite])%>
+
+ <%if @extraordinaria%>
+ <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+      <th colspan="2">
+        TRAMITE EXTRAORDINARIO
+      </th>
+     </tr>
+
+     <tr class="d1">
+       <td style="vertical-align: middle;"><b>Capturado por:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@extraordinaria.user_id ? @extraordinaria.user.nombre_completo : "No existe información")%></td>
+     </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b>Especialista que brindó atención extraordinaria:</b></td>
+       <td style="vertical-align: middle;"> <%=h(@extraordinaria.especialista ? @extraordinaria.especialista.nombre_completo : "No existe información")%></td>
+    </tr>
+
+    <tr class="d1">
+       <td style="vertical-align: middle;"><b>Solicitante:</b></td>
+       <td style="vertical-align: middle;"><%=h(@extraordinaria ? @extraordinaria.solicitante : "No existe información")%></td>
+    </tr>
+
+    <tr class="d0">
+       <td style="vertical-align: middle;"><b>Procedencia:</b></td>
+       <td style="vertical-align: middle;"><%=h(@extraordinaria.procedencia ? @extraordinaria.procedencia.descripcion : "No existe información")%></td>
+    </tr>
+
+
+    <tr class="d1">
+      <td style="vertical-align: middle;"><b>Observaciones:</b></td>
+      <td style="vertical-align: middle;"><%=h(@extraordinaria.observaciones ? @extraordinaria.observaciones : "No existe información")%></td>
+    </tr>
+  </table>
+<%end%>

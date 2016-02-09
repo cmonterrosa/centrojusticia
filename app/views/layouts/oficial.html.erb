@@ -131,11 +131,19 @@ padding:2px;
       <div class="main_area">
          <div class="body_wrap">
            <hr class="LineaHorizontalVerde" />
-              <%if logged_in?%>
+                <%if logged_in?%>
                         <div class="CaptionNombreUsuario">
-                            <%=link_to "#{current_user.nombre_completo}",  {:controller => "customs", :action => "profile"}, :title => current_user.nombre_completo, :style => "text-decoration: none; color: ##019595;"%>&nbsp;&nbsp;&nbsp;<span style="color: gray; text-transform: uppercase;"><%=h current_user.subdireccion.descripcion%></span>
-                        </div>
-             <%end%>
+                            <%=link_to "#{current_user.nombre_completo}",  {:controller => "customs", :action => "profile"}, :title => current_user.nombre_completo, :style => "text-decoration: none; color: ##019595;"%>&nbsp;&nbsp;&nbsp;
+                            <span style="color: gray; text-transform: uppercase;">
+                            <!-- Mostramos si es foraneo -->
+                            <%if current_user.procedencia%>
+                                <%=h current_user.procedencia.descripcion%>
+                            <%else%>
+                                <%=h current_user.subdireccion.descripcion%>
+                            <%end%>
+                          </span>
+                       </div>
+                 <%end%>
             <hr class="LineaHorizontalVerde" />
           </div>
       </div>

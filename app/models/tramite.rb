@@ -137,6 +137,13 @@ class Tramite < ActiveRecord::Base
      Concluido.find(:first, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") if self.id
    end
 
+   def solicitante_orientacion
+     solicitante = (self.orientacion) ? self.orientacion.solicitante : nil
+     solicitante ||= (Extraordinaria.count(:id, :conditions => ["tramite_id = ?", self.id]) > 0) ? Extraordinaria.find_by_tramite_id(self.id, :select => "id,paterno,materno,nombre").solicitante : "No existe informacion"
+     return solicitante
+   end
+
+
   def self.search(search, perfil=nil)
     if search && search  =~ /^\d{1,4}\/20\d{2}$/
       folio, anio = search.split("/")

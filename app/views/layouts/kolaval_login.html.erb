@@ -40,20 +40,20 @@ div.centered{
     top: 5%;
     /*left:15%;*/
     
-    width:100%;
-    height: 100%;
+    width:99%;
+    height: 99%;
   }
 
 </style>
 
   <body onload="document.getElementById('login').focus()" style="background-color: white;">
      <div class="centered">
-        <table width="1024px" align="center">
+        <table width="99%" align="center" style=" margin: auto; height: 95%">
           <tr>
               <th align="center"> <%=image_tag("kolaval/logo-inicio-kolaval.jpg", :border => 0)%></th>
           </tr>
 
-          <tr><th style="height:12px">&nbsp;</th></tr>
+          <tr><th style="height:4%">&nbsp;</th></tr>
 
           <!--linea -->
           <tr>
@@ -71,10 +71,10 @@ div.centered{
             <th><hr class="LineaHorizontalVerde" /></th>
           </tr>
 
-           <tr><th style="height: 4px">&nbsp;</th></tr>
+           <tr><th style="height: 4%">&nbsp;</th></tr>
 
            <%if flash[:error]%>
-              <tr><th style="height: 4px" class="error"><%=flash[:error]%></th></tr>
+              <tr><th style="height: 4%" class="error"><%=flash[:error]%></th></tr>
            <%end%>
 
           <!-- inicia form -->
@@ -85,13 +85,13 @@ div.centered{
               </td>
             </tr>
 
-             <tr><th style="height: 2px">&nbsp;</th></tr>
+             <tr><th style="height: 2%">&nbsp;</th></tr>
 
              <tr align="center">
               <td><%= password_field_tag 'password', nil, :class => "TextBoxInicioSesion", :placeholder => "CONTRASEÑA"%></td>
             </tr>
 
-             <tr><th style="height: 2px">&nbsp;</th></tr>
+             <tr><th style="height: 2%">&nbsp;</th></tr>
 
             <!-- boton de entrar-->
             <tr align="center">

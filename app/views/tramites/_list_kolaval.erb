@@ -65,7 +65,7 @@
          <%end%>
        </td>
        <td style="vertical-align: middle;" align="center" width="9%"><b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b></td>
-       <td style="vertical-align: middle;" width="30%"><%=h (tramite.orientacion) ? tramite.orientacion.solicitante : "----"%></td>
+       <td style="vertical-align: middle;" width="30%"><%=h tramite.solicitante_orientacion%></td>
        <td style="vertical-align: middle;" width="21%"><b><%=tramite.estatus%></b></td>
 
        <!-- siguiente estatus -->

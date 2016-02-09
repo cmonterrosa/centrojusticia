@@ -1,23 +1,25 @@
 <div class="titulocalendario">
-  <p>Trámites extraordinarios de otras instituciones</p>
+  <p>TRÁMITES EXTRAORDINARIOS DE OTRAS INSTITUCIONES</p>
+  <p><%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "index"}, :title => "Recargar"%></p>
 </div>
 
 
-<div class="grid-12-12">
-   <p>
-    <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "index"}, :title => "Recargar"%>
-   </p>
-</div>
 
-<!-- Nuevo e Instituciones-->
 <p>
-  <%=h (link_to "Nuevo", {:controller => "extraordinaria", :action => "new_or_edit"}, :class => 'boton') %> | <%=h (link_to "INSTITUCIONES", {:controller => "procedencias"}, :class => "boton")%>
+  <!-- Nuevo registro -->
+  <%=h (link_to "Nuevo trámite", {:controller => "extraordinaria", :action => "new_or_edit"}, :class => 'boton') %>
+
+  <!-- Catalogo de instituciones -->
+  <%if current_user.has_role?(:admindireccion) || current_user.has_role?(:oficinasubdireccion)%>
+      | <%=h (link_to "INSTITUCIONES", {:controller => "procedencias"}, :class => "boton")%>
+  <%end%>
 </p>
 
 <!-- contenido -->
-<div id="divlista">
-    <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+
+    <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 95%; margin: auto;">
       <tr>
+        <td style="vertical-align: middle;" align="center">&nbsp;</td>
          <td style="vertical-align: middle;" align="center">Num Exp.</td>
           <td style="vertical-align: middle;" align="center">Procedencia</td>
           <td style="vertical-align: middle;" align="center">Especialista</td>
@@ -30,22 +32,29 @@
    <%tramite_iniciado_por_escrito=Estatu.find_by_clave("tram-escr")%>
     <%@extraordinarias.each do |e|%>
     <tr>
-       <td style="vertical-align: middle;"><b><%=h (e.tramite) ? e.tramite.numero_expediente : "----"%></b></td>
-       <td style="vertical-align: middle;"><%=h (e.procedencia) ? e.procedencia.descripcion : "----"%></td>
-       <td style="vertical-align: middle;"><%=h (e.especialista_id) ? User.find(e.especialista_id).nombre_completo : "----"%></td>
-       <td style="vertical-align: middle;"><%=h (e.fechahora) ? e.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "---"%></td>
-       <td style="vertical-align: middle;"><%=h (e.tramite) ? e.tramite.estatus : "---"%></td>
+        <%if e.fechahora%>
+          <td style="vertical-align: middle; text-align: 'center';" width="4%">
+              <%=link_to image_tag("kolaval/ico-print-tramite.jpg", :border => 0), {:controller => "extraordinaria", :action => "show", :id => e }, :title => e.fechahora.strftime('%d de %B de %Y - %H:%M:%S')-%>
+          </td>
+        <%end%>
+        <td style="vertical-align: middle;"><b><%=h (e.tramite) ? e.tramite.numero_expediente : "----"%></b></td>
+        <td style="vertical-align: middle;"><%=h (e.procedencia) ? e.procedencia.descripcion : "----"%></td>
+        <td style="vertical-align: middle;"><%=h (e.especialista_id) ? User.find(e.especialista_id).nombre_completo : "----"%></td>
+        <td style="vertical-align: middle;"><%=h (e.fechahora) ? e.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "---"%></td>
+        <td style="vertical-align: middle;"><%=h (e.tramite) ? e.tramite.estatus : "---"%></td>
        
          <!-- Edicion -->
         <%if ( e.user_id == current_user.id)%>
-          <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "extraordinaria", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
-        <%end%>
+            <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "extraordinaria", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
+        <%else%>
+            <td style="vertical-align: middle;">&nbsp;</td>
+       <%end%>
 
         <!-- Comparecencia -->
         <%if (Comparecencia.find_by_tramite_id(e.tramite_id))%>
-          <td style="vertical-align: middle;"><%=h (link_to "Editar Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
+          <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
         <%else%>
-           <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
+           <td style="vertical-align: middle;">&nbsp;</td>
         <%end%>
 
         <!-- Eliminar si es inicio de tramite-->
@@ -53,13 +62,10 @@
         <%if (current_user.has_role?("admin") || e.tramite.estatus == tramite_iniciado_por_escrito)%>
               <td style="vertical-align: middle;"><%=link_to "Eliminar", {:action => "destroy", :id => e.tramite}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
         <%end%>
-
-        <!-- resumen general -->
-        <td style="vertical-align: middle;"><%=link_to "Resumen", {:controller => "extraordinaria", :action => "show", :id => e.id}, :class => 'boton'  -%></td>
-    </tr>
+      </tr>
     <%end%>
   </table>
-</div>
+
 <br />
 <div>
 <table>

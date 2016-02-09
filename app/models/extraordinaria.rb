@@ -3,17 +3,15 @@ class Extraordinaria < ActiveRecord::Base
   belongs_to :tramite
   belongs_to :user
 
+  validates_uniqueness_of :tramite_id
+
   def solicitante
     "#{self.nombre} #{self.paterno} #{self.materno}"
   end
 
 
   def especialista
-    if self.especialista_id
-       return User.find(self.especialista_id)
-    else
-      return nil
-    end
+    (self.especialista_id)? User.find(self.especialista_id) : nil
   end
 
 
