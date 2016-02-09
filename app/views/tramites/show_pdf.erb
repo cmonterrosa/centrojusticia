@@ -105,6 +105,10 @@ table.sample td.d99 {
 
 
 <div id="divlista">
+
+  <%=render :partial => "extraordinario"%><br />
+
+
   <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
 
     <!-- Si es concluido -->
@@ -271,9 +275,14 @@ table.sample td.d99 {
         <td style="vertical-align: middle;"><%=h (@comparecencia.datos)? @comparecencia.datos : "No existe información"%></td>
       </tr>
 
+      <!-- disponibilidad de horario -->
       <tr class="d1">
         <td style="vertical-align: middle;"><b>Día/hora de preferencia:</b></td>
-        <td style="vertical-align: middle;"><%=@comparecencia.dia_preferencia%> / <%=@comparecencia.hora_preferencia%></td>
+          <%if (@comparecencia.disponibilidad_horario && @comparecencia.disponibilidad_horario == 'SI') %>
+              <td style="vertical-align: middle;">DISPONIBILIDAD DE HORARIO</td>
+        <%else%>
+                <td style="vertical-align: middle;"><%=@comparecencia.dia_preferencia%> / <%=@comparecencia.hora_preferencia%> HRS.</td>
+        <%end%>
       </tr>
     </table><br />
 

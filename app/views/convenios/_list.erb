@@ -56,7 +56,7 @@
       <td style="vertical-align: middle;"><%=h (c.folio)? c.folio : '--'%></td>
        <td style="vertical-align: middle;"><%=h (c.especialista) ? c.especialista.nombre_completo : "----"%></td>
        <td style="vertical-align: middle;"><%=h (c.fechahora) ? c.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "---"%></td>
-       <td style="vertical-align: middle;"><%=h (c.descripcion)? c.descripcion : '---'%></td>
+       <td style="vertical-align: middle;"><%=h  (c.descripcion)? link_to((c.descripcion[0..50] + "..."), {:action => "show", :id => c.id}) : '---'%></td>
        <%@adjuntos = Adjunto.find(:all, :conditions => ["convenio_id = ?", c.id])%>
         <%clase = invert_class(clase)%>
 

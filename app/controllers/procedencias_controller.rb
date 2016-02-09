@@ -6,7 +6,7 @@ class ProcedenciasController < ApplicationController
   # GET /procedencias
   # GET /procedencias.xml
   def index
-    @procedencias = Procedencia.all
+    @procedencias = Procedencia.all.paginate(:page => params[:page], :per_page => 15)
 
     respond_to do |format|
       format.html # index.html.erb

@@ -1,21 +1,4 @@
-
- <%if flash[:notice]%>
-            <div class="formee-msg-success">
-              <h3>Operación realizada exitosamente:</h3>
-              <ul>
-                <li><%=flash[:notice]%></li>
-              </ul>
-            </div>
-            <%elsif flash[:error]%>
-            <div class="formee-msg-error">
-              <h3>Error:</h3>
-              <ul>
-                <li><%= error_messages_for :uploaded_file %></li>
-              </ul>
-            </div>
-            <%else%>
-            <%#*<p></p>%>
-  <%end%>
+<%=render :partial => "layouts/notificaciones_acciones"%>
 
 
 <div class="container">

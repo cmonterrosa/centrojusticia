@@ -10,7 +10,7 @@ require 'httparty'
 class EstadisticasController < ApplicationController
   layout :set_layout
 
-  require_role [:admin, :direccion, :subdireccion, :bitacora, :admindireccion], :except => [:estadisticas_generales]
+  require_role [:admin, :direccion, :subdireccion, :bitacora, :admindireccion], :except => [:estadisticas_generales,  :calculo_estadisticas_generales]
   
 
      def index
@@ -378,7 +378,7 @@ end
    end
 
 
-    def grafica_atencion_sexo
+  def grafica_atencion_sexo
       g = Gruff::Pie.new
       #g = Gruff::Bar.new
       g.title = "Orientaciones por sexo"

@@ -4,7 +4,7 @@
 require 'date'
 class OrientacionsController < ApplicationController
   require_role [:atencionpublico, :subdireccion, :direccion], :for => [:new_or_edit, :save]
-  require_role [:especialistas, :convenios], :for => [:list_by_user]
+  require_role [:especialistas, :convenios, :especialistas_externos], :for => [:list_by_user]
   require_role [:admin, :admindireccion, :direccion], :for => [:show_especialistas_disponibles]
 
   def index

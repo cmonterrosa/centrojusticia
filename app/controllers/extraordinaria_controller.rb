@@ -1,11 +1,17 @@
 #!/bin/env ruby
 # encoding: utf-8
 class ExtraordinariaController < ApplicationController
-     require_role [:direccion,:admindireccion,:oficinasubdireccion, :captura_inicios_externos]
+     require_role [:direccion,:admindireccion,:oficinasubdireccion, :captura_inicios_externos, :especialistas_externos]
      require_role :admin, :only => [:destroy]
 
     def index
-      @extraordinarias = Extraordinaria.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 15)
+      if current_user.has_role?(:admin)
+        @extraordinarias = Extraordinaria.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 15)
+      elsif current_user.has_role?(:especialistas_externos)
+        @extraordinarias = Extraordinaria.find(:all, :conditions => ["user_id = ?", current_user.id], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 15)
+      else
+        @extraordinarias = Extraordinaria.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 15)
+      end
     end
 
     def new_or_edit
@@ -17,6 +23,10 @@ class ExtraordinariaController < ApplicationController
       @especialistas_externos = Role.find_by_name("especialistas_externos").todos_usuarios
       @especialistas = Role.find_by_name("especialistas").todos_usuarios
       @especialistas=(@especialistas_externos + @especialistas).sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
+      if current_user.has_role?(:especialistas_externos)
+         @especialistas = User.find(:all, :conditions => ["id = ?", current_user.id])
+         @procedencias = Procedencia.find(:all, :conditions => ["id in (?)", current_user.procedencia])
+      end
     end
 
     def save

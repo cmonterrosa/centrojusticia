@@ -63,15 +63,10 @@ class ApplicationController < ActionController::Base
  end
 
   def inhabil?(date=Time.now)
-    inhabil = ((1..5)===date.wday) ? false : true
-    if inhabil
-       return true
+    if ((1..5)===date.wday) || Festivo.exists?(:conditions => ["? between fecha_inicio and fecha_fin", date]) 
+      true
     else
-       if Festivo.find(:first, :conditions => ["? between fecha_inicio and fecha_fin", date])
-         return true
-       else
-         return false
-       end
+      false
     end
   end
 

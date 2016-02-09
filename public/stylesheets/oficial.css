@@ -503,3 +503,9 @@ color: red;
     text-align: center;
     z-index: 1000;
 }
+
+
+.descripcion_detalle_sesion {
+    color:  #3079ed;
+    font-weight: bold;
+}
