@@ -20,7 +20,7 @@
     <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 99%; margin: auto;">
       <tr>
         <td style="vertical-align: middle;" align="center">&nbsp;</td>
-         <td style="vertical-align: middle;" align="center">Num Expedia</td>
+         <td style="vertical-align: middle;" align="center">Num Exp.</td>
           <td style="vertical-align: middle;" align="center">Procedencia</td>
           <td style="vertical-align: middle;" align="center">Especialista</td>
           <td style="vertical-align: middle;" align="center">Fecha/Hora inicial</td>
@@ -51,14 +51,9 @@
        <%end%>
 
         <!-- Comparecencia -->
-        <%if (Comparecencia.find_by_tramite_id(e.tramite_id))%>
-          <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
-        <%else%>
-           <td style="vertical-align: middle;">&nbsp;</td>
-        <%end%>
-
+        <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
+        
         <!-- Eliminar si es inicio de tramite-->
-
         <%if (current_user.has_role?("admin") || e.tramite.estatus == tramite_iniciado_por_escrito)%>
               <td style="vertical-align: middle;"><%=link_to "Eliminar", {:action => "destroy", :id => e.tramite}, :confirm => "¿Esta seguro que desea eliminar el registro", :method => :delete, :class => 'boton' -%></td>
         <%end%>
