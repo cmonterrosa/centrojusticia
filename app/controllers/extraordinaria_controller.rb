@@ -67,7 +67,7 @@ class ExtraordinariaController < ApplicationController
       if @extraordinaria.save && @tramite.save
               @tramite.update_estatus!("tram-extr", current_user)
               if @extraordinaria.notificacion
-                  NotificationsMailer.deliver_tramite_created(@tramite, @extra.especialista) #sends the email
+                  #NotificationsMailer.deliver_tramite_created(@tramite, @extra.especialista) #sends the email
                   flash[:notice] = "Expediente: #{@tramite.numero_expediente} #{msj} y envío de notificación por email"
               else
                   flash[:notice] = "Expediente: #{@tramite.numero_expediente} #{msj}, sin envío de notificación por email"
