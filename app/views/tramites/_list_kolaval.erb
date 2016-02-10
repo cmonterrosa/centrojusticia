@@ -29,7 +29,9 @@
          <td style="vertical-align: middle;" align="center">&nbsp;</td>
          <td style="vertical-align: middle;" align="left">Trámite</td>
          <td style="vertical-align: middle;" align="left">Número de Expediente</td>
-         <td style="vertical-align: middle;" align="left">Materia</td>
+         <%if (current_user.has_role?(:convenios) || current_user.has_role?(:jefeconvenios) || current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) ) %>
+              <td style="vertical-align: middle;" align="left">Materia</td>
+         <%end%>
          <td style="vertical-align: middle;" align="center">Nombre del Solicitante</td>
          <td style="vertical-align: middle;" align="center"><%=h "Estatus"%></td>
          <td style="vertical-align: middle;" colspan="7" align="center">Acciones</td>
@@ -67,13 +69,16 @@
        </td>
        <td style="vertical-align: middle;" align="center" width="9%"><b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b></td>
        
-        <!-- Materia -->
-       <%if tramite.materia%>
-          <td style="vertical-align: middle;" width="5%"><%=h tramite.materia.descripcion%></td>
-       <%else%>
-          <td style="vertical-align: middle;" width="5%">&nbsp;</td>
+       <!-- Materia -->
+       <%if (current_user.has_role?(:convenios) || current_user.has_role?(:jefeconvenios) || current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) ) %>
+          <%if tramite.materia%>
+              <td style="vertical-align: middle;" width="5%"><%=h tramite.materia.descripcion%></td>
+           <%else%>
+              <td style="vertical-align: middle;" width="5%">&nbsp;</td>
+          <%end%>
        <%end%>
-       <td style="vertical-align: middle;" width="26%"><%=h tramite.solicitante_orientacion%></td>
+
+        <td style="vertical-align: middle;" width="26%"><%=h tramite.solicitante_orientacion%></td>
        <td style="vertical-align: middle;" width="20%"><b><%=tramite.estatus%></b></td>
 
        <!-- siguiente estatus -->
