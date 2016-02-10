@@ -29,6 +29,7 @@
          <td style="vertical-align: middle;" align="center">&nbsp;</td>
          <td style="vertical-align: middle;" align="left">Trámite</td>
          <td style="vertical-align: middle;" align="left">Número de Expediente</td>
+         <td style="vertical-align: middle;" align="left">Materia</td>
          <td style="vertical-align: middle;" align="center">Nombre del Solicitante</td>
          <td style="vertical-align: middle;" align="center"><%=h "Estatus"%></td>
          <td style="vertical-align: middle;" colspan="7" align="center">Acciones</td>
@@ -65,8 +66,15 @@
          <%end%>
        </td>
        <td style="vertical-align: middle;" align="center" width="9%"><b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b></td>
-       <td style="vertical-align: middle;" width="30%"><%=h tramite.solicitante_orientacion%></td>
-       <td style="vertical-align: middle;" width="21%"><b><%=tramite.estatus%></b></td>
+       
+        <!-- Materia -->
+       <%if tramite.materia%>
+          <td style="vertical-align: middle;" width="5%"><%=h tramite.materia.descripcion%></td>
+       <%else%>
+          <td style="vertical-align: middle;" width="5%">&nbsp;</td>
+       <%end%>
+       <td style="vertical-align: middle;" width="26%"><%=h tramite.solicitante_orientacion%></td>
+       <td style="vertical-align: middle;" width="20%"><b><%=tramite.estatus%></b></td>
 
        <!-- siguiente estatus -->
        <%ids = []%>
@@ -104,9 +112,9 @@
 
         <!-- Reasignacion -->
         <%if current_user.has_role?("atencionpublico")%>
-          <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("admin")))%>
-             <td style="vertical-align: middle;"><%=h (link_to "Reasignar", {:controller => "orientacions", :action => "reasignar", :id => tramite.id}, :class => 'boton') %></td>
-          <%else%>
+            <%if ((tramite.estatu_id == tramite_iniciado_estatus.id || tramite.estatu_id == tramite_reasignado.id)  && (tramite.user_id == current_user.id || current_user.has_role?("admin")))%>
+              <td style="vertical-align: middle;"><%=h (link_to "Reasignar", {:controller => "orientacions", :action => "reasignar", :id => tramite.id}, :class => 'boton') %></td>
+            <%else%>
 
              <!-- Editar orientacion si fue el usuario que capturo -->
              <%if Orientacion.find(:first, :select => "t.id", :joins => "o, tramites t", :conditions => ["o.tramite_id=t.id AND o.tramite_id = ? AND t.user_id = ?", tramite.id, current_user.id])%>
@@ -159,7 +167,7 @@
         <%end%>
 
         <!-- Modificar asignacion de materia -->
-        <%if (tramite.estatu_id == materia_asignada.id || tramite.estatu_id = tramite_no_admitido.id) && (current_user.has_role?("convenios") || current_user.has_role?("asignamateria")) && (Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id  in (?) and user_id = ?", tramite.id, [materia_asignada.id, tramite_no_admitido.id], current_user.id ]))%>
+        <%if (tramite.estatu_id == materia_asignada.id || tramite.estatu_id = tramite_no_admitido.id) && (current_user.has_role?("convenios") || current_user.has_role?("asignamateria")) && (current_user.has_role?(:jefeconvenios) || Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id  in (?) and user_id = ?", tramite.id, [materia_asignada.id, tramite_no_admitido.id], current_user.id ]))%>
              <td style="vertical-align: middle;"><%=h (link_to "Cambiar materia", {:controller => "tramites", :action => "change_materia", :id => tramite.id}, :class => 'boton') %></td>
         <%end%>
 
