@@ -24,6 +24,7 @@
           <td style="vertical-align: middle;" align="center">Procedencia</td>
           <td style="vertical-align: middle;" align="center">Especialista</td>
           <td style="vertical-align: middle;" align="center">Fecha/Hora inicial</td>
+          <td style="vertical-align: middle;" align="center">Solicitante</td>
           <td style="vertical-align: middle;" align="center"><%=h "Estatus"%></td>
           <td style="vertical-align: middle;" colspan="3" align="center">Acciones</td>
       </tr>
@@ -41,6 +42,7 @@
         <td style="vertical-align: middle;"><%=h (e.procedencia) ? e.procedencia.descripcion : "----"%></td>
         <td style="vertical-align: middle;"><%=h (e.especialista_id) ? User.find(e.especialista_id).nombre_completo : "----"%></td>
         <td style="vertical-align: middle;"><%=h (e.fechahora) ? e.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "---"%></td>
+        <td style="vertical-align: middle;"><%=h (e.solicitante) ? e.solicitante : "---"%></td>
         <td style="vertical-align: middle;"><%=h (e.tramite) ? e.tramite.estatus : "---"%></td>
        
          <!-- Edicion -->
