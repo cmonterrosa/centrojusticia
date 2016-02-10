@@ -66,6 +66,9 @@ class ExtraordinariaController < ApplicationController
       msj = (@save_num_expediente)? "Guardado correctamente" : "Ya existe en el sistema"
       if @extraordinaria.save && @tramite.save
               @tramite.update_estatus!("tram-extr", current_user)
+               if current_user.has_role?(:oficinasubdireccion)
+                  @tramite.generar_folio_expediente!
+              end
               if @extraordinaria.notificacion
                   #NotificationsMailer.deliver_tramite_created(@tramite, @extra.especialista) #sends the email
                   flash[:notice] = "Expediente: #{@tramite.numero_expediente} #{msj} y envío de notificación por email"
