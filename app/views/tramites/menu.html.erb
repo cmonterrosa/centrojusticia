@@ -1,56 +1,57 @@
-<h3 style="color:#104E8B; font-family: Helvetica;"><b>Carpeta de atención: <%=@tramite.numero_expediente%></b></h3>
+<!-- MENU DEL TRAMITE -->
+<!DOCTYPE html>
+<%=render :partial => "encabezado"%>
+<html lang="en" class="no-js">
+	<head>
+            <%= stylesheet_link_tag "menu_desplegable/default.css"%>
+            <%= stylesheet_link_tag "menu_desplegable/component.css"%>
+            <%= javascript_include_tag 'menu_desplegable/modernizr.custom.js'%>
+        </head>
+	<body>
+		<div class="container">
+                        <div class="main">
+				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+					<div class="cbp-hsinner">
+						<ul class="cbp-hsmenu" style="max-width: 89em;">
+							
+                                                        <!-- Orientacion -->
+                                                        <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-orientacion.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-orientacion.jpg") , {:action => "new_or_edit", :controller => "orientacions", :id => @tramite}, :title => "Orientación"%></ul>
+                                                        </li>
+                                                        
+                                                        <!-- Comparecencia -->
+                                                        <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-comparecencia.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-comparecencia.jpg") , {:action => "new_or_edit", :controller => "comparecencias", :id => @tramite}, :title => "Comparecencia"%></ul>
+                                                        </li>
 
+                                                          <!-- Sesiones -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/sesiones.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/sesiones.jpg") , {:action => "list_by_tramite", :controller => "sesiones", :id => @tramite}, :title => "Sesiones"%></ul>
+                                                          </li>
 
-<table width="80%" border="0" cellspacing="0" cellpadding="0">
-  <tr align="center">
+                                                          <!-- Invitaciones -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "list_by_tramite", :controller => "invitaciones", :id => @tramite}, :title => "Invitaciones"%></ul>
+                                                          </li>
 
-       <td>
-        <a href="/orientacions/new_or_edit/<%=@tramite.id%>" title="Orientaciones">
-          <img src="/images/iconos/orientaciones2.png" width="128" height="128" alt="orientaciones" />
-        </a>
-       </td>
+                                                          
+                                                          <!-- Convenios -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_tramite", :controller => "convenios", :id => @tramite}, :title => "Convenios"%></ul>
+                                                          </li>
 
-       <td>
-        <a href="/comparecencias/new_or_edit/<%=@tramite.id%>" title="Comparecencias">
-          <img src="/images/iconos/comparecencias.png" width="128" height="128" alt="comparecencias" />
-        </a>
-       </td>
+                                                  </ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<script src="/javascripts/menu_desplegable/cbpHorizontalSlideOutMenu.min.js"></script>
+		<script>
+			var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper' ) );
+		</script>
+	</body>
+</html>
 
-        <td>
-         <a href="/upload/index/<%=@tramite.id%>" title="Archivos adjuntos">
-          <img src="/images/iconos/descarga.png" width="128" height="128" alt="comparecencias" />
-         </a>
-        </td>
-
-       <td>
-        <a href="/invitaciones/list_by_tramite/<%=@tramite.id%>" title="Invitaciones">
-          <img src="/images/iconos/invitaciones.png" width="128" height="128" alt="invitaciones" />
-        </a>
-       </td>
-
-       <td>
-        <a href="/sesiones/list_by_tramite/<%=@tramite.id%>" title="Sesiones">
-          <img src="/images/iconos/sesiones_personales.png" width="128" height="128" alt="nueva orientación" />
-        </a>
-       </td>
-
-        <td>
-        <a href="#" title="Seguimiento a convenios">
-          <img src="/images/iconos/seguimiento_convenios.png" width="128" height="128" alt="seguimiento_convenios" />
-        </a>
-       </td>
-
-
-  </tr>
-  <tr align="center">
-    <td class="menu">Orientación</td>
-    <td class="menu">Comparecencia</td>
-    <td class="menu">Documentación</td>
-    <td class="menu">Invitaciones</td>
-    <td class="menu">Sesiones</td>
-    <td class="menu">Convenios</td>
-  </tr>
-</table>
 <br/>
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />
 
