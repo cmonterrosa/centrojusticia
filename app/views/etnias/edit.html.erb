@@ -1,0 +1,16 @@
+<h1>Editar Etnia</h1>
+
+<% form_for(@etnia) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    Anote la descripción:<br />
+    <%= f.text_field :descripcion, :size => 120, :required => true %>
+  </p>
+  <p>
+    <%= f.submit 'ACTUALIZAR' %>
+  </p>
+<% end %>
+
+<%= link_to 'Mostrar', @etnia, :class => "boton" %> |
+<%= link_to 'Atrás', etnias_path, :class => "boton" %>

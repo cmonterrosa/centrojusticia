@@ -1,0 +1,38 @@
+<div class="titulocalendario">
+  <p>ETNIAS</p>
+</div>
+
+
+<%=h (link_to "Regresar", {:controller => "administracion"}, :class => "boton")%> | <%= link_to 'Registrar nueva etnia', new_etnia_path, :class => "boton"%>
+<p>&nbsp;</p>
+
+<table class="tablakolaval" style="text-align: center; margin: auto;">
+  <tr>
+    <td>Descripción</td>
+    <td colspan="2">Acciones</td>
+  </tr>
+
+<% @etnias.each do |etnia| %>
+  <tr>
+    <td><%=h etnia.descripcion %></td>
+    <td><%= link_to 'Editar', edit_etnia_path(etnia), :class => "boton" %></td>
+    <td><%= link_to 'Eliminar', etnia, :confirm => '¿Está seguro(a) que desea eliminar el registro?', :method => :delete, :class => "boton" %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @etnias %>
+          </div>
+          <%= will_paginate @etnias %>
+        </div>
+      </td>
+    </tr>
+</table>
