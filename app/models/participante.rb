@@ -7,6 +7,8 @@ class Participante < ActiveRecord::Base
   belongs_to :user
   belongs_to :tipopersona
   belongs_to :cuadrante
+  belongs_to :etnia
+  belongs_to :estado_civil
   has_many :invitacions
   has_many :seguimientos
 
@@ -93,6 +95,42 @@ class Participante < ActiveRecord::Base
 
    def articulo_por_su_genero
       (self.sexo == 'F')? 'LA' : 'EL' if self.sexo
+   end
+
+   ###################################
+   # Funciones que obtienen el domicilio actual
+   #
+   ###################################
+
+   def tipo_domicilio_ubicacion
+      if self.domicilio && self.domicilio.size > 1
+        return "DOMICILIO PERSONAL"
+      elsif self.domicilio_laboral && self.domicilio_laboral.size > 1
+        return "DOMICILIO LABORAL"
+      else
+        "DOMICILIO"
+      end
+   end
+
+    def domicilio_ubicacion
+      if self.domicilio && self.domicilio.size > 1
+       self.domicilio
+     elsif self.domicilio_laboral && self.domicilio_laboral.size > 1
+       self.domicilio_laboral
+     else
+       ""
+     end
+    end
+
+   def domicilio_referencias_ubicacion
+     referencia=""
+     case tipo_domicilio_ubicacion
+     when "DOMICILIO PERSONAL"
+        referencia = self.referencia_domiciliaria if self.referencia_domiciliaria && self.referencia_domiciliaria.size > 1
+     when "DOMICILIO LABORAL"
+       referencia = self.referencias_domiciliares_laboral if self.referencias_domiciliares_laboral && self.referencias_domiciliares_laboral.size > 1
+     end
+     return referencia
    end
 
   

@@ -719,6 +719,7 @@ function clearSelect(select){
 }
 
 
+
 function enableSelect(select){
     var element = select;
     element.style.display = '';
@@ -754,5 +755,43 @@ function ValidarConocimientoAutoridad(){
     }
     return ReturnVal;
 }
+
+
+/* Funciones del formulario de participantes */
+
+function enaOrigenEtnico(radioButton, comboSelect){
+    var select = document.getElementById(comboSelect);
+    if(typeof radioButton == "object")
+        var radio = radioButton;
+    else
+        if(document.getElementById(radioButton+'_si').checked)
+            {
+              radio = document.getElementById(radioButton+'_si');
+               document.getElementById("origen_etnico").style.display = "inline";
+               select.style.display   = "inline";
+            }
+
+        else
+            {
+            radio = document.getElementById(radioButton+'_no');
+            document.getElementById("origen_etnico").style.display = "none";
+            select.style.display   = "none";
+            }
+}
+
+
+function LoadOrigenEtnico(radioButton, comboSelect){
+    var select = document.getElementById(comboSelect);
+        if(document.getElementById(radioButton).checked)
+            {
+              document.getElementById("origen_etnico").style.display = "inline";
+               select.style.display   = "inline";
+            }
+        else
+            {
+            document.getElementById("origen_etnico").style.display = "none";
+            select.style.display   = "none";
+            }
+  }
 
 

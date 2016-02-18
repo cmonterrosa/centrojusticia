@@ -12,6 +12,15 @@
    }
 </script>
 
+<!-- formee -->
+   <%= stylesheet_link_tag "formee/formee-structure.css" %>
+   <%= stylesheet_link_tag "formee/formee-style.css" %>
+    <%=javascript_include_tag "formee/formee.js" %>
+<!-- Validate Plugin -->
+<%=javascript_include_tag "validations/jquery_validate.js"%>
+<%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
+
+<%=javascript_include_tag :defaults%>
 
 <script  type="text/javascript">
   var statSend = false;
@@ -27,18 +36,20 @@
 </script>
 
 
-    <div class="formee-msg-info">
+
+<div class="formee-msg-info">
     <h3>Información importante</h3>
     <ul>
       <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
     </ul>
     <ul><li>&nbsp;</li></ul>
   </div>
-
 <% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id, :invitacion => @invitacion, :sesion => @sesion }, :html => {:id => "new_participante", :onsubmit => "return checkSubmit();"} do |f| -%>
-  <table width="92%" border="0" align="center" cellpadding="2" cellspacing="1">
-    <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="4" align="center" >PERSONA FÍSICA</td>
+  <table class="sample" style="width: 94%; margin: auto;">
+    <tr class="titulo">
+      <td colspan="5" style="text-align: center; background: white;">
+        <span style="font-size: 16px; color: black;">CAPTURA&nbsp;DE&nbsp;PERSONA&nbsp;FÍSICA&nbsp;</span>
+      </td>
     </tr>
 
     <!-- datos personales -->
@@ -46,59 +57,84 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="5">DATOS PERSONALES</td>
+          <td align="center" colspan="4"><b>DATOS PERSONALES</b></td>
         </tr>
-        <tr align=" justify" class="pregunta">
-            <td align="center">Rol <em class="formee-req">*</em></td>
-            <td align="center">Paterno<em class="formee-req">*</em></td>
-            <td align="center">Materno</td>
-            <td align="center" colspan="2">Nombre(s)<em class="formee-req">*</em></td>
+        <tr align="justify" class="pregunta">
+            <td align="center" width="12%"><b>Rol</b> <em class="formee-req">*</em></td>
+            <td align="center" width="20%"><b>Paterno</b><em class="formee-req">*</em></td>
+            <td align="center" width="20%"><b>Materno</b></td>
+            <td align="center" width="48%"><b>Nombre(s)</b><em class="formee-req">*</em></td>
         </tr>
         <tr>
-          <td align="center"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción')%></td>
-          <td align="center"><%= f.text_field :paterno, :onBlur=>"javascript:{this.value = this.value.toUpperCase();};verificar_rol();", :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
-          <td align="center"><%= f.text_field :materno, :onBlur=>"javascript:{this.value = this.value.toUpperCase();};verificar_rol();", :onKeyPress => "return CharNum(event, 'letra');"%></td>
-          <td align="center"><%= f.text_field :nombre, :onBlur=>"javascript:{this.value = this.value.toUpperCase();};verificar_rol();", :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
+          <td align="center" width="12%"><%= f.hidden_field :tipopersona_id, :value => @tipo_persona.id%><%= f.select(:perfil, ["INVOLUCRADO", "SOLICITANTE"], :prompt => 'Seleccione una opción')%></td>
+          <td align="center" width="20%"><%= f.text_field :paterno, :onBlur=>"javascript:{this.value = this.value.toUpperCase();};verificar_rol();", :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
+          <td align="center" width="20%"><%= f.text_field :materno, :onBlur=>"javascript:{this.value = this.value.toUpperCase();};verificar_rol();", :onKeyPress => "return CharNum(event, 'letra');"%></td>
+          <td align="center" width="48%"><%= f.text_field :nombre, :onBlur=>"javascript:{this.value = this.value.toUpperCase();};verificar_rol();", :onKeyPress => "return CharNum(event, 'letra');", :required => true%></td>
         </tr>
 
+        <!-- Espacio -->
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
+
         <tr align=" justify" class="pregunta">
-          <td align="center">Sexo</td>
-          <td align="center">&nbsp;</td>
-          <td align="center" colspan="2">Fecha de Nacimiento</td>
-          <td align="center">Edad</td>
+          <td align="center" colspan="2"><b>Sexo</b></td>
+          <td align="center" colspan="2"><b>Estado Civil</b></td>
         </tr>
-        <tr>
-          <td align="center"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
+        <tr class="pregunta">
+          <td align="center" colspan="2"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
+           <%estado_civil = (@participante.estado_civil) ? @participante.estado_civil.id : nil%>
+          <td align="center" colspan="2"><%= f.select :estado_civil_id, EstadoCivil.find(:all).collect{|e| [e.descripcion, e.id]}, {:include_blank => true}, :selected =>estado_civil%></td>
+          </tr>
+        
+        <tr align=" justify" class="pregunta">
+          <td align="center" width="40%">&nbsp;</td>
+          <td align="center" width="40%" colspan="2"><b>Fecha de Nacimiento</b></td>
+          <td align="center" width="20%"><b>Edad</b></td>
+        </tr>
+        
+        <tr class="pregunta">
           <td align="center">
                 <%= f.check_box(:sabe_edad, {:onclick => "ena_edad(this, 'participante_fecha_nac', 'participante_anio_nac');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO EDAD
           </td>
 
-          <td align="center" colspan="2"><%=f.date_select :fecha_nac, :start_year => 1918, :end_year => Time.now.year%></td>
+          <td align="center" colspan="2"><%=f.date_select :fecha_nac, :start_year => 1918, :end_year => Time.now.year, :include_blank => true%></td>
           <td align="center"><%= f.select(:anio_nac,  hash_of_years)%></td>
         </tr>
-      </table>
+       </table>
      </td>
     </tr>
     <!-- segunda barra inferior -->
-    <tr align="center">
+    <tr align="center" class="pregunta">
       <td align="center">
          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4">DATOS DE PROCEDENCIA</td>
+          <td align="center" colspan="4"><b>DATOS DE PROCEDENCIA</b></td>
         </tr>
         <tr align=" justify" class="pregunta">
-          <td align="center">&nbsp;</td>
-          <td align="center">País</td>
-          <td align="center">Estado / Municipio</td>
-          
+          <td align="center" colspan="2">&nbsp;</td>
         </tr>
         <tr>
+              <td align="center">
+                <%= f.check_box(:sabe_procedencia, {:onclick => "ena_originario(this, 'participante_pais_id', 'participante_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO PROCEDENCIA
+              </td>
+        </tr>
+
+        <!-- Espacio -->
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
+
+
+        <tr align=" justify" class="pregunta">
+          <td align="center"><b>País</b></td>
+          <td align="center"><b>Estado / Municipio</b></td>
+        </tr>
+        <tr class="pregunta">
               <!-- pais -->
               <%default_pais = Pais.find(:first, :conditions => ["id = ?", @participante.pais_id])%>
              <%default_pais ||=Pais.find(:first, :conditions => ["clave = ? ", 'MX'])%>
-             <td align="center">
-                <%= f.check_box(:sabe_procedencia, {:onclick => "ena_originario(this, 'participante_pais_id', 'participante_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO PROCEDENCIA
-              </td>
+             
               <td align="center"><%= f.select :pais_id, Pais.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, {:selected =>default_pais.id}, {:onchange => "showHideListadoDeEstados('participante_pais_id', 'estados_municipios', 'participante_municipio_id', 156);"}%></td>
                   <div id="estados_municipios">
                       <%estado_default = Estado.find_by_descripcion("CHIAPAS")%>
@@ -106,79 +142,127 @@
                       <%default ||= Municipio.find(:first, :conditions => ["estado_id = ? and descripcion like ?", estado_default.id, "%#{LUGAR}%"])%>
                       <td align="center"><%= f.select :municipio_id, Municipio.find(:all).collect{|a| [a.descripcion_jerarquica, a.id]}, :prompt => 'Seleccione una opción', :selected =>default.id%></td>
                   </div>
-          
+            </tr>
+
+            <!-- Espacio -->
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
+            
+       <tr id="grupo_etnico" class="pregunta">
+          <td width="50%" align="center" style=" vertical-align:top;">
+            <b>¿ Pertenece a un grupo étnico?</b>
+          </td>
+            <!-- Línea campo -->
+          <td width="50%">
+                  <span id="ct_escuela_establecimiento" class="InputGroup">
+                    <label class="uper">SI <%= f.radio_button :pertenece_grupo_etnico, "SI", :onclick => "enaOrigenEtnico('participante_pertenece_grupo_etnico', 'participante_etnia_id');", :checked => @participante.pertenece_grupo_etnico%></label>&nbsp;&nbsp;
+                    <label class="uper">NO<%= f.radio_button :pertenece_grupo_etnico, "NO", :onclick => "enaOrigenEtnico('participante_pertenece_grupo_etnico', 'participante_etnia_id');"%></label>
+                  </span>
+          </td>
+      </tr>
+      
+        <!-- Origen etnico -->
+        <tr id="origen_etnico" style="display: none;" class="pregunta">
+          <td  width="80%" style="text-align: center;"><b>Seleccione el origen étnico:&nbsp;</b></td>
+            <%etnia = (@participante.etnia) ? @participante.etnia.id : nil%>
+          <td width="20%">
+              <%= f.select :etnia_id, Etnia.find(:all).collect{|e| [e.descripcion, e.id]}, {:include_blank => true}, :selected =>etnia%>
+          </td>
         </tr>
+      </table>
+    </td>
+   </tr>
+
+    <!-- segunda barra inferior segunda parte -->
+    <tr align="center">
+      <td align="center">
+         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr style="background: #E8E8E8;" class="subtitulo">
+          <td align="center" colspan="4"><b>DATOS DE UBICACIÓN</b></td>
+        </tr>
+        <tr align=" justify" class="pregunta">
+          <td align="center" width="40%"><b>Domicilio particular </b></td>
+          <td align="center" width="40%"><b>Referencias domiciliarias</b></td>
+          <td align="center" width="20%"><b>Cuadrante</b></td>
+        </tr>
+        <tr>
+            <td align="center" width="40%"><%= f.text_area :domicilio, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :width => "100%", :rows => 12%></td>
+            <td align="center" width="40%"><%= f.text_area :referencia_domiciliaria, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :width => "100%", :rows=> 12%></td>
+            <td align="center" width="20%"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
+        </tr>
+        <!-- Espacio -->
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
+
+        <tr align=" justify" class="pregunta">
+          <td align="center" width="50%"><b>Domicilio laboral </b></td>
+          <td align="center" width="50%"><b>Referencias de ubicación laboral </b></td>
+        </tr>
+
+        <tr>
+            <td align="center" width="50%"><%= f.text_area :domicilio_laboral, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :width=> "100%", :rows => 12,  :required => true%></td>
+            <td align="center" width="50%"><%= f.text_area :referencias_domiciliares_laboral, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :width=> "100%", :rows => 12%></td>
+        </tr>
+
       </table></td>
     </tr>
 
 
-        <!-- segunda barra inferior segunda parte -->
     <tr align="center">
-      <td align="center">
-         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4">DATOS DE UBICACIÓN</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">Domicilio <em class="formee-req">*</em></td>
-          <td align="center">Referencias domiciliarias<em class="formee-req">*</em></td>
-          <td align="center">Cuadrante</td>
-        </tr>
-        <tr>
-            <td align="center"><%= f.text_area :domicilio, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "40x10", :required => true%></td>
-            <td align="center"><%= f.text_area :referencia_domiciliaria, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "40x11"%></td>
-            <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
-        </tr>
-      </table></td>
-    </tr>
+      <td align="center" width="100%">
+          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+          <tr bgcolor="#E8E8E8" class="subtitulo">
+            <td align="center" colspan="6"><b>DATOS DE LOCALIZACIÓN</b></td>
+          </tr>
+          <tr align=" justify" class="pregunta">
+            <td align="center" width="30%"><b>Teléfono Particular</b></td>
+            <td align="center" width="30%"><b>Teléfono Celular</b></td>
+            <td align="center" width="40%"><b>Teléfono Celular Adicional</b></td>
+          </tr>
+          <tr>
+            <td align="center" width="30%"><%= f.text_field :telefono_particular,  :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
+            <td align="center" width="30%"><%= f.text_field :telefono_celular,  :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
+            <td align="center" width="40%"><%= f.text_field :telefono_celular_aux, :onKeyPress => "return CharNum(event, 'numero');", :size => 20, :placeholder => "Capturar solo si existe"%></td>
+          </tr>
 
+          <!-- Espacio -->
+            <tr>
+              <td colspan="4">&nbsp;</td>
+            </tr>
 
-    <tr align="center">
-      <td align="center">
-         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4">DATOS DE LOCALIZACIÓN</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">Teléfono Particular</td>
-          <td align="center">Teléfono Celular</td>
-          <td align="center">Teléfono Celular Adicional</td>
-          <td align="center">Correo Electrónico</td>
-        </tr>
+          <tr align=" justify" class="pregunta">
+            <td align="center" width="100%" colspan="3"><b>Correo electrónico</b></td>
+          </tr>
         <tr>
-          <td align="center"><%= f.text_field :telefono_particular,  :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
-          <td align="center"><%= f.text_field :telefono_celular,  :onKeyPress => "return CharNum(event, 'numero');", :size => 20%></td>
-          <td align="center"><%= f.text_field :telefono_celular_aux, :onKeyPress => "return CharNum(event, 'numero');", :size => 20, :placeholder => "Capturar solo si existe"%></td>
-          <td align="center"><%= f.text_field :correo, :placeholder => "Capturar solo si tiene"%></td>
+            <td align="center" width="100%" colspan="3"><%= f.text_field :correo, :placeholder => "Capturar solo si tiene"%></td>
         </tr>
-      </table></td>
+        </table>
+      </td>
     </tr>
 
     <!-- Observaciones -->
     <tr align="center">
-      <td align="center">
+      <td align="center" width="100%">
          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4">DATOS ADICIONALES</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center" colspan="4">Observaciones y/o documentos que exhibe</td>
-        </tr>
-        <tr>
-            <td align="center" colspan="4"><%= f.text_area :observaciones, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "100x5", :onkeydown => "textCounter(document.getElementById('participante_observaciones'),385);", :onkeyup => "textCounter(document.getElementById('participante_observaciones'),500);"%></td>
-        </tr>
-      </table>
+            <tr bgcolor="#E8E8E8" class="subtitulo">
+              <td align="center" colspan="2" width="100%"><b>DATOS ADICIONALES</b></td>
+            </tr>
+            <tr align=" justify" class="pregunta">
+              <td align="center" colspan="2" width="100%"><b>Observaciones y/o documentos que exhibe</b></td>
+            </tr>
+            <tr>
+              <td align="center" colspan="2" width="100%"><%= f.text_area :observaciones, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :cols=> "100%", :rows => 12,  :onkeydown => "textCounter(document.getElementById('participante_observaciones'),385);", :onkeyup => "textCounter(document.getElementById('participante_observaciones'),500);"%></td>
+            </tr>
+        </table>
       </td>
     </tr>
 
 
-    <!-- espacio -->
-    <tr>
-      <td colspan="4"><hr /></td>
-    </tr>
     <!-- FOOTER -->
     <tr>
-      <td align="right">
+      <td align="center" width="100%">
         <table>
           <tr>
             <td>
@@ -204,12 +288,14 @@
 
 <script type="text/javascript">
   var domicilio = new LiveValidation( 'participante_domicilio' );
-  domicilio.add( Validate.Presence );
+   var domicilio_laboral = new LiveValidation( 'participante_domicilio' );
   domicilio.add( Validate.Length, { maximum: 255 } );
+  domicilio_laboral.add( Validate.Length, { maximum: 255 } );
 
   var referencia = new LiveValidation( 'participante_referencia_domiciliaria' );
-  referencia.add( Validate.Presence );
+  var referencia_laboral = new LiveValidation( 'participante_rreferencias_domiciliarias_laboral' );
   referencia.add( Validate.Length, { maximum: 300 } );
+  referencia_laboral.add( Validate.Length, { maximum: 255 } );
 
   var observaciones = new LiveValidation( 'participante_observaciones' );
   observaciones.add( Validate.Length, { maximum: 350 } );
@@ -218,6 +304,7 @@
 <script type="text/javascript">
   ena_originario("participante_sabe_procedencia", 'participante_pais_id', 'participante_municipio_id');
   ena_edad('participante_sabe_edad', 'participante_fecha_nac', 'participante_anio_nac');
+  LoadOrigenEtnico('participante_pertenece_grupo_etnico_si', 'participante_etnia_id');
 </script>
 
 

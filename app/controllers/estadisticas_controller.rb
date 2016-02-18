@@ -172,6 +172,16 @@ class EstadisticasController < ApplicationController
              @participantes_mujeres = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c, participantes p", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND c.id = p.comparecencia_id AND e.clave in ('comp-conc', 'mate-asig', 'fech-asig') AND (p.sexo = ? ) AND (c.fechahora between ? AND ?)", "F", @inicio, @fin])
              @personas_morales = Orientacion.count(:tramite_id, :joins => "orientacions, tramites t, estatus e, comparecencias c, participantes p, tipopersonas tp", :conditions => ["orientacions.tramite_id=t.id AND t.estatu_id=e.id AND t.id = c.tramite_id AND c.id = p.comparecencia_id AND p.tipopersona_id = tp.id AND e.clave in ('comp-conc', 'mate-asig', 'fech-asig') AND (tp.descripcion = ? ) AND (c.fechahora between ? AND ?)", "MORAL", @inicio, @fin])
 
+             @tramites_creados = Tramite.find(:all, :select => "id", :conditions => ["folio_expediente IS NOT NULL AND (fechahora between ? AND ?)", @inicio, @fin])
+             @etnias = Etnia.find(:all,
+               :select => "count(p.id) as numero_participantes, e.descripcion",
+               :joins => "e, participantes p, comparecencias c, tramites t",
+               :conditions => ["e.id=p.etnia_id AND p.comparecencia_id=c.id AND c.tramite_id=t.id AND
+               t.id in (?) AND
+               (e.created_at between ? AND ?)", @tramites_creados.collect{|i|i.id}, @inicio, @fin],
+               :group => "e.descripcion")
+
+
              #especialistas_compact = User.find_by_sql("select u.id, u.paterno, u.materno, u.nombre from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
              especialistas_array = Array.new
              especialistas.each do |e|

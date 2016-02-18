@@ -36,6 +36,9 @@ class ParticipantesController < ApplicationController
     (@participante.sabe_edad && @participante.sabe_edad == 'NO')? @participante.fecha_nac=nil : nil
     (@participante.sabe_edad && @participante.sabe_edad == 'NO')? @participante.anio_nac=nil : nil
     (@participante.sabe_procedencia && @participante.sabe_procedencia == 'NO')? (@participante.municipio_id=nil) : nil
+    ## Origen etnico ###
+    (params[:participante][:pertenece_grupo_etnico ]== 'SI')? @participante.pertenece_grupo_etnico = true : nil
+    (params[:participante][:pertenece_grupo_etnico] == 'NO')? @participante.etnia=nil : nil
     @participante.user = current_user
     url_regreso = (params[:invitacion] && params[:sesion]) ? {:action => "list_by_sesion", :controller => "invitaciones", :id => params[:sesion]} : {:controller => "comparecencias", :action => "new_or_edit", :id => @participante.comparecencia.tramite}
     if @participante.save
