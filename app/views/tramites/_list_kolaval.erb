@@ -47,6 +47,7 @@
     <%tramite_no_admitido = Estatu.find_by_clave("tram-noad")%>
     <%tramite_en_proceso_convenio = Estatu.find_by_clave("proc-conv")%>
     <%tramite_concluido = Estatu.find_by_clave("tram-conc")%>
+    <%mecanismo_alternativo = Estatu.find_by_clave("meca-asig")%>
 
     <%contador=1%>
     <%@tramites.each do |tramite|%>
@@ -60,9 +61,11 @@
         <%end%>
 
        <td style="vertical-align: middle;" width="6%" align="center">
-
-         <%if current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion)%>
-             <%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%>
+         <!-- MENU -->
+         <%if current_user.has_role?(:admin)%>
+              <%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%>
+         <%elsif  current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion)%>
+              <%=link_to "MENU", {:action => "menu", :id => tramite}, :class => "boton"%>
          <%else%>
              <%=h "##{tramite.folio_integrado}"%>
          <%end%>
@@ -96,7 +99,7 @@
         <%clase = invert_class(clase)%>
 
         <!-- Liberar expediente concluido -->
-         <%if (tramite.estatu_id == tramite_concluido.id) && (current_user.has_role?("admindireccion") || current_user.has_role?("direccion") ||  current_user.has_role?("subdireccion"))%>
+         <%if (tramite.estatu_id == tramite_concluido.id || tramite.estatu_id == mecanismo_alternativo.id) && (current_user.has_role?("admindireccion") || current_user.has_role?("direccion") ||  current_user.has_role?("subdireccion"))%>
              <td style="vertical-align: middle;"><%=h (link_to "Deshacer conclusión", {:controller => "tramites", :action => "concluir_undo", :id => tramite.id}, :confirm => "¿Está seguro que desea liberar expediente ya concluido?" , :class => "boton")%></td>
         <%end%>
 
