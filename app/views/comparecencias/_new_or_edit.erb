@@ -7,15 +7,17 @@
 
 <% form_for :comparecencia, @comparecencia, :url => { :action => "save", :tramite => @comparecencia.tramite }, :method => :post do |f| -%>
 
-  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
-    <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" >COMPARECENCIA</td>
+  <table class="sample" style="width: 94%; margin: auto;">
+    <tr class="titulo">
+      <td colspan="3" style="text-align: center; background: white;">
+        <span style="font-size: 16px; color: black;">CAPTURA&nbsp;DE&nbsp;COMPARECENCIA&nbsp;</span>
+      </td>
     </tr>
     <tr align="center">
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
         <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4">DATOS GENERALES</td>
+          <td align="center" colspan="4"><b>DATOS GENERALES</b></td>
         </tr>
         <tr align=" justify" class="pregunta">
           <td align="center"><b>Fecha/hora</b></td>
@@ -104,7 +106,7 @@
         <td align="center">
           <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
           <tr bgcolor="#E8E8E8" class="subtitulo">
-            <td align="center" colspan="4" >DESCRIPCIÓN DEL ASUNTO</td>
+            <td align="center" colspan="4" ><b>DESCRIPCIÓN DEL ASUNTO</b></td>
           </tr>
           <tr>
               <td align="center" colspan="4"><%= f.text_area :asunto,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :required => true, :cols => 88, :rows => 15%></td>

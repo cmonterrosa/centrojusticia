@@ -17,9 +17,9 @@ propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de l
 * Organización de Agenda a nivel de Especialista, Sala y Número de Expediente
 * Impresion de agenda diaria general y por especialista
 * Consulta de Bitácora de Expedientes
-* Impresión de comparecencias
+* Impresión de comparecencias con restricciones y validaciones de acuerdo al tipo de participante
 * Notificaciones vía correo electrónico para especialistas
-* Consulta de datos estadísticos
+* Consulta de datos estadísticos (sexo, origen etnico, procedencia, municipio)
 * Seleccion del motivo especifico de conclusion del expediente
 * Impresión de invitaciones
 * Asignación de invitadores
@@ -28,12 +28,13 @@ propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de l
 * Captura de Convenios y de los documentos que lo contienen
 * Seguimiento telefónico de los convenios, asi como el motivo de respuesta de la llamada
 * Listado de llamadas telefónicas de seguimiento
+* Posee en perfil dedicado a los especialistas externos
 
 
 ## **Acerca de**
 
 - Autor: Carlos Monterrosa López (cmonterrosa at gmail.com)
-- Version: 1.2.1 (2015-12-07)
-- Copyright: Copyright (c) 2015 Poder Judicial del Estado de Chiapas. Todos los derechos reservados.
+- Version: 1.3.1 (2016-02-17)
+- Copyright: Copyright (c) 2016 Poder Judicial del Estado de Chiapas. Todos los derechos reservados.
 - Licencia: GPL
 - Website: (http://www.poderjudicialchiapas.gob.mx)

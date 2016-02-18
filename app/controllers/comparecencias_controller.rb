@@ -32,10 +32,6 @@ class ComparecenciasController < ApplicationController
        param["P_FECHA_HORA_CAPTURA"]= (@sesion.created_at) ? {:tipo=>"String", :valor=>@sesion.created_at.strftime("%d DE %B DE %Y / %H:%M").upcase} :  {:tipo=>"String", :valor=>"---"}
        param["P_NUM_EXPEDIENTE"]=(@tramite.numero_expediente) ? {:tipo=>"String", :valor=>@tramite.numero_expediente} : {:tipo=>"String", :valor=>""}
        param["P_FOLIO"]={:tipo=>"String", :valor=>@tramite.folio_integrado}
-       #param["P_ESPECIALISTA_SESION"]=(@sesion.mediador_id) ? {:tipo=>"String", :valor=>User.find(@sesion.mediador_id)} : {:tipo=>"String", :valor=>"SIN ASIGNAR"}
-       #param["P_FECHA_SESION"]=(@sesion.start_at)? {:tipo=>"String", :valor=>@sesion.start_at.strftime('%d DE %B DE %Y').upcase} :  {:tipo=>"String", :valor=>""}
-       #param["P_SALA_SESION"]=(@sesion.horario)? {:tipo=>"String", :valor=>@sesion.horario.sala.descripcion} :  {:tipo=>"String", :valor=>""}
-       #param["P_HORA_SESION"]=(@sesion.horario)? {:tipo=>"String", :valor=>@sesion.hora_completa} : {:tipo=>"String", :valor=>""}
        param["P_SOLICITANTES"]=(@comparecencia.solicitantes) ? {:tipo=>"String", :valor=>@comparecencia.solicitantes} : {:tipo=>"String", :valor=>""}
        param["P_INVOLUCRADOS"]=(@comparecencia.involucrados) ? {:tipo=>"String", :valor=>@comparecencia.involucrados} : {:tipo=>"String", :valor=>""}
        if File.exists?(REPORTS_DIR + "/reserva_sesion.jasper")
@@ -47,8 +43,13 @@ class ComparecenciasController < ApplicationController
       flash[:notice] = "Imposible generar ticket de reserva, verifique parámetros"
       redirect_to :action => "show", :id => params[:id]
     end
+ end
 
-  end #--- finales
+  ####################################################
+  # Generacion de documentos para impresion en formato PDF
+  #
+  #
+  ####################################################
 
 
   def generar_pdf_observaciones
@@ -56,7 +57,6 @@ class ComparecenciasController < ApplicationController
       if @solicitante && @solicitante.perfil == "SOLICITANTE" && @solicitante.observaciones.size > 4
          @comparecencia = Comparecencia.find(params[:id])
          param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
-         #-- Parametros
          param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
          param["P_EXPEDIENTE"]=(@comparecencia.tramite)? {:tipo=>"String", :valor=>@comparecencia.tramite.numero_expediente} :  {:tipo=>"String", :valor=>"--"}
          param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
@@ -79,9 +79,7 @@ class ComparecenciasController < ApplicationController
     @involucrado = Participante.find(params[:participante])
     @comparecencia = Comparecencia.find(params[:id])
     if (@involucrado && @involucrado.perfil == "INVOLUCRADO" && @comparecencia)
-       #@comparecencia = Comparecencia.find(params[:id])
        param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
-       #-- Parametros
        param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
        param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
        param["P_NOMBRE_INVOLUCRADO"]={:tipo=>"String", :valor=>@involucrado.nombre_completo}
@@ -96,13 +94,11 @@ class ComparecenciasController < ApplicationController
        param["P_TELEFONO_CELULAR"]={:tipo=>"String", :valor=>@involucrado.telefono_celular}
        param["P_CORREO_ELECTRONICO"]={:tipo=>"String", :valor=>@involucrado.correo}
        param["P_OBSERVACIONES"]={:tipo=>"String", :valor=>clean_string(@involucrado.observaciones)}
+       param["P_ESTADO_CIVIL"]=(@involucrado.estado_civil) ? {:tipo=>"String", :valor=>clean_string(@involucrado.estado_civil.descripcion)} :  {:tipo=>"String", :valor=>"---"}
+       param["P_ETNIA"]=(@involucrado.pertenece_grupo_etnico && @involucrado.etnia) ? {:tipo=>"String", :valor=>clean_string(@involucrado.etnia.descripcion)} :  {:tipo=>"String", :valor=>""}
        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@involucrado.referencia_domiciliaria)}
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
-       #--- Validacion de que existe al menos un solicitante ---
-#       if @comparecencia.solicitante
-#           (@comparecencia.solicitante.nombre) ?   param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@comparecencia.solicitante.nombre_completo} :    param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@comparecencia.solicitante.razon_social}
-#       end
-        
+
         if @comparecencia.solicitante
           solicitante ={:tipo=>"String", :valor=>clean_string(@comparecencia.solicitante.nombre_completo)} if @comparecencia.solicitante.nombre && @comparecencia.solicitante.nombre.size > 0
           solicitante ||= {:tipo=>"String", :valor=>clean_string(@comparecencia.solicitante.apoderado_legal)} if @comparecencia.solicitante.apoderado_legal && @comparecencia.solicitante.apoderado_legal.size > 0
@@ -113,11 +109,9 @@ class ComparecenciasController < ApplicationController
         #---- Validación de tipo de persona ------
        (@involucrado.tipopersona) ?  param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=>@involucrado.tipopersona.descripcion} :  param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=> "" }
        (@involucrado.tipopersona.descripcion == "MORAL" && @involucrado.razon_social) ?  param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=>@involucrado.razon_social.upcase} :  param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=> " "}
-        #--- Values only for moral person
-        #
+        
+        ##### SOLO PARA PERSONAS MORALES ######
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora)}"}
-        #param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d DE %B DE %Y').upcase}"}
-        #param["P_FECHA"]={:tipo=>"String", :valor=>"#{@comparecencia.fechahora.strftime('%d/%m/%Y').upcase}"}
         param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>clean_string(@involucrado.apoderado_legal)}
         (@comparecencia.tramite.numero_expediente) ? param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>@comparecencia.tramite.numero_expediente} : nil
         if File.exists?(REPORTS_DIR + "/involucrado.jasper")
@@ -127,7 +121,6 @@ class ComparecenciasController < ApplicationController
           render :text => "Error"
         end
 
-
     else
       flash[:error] = "Imposible generar reporte del involucrado, verifique parámetros"
       redirect_to :action => "show", :id => params[:id]
@@ -135,14 +128,11 @@ class ComparecenciasController < ApplicationController
  end
 
 
-
-
-    def generar_pdf_acta_comparecencia
+  def generar_pdf_acta_comparecencia
       @solicitante = Participante.find(params[:participante])
       if @solicitante && @solicitante.perfil == "SOLICITANTE"
         @comparecencia = Comparecencia.find(params[:id])
         param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
-        #-- Parametros
         param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
         param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora)}"}
@@ -152,10 +142,13 @@ class ComparecenciasController < ApplicationController
           (@solicitante.edad > 0) ? param["P_EDAD"]={:tipo=>"String", :valor=>"#{@solicitante.edad} AÑOS"} : param["P_EDAD"]={:tipo=>"String", :valor=>""}
         end
         param["P_SEXO"]={:tipo=>"String", :valor=>@solicitante.sexo_descripcion}
-        #(@solicitante.municipio) ? param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.municipio.descripcion} : param["P_ORIGINARIO"]={:tipo=>"String", :valor=>""}
         param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.originario}
         @comparecencia.caracter ? param["P_CARACTER"]={:tipo=>"String", :valor=>clean_string(@comparecencia.caracter).upcase} : param["P_CARACTER"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
-        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio)}
+        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio_ubicacion)}
+        param["P_TIPO_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.tipo_domicilio_ubicacion)}
+        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio_referencias_ubicacion)}
+        param["P_ESTADO_CIVIL"]=(@solicitante.estado_civil) ? {:tipo=>"String", :valor=>clean_string(@solicitante.estado_civil.descripcion)} :  {:tipo=>"String", :valor=>"---"}
+        param["P_ETNIA"]=(@solicitante.pertenece_grupo_etnico && @solicitante.etnia) ? {:tipo=>"String", :valor=>clean_string(@solicitante.etnia.descripcion)} :  {:tipo=>"String", :valor=>""}
         param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@solicitante.telefono_particular}
         param["P_TELEFONO_TRABAJO"]={:tipo=>"String", :valor=>@solicitante.telefono_celular_aux}
         param["P_TELEFONO_CELULAR"]={:tipo=>"String", :valor=>@solicitante.telefono_celular}
@@ -168,8 +161,9 @@ class ComparecenciasController < ApplicationController
         param["P_ASUNTO"]={:tipo=>"String", :valor=>clean_string(@comparecencia.asunto)}
         param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
         param["P_TIPO_PERSONA"]={:tipo=>"String", :valor=>@solicitante.tipopersona.descripcion}
-        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@solicitante.referencia_domiciliaria)}
-        #--- params only for moral person ---
+        
+        
+        ####### Parametros para personas morales ########
         param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.apoderado_legal)}
         param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.razon_social)}
         (@comparecencia.tramite.numero_expediente) ? param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>@comparecencia.tramite.numero_expediente} : nil
@@ -209,11 +203,13 @@ class ComparecenciasController < ApplicationController
       @comparecencia.user = current_user unless @comparecencia.user
       
       if @comparecencia.save
-       @tramite.generar_folio_expediente!
-       flash[:notice] = "Guardado correctamente, Número de Expediente: #{@tramite.numero_expediente}"
-      #redirect_to :controller => "tramites", :action => "menu", :id => @tramite
-       #render :action => "new_or_edit"
-       redirect_to :action => "show", :id => @tramite
+       unless current_user.has_role?(:especialistas_externos)
+         @tramite.generar_folio_expediente!
+          flash[:notice] = "Guardado correctamente, Número de Expediente: #{@tramite.numero_expediente}"
+       else
+          flash[:notice] = "Comparecencia guardada, en espera de generar número de expediente"
+       end
+      redirect_to :action => "show", :id => @tramite
     else
       flash[:error] = "No se pudo guardar, verifique"
      # render :action => "new_or_edit"
