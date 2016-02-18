@@ -7,8 +7,8 @@ class SesionesController < ApplicationController
     #require_role "admin", :only => [:save, :edit]
     #require_role [:especialistas, :admindireccion], :for => [:new, :list_by_user, :list_by_tramite]
     #require_role [:controlagenda, :admindireccion], :for => [:new_with_date]
-    require_role [:controlagenda, :admindireccion], :for => [:reprogramar, :new_with_date, :cancel]
-    require_role [:asignahorario, :subdireccion], :for => [:list_by_tramite]
+    require_role [:controlagenda, :admindireccion, :subdireccion], :for => [:reprogramar, :new_with_date, :cancel]
+    require_role [:subdireccion, :asignahorario], :for => [:list_by_tramite]
     require_role [:lecturaagenda, :admindireccion, :especialistas, :direccion, :asignahorario]
 
   def list_by_tramite
@@ -102,11 +102,13 @@ class SesionesController < ApplicationController
     @fecha_hora_sesion = (@sesion.start_at) ? @sesion.start_at : nil
     #@especialistas = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones(@fecha_hora_sesion)
     @mediadores =  Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones_funcion(@fecha_hora_sesion, "mediador")
+    @mediadores += Role.find_by_name("SUBDIRECCION").usuarios_disponibles_sesiones_funcion(@fecha_hora_sesion, "mediador")
     @comediadores = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones_funcion(@fecha_hora_sesion, "comediador")
+    @comediadores += Role.find_by_name("SUBDIRECCION").usuarios_disponibles_sesiones_funcion(@fecha_hora_sesion, "comediador")
 
 
     if current_user.has_role?("admindireccion") || current_user.has_role?("asignahorario")
-      render :partial => 'new_with_date', :layout => 'oficial'
+      render :partial => 'new_with_date', :layout => 'kolaval'
     else
       flash[:notice] = "No tiene privilegios, consulte al administrador del sistema"
       redirect_to :controller => "home"
