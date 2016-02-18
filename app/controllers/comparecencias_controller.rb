@@ -3,7 +3,7 @@
 include SendDocHelper
 class ComparecenciasController < ApplicationController
   layout 'kolaval'
-  require_role [:especialistas, :especialistas_externos, :convenios, :oficinasubdireccion, :direccion, :captura_inicios_externos]
+  require_role [:subdireccion, :especialistas, :especialistas_externos, :convenios, :oficinasubdireccion, :direccion, :captura_inicios_externos]
   
 
   def show
@@ -88,15 +88,16 @@ class ComparecenciasController < ApplicationController
        end
        param["P_SEXO"]={:tipo=>"String", :valor=>@involucrado.sexo_descripcion}
        param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@involucrado.originario}
-       param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio)}
        param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@involucrado.telefono_particular}
        param["P_TELEFONO_TRABAJO"]={:tipo=>"String", :valor=>@involucrado.telefono_celular_aux}
        param["P_TELEFONO_CELULAR"]={:tipo=>"String", :valor=>@involucrado.telefono_celular}
        param["P_CORREO_ELECTRONICO"]={:tipo=>"String", :valor=>@involucrado.correo}
        param["P_OBSERVACIONES"]={:tipo=>"String", :valor=>clean_string(@involucrado.observaciones)}
+       param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio_ubicacion)}
+       param["P_TIPO_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.tipo_domicilio_ubicacion)}
+       param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio_referencias_ubicacion)}
        param["P_ESTADO_CIVIL"]=(@involucrado.estado_civil) ? {:tipo=>"String", :valor=>clean_string(@involucrado.estado_civil.descripcion)} :  {:tipo=>"String", :valor=>"---"}
        param["P_ETNIA"]=(@involucrado.pertenece_grupo_etnico && @involucrado.etnia) ? {:tipo=>"String", :valor=>clean_string(@involucrado.etnia.descripcion)} :  {:tipo=>"String", :valor=>""}
-       param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@involucrado.referencia_domiciliaria)}
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
 
         if @comparecencia.solicitante
