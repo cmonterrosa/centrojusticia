@@ -1,0 +1,15 @@
+<h1>NUEVA ETNIA</h1>
+
+<% form_for(@etnia) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    DESCRIPCIÓN:<br />
+    <%= f.text_field :descripcion, :size => 120, :required => true %>
+  </p>
+  <p>
+    <%= f.submit 'GUARDAR' %>
+  </p>
+<% end %>
+
+<%= link_to 'Atrás', etnias_path, :class => "boton"%>
