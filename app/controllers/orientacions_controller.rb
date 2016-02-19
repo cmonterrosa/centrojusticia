@@ -67,7 +67,7 @@ class OrientacionsController < ApplicationController
       @especialistas = seleccionar_especialistas
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
     end
-    if current_user.has_role?("direccion")
+    if current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion)
       @especialistas << current_user
     end
     if @especialistas.empty?
