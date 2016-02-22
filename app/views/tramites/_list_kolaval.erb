@@ -27,6 +27,7 @@
           <td style="vertical-align: middle;" align="center">&nbsp;</td>
         <%end%>
          <td style="vertical-align: middle;" align="center">&nbsp;</td>
+          <td style="vertical-align: middle;" align="center">&nbsp;</td>
          <td style="vertical-align: middle;" align="left">Trámite</td>
          <td style="vertical-align: middle;" align="left">Número de Expediente</td>
          <%if (current_user.has_role?(:convenios) || current_user.has_role?(:jefeconvenios) || current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) ) %>
@@ -57,19 +58,20 @@
        <%end%>
 
         <%if tramite.fechahora%>
-          <td style="vertical-align: middle; text-align: 'center';" width="4%"><%=link_to image_tag("kolaval/ico-print-tramite.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')-%></td>
+          <td style="vertical-align: middle; text-align: 'center';" width="3%"><%=link_to image_tag("kolaval/ico-print-tramite.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')-%></td>
         <%end%>
 
-       <td style="vertical-align: middle;" width="6%" align="center">
+       <td style="vertical-align: middle;" width="3%" align="center">
          <!-- MENU -->
          <%if current_user.has_role?(:admin)%>
-              <%=link_to "##{tramite.folio_integrado}", {:action => "menu", :id => tramite}%>
+              <%=link_to (image_tag 'kolaval/ico-opciones.jpg', :size => "24x24"), {:action => "menu", :id => tramite}, :title => "MENU DE ETAPAS"%>
          <%elsif  current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion)%>
-              <%=link_to "MENU", {:action => "menu", :id => tramite}, :class => "boton"%>
+              <%=link_to (image_tag 'kolaval/ico-opciones.jpg', :size => "24x24"), {:action => "menu", :id => tramite}, :title => "MENU DE ETAPAS"%>
          <%else%>
-             <%=h "##{tramite.folio_integrado}"%>
+             &nbsp;
          <%end%>
        </td>
+       <td><%=h "##{tramite.folio_integrado}"%></td>
        <td style="vertical-align: middle;" align="center" width="9%"><b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b></td>
        
        <!-- Materia -->
