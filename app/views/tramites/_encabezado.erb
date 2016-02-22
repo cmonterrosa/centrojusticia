@@ -1,0 +1,35 @@
+<style type="text/css">
+.encabezado {
+    -moz-box-shadow: 0px 1px 0px 0px #fff6af;
+    -webkit-box-shadow: 0px 1px 0px 0px #fff6af;
+    box-shadow: 0px 1px 0px 0px #fff6af;
+    background-color: #ffffff;
+    -moz-border-radius: 1px;
+    -webkit-border-radius: 1px;
+    border-radius: 2px;
+    border: 1px solid #019595;
+    cursor: pointer;
+    font-family: "Nexa Light";
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 14px;
+    padding: 6px 22px;
+    text-decoration: none;
+    text-shadow: 0px 0px 0px #ffee66;
+    width: 90%;
+    margin: auto;
+    }
+</style>
+
+
+<table class="encabezado" style="width: 70%" style=" background-color: #FFF6BF; ">
+  <tr>
+    <td><b>NÚMERO DE EXPEDIENTE :</b><%=h @tramite.numero_expediente%></td>
+    <td><b>ESTATUS ACTUAL:</b> <%=h @tramite.estatus%></td>
+  </tr>
+  <tr>
+    <td><b>MATERIA: </b><%=h (@tramite.materia)? @tramite.materia.descripcion : ''%></td>
+    <td><b>¿CONCLUIDO?: </b><%=h (@tramite.concluido)? 'SI' : 'NO'%></td>
+  </tr>
+</table>
+<br />
