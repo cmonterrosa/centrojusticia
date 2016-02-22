@@ -22,8 +22,30 @@ class ConveniosController < ApplicationController
   def new_or_edit
     @convenio = Convenio.find(params[:id]) if params[:id]
     @convenio ||= Convenio.new
-    @tramite = Tramite.find(params[:t]) if params[:t]
-    @convenio.tramite = @tramite
+    if params[:t]
+      @tramite = Tramite.find(params[:t])
+      @convenio.tramite = @tramite
+    else
+      redirect_to :action => "new_or_edit_without_expediente"
+    end
+  end
+
+  def new_or_edit_without_expediente
+    @convenio = Convenio.new
+  end
+
+    def validar_num_expediente
+    if params[:expediente_num_expediente].size > 5
+      unless params[:expediente_num_expediente] =~ /^\d{1,4}\/\d{4}$/
+         render :text => "<h4 style='color:#ff9305;'>Formato de expediente no valido</h4>"
+      else
+        folio_expediente, anio=params[:expediente_num_expediente].split("/")
+        @tramite = (folio_expediente && anio) ? Tramite.find(:first, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) : nil
+        (@tramite) ? (render :partial => "datos_convenio", :layout => "only_jquery") : (render :text => "<h4 style='color:red;'>Expediente no encontrado</h4>")
+      end
+    else
+      render :text => ""
+    end
   end
 
   def destroy
@@ -75,12 +97,20 @@ class ConveniosController < ApplicationController
     @convenio = Convenio.find(params[:id]) if params[:id]
     @convenio ||= Convenio.new
     @convenio.update_attributes(params[:convenio])
-    @tramite = @convenio.tramite = Tramite.find(params[:tramite])
+    @tramite = @convenio.tramite
+    @tramite ||= Tramite.find(params[:tramite]) if params[:tramite]
+    folio_expediente, anio=params[:expediente][:num_expediente].split("/") if params[:expediente] && params[:expediente][:num_expediente]
+    @tramite ||= Tramite.find(:first, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) if anio && folio_expediente
+    @convenio.tramite = @tramite
     @convenio.especialista_id = current_user.id
     if @convenio.save
       @tramite.update_estatus!("proc-conv", current_user)
       flash[:notice] = "convenio guardado correctamente"
-      redirect_to :action => "list_by_tramite", :id => @convenio.tramite
+       unless params[:backurl]
+          redirect_to :action => "list_by_tramite", :id => @convenio.tramite
+       else
+         redirect_to :action => params[:backurl]
+       end
     else
       flash[:error] = "No se pudo guardar correctamente"
       render :action => "new_or_edit"
