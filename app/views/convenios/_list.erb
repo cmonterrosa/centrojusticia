@@ -28,12 +28,19 @@
   </div>
 <%end%>
 
+  <%unless @tramite%>
+        <div style="text-align: center;">
+          <%= link_to 'Nuevo Convenio', {:action => "new_or_edit_without_expediente", :controller => "convenios"}, :class => "boton" %>
+        </div><br />
+  <%end%>
+
 <!-- contenido -->
 <div id="divlista">
-    <table width="98%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+    <table width="94%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto;">
       <tr style="background-color:gray; color:white">
          <th style="vertical-align: middle;" align="center">&nbsp;</th>
-         <th style="vertical-align: middle;" align="center">Folio:</th>
+         <th style="vertical-align: middle;" align="center">Folio de convenio:</th>
+         <th style="vertical-align: middle;" align="center">Núm. de expediente:</th>
           <th style="vertical-align: middle;" align="center">Capturado o modificado por:</th>
           <th style="vertical-align: middle;" align="center">Fecha/Hora de Firma</th>
           <th style="vertical-align: middle;" align="center">Descripción</th>
@@ -54,9 +61,10 @@
         end%>
       </td>
       <td style="vertical-align: middle;"><%=h (c.folio)? c.folio : '--'%></td>
+       <td style="vertical-align: middle;"><%=h (c.tramite && c.tramite.numero_expediente)? c.tramite.numero_expediente : ''%></td>
        <td style="vertical-align: middle;"><%=h (c.especialista) ? c.especialista.nombre_completo : "----"%></td>
        <td style="vertical-align: middle;"><%=h (c.fechahora) ? c.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "---"%></td>
-       <td style="vertical-align: middle;"><%=h  (c.descripcion)? link_to((c.descripcion[0..50] + "..."), {:action => "show", :id => c.id}) : '---'%></td>
+       <td style="vertical-align: middle;"><%=h  (c.descripcion)? link_to((c.descripcion[0..40] + "..."), {:action => "show", :id => c.id}, :title => "descripción del convenio") : '---'%></td>
        <%@adjuntos = Adjunto.find(:all, :conditions => ["convenio_id = ?", c.id])%>
         <%clase = invert_class(clase)%>
 

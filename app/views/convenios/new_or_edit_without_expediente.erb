@@ -1,0 +1,89 @@
+<!-- Validate Plugin -->
+<%= error_messages_for :convenio %>
+
+
+<script  type="text/javascript">
+  var statSend = false;
+  function checkSubmit() {
+    if (!statSend) {
+        statSend = true;
+        return true;
+    } else {
+        alert("El formulario ya se esta enviando...");
+        return false;
+    }
+}
+</script>
+
+<div class="container">
+  <div class="formee-msg-info">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
+
+<% form_for :convenio, @convenio, :url => { :action => "save", :id => @convenio, :tramite => @tramite, :backurl=> "list_by_user" }, :html => {:class => "formee", :onsubmit => "return checkSubmit();" } do |f| -%>
+  <table width="9%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr>
+  <fieldset>
+    <legend style="font-size: 16px;">CAPTURA&nbsp;DE&nbsp;CONVENIO</legend>
+
+     <!-- primera linea -->
+     <div class="grid-12-12">
+       <div class="grid-8-12">
+        <label style=" font-weight: bold;">Escriba el número de expediente: <em class="formee-req">*</em></label>
+       </div>
+        <div class="grid-4-12">
+          <%=text_field :expediente, :num_expediente%>
+         </div>
+      </div>
+
+     <img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
+
+     <div id="info_convenio"></div>
+   </fieldset>
+  </tr>
+
+    <tr>
+    <td align="right">
+      <table>
+        <tr>
+          <td>
+            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar"  />
+          </td>
+          <td>
+            <a href="/home" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2" >&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+
+  </table>
+
+
+
+<%end%>
+
+
+  <!-- AJAX -->
+
+<%= observe_field :expediente_num_expediente,
+                                :frequency => 0.25,
+                                :before => "Element.show('spinner')",
+                                :success => "Element.hide('spinner')",
+                                :update=>"info_convenio",
+                                :url => {:action=>"validar_num_expediente", :controller => "convenios"},
+                                :with=> "expediente_num_expediente"
+%>
+
+</div>
+
+
+
+
