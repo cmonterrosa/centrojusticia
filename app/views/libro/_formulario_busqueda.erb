@@ -1,0 +1,15 @@
+<% form_tag({:action => 'search', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
+ <table class="tabla_dp" >
+  <tr align="center">
+      <th align="center">Fecha inicio</th>
+      <th align="center">Fecha fin</th>
+      <th align="center">&nbsp;</th>
+  </tr>
+  <tr align="center">
+      <td><%= text_field_tag "fecha_inicio", @inicio.strftime("%Y/%m/%d") %></td>
+      <td><%= text_field_tag 'fecha_fin',  @fin.strftime("%Y/%m/%d")%></td>
+      <td><%= submit_tag "Generar"%></td>
+  </tr>
+</table>
+<% end %>
+<br />

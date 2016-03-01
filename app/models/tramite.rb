@@ -137,6 +137,24 @@ class Tramite < ActiveRecord::Base
      Concluido.find(:first, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") if self.id
    end
 
+   def concluido?
+     Concluido.count(:id, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") > 0 if self.id
+   end
+
+   def fecha_conclusion
+     tramite_concluido = concluido
+     if tramite_concluido && tramite_concluido.created_at
+       "[#{tramite_concluido.created_at.strftime('%d DE %B DE %Y - %H:%M %p').upcase}]"
+     end
+   end
+
+   def causa_conclusion
+     tramite_concluido = concluido
+     if tramite_concluido && tramite_concluido.motivo_conclusion
+       "#{tramite_concluido.motivo_conclusion.descripcion_completa}"
+     end
+   end
+
    def solicitante_orientacion
      solicitante = (self.orientacion) ? self.orientacion.solicitante : nil
      solicitante ||= (Extraordinaria.count(:id, :conditions => ["tramite_id = ?", self.id]) > 0) ? Extraordinaria.find_by_tramite_id(self.id, :select => "id,paterno,materno,nombre").solicitante : "No existe informacion"

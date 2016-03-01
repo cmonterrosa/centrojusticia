@@ -8,6 +8,58 @@ require 'net/http'
 require 'uri'
 
 
+class Time
+   alias :strftime_nolocale :strftime
+
+  def strftime(format)
+
+    format = format.dup
+
+    format.gsub!(/%a/, Date::ABBR_DAYNAMES[self.wday])
+
+    format.gsub!(/%A/, Date::DAYNAMES[self.wday])
+
+    format.gsub!(/%b/, Date::ABBR_MONTHNAMES[self.mon])
+
+    format.gsub!(/%B/, Date::MONTHNAMES[self.mon])
+
+    self.strftime_nolocale(format)
+
+  end
+end
+
+
+class Date
+
+MONTHNAMES = [nil] + %w(Enero Febrero Marzo Abril Mayo Junio Julio
+Agosto Septiembre Octubre Noviembre Diciembre)
+
+DAYNAMES = %w(Domingo, Lunes, Martes, Miercoles, Jueves, Viernes,
+Sabado)
+
+module Format
+
+    MONTHS = {
+
+      'Enero'  => 1, 'Febrero' => 2, 'Marzo'    => 3, 'Abril'    => 4,
+
+      'Mayo'      => 5, 'Junio'     => 6, 'Julio'     => 7, 'Agosto' => 8,
+
+     'Septiembre'=> 9, 'Octubre'  =>10, 'Noviembre' =>11, 'Diciembre'=>12
+    }
+
+  DAYS = {
+
+      'Domingo'   => 0, 'Lunes'   => 1, 'Martes'  => 2, 'Miercoles'=> 3,
+
+      'Jueves' => 4, 'Viernes'   => 5, 'Sabado' => 6
+
+    }
+
+end
+end
+
+
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
   protect_from_forgery # See ActionController::RequestForgeryProtection for details
@@ -24,15 +76,8 @@ class ApplicationController < ActionController::Base
   
   layout 'kolaval'#, :except => :autenticacion
 
-  #----------- Cambio de idioma de las fechas --------------------
-  Date::MONTHNAMES = [nil] + %w(Enero Febrero Marzo Abril Mayo Junio Julio Agosto Septiembre Octubre Noviembre Diciembre)
-  Date::DAYNAMES = %w(Domingo Lunes Martes Miercoles Jueves Viernes Sábado)
-  Date::ABBR_MONTHNAMES = [nil] + %w(ene Feb Mar Abr May Jun Jul Ago Sep Oct Nov Dic)
-  Date::ABBR_DAYNAMES = %w(Dom Lun Mar Mie Jue Vie Sab)
-
-
- # Scrub sensitive parameters from your log
-  # filter_parameter_logging :password
+# Scrub sensitive parameters from your log
+# filter_parameter_logging :password
 
 #  # General method to render a 404
 #  def render_missing_page
