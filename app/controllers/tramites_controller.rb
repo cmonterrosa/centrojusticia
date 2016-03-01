@@ -222,6 +222,7 @@ class TramitesController < ApplicationController
           @concluido ||= Concluido.new(:tramite_id => @tramite.id)
           @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", @tramite.id]) if @tramite
           @motivos_conclusion = MotivoConclusion.find(:all, :order => "fundamento")
+          @fecha = @concluido.created_at || Time.now
           render :partial => "concluir", :layout => "only_jquery"
       else
           render :text => "No tiene permisos para realizar la acción"

@@ -26,7 +26,7 @@
             </tr>
             <tr class="d1">
               <td style="vertical-align: middle;"><b>Concluido por  /  fecha-hora:</b></td>
-              <td style="vertical-align: middle;"><%=h User.find(@tramite.concluido.user_id).nombre_completo%>  /   <%=h @tramite.concluido.updated_at.strftime("%d-%m-%Y - %H:%M %p")%></td>
+              <td style="vertical-align: middle;"><%=h User.find(@tramite.concluido.user_id).nombre_completo%>  /   <%=h @tramite.concluido.created_at.strftime("%d-%m-%Y - %H:%M %p")%></td>
             </tr>
      </table>
       <%end%>
