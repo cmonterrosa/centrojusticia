@@ -25,14 +25,13 @@
                                                                 </ul>
 							 </li>
 
-                                                         <%if current_user.has_role?(:librocontrol)%>
-                                                          <!-- Libro de control -->
-                                                            <li>
+                                                        
+                                                        <!-- Libro de control -->
+                                                        <li>
                                                               <ul><%=link_to image_tag('kolaval/ico-libro-control.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-libro-control.jpg") , {:action => "index", :controller => "libro"}, :title => "Libro de control"%></ul>
-                                                            </li>
-                                                         <%end%>
-
-                                                         <!-- Bitacora de atencion -->
+                                                        </li>
+                                                         
+                                                        <!-- Bitacora de atencion -->
                                                         <li>
                                                             <ul><%=link_to image_tag('kolaval/ico-bitacora-aten.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-bitacora-aten.jpg") , {:action => "select_personas_atendidas", :controller => "estadisticas"}, :title => "Bitacora de atencion"%></ul>
                                                         </li>
