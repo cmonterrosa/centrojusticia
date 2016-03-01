@@ -33,21 +33,23 @@
   <fieldset>
     <legend style="font-size: 17px;">CONCLUIR&nbsp;EXPEDIENTE&nbsp;&nbsp;<b style="color:  #3079ed;"><%=h @tramite.numero_expediente%></b></legend>
 
-       <!-- primera linea -->
-     <div class="grid-6-12">
-        <label style=" font-weight: bold;">SOLICITANTES:</label>
-         <div class="grid-12-12">
-          <%=h @comparecencia.solicitantes%>
-         </div>
-      </div>
+    <%if @comparecencia%>
+        <!-- primera linea -->
+          <div class="grid-6-12">
+            <label style=" font-weight: bold;">SOLICITANTES:</label>
+            <div class="grid-12-12">
+              <%=h @comparecencia.solicitantes%>
+            </div>
+          </div>
 
-       <!-- primera linea -->
-     <div class="grid-6-12">
-        <label style=" font-weight: bold;">INVOLUCRADOS: </label>
-         <div class="grid-12-12">
-          <%=h @comparecencia.involucrados%>
-         </div>
-      </div>
+          <!-- primera linea -->
+        <div class="grid-6-12">
+            <label style=" font-weight: bold;">INVOLUCRADOS: </label>
+            <div class="grid-12-12">
+              <%=h @comparecencia.involucrados%>
+          </div>
+        </div>
+     <%end%>
 
 
        <!-- primera linea -->
