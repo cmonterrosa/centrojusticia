@@ -11,7 +11,7 @@ class ParticipantesController < ApplicationController
      @sesion = (params[:sesion])? params[:sesion] : false if @invitacion
   end
   
-   def new_or_edit_persona_moral
+  def new_or_edit_persona_moral
      @participante = Participante.new if params[:token]
      @participante = Participante.find(params[:participante]) if params[:participante]
      @participante ||= Participante.new
@@ -21,8 +21,6 @@ class ParticipantesController < ApplicationController
      @invitacion = (params[:origin] && params[:origin] == 'invitaciones') ? 1 : false
      @sesion = (params[:sesion])? params[:sesion] : false if @invitacion
   end
-
-
 
   def save
     if Participante.exists?(params[:participante_id])

@@ -7,6 +7,8 @@ class CustomsController < ApplicationController
     @usuario=current_user
     if @usuario.has_role?(:admin)
         return render(:partial => 'adminnew', :layout => "oficial")
+    elsif @usuario.has_role?(:visitadores)
+        return render(:partial => 'visitadores', :layout => "oficial")
     elsif @usuario.has_role?(:direccion)
         return render(:partial => 'direccion', :layout => "oficial")
     elsif @usuario.has_role?(:admindireccion)

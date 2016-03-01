@@ -1,0 +1,80 @@
+<div class="titulocalendario">
+  <p>
+    LIBRO ELECTRONICO DE CONTROL
+  </p>
+</div>
+
+<%=render :partial => "formulario_busqueda"%>
+
+<div class="titulocalendario">
+  <%if @inicio.strftime("%d de %B de %Y") == @fin.strftime("%d de %B de %Y")%>
+      <p>
+       <%=@inicio.strftime("%d de %B de %Y")%>
+      </p>
+  <%else%>
+      <p>
+        PERIODO COMPRENDIDO ENTRE EL <%=@inicio.strftime("%d de %B de %Y").upcase%> Y EL DÍA <%=@fin.strftime("%d de %B de %Y").upcase%>
+      </p>
+  <%end%>
+</div>
+
+
+
+<div id="divlista">
+  <table width="99%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr style="background-color:gray; color:white">
+        <th style="vertical-align: middle;" align="center">Materia</th>
+        <th style="vertical-align: middle;" align="center">Asunto</th>
+        <th style="vertical-align: middle;" align="center">Medio Alternativo</th>
+        <th style="vertical-align: middle;" align="center">Fecha y causa de conclusión</th>
+        <th style="vertical-align: middle;" align="center">Observaciones</th>
+        <th style="vertical-align: middle;" align="center">Número de expediente</th>
+        <th style="vertical-align: middle;" align="center">Fecha de Inicio</th>
+        <th style="vertical-align: middle;" align="center">Solicitantes</th>
+        <th style="vertical-align: middle;" align="center">Involucrados</th>
+     </tr>
+     <%clase=0%>
+     <%contador=1%>
+     <%for tramite in @tramites%>
+        <%comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", tramite])%>
+        <tr class="d<%=invert_class(clase)%>">
+          <td style="vertical-align: middle;"><%=h (tramite.materia)? tramite.materia.descripcion : '-'%></td>
+          <td style="vertical-align: middle;"><%=h (comparecencia)? comparecencia.asunto : '-'%></td>
+          <td style="vertical-align: middle;"><%=h (tramite.mecanismo_alternativo)? tramite.mecanismo_alternativo.descripcion : '-'%></td>
+          <td style="vertical-align: middle;">
+            <span style="color: red;"><%=h (tramite.concluido?)? tramite.fecha_conclusion : '-'%></span><br />
+            <%=h (tramite.concluido?)? tramite.causa_conclusion : '-'%>
+          </td>
+          <td style="vertical-align: middle;"><%=h (tramite.concluido?)? tramite.concluido.observaciones_conclusion : '-'%></td>
+          <%if tramite.numero_expediente%>
+              <td style="vertical-align: middle;">
+                  <%=link_to "#{tramite.numero_expediente}", {:controller => "tramites", :action => "show", :id => tramite}, :target => "_blank"%>
+              </td>
+          <%end%>
+          <td style="vertical-align: middle;"><%=h tramite.fechahora.strftime("%A %d DE %B de %Y - %H:%M %p")%></td>
+          <td style="vertical-align: middle;"><%=h (comparecencia) ? comparecencia.solicitantes : ''%></td>
+          <td style="vertical-align: middle;"><%=h (comparecencia) ? comparecencia.involucrados : ''%></td>
+        </tr>
+        <%contador+=1%>
+        <%clase = invert_class(clase)%>
+     <%end%>
+  </table>
+</div>
+
+
+<br />
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @tramites %>
+          </div>
+          <%= will_paginate @tramites, :params => { :fecha_inicio => @inicio, :fecha_fin => @fin  } %>
+        </div>
+      </td>
+    </tr>
+</table>
+
+
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
