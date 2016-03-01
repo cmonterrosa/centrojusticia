@@ -54,6 +54,17 @@
 
        <!-- primera linea -->
      <div class="grid-8-12">
+        <label style=" font-weight: bold;">Fecha/hora : <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+            <span class="datetime">
+                  <%=datetime_select :concluido, :created_at, :value => @fecha%>
+            </span>
+         </div>
+      </div>
+
+
+       <!-- primera linea -->
+     <div class="grid-8-12">
         <label style=" font-weight: bold;">SELECCIONE UN MOTIVO: <em class="formee-req">*</em></label>
          <div class="grid-12-12">
           <%= f.select(:motivo_conclusion_id, @motivos_conclusion.collect {|p| [ p.fundamento, p.id ] }, { :include_blank => true })%>

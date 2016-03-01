@@ -98,7 +98,7 @@
               </tr>
               <tr>
                 <td style="vertical-align: middle; width: 30%;"><b>Concluido por  /  fecha-hora:</b></td>
-                <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h User.find(@sesion.tramite.concluido.user_id).nombre_completo%>  /   <%=h @sesion.tramite.concluido.updated_at.strftime("%d-%m-%Y - %H:%M %p")%></b></td>
+                <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h User.find(@sesion.tramite.concluido.user_id).nombre_completo%>  /   <%=h @sesion.tramite.concluido.created_at.strftime("%d-%m-%Y - %H:%M %p")%></b></td>
               </tr>
           <%else%>
               <tr>
