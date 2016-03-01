@@ -94,8 +94,10 @@ class ComparecenciasController < ApplicationController
        param["P_CORREO_ELECTRONICO"]={:tipo=>"String", :valor=>@involucrado.correo}
        param["P_OBSERVACIONES"]={:tipo=>"String", :valor=>clean_string(@involucrado.observaciones)}
        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio_ubicacion)}
-       param["P_TIPO_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.tipo_domicilio_ubicacion)}
+       param["P_DOMICILIO_LABORAL"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio_laboral)}
+       #param["P_TIPO_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.tipo_domicilio_ubicacion)}
        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio_referencias_ubicacion)}
+       param["P_REFERENCIA_DOMICILIARIA_LABORAL"]={:tipo=>"String", :valor=>clean_string(@involucrado.referencias_domiciliares_laboral)}
        param["P_ESTADO_CIVIL"]=(@involucrado.estado_civil) ? {:tipo=>"String", :valor=>clean_string(@involucrado.estado_civil.descripcion)} :  {:tipo=>"String", :valor=>"---"}
        param["P_ETNIA"]=(@involucrado.pertenece_grupo_etnico && @involucrado.etnia) ? {:tipo=>"String", :valor=>clean_string(@involucrado.etnia.descripcion)} :  {:tipo=>"String", :valor=>""}
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
@@ -145,9 +147,11 @@ class ComparecenciasController < ApplicationController
         param["P_SEXO"]={:tipo=>"String", :valor=>@solicitante.sexo_descripcion}
         param["P_ORIGINARIO"]={:tipo=>"String", :valor=>@solicitante.originario}
         @comparecencia.caracter ? param["P_CARACTER"]={:tipo=>"String", :valor=>clean_string(@comparecencia.caracter).upcase} : param["P_CARACTER"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
-        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio_ubicacion)}
-        param["P_TIPO_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.tipo_domicilio_ubicacion)}
-        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio_referencias_ubicacion)}
+        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio)}
+        param["P_DOMICILIO_LABORAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio_laboral)}
+        #param["P_TIPO_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.tipo_domicilio_ubicacion)}
+        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@solicitante.referencia_domiciliaria)}
+        param["P_REFERENCIA_DOMICILIARIA_LABORAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.referencias_domiciliares_laboral)}
         param["P_ESTADO_CIVIL"]=(@solicitante.estado_civil) ? {:tipo=>"String", :valor=>clean_string(@solicitante.estado_civil.descripcion)} :  {:tipo=>"String", :valor=>"---"}
         param["P_ETNIA"]=(@solicitante.pertenece_grupo_etnico && @solicitante.etnia) ? {:tipo=>"String", :valor=>clean_string(@solicitante.etnia.descripcion)} :  {:tipo=>"String", :valor=>""}
         param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@solicitante.telefono_particular}

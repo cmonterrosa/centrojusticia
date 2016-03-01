@@ -290,12 +290,12 @@
 
 <script type="text/javascript">
   var domicilio = new LiveValidation( 'participante_domicilio' );
-   var domicilio_laboral = new LiveValidation( 'participante_domicilio' );
+   var domicilio_laboral = new LiveValidation( 'participante_domicilio_laboral' );
   domicilio.add( Validate.Length, { maximum: 255 } );
   domicilio_laboral.add( Validate.Length, { maximum: 255 } );
 
   var referencia = new LiveValidation( 'participante_referencia_domiciliaria' );
-  var referencia_laboral = new LiveValidation( 'participante_rreferencias_domiciliarias_laboral' );
+  var referencia_laboral = new LiveValidation( 'participante_referencias_domiciliares_laboral' );
   referencia.add( Validate.Length, { maximum: 300 } );
   referencia_laboral.add( Validate.Length, { maximum: 255 } );
 
