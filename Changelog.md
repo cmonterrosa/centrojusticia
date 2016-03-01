@@ -1,3 +1,7 @@
+## KOLAVAL VERSION [1.3.2] - 2016-03-01
+### Agregados
+- Perfil de visitadores y visualizacion en pantalla del libro de control con seleccion de rango de fechas
+- Impresion en comparecencia de los domicilios laborales
 
 ## KOLAVAL VERSION [1.3.1] - 2016-02-16
 ### Agregados
