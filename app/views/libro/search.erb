@@ -19,6 +19,16 @@
 </div>
 
 
+    <!-- impresion de libro-->
+    <p>
+      <% form_for :tramite, @tramite, :url => { :action => "imprimir", :controller => "libro", :fecha_inicio => @inicio, :fecha_fin => @fin }, :html => { :target => "_blank"} do |f| -%>
+        <div class="grid-center">
+          <input type="submit" title="IMPRIMIR LIBRO" value="IMPRIMIR LIBRO" />
+        </div>
+      <%end%>
+    </p>
+
+
 
 <div id="divlista">
   <table width="95%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
