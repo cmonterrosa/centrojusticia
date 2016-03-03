@@ -188,7 +188,7 @@ ORDER BY
 				<reportElement x="6" y="1" width="970" height="1" forecolor="#010101"/>
 			</line>
 			<subreport>
-				<reportElement x="167" y="3" width="254" height="71"/>
+				<reportElement stretchType="RelativeToBandHeight" x="167" y="3" width="254" height="71"/>
 				<subreportParameter name="P_FIN">
 					<subreportParameterExpression><![CDATA[$P{P_FIN}]]></subreportParameterExpression>
 				</subreportParameter>
