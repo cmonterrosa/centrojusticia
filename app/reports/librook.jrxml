@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro" pageWidth="1008" pageHeight="612" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="986" leftMargin="11" rightMargin="11" topMargin="11" bottomMargin="11">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="1378"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.x" value="12"/>
+	<property name="ireport.y" value="288"/>
 	<parameter name="APP_URL" class="java.lang.String"/>
 	<parameter name="P_SUBDIRECCION" class="java.lang.String"/>
 	<parameter name="P_INICIO" class="java.lang.String"/>
@@ -214,7 +214,7 @@ ORDER BY
 					<subreportParameterExpression><![CDATA[$P{P_INICIO}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "detalle_participantes.jasper"]]></subreportExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/app/reports/detalle_participantes.jasper"]]></subreportExpression>
 			</subreport>
 			<textField isBlankWhenNull="true">
 				<reportElement x="425" y="3" width="55" height="20"/>
