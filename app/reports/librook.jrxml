@@ -33,7 +33,7 @@ LEFT JOIN comparecencias comp
 LEFT JOIN materias mat
 	ON mat.id=t.materia_id
 WHERE
-	(t.anio IS NOT NULL AND t.anio = $P{P_ANIO}) AND
+	(t.anio IS NOT NULL AND t.anio between YEAR($P{P_INICIO}) AND YEAR($P{P_FIN})) AND
         (t.folio_expediente IS NOT NULL) AND
         (t.fechahora between $P{P_INICIO} AND $P{P_FIN})
 ORDER BY
