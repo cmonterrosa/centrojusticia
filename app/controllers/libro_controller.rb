@@ -9,9 +9,9 @@ class LibroController < ApplicationController
   def search
     params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
     @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
-    @tramites = Tramite.find(:all, :conditions => ["(anio IS NOT NULL
-      AND folio_expediente IS NOT NULL)
-      AND (fechahora between ? AND ?)", @inicio, @fin],
+    @tramites = Tramite.find(:all, :conditions => ["(anio IS NOT NULL AND anio between ? AND ? )
+      AND (folio_expediente IS NOT NULL)
+      AND (fechahora between ? AND ?)", @inicio.year, @fin.year, @inicio, @fin],
       :order => "anio, folio_expediente")
     @tramites = @tramites.paginate(:page => params[:page], :per_page => 25)
   end
