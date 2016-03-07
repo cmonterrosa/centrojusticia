@@ -1,0 +1,26 @@
+<div class="titulocalendario">
+  <p>
+    Expedientes sin concluir de: <%=@usuario.nombre_completo%>
+  </p>
+</div>
+
+<div id="divlista">
+  <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 98%; margin: auto;">
+    <tr>
+       <td>Núm. de Expediente</td>
+       <td>Fecha de inicio</td>
+       <td>Solicitante(s)</td>
+       <td>Involucrado(s)</td>
+     </tr>
+
+     <%@expedientes.each do |e|%>
+      <tr>
+        <td><%=h e.numero_expediente%></td>
+        <td><%=h (e.fechahora)? e.fechahora.strftime("%d de %B de %Y / %H:%M") : ''%></td>
+        <td><%=h (e.comparecencia) ? e.comparecencia.solicitantes : '' %></td>
+        <td><%=h (e.comparecencia)? e.comparecencia.involucrados : ''%></td>
+      </tr>
+    <%end%>
+  </table>
+</div>
+

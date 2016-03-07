@@ -53,6 +53,20 @@ class CustomsController < ApplicationController
   def activity
     @usuario = current_user
     @actividades = Movimiento.find(:all, :conditions => ["user_id = ? AND fecha_inicio > ?", current_user.id, Time.now], :order => "fecha_inicio DESC")
+    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion)
+      @especialistas = Role.find_by_name("especialistas").todos_usuarios.sort { |a, b| a.expedientes_sin_concluir.size <=> b.expedientes_sin_concluir.size }
+    end
+  end
+
+  def detalle_expedientes
+    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion)
+      @usuario = User.find(params[:id])
+      @expedientes = @usuario.expedientes_sin_concluir
+      render :partial => "expedientes_sin_concluir", :layout => "only_jquery"
+    else
+      flash[:notice] = "No tiene privilegios de acceder a esta sección"
+      redirect_to :controller => "home"
+    end
   end
 
   def edit

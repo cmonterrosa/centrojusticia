@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro" pageWidth="1008" pageHeight="612" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="986" leftMargin="11" rightMargin="11" topMargin="11" bottomMargin="11">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="144"/>
+	<property name="ireport.x" value="1157"/>
+	<property name="ireport.y" value="0"/>
 	<parameter name="APP_URL" class="java.lang.String"/>
 	<parameter name="P_SUBDIRECCION" class="java.lang.String"/>
 	<parameter name="P_INICIO" class="java.lang.String"/>
@@ -79,14 +79,14 @@ ORDER BY
 				<imageExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/app/reports/imagenes/encabezado-oficio.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="627" y="38" width="328" height="16" forecolor="#751B1B"/>
+				<reportElement x="627" y="34" width="328" height="16" forecolor="#751B1B"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[CENTRO ESTATAL DE JUSTICIA ALTERNATIVA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="627" y="54" width="327" height="13" forecolor="#721F1F"/>
+				<reportElement x="627" y="51" width="327" height="13" forecolor="#721F1F"/>
 				<textElement>
 					<font size="11" isBold="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>

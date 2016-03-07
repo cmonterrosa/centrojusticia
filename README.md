@@ -29,12 +29,14 @@ propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de l
 * Seguimiento telefónico de los convenios, asi como el motivo de respuesta de la llamada
 * Listado de llamadas telefónicas de seguimiento
 * Posee en perfil dedicado a los especialistas externos
+* Impresión en pantalla y física del libro de control con los datos basicos de los expedientes
+* Monitoreo de la actividad de los especialistas
 
 
 ## **Acerca de**
 
 - Autor: Carlos Monterrosa López (cmonterrosa at gmail.com)
-- Version: 1.3.1 (2016-02-17)
+- Version: 1.3.3 (2016-03-07)
 - Copyright: Copyright (c) 2016 Poder Judicial del Estado de Chiapas. Todos los derechos reservados.
 - Licencia: GPL
 - Website: (http://www.poderjudicialchiapas.gob.mx)
