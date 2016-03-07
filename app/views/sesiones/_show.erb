@@ -2,39 +2,38 @@
 
 
 <div align="center" style="margin: auto;">
-<table style="margin: auto;" border="0" cellspacing="0" cellpadding="0" width="94%">
+<table style="margin: auto;" border="0" cellspacing="0" cellpadding="0" width="99%">
   <!-- Cancelar -->
   <tr align="center">
-    <%if current_user.has_role?("asignahorario") || current_user.has_role?("controlagenda") || current_user.has_role?("admindireccion")%>
+   <td>
+      <%= link_to "Detalle de Expediente" , {:controller => "tramites", :action => "show", :id => @sesion.tramite, :token => "show_sesion"}, :title => "Detalle del trámite", :method => :post, :class => "boton" %><br />
+   </td>
+
+   <%if current_user.has_role?("asignahorario") || current_user.has_role?("controlagenda") || current_user.has_role?("admindireccion")%>
        <td>
-          <%= link_to "Cancelar" , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar sesión", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post, :class => "boton" %><br />
+          <%= link_to "Cancelar sesión" , {:controller => "sesiones", :action => "cancel", :id => @sesion, :t => @token}, :title => "Cancelar sesión", :confirm => '¿Esta seguro que quiere cancelar la sesión?', :method => :post, :class => "boton" %><br />
        </td>
     <%end%>
 
     <!-- Eliminar -->
     <%if current_user.has_role?("asignahorario")%>
-          <td>
-              <%= link_to "Detalle del expediente" , {:controller => "tramites", :action => "show", :id => @sesion.tramite, :token => "show_sesion"}, :title => "Detalle del trámite", :method => :post, :class => "boton" %><br />
+          
+            <td>
+              <%= link_to "Editar sesión" , {:controller => "sesiones", :action => "edit_jquery", :id => @sesion, :t => @token}, :title => "Editar sesión", :confirm => '¿Esta seguro que quiere editar la sesión?', :method => :post, :class => "boton" %><br />
           </td>
 
           <td>
-              <%= link_to "Editar" , {:controller => "sesiones", :action => "edit_jquery", :id => @sesion, :t => @token}, :title => "Editar sesión", :confirm => '¿Esta seguro que quiere editar la sesión?', :method => :post, :class => "boton" %><br />
-          </td>
-
-          <td>
-              <%= link_to "Eliminar" , {:controller => "sesiones", :action => "destroy", :id => @sesion, :t => @token}, :title => "Eliminar sesión", :confirm => '¿Esta seguro que quiere eliminar completamente la sesión?, No se podrá recuperar', :method => :post, :class => "boton" %><br />
+              <%= link_to "Eliminar sesión" , {:controller => "sesiones", :action => "destroy", :id => @sesion, :t => @token}, :title => "Eliminar sesión", :confirm => '¿Esta seguro que quiere eliminar completamente la sesión?, No se podrá recuperar', :method => :post, :class => "boton" %><br />
           </td>
     <%end%>
 
     <!-- detalle del tramite -->
-    <%if current_user.has_role?("especialistas")%>
-          <td>
-              <%= link_to "Detalle del expediente" , {:controller => "tramites", :action => "show", :id => @sesion.tramite, :token => "show_sesion"}, :title => "Detalle del trámite", :method => :post, :class => "boton" %><br />
-          </td>
+    <%if current_user.has_role?("especialistas") || current_user.has_role?(:subdireccion)%>
+          
 
           <!-- Si es titular de la sesión o subdirector o jefe de convenios-->
-          <%if current_user.id == @sesion.mediador_id || current_user.has_role?("convenios") || current_user.has_role?("subdireccion")%>
-               <td>
+          <%if current_user.id == @sesion.mediador_id || current_user.has_role?(:convenios) || current_user.has_role?(:subdireccion)%>
+              <td>
                   <%= link_to "Concluir Expediente" , {:controller => "tramites", :action => "opciones_conclusion", :id => @sesion, :token => "apply_conclusion"}, :title => "Concluir Expediente", :method => :post, :class => "boton" %><br />
               </td>
 
@@ -47,7 +46,7 @@
           <!-- Captura de resultados -->
           <%if current_user.id == @sesion.mediador_id || current_user.id == @sesion.comediador_id || current_user.has_role?("subdireccion")%>
               <td>
-                  <%= link_to "Capturar Resultado" , {:controller => "sesiones", :action => "add_result", :id => @sesion, :token => "show_sesion"}, :title => "Resultado de la sesion", :method => :post, :class => "boton" %><br />
+                  <%= link_to "Resultado de sesión" , {:controller => "sesiones", :action => "add_result", :id => @sesion, :token => "show_sesion"}, :title => "Resultado de la sesion", :method => :post, :class => "boton" %><br />
               </td>
           <%end%>
     <%end%>

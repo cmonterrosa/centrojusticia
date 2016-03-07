@@ -1,3 +1,13 @@
+## KOLAVAL VERSION [1.3.3] - 2016-03-07
+### Agregados
+- Impresion de Libro de Control en hoja tamaño legal horizontal con parametros seleccionados en pantalla
+- En opcion 'actividad', lista de expedientes sin concluir por especialista y listado de los mismos por numero, solicitantes e involucrados
+
+## Reparaciones
+- Corrección de estructura, condiciones, validaciones y ordenamiento al libro de control en pantalla
+- Correccion de errores que no permitia concluir expedientes que no tenian registro de comparecencia
+
+
 ## KOLAVAL VERSION [1.3.2] - 2016-03-01
 ### Agregados
 - Perfil de visitadores y visualizacion en pantalla del libro de control con seleccion de rango de fechas
