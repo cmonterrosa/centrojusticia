@@ -2,6 +2,16 @@
    <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "activity"}, :title => "Recargar"%>
 </p>
 
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
 
 
 <div class="titulocalendario">
@@ -49,14 +59,38 @@
     </tr>
     <%end%>
 
-
-
     <tr>
        <td style="vertical-align: middle;"><b>Última conexión:</b></td>
        <td style="vertical-align: middle;"><%=h (@usuario.last_login) ? @usuario.last_login.strftime("%d de %B de %Y / %H:%M") : 'Sin conexión'%></td>
     </tr>
 </table>
 </div>
+
+
+    <%if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion)%>
+      <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 85%; margin: auto;">
+     <tr>
+        <td>Especialista</td>
+        <td> Expedientes sin concluir</td>
+     </tr>
+        <%sumatoria=0%>
+       <%@especialistas.each do |e|%>
+          <tr>
+            <td><%=h e.nombre_completo%></td>
+            <td><%=h (e.expedientes_sin_concluir)? (link_to "#{e.expedientes_sin_concluir.size}", {:action => "detalle_expedientes", :id => e.id}, :class => "fancybox fancybox.iframe") : ''%></td>
+            <%sumatoria = (e.expedientes_sin_concluir) ? sumatoria+=e.expedientes_sin_concluir.size : nil%>
+          </tr>
+        <%end%>
+
+          <tr>
+            <td>TOTAL:</td>
+            <td><%=h sumatoria%></td>
+          </tr>
+
+        </table>
+    <%end%>
+
+
 
 
 
