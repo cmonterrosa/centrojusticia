@@ -53,6 +53,7 @@
 
 
        <!-- primera linea -->
+     <%if current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion)%>
      <div class="grid-8-12">
         <label style=" font-weight: bold;">Fecha/hora : <em class="formee-req">*</em></label>
          <div class="grid-12-12">
@@ -61,6 +62,7 @@
             </span>
          </div>
       </div>
+     <%end%>
 
 
        <!-- primera linea -->
