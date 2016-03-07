@@ -38,7 +38,7 @@
      <%if current_user.has_role?("atencionpublico")%>
       <tr>
          <td style="vertical-align: middle;"><b>Trámites iniciados:</b></td>
-        <td style="vertical-align: middle;"><%=Tramite.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
+        <td style="vertical-align: middle;"><%=h Tramite.count(:id, :conditions => ["user_id = ?", @usuario.id])%></td>
       </tr>
     <%end%>
 
@@ -69,29 +69,25 @@
 
     <%if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion)%>
       <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 85%; margin: auto;">
-     <tr>
-        <td>Especialista</td>
-        <td> Expedientes sin concluir</td>
-     </tr>
-        <%sumatoria=0%>
-       <%@especialistas.each do |e|%>
           <tr>
-            <td><%=h e.nombre_completo%></td>
-            <td><%=h (e.expedientes_sin_concluir)? (link_to "#{e.expedientes_sin_concluir.size}", {:action => "detalle_expedientes", :id => e.id}, :class => "fancybox fancybox.iframe") : ''%></td>
-            <%sumatoria = (e.expedientes_sin_concluir) ? sumatoria+=e.expedientes_sin_concluir.size : nil%>
+              <td>Especialista</td>
+              <td> Expedientes sin concluir</td>
           </tr>
-        <%end%>
+          <%sumatoria=0%>
+          <%@especialistas.each do |e|%>
+            <tr>
+                <td><%=h e.nombre_completo%></td>
+                <td><%=h (e.expedientes_sin_concluir)? (link_to "#{e.expedientes_sin_concluir.size}", {:action => "detalle_expedientes", :id => e.id}, :class => "fancybox fancybox.iframe") : ''%></td>
+                <%sumatoria = (e.expedientes_sin_concluir) ? sumatoria+=e.expedientes_sin_concluir.size : nil%>
+            </tr>
+          <%end%>
 
-          <tr>
-            <td>TOTAL:</td>
-            <td><%=h sumatoria%></td>
-          </tr>
-
-        </table>
+            <tr>
+                <td>TOTAL:</td>
+                <td><%=h sumatoria%></td>
+            </tr>
+       </table>
     <%end%>
-
-
-
 
 
 <!-- Mis ausencias futuras -->
@@ -113,8 +109,8 @@
             <%@actividades.each do |a|%>
             <tr>
                 <td style="vertical-align: middle;"><%=h a.situacion.descripcion%></td>
-                <td style="vertical-align: middle;"><%=h a.fecha_inicio.strftime("%d de %B de %Y / %H:%M")%></td>
-                <td style="vertical-align: middle;"><%=h a.fecha_fin.strftime("%d de %B de %Y / %H:%M")%></td>
+                <td style="vertical-align: middle;"><%=h a.fecha_inicio.strftime("%d de %B de %Y / %H:%M %P")%></td>
+                <td style="vertical-align: middle;"><%=h a.fecha_fin.strftime("%d de %B de %Y / %H:%M %P")%></td>
             </tr>
             <%end%>
         </table>
