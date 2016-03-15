@@ -43,8 +43,6 @@
       <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
     </ul>
     <ul><li>&nbsp;</li></ul>
-    <ul><li>El domicilio laboral se imprimirá únicamente cuando el domicilio particular esté vacío..</li></ul>
-     <ul><li>&nbsp;</li></ul>
   </div>
 <% form_for :participante, @participante, :url => { :action => "save", :id => @comparecencia, :participante_id => @participante.id, :invitacion => @invitacion, :sesion => @sesion }, :html => {:id => "new_participante", :onsubmit => "return checkSubmit();"} do |f| -%>
   <table class="sample" style="width: 94%; margin: auto;">
@@ -92,7 +90,7 @@
         <tr align=" justify" class="pregunta">
           <td align="center" width="40%">&nbsp;</td>
           <td align="center" width="40%" colspan="2"><b>Fecha de Nacimiento</b></td>
-          <td align="center" width="20%"><b>Edad</b></td>
+          <td align="center" width="20%"><b>O Edad</b></td>
         </tr>
         
         <tr class="pregunta">
