@@ -504,11 +504,12 @@ color: red;
     z-index: 1000;
 }
 
-
 .descripcion_detalle_sesion {
-    color:  #3079ed;
+    color: #019595;
     font-weight: bold;
 }
+
+
 
 
 .datetime select:nth-child(1){
