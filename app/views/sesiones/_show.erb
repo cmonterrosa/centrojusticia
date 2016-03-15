@@ -77,10 +77,10 @@
 <br /><br />
 
 <!-- Detalle de sesion -->
-  <table class="tablakolaval" style="width: 92%; margin: auto;">
+  <table class="tablakolaval" style="width: 98%; margin: auto;">
 
     <tr>
-      <td colspan="2">DETALLE DE SESIÓN</td>
+      <td colspan="2">DETALLE DE SESIÓN <%=h (@sesion.clave) ? @sesion.clave : ''%></td>
     </tr>
 
 
@@ -104,7 +104,14 @@
                 <td style="vertical-align: middle; width: 30%;"><b>NÚMERO DE EXPEDIENTE: </b></td>
                 <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.tramite.numero_expediente%></b></td>
               </tr>
-         <%end%>
+
+                <%if @sesion.start_at%>
+                    <tr>
+                        <td style="vertical-align: middle; width: 30%;"><b>Hora de inicio de la sesión:</b></td>
+                        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.start_at.strftime("%d de %B de %Y   -   %H:%M  %p")%></b></td>
+                    </tr>
+                <%end%>
+          <%end%>
 
           <%if @sesion.tramite.mecanismo_alternativo%>
                <tr>
@@ -113,11 +120,15 @@
               </tr>
           <%end%>
 
-
-              <tr>
-                <td style="vertical-align: middle; width: 100%; text-align: center;" colspan="2"><hr /></td>
+           <%if @sesion.tramite.comparecencia%>
+               <tr>
+                 <td style="vertical-align: middle; width: 30%;">DESCRIPCIÓN DEL ASUNTO: </td>
+                 <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.tramite.comparecencia.asunto%></b></td>
               </tr>
-      <%end%>
+           <%end%>
+
+
+    <%end%>
 
     
   <%if @sesion.cancel == 1%>
@@ -127,15 +138,7 @@
      </tr>
      <%end%>
 
-     <tr>
-        <td style="vertical-align: middle; width: 30%;"><b>Capturada inicialmente por:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.user_id)?  User.find(@sesion.user_id).nombre_completo : "No existe informacion"%></b></td>
-     </tr>
-
-     <tr>
-        <td style="vertical-align: middle; width: 30%;"><b>Ultima modificación:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.updated_at)?  @sesion.updated_at.strftime("%d de %B de %Y / %H:%M %p") : "No existe informacion"%></b></td>
-     </tr>
+     
 
      <%if @sesion.tramite%>
      
@@ -156,25 +159,12 @@
      <%end%>
    <%end%>
 
-    <%if @sesion.clave%>
-     <tr>
-        <td style="vertical-align: middle; width: 30%;"><b>Identificador de sesión:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.clave%></b></td>
-     </tr>
-     <%end%>
-
-
      <tr>
         <td style="vertical-align: middle; width: 30%;"><b>Descripción:</b></td>
         <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.tiposesion) ? @sesion.tiposesion.descripcion : "---"%></b></td>
      </tr>
 
-     <%if @sesion.start_at%>
-     <tr>
-        <td style="vertical-align: middle; width: 30%;"><b>Hora de inicio:</b></td>
-        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.start_at.strftime("%d de %B de %Y   -   %H:%M  %p")%></b></td>
-     </tr>
-     <%end%>
+   
 
      <%if @sesion.mediador%>
      <tr>
@@ -191,7 +181,7 @@
      <%end%>
 
      <tr>
-        <td style="vertical-align: middle; width: 30%;"><b>Numero de invitacion:</b></td>
+        <td style="vertical-align: middle; width: 30%;"><b>Numero de invitación:</b></td>
         <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.num_invitacion)?  @sesion.num_invitacion : "No existe informacion"%></b></td>
      </tr>
 
@@ -201,8 +191,18 @@
      </tr>
 
      <tr>
-        <td style="vertical-align: middle; width: 30%;"><b>Resultado:</b></td>
+        <td style="vertical-align: middle; width: 30%;"><b>Resultado de la sesión:</b></td>
         <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.resultado%></b></td>
+     </tr>
+
+     <tr>
+        <td style="vertical-align: middle; width: 30%;"><b>Capturada inicialmente por:</b></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.user_id)?  User.find(@sesion.user_id).nombre_completo : "No existe informacion"%></b></td>
+     </tr>
+
+     <tr>
+        <td style="vertical-align: middle; width: 30%;"><b>Ultima modificación:</b></td>
+        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.updated_at)?  @sesion.updated_at.strftime("%d de %B de %Y / %H:%M %p") : "No existe informacion"%></b></td>
      </tr>
 
    </table>
