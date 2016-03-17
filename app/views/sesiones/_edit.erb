@@ -74,12 +74,12 @@
       <td align="right">
         <table>
           <tr>
-            <td>
-              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
-            </td>
-            <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "sesiones", :action => "show", :id => @sesion-%>
-            </td>
+              <td>
+                <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar"  />
+              </td>
+              <td>
+                <a href="/sesiones/show_window/<%=h @sesion.id%>" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+              </td>
           </tr>
         </table>
       </td>
