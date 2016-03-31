@@ -1,0 +1,72 @@
+<p>
+   <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "guardias_by_user", :id => @user, :t => generate_token}, :title => "Recargar"%>
+</p>
+
+
+<div class="titulocalendario">
+  <p>GUARDIAS DE:</p>
+  <p><%=@user.nombre_completo%></p>
+</div>
+
+
+
+  <div id="calendar">
+  <h2 id="month">
+    <%= link_to "<", {:month => (@date.beginning_of_month-1).strftime("%Y-%m")}, :class => "flecha_calendario" -%>
+    <%=h @date.strftime("%B DE %Y").upcase %>
+    <%= link_to ">", {:month => (@date.end_of_month+1).strftime("%Y-%m")}, :class => "flecha_calendario" -%>
+  </h2>
+    <!-- Historico de movimientos -->
+    <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 48%; margin: auto;">
+     <tr>
+          <td style="vertical-align: middle; width: 22%;">Día</td>
+          <td style="vertical-align: middle;">Registró</td>
+          <td style="vertical-align: middle;">&nbsp;</td>
+      </tr>
+      <%@movimientos.each do |m|%>
+        <tr>
+          <td style="vertical-align: middle;"><b><%=m.fecha_inicio.strftime("%d de %B de %Y")%></b></td>
+          <td style="vertical-align: middle;"><b><%=h (m.autorizo) ? User.find(m.autorizo).nombre_completo : "---"%></b></td>
+          <td style="vertical-align: middle;"><%=link_to "Eliminar", {:action => "cancel_permission", :id => m, :user => @user, :token => "guardias_action"}, :confirm => "¿Esta seguro que desea cancelar el registro?", :method => :delete, :class => 'boton', :title => "Cancelar Registro"-%></td>
+        </tr>
+      <%end%>
+    </table><br /><br />
+
+
+
+  <% if @movimientos.total_entries > @movimientos.per_page.to_i %>
+    <table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @movimientos%>
+          </div>
+          <%= will_paginate @movimientos %>
+        </div>
+      </td>
+    </tr>
+    </table>
+  <%end%>
+
+
+<div id="scroll">
+  <% form_tag :action => 'add_day_to_guardia', :user => @user do -%>
+    <table class="kolaval" width="30%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr style="background-color:gray; color:white">
+          <th colspan="2">
+              AGREGAR DIA
+          </th>
+      </tr>
+      <tr class="d1">
+          <th> <%=h select(:registro, :fecha, dias_habiles_anio_mes(@date.year, @date.month)) %></th>
+          <th class="boton"><%= submit_tag "Agregar", :onclick => "return comprobar();" %></th>
+      </tr>
+</table>
+<% end %>
+</div>
+
+<br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "show_users", :title => "Listado de usuarios"%><br />
+
+</div>
+

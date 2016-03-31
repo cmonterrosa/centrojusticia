@@ -231,6 +231,36 @@ class AdminController < ApplicationController
    @roles_no_incluidos ||= Role.find(:all, :conditions => ["id NOT IN (?)", @roles.map{|i|i.id}])
  end
 
+ def guardias_by_user
+   if @user = User.find(params[:id])
+      @guardia = Situacion.find_by_descripcion("GUARDIA")
+      @date = params[:month] ? Date.parse(params[:month].gsub('-', '/')) : Date.today
+      @movimientos = Movimiento.find(:all, :conditions => ["situacion_id = ? AND user_id = ? AND (YEAR(fecha_fin) = ? AND MONTH(fecha_fin) = ? )", @guardia.id, @user.id, @date.year, @date.month], :order => "fecha_fin").paginate(:page => params[:page], :per_page => 25)
+      render :partial => "guardias_by_user", :layout => "kolaval"
+   else
+     render :text => "Error, verifique con el administrador"
+   end
+ end
+
+ def add_day_to_guardia
+   @fecha = DateTime.parse(params[:registro][:fecha])
+   @user = User.find(params[:user])
+   @month=@fecha.month
+   @guardia = Situacion.find_by_descripcion("GUARDIA")
+   @guardia_existente = @movimientos = Movimiento.find(:first, :conditions => ["situacion_id = ? AND user_id = ? AND (? between fecha_inicio AND fecha_fin )", @guardia.id, @user.id, @fecha.strftime('%Y-%m-%d 10:00:00')], :order => "fecha_fin")
+   if @guardia_existente
+     flash[:warning] = "Ya existe una guardia registrada ese dia"
+   else
+     @movimiento = Movimiento.new(:situacion_id => @guardia.id,
+       :user_id => @user.id,
+       :fecha_inicio => DateTime.parse(@fecha.strftime('%Y-%m-%d') + " 08:00"),
+       :fecha_fin => DateTime.parse(@fecha.strftime('%Y-%m-%d') + " 12:00"),
+       :autorizo => current_user.id)
+     flash[:notice] = "Guardia registrada correctamente" if @movimiento.save
+   end
+   redirect_to :action => "guardias_by_user", :id => @user.id, :month => "#{@fecha.year}-#{@fecha.month}"
+ end
+
 
 
  def change_horario_estatus
@@ -355,7 +385,7 @@ end
 
  def add_permission_user
       @user = User.find(params[:id])
-      @situaciones = Situacion.find(:all, :conditions => ["descripcion not in (?)", ["DISPONIBLE", "EN SESION"]])
+      @situaciones = Situacion.find(:all, :conditions => ["descripcion not in (?)", ["DISPONIBLE", "EN SESION", "GUARDIA"]])
       @movimiento = Movimiento.new
       @movimiento.user_id = @user.id if @user
  end
@@ -392,7 +422,11 @@ end
    if @movimiento && @user
     flash[:notice] = ( @movimiento.destroy)? "Registro cancelado correctamente" : "Registro no pudo cancelarse, verifique"
    end
-   redirect_to :action => "permissions_user", :id => @user, :t => generate_token
+   if params[:token] && params[:token] = "guardias_action"
+      redirect_to :action => "guardias_by_user", :id => @user
+   else
+      redirect_to :action => "permissions_user", :id => @user, :t => generate_token
+   end
  end
 
  def redit_permission

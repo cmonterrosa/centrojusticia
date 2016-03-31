@@ -4,6 +4,7 @@
 include Security
 # Methods added to this helper will be available to all templates in the application.
 require 'fileutils'
+ require 'date'
 
 module ApplicationHelper
 
@@ -44,6 +45,22 @@ module ApplicationHelper
          return false
        end
     end
+  end
+
+
+
+def days_in_month(year = Time.now.year, month=Time.now.month)
+  (Date.new(year, 12, 31) << (12-month)).day
+end
+
+  def dias_habiles_anio_mes(year = Time.now.year, month=Time.now.month)
+    @habiles = {}
+    (1..days_in_month(year, month)).each do |d|
+      fecha = DateTime.civil(year, month, d)
+      @habiles[fecha.strftime("%A %d de %B")] = fecha unless inhabil?(fecha)
+     end
+    #return @habiles.sort{|a1,a2| a2[0]<=>a1[0]} unless @habiles.empty?
+    return @habiles.sort_by {|_key, value| value} unless @habiles.empty?
   end
 
 end

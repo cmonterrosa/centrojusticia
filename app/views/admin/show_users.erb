@@ -32,7 +32,7 @@
           <td style="vertical-align: middle;">IP</td>
         <%end%>
 
-        <td style="vertical-align: center;" colspan="5">Acciones</td>
+        <td style="vertical-align: center;" colspan="6">Acciones</td>
       </tr>
     <%clase=0%>
     <%@usuarios.each do |user|%>
@@ -86,6 +86,7 @@
                   <%end%>
             <%end%>
             <%unless user.has_role?("admin") || user.has_role?("direccion")%>
+                   <td style="vertical-align: middle;"><%=h (link_to "Guardias", {:action => "guardias_by_user", :controller => "admin", :id => user}, :title => "DETALLE DE GUARDIAS", :class => "fancybox fancybox.iframe boton") %></td>
                   <td style="vertical-align: middle;"><%=link_to "Histórico de Ausencias", {:action => "permissions_user", :controller => "admin", :id => user, :t => generate_token}, :class => 'boton'%></td>
             <%else%>
                   <td style="vertical-align: middle;">&nbsp;</td>
