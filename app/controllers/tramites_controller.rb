@@ -255,7 +255,7 @@ class TramitesController < ApplicationController
         @se_concluyo = false
         @tramite = Tramite.find(params[:id]) if params[:id]
         @concluido = Concluido.find_by_tramite_id(@tramite) if @tramite
-        if current_user.has_role?(:subdireccion) || current_user.has_role?(:admindireccion) || (@concluido && @concluido.user == current_user)
+        if @concluido && (current_user.has_role?(:subdireccion) || current_user.has_role?(:admindireccion) || (@concluido && @concluido.user == current_user))
           @se_concluyo = true if @concluido.destroy
           @estatu_concluido = Estatu.find_by_clave("tram-conc")
           @historico_estatus = Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id != ?", @tramite.id, @estatu_concluido.id], :order => "created_at DESC")
@@ -264,10 +264,11 @@ class TramitesController < ApplicationController
                 @old_concluidos = Historia.find(:all, :conditions => ["tramite_id = ? AND estatu_id = ?", @tramite.id, @estatu_concluido.id])
                 @old_concluidos.each{|c|c.destroy} unless @old_concluidos.empty?
           end
+          flash[:notice] = "Se liberó expediente: #{@tramite.numero_expediente}" if @se_concluyo
+        else
+          flash[:error] = "No se pudo liberar expediente, contacte al administrador" unless @se_concluyo
         end
-        flash[:notice] = "Se liberó expediente: #{@tramite.numero_expediente}" if @se_concluyo
-        flash[:error] = "No se pudo liberar expediente, contacte al administrador" unless @se_concluyo
-        redirect_to :controller => "tramites", :action => "list"
+          redirect_to :controller => "tramites", :action => "list"
       rescue ActiveRecord::RecordInvalid => invalid
           flash[:error] = invalid.record.errors.full_messages
           redirect_to :controller => "tramites", :action => "list"
