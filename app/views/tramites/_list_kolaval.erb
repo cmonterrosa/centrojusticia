@@ -102,8 +102,10 @@
         <%clase = invert_class(clase)%>
 
         <!-- Liberar expediente concluido -->
-         <%if (tramite.estatu_id == tramite_concluido.id || tramite.estatu_id == mecanismo_alternativo.id || tramite.estatu_id == resultado_sesion_capturado.id) && (current_user.has_role?("admindireccion") || current_user.has_role?("direccion") ||  current_user.has_role?("subdireccion"))%>
-             <td style="vertical-align: middle;"><%=h (link_to "Deshacer conclusión", {:controller => "tramites", :action => "concluir_undo", :id => tramite.id}, :confirm => "¿Está seguro que desea liberar expediente ya concluido?" , :class => "boton")%></td>
+        <% if Concluido.exists?(:tramite_id => tramite.id) %>
+              <%if (tramite.estatu_id == tramite_concluido.id || tramite.estatu_id == mecanismo_alternativo.id || tramite.estatu_id == resultado_sesion_capturado.id) && (current_user.has_role?("admindireccion") || current_user.has_role?("direccion") ||  current_user.has_role?("subdireccion"))%>
+                <td style="vertical-align: middle;"><%=h (link_to "Deshacer conclusión", {:controller => "tramites", :action => "concluir_undo", :id => tramite.id}, :confirm => "¿Está seguro que desea liberar expediente ya concluido?" , :class => "boton")%></td>
+              <%end%>
         <%end%>
 
 
