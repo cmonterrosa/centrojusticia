@@ -124,8 +124,10 @@ class CustomsController < ApplicationController
         folio_expediente, anio=@carpeta_atencion.split("/") if @carpeta_atencion
         @sesiones_mediador = Sesion.find(:all, :conditions => ["mediador_id = ? ", @user.id], :order => "fecha, hora, minutos, created_at")
         @sesiones_comediador = Sesion.find(:all, :conditions => ["comediador_id = ? AND (cancel IS NULL OR cancel=0)", @user.id], :order => "fecha, hora, minutos, created_at")
-        @tramites_ids =  @sesiones_mediador.map{|s|s.tramite_id} + @sesiones_comediador.map{|s|s.tramite_id}
-        
+        @tramites_concluidos =   Concluido.find(:all, :conditions => ["user_id = ?", @user.id])
+        @tramites_ids =  @sesiones_mediador.map{|s|s.tramite_id} + @sesiones_comediador.map{|s|s.tramite_id} + @tramites_concluidos.map{|t|t.tramite_id}
+
+
         ## Filtrado de tramites ###
         @tramites = (folio_expediente && anio)?  Tramite.find(:all, :conditions => ["folio_expediente =? AND anio=? AND id in (?)", folio_expediente, anio, @tramites_ids], :order => "anio DESC, folio_expediente DESC") : nil
         @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", @tramites_ids], :order => "anio DESC, folio_expediente DESC") if @tramites_ids
