@@ -1,4 +1,5 @@
 class UploadController < ApplicationController
+  require_role [:subdireccion, :especialistas, :direccion, :convenios, :jefeconvenios, :capacitacion]
   
   def index_convenios_all
     @uploaded_files = Adjunto.find(:all, :conditions => ["convenio_id IS NOT NULL"], :order => "created_at DESC").paginate(:page => params[:page], :per_page => 25)
