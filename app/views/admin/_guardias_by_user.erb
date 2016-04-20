@@ -12,9 +12,11 @@
 
   <div id="calendar">
   <h2 id="month">
+    <%= link_to "#{(@date.beginning_of_month-1).strftime("%B DE %Y ").upcase}", {:month => (@date.beginning_of_month-1).strftime("%Y-%m")}, :style=> "font-size: 14px;"-%>
     <%= link_to "<", {:month => (@date.beginning_of_month-1).strftime("%Y-%m")}, :class => "flecha_calendario" -%>
     <%=h @date.strftime("%B DE %Y").upcase %>
-    <%= link_to ">", {:month => (@date.end_of_month+1).strftime("%Y-%m")}, :class => "flecha_calendario" -%>
+    <%= link_to " > ", {:month => (@date.end_of_month+1).strftime("%Y-%m")}, :class => "flecha_calendario" -%>
+    <%= link_to "#{(@date.end_of_month+1).strftime("%B DE %Y").upcase}", {:month => (@date.end_of_month+1).strftime("%Y-%m")}, :style=> "font-size: 14px;" -%>
   </h2>
     <!-- Historico de movimientos -->
     <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 48%; margin: auto;">
