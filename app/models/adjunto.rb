@@ -84,6 +84,7 @@ class Adjunto < ActiveRecord::Base
 
       # write the file
       File.open( File.join(dir, filename), "wb") { |f| f.write(contents) }
+      self.update_attributes!(:activo => true)
     end
   end
 
@@ -96,8 +97,13 @@ class Adjunto < ActiveRecord::Base
     file_exists = File.exists?(@filename)
 
     if file_exists
-      File.delete(@filename)
+      #File.delete(@filename)
     end
+  end
+
+  def mark_as_deleted
+      file = self.dup
+      file.update_attributes!(:activo => false)
   end
 
   private
