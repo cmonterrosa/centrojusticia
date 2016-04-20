@@ -12,7 +12,7 @@ class UploadController < ApplicationController
   def docs_formacion
     @formacion = Formacion.find(params[:id])
     @empleado = @formacion.empleado if @formacion
-    @uploaded_files = @formacion.adjuntos
+    @uploaded_files = Adjunto.find(:all, :conditions => ["activo = ? AND formacion_id = ?", true, @formacion.id])
  end
 
   def new
@@ -51,7 +51,7 @@ class UploadController < ApplicationController
   def list_convenios
     @user = current_user
     @convenio = Convenio.find(params[:id]) if params[:id]
-    @adjuntos = Adjunto.find(:all, :conditions => ["convenio_id = ?", @convenio])
+    @adjuntos = Adjunto.find(:all, :conditions => ["activo = ? AND convenio_id = ?", true, @convenio])
     @adjunto = Adjunto.new
     unless @adjuntos.empty?
         return render(:partial => 'show_convenios', :layout => "only_jquery")
@@ -90,8 +90,8 @@ class UploadController < ApplicationController
       @convenio = @uploaded_file.convenio_id
       @adjuntos ||= Array.new
     end
-    if (current_user.has_role?(:subdireccion) || @uploaded_file.user == current_user) && (@uploaded_file.destroy)
-      @adjuntos = Adjunto.find(:all, :conditions => ["convenio_id = ?", @convenio]) if @convenio
+    if (@uploaded_file.user == current_user) && (@uploaded_file.mark_as_deleted)
+      @adjuntos = Adjunto.find(:all, :conditions => ["activo = ? AND convenio_id = ?", true, @convenio]) if @convenio
       flash[:notice] = "Convenio eliminado correctamente"
       return render(:partial => 'show_convenios', :layout => "only_jquery")
     else
@@ -109,7 +109,7 @@ class UploadController < ApplicationController
 
    def destroy
       @uploaded_file = Adjunto.find(params[:id])
-      flash[:notice] = (@uploaded_file.destroy) ?   "Archivo eliminado correctamente" :  "No se puedo eliminar, verifique"
+      flash[:notice] = (@uploaded_file.mark_as_deleted) ?   "Archivo eliminado correctamente" :  "No se puedo eliminar, verifique"
         if params[:token] == "formacion"
             redirect_to :action => "docs_formacion", :id => @uploaded_file.formacion.id
         else
