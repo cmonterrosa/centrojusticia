@@ -1,6 +1,6 @@
 class Convenio < ActiveRecord::Base
   belongs_to :tramite
-  has_many :adjuntos
+  has_many :adjuntos, :conditions => "activo = true"
   validates_uniqueness_of :folio, :scope => "tramite_id", :allow_blank => true, :message => "ya ha sido tomado"
   ## Callbacks ###
   before_save :generate_folio
@@ -32,7 +32,7 @@ class Convenio < ActiveRecord::Base
    def eliminar_adjuntos
      @adjuntos = Adjunto.find(:all, :conditions => ["convenio_id", self.id])
      @adjuntos.each do |a|
-       a.destroy
+       a.mark_as_deleted
      end
    end
 
