@@ -73,6 +73,7 @@ class UploadController < ApplicationController
     begin
       if @uploaded_file.valid?
           if @uploaded_file.save
+            write_log("Adjunto de Convenio creado correctamente: #{@uploaded_file.inspect}", current_user)
             flash[:notice] = "Evidencia cargada correctamente"
             redirect_to :action => "list_convenios", :id => @convenio
           end
@@ -92,6 +93,7 @@ class UploadController < ApplicationController
       @adjuntos ||= Array.new
     end
     if (@uploaded_file.user == current_user) && (@uploaded_file.mark_as_deleted)
+      write_log("Adjunto de convenio eliminado correctamente: #{@uploaded_file.inspect}", current_user)
       @adjuntos = Adjunto.find(:all, :conditions => ["activo = ? AND convenio_id = ?", true, @convenio]) if @convenio
       flash[:notice] = "Convenio eliminado correctamente"
       return render(:partial => 'show_convenios', :layout => "only_jquery")
