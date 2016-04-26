@@ -51,10 +51,11 @@ class ConveniosController < ApplicationController
   def destroy
      @convenio = Convenio.find(params[:id]) if params[:id]
      @tramite = Tramite.find(params[:t]) if params[:t]
-     if @convenio && @convenio.destroy
+     sucess = @convenio && @convenio.especialista_id == current_user.id 
+     if sucess && @convenio.destroy
        flash[:notice] = "Convenio eliminado correctamente"
      else
-       flash[:error] = "No se pudo eliminar, verifique"
+       flash[:error] = "No se pudo eliminar, verifique que tenga privilegios de hacerlo"
      end
      redirect_to :action => "list_by_tramite", :id => @tramite
   end
