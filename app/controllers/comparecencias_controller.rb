@@ -208,6 +208,7 @@ class ComparecenciasController < ApplicationController
       @comparecencia.user = current_user unless @comparecencia.user
       
       if @comparecencia.save
+       write_log("Comparecencia guardada correctamente: #{@comparecencia.inspect}", current_user)
        unless current_user.has_role?(:especialistas_externos)
          @tramite.generar_folio_expediente!
           flash[:notice] = "Guardado correctamente, Número de Expediente: #{@tramite.numero_expediente}"
@@ -216,8 +217,8 @@ class ComparecenciasController < ApplicationController
        end
       redirect_to :action => "show", :id => @tramite
     else
-      flash[:error] = "No se pudo guardar, verifique"
-     # render :action => "new_or_edit"
+        flash[:error] = "No se pudo guardar, verifique"
+        # render :action => "new_or_edit"
        render :action => "show_informacion_general"
     end
   end

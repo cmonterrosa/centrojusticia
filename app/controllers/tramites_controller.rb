@@ -241,6 +241,7 @@ class TramitesController < ApplicationController
     @concluido.user = current_user
     if @concluido.save
       @tramite.update_estatus!("tram-conc",current_user)
+      write_log("Expediente concluido correctamente: #{@concluido.inspect}", current_user)
       flash[:notice] = "Expediente concluido correctamente"
        #render :text => "<h2 style='color: green;'>Expediente concluido correctamente</h2>"
     else

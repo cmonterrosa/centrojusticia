@@ -96,6 +96,13 @@ class ApplicationController < ActionController::Base
     return iso
  end
 
+ def write_log(text=nil, user=nil)
+   user = (user) ? user.nombre_completo : "DESCONOCIDO"
+   text = (text) ? text.upcase : ""
+   Rails.logger.info "=> (#{Time.now.strftime('%d/%m/%Y  %H:%M:%S')}" +  "/  USUARIO: #{user}) - " + text
+   #Rails.logger.debug "=> (#{Time.now.strftime('%d/%m/%Y  %H:%M:%S')}" +  "/  USUARIO: #{user}) - " + text
+ end
+
  def clean_string(string)
    (string) ? (return string.to_s.gsub(/\$/, '\$').gsub(/\"/, '\"')) : (return "")
  end

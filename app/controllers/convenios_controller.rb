@@ -51,8 +51,11 @@ class ConveniosController < ApplicationController
   def destroy
      @convenio = Convenio.find(params[:id]) if params[:id]
      @tramite = Tramite.find(params[:t]) if params[:t]
-     sucess = @convenio && @convenio.especialista_id == current_user.id 
+     sucess = @convenio && @convenio.especialista_id == current_user.id
+     sucess ||= @convenio && current_user.has_role?(:admin)
+     @deleted = @convenio.dup
      if sucess && @convenio.destroy
+       write_log("Convenio eliminado correctamente: #{@deleted.inspect}", current_user)
        flash[:notice] = "Convenio eliminado correctamente"
      else
        flash[:error] = "No se pudo eliminar, verifique que tenga privilegios de hacerlo"
