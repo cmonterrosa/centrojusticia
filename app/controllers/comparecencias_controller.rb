@@ -3,7 +3,7 @@
 include SendDocHelper
 class ComparecenciasController < ApplicationController
   layout 'kolaval'
-  require_role [:subdireccion, :especialistas, :especialistas_externos, :convenios, :oficinasubdireccion, :direccion, :captura_inicios_externos]
+  require_role [:subdireccion, :especialistas, :especialistas_externos, :convenios, :oficinasubdireccion, :direccion, :captura_inicios_externos, :admindireccion]
   
 
   def show
@@ -351,6 +351,7 @@ class ComparecenciasController < ApplicationController
        @tramite = @comparecencia.tramite
        #@margen =  (120 * 60.0) # 120 Minutos
        @margen = ((60 * 60) * 24) * 7
+       @partial = params[:token] && params[:token] == "partial"
        if Time.now < (@comparecencia.created_at + @margen) || (Time.now < (@comparecencia.updated_at + @margen))
           @participantes = @comparecencia.participantes
           # start destroy #
@@ -360,11 +361,12 @@ class ComparecenciasController < ApplicationController
           @tramite.update_estatus!("no-compar",current_user)
           @tramite.update_attributes!(:folio_expediente => nil)
           flash[:notice] = "Registro actualizado correctamente"
-          redirect_to :action => "list_by_user"
-       else
-          flash[:notice] = "No se pudo eliminar, tiene hasta 7 días después de concluir"
-          redirect_to :action => "list_by_user"
-       end
+          msj = "<h3 class='formee-msg-success'>#{flash[:notice]}</h3>"
+      else
+          flash[:error] = "No se pudo cambiar a solo orientacion, tiene hasta 7 días después de concluir, contacte al administrador"
+          msj = "<h3 class='formee-msg-error'>#{flash[:error]}</h3>"
+      end
+      (@partial)? (render :text => msj ) : (redirect_to :action => "list_by_user")
      end
 
 end

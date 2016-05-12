@@ -59,7 +59,7 @@
    </p>
 
 
-<div class="container">
+<div class="formee container">
   
  <div class="formee-msg-info">
     <h3>Información importante</h3>
@@ -137,14 +137,14 @@
          </div>
       </div>
       
-      <div class="grid-3-12">
+      <div class="grid-4-12">
         <label style=" font-weight: bold;">Nombre(s): <em class="formee-req">*</em></label>
          <div class="grid-12-12">
          <%= f.text_field :nombre, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :onKeyPress => "return CharNum(event, 'letra');", :required => true, :size => 32%>
          </div>
       </div>
 
-       <div class="grid-3-12">
+       <div class="grid-2-12">
         <label style=" font-weight: bold;">Sexo: <em class="formee-req">*</em></label>
         <div class="grid-12-12">
             <%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}, :include_blank => true) %>
@@ -156,14 +156,14 @@
      
       <!-- tercera linea -->
 
-      <div class="grid-3-12">
+      <div class="grid-5-12">
         <label style=" font-weight: bold;">Dirección: <em class="formee-req">*</em></label>
          <div class="grid-12-12">
                <%= f.text_area :direccion, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :class => "text", :size => "28x7", :required => true%>
          </div>
        </div>
 
-        <div class="grid-8-12">
+        <div class="grid-7-12">
         <label style=" font-weight: bold;">País:</label>
          <div class="grid-12-12">
             <%default_pais =Pais.find(:first, :conditions => ["clave = ? ", 'MX'])%>
@@ -180,7 +180,7 @@
          </div>
       </div>
 
-      <div class="grid-3-12">
+      <div class="grid-4-12">
         <label style=" font-weight: bold;">Teléfono:</label>
          <div class="grid-12-12">
             <%= f.text_field :telefono, :onKeyPress => "return CharNum(event, 'numero');", :class => "text", :size => 19%>
@@ -196,7 +196,7 @@
 
 
      <!-- cuarta linea --->
-      <div class="grid-12-12">
+      <div class="grid-9-12">
         <label style=" font-weight: bold;">Observaciones y/o comentarios: </label>
         <div class="grid-12-12">
             <%= f.text_area :observaciones, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "88x4"%>        </div>
