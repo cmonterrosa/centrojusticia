@@ -34,9 +34,7 @@
             <!-- Convertir si aún no hay más expedientes -->
             <%ultimo_folio_anio = Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", Time.now.year]) %>
             <%if comparecencia.tramite.anio == Time.now.year.to_s && comparecencia.tramite.folio_expediente == ultimo_folio_anio.to_i%>
-                <!--
-                 <td style="vertical-align: middle;"><=link_to "Cambiar a orientación", {:controller => "comparecencias", :action => "change_to_orientacion", :id => comparecencia}, :class => 'boton', :confirm => "¿Esá seguro que desea cambiar a orientación, no podrá deshacer la acción?"%></td>
-                -->
+                <td style="vertical-align: middle;"><%=link_to "Cambiar a orientación", {:controller => "comparecencias", :action => "change_to_orientacion", :id => comparecencia}, :class => 'boton', :confirm => "¿Esá seguro que desea cambiar a orientación, no podrá deshacer la acción?"%></td>
             <%end%>
             <!--
               <td style="vertical-align: middle;"><=link_to "Trámite", {:controller => "tramites", :action => "menu", :id => comparecencia.tramite}, :class => 'boton'%></td>
