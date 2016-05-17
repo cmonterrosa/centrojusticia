@@ -91,7 +91,7 @@ class ComparecenciasController < ApplicationController
        param["P_TELEFONO_CASA"]={:tipo=>"String", :valor=>@involucrado.telefono_particular}
        param["P_TELEFONO_TRABAJO"]={:tipo=>"String", :valor=>@involucrado.telefono_celular_aux}
        param["P_TELEFONO_CELULAR"]={:tipo=>"String", :valor=>@involucrado.telefono_celular}
-       param["P_CORREO_ELECTRONICO"]={:tipo=>"String", :valor=>@involucrado.correo}
+       param["P_CORREO"]={:tipo=>"String", :valor=>@involucrado.correo}
        param["P_OBSERVACIONES"]={:tipo=>"String", :valor=>clean_string(@involucrado.observaciones)}
        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio_ubicacion)}
        param["P_DOMICILIO_LABORAL"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio_laboral)}
