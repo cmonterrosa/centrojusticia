@@ -69,6 +69,9 @@ table.table1{
 
 <table width="100%">
   <tr><th align="center"><%=SUBDIRECCION.upcase%></th></tr>
+  <%unless @tipos_sesiones.empty?%>
+      <tr><th align="center" style="font-size: 8px;">TIPOS: <%=h @tipos_sesiones.map{|t|t.descripcion}.join(" , ")%></th></tr>
+  <%end%>
 </table>
 
 <div style="font-size: 11px; color: black;">
@@ -96,9 +99,9 @@ table.table1{
               <%@salas.each do |sala|%>
 
              <%if @type%>
-              <%sesion = Sesion.find(:first, :conditions => ["(cancel is NULL OR cancel=0) AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) ", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id])%>
+              <%sesion = Sesion.find(:first, :conditions => ["(cancel is NULL OR cancel=0) AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) AND tiposesion_id in (?)", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id, @tipos_sesiones])%>
              <%else%>
-              <%sesion = Sesion.find(:first, :conditions => ["(cancel is NULL OR cancel=0) AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
+              <%sesion = Sesion.find(:first, :conditions => ["(cancel is NULL OR cancel=0) AND fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND tiposesion_id in (?)", @fecha, horario.hora, horario.minutos, sala.id, @tipos_sesiones])%>
              <%end%>
 
                   <%if sesion%>
