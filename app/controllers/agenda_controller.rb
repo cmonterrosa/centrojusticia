@@ -101,8 +101,8 @@ class AgendaController < ApplicationController
   end
 
   #### IMPRESION DE AGENDA EN FORMATO PDF ####
-  
-  def daily_show_pdf
+
+  def menu_impresion
     @origin=params[:origin] if params[:origin]
     @type = params[:type] if params[:type]
     @titulo = (@type == 'custom') ? "Agenda de Sesiones para #{current_user.nombre_completo}" : "Agenda de Sesiones General"
@@ -115,6 +115,30 @@ class AgendaController < ApplicationController
        @horarios = Horario.find(:all, :group => "hora,minutos")
     else
       redirect_to :action => @accion
+    end
+  end
+
+  def daily_show_pdf
+    @origin=params[:origin] if params[:origin]
+    @type = params[:type] if params[:type]
+    @tipos_sesiones = Tiposesion.find(params[:tipos][:sesiones])  if params[:tipos] && params[:tipos][:sesiones]
+    @titulo = (@type == 'custom') ? "Agenda de Sesiones para #{current_user.nombre_completo}" : "Agenda de Sesiones General"
+    @impreso_por = (current_user) ? "| Impreso por : #{current_user.nombre_completo}" : ""
+    unless (@tipos_sesiones.nil? || @tipos_sesiones.empty?)
+       if  params[:year] =~ /^\d{4}$/ && params[:month] =~ /^\d{1,2}$/ && params[:day] =~ /^\d{1,2}$/
+          @fecha = DateTime.parse("#{params[:year]}-#{params[:month]}-#{params[:day]}")
+          @before = @fecha.yesterday
+          @after = @fecha.tomorrow
+          @salas = Sala.find(:all, :order => "descripcion")
+          @horarios = Horario.find(:all, :group => "hora,minutos")
+      else
+          flash[:notice] = "verifique las fechas estén correctas"
+          redirect_to :action => @accion
+      end
+    else
+      flash[:warning] = "Seleccione al menos un tipo de sesión"
+      redirect_to(:back)
+      #redirect_to(:action => "daily_show", :origin => @origin, :type => @type, :year => params[:year], :month => params[:month], :day => params[:day])
     end
   end
 

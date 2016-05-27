@@ -1,0 +1,30 @@
+<div class="titulocalendario">
+  <p>IMPRESIÓN DE AGENDA DEL DÍA: <%=@fecha.strftime("%d  de %B de %Y").upcase%></p>
+</div>
+
+<div id="divlista">
+  <table class="tablakolaval" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 44%; margin: auto;">
+         <tr>
+           <td bgcolor="#E8E8E8">SELECCIONE EL TIPO DE SESION</td>
+         </tr>
+           <% form_tag( {:action => "daily_show_pdf.pdf", :day => @fecha.day, :month => @fecha.month, :year => @fecha.year, :origin => @origin, :type => @type}, :id => "seleccion_tipo") do -%>
+
+                <% for tipo in Tiposesion.find(:all) %>
+                    <tr align="center" class="d1">
+                        <td bgcolor="#f3f3f3" align="left">
+                            <%= check_box_tag "tipos[sesiones][]", tipo.id %>
+                            <%= tipo.descripcion %>
+                        </td>
+                    </tr>
+                <%end%>
+
+                           <!-- boton final -->
+                <tr>
+                    <td colspan="2" align="center" style="text-align: center;"><%= submit_tag 'IMPRIMIR' %></td>
+                </tr>
+
+
+          <%end%>
+
+   </table>
+</div>
