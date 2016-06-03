@@ -676,7 +676,28 @@ class TramitesController < ApplicationController
       render :action => "new_or_edit"
     end
   end
-  
+
+ def cambiar_folio_expediente
+   select_object
+ end
+
+ def update_folio_expediente
+   select_object if current_user.has_role?(:admin)
+   begin
+       @tramite_anterior = @tramite.clone
+       @tramite.update_attributes(params[:tramite])
+       if @tramite.save
+          write_log("NUMERO EXPEDIENTE ANTERIOR: #{@tramite_anterior.numero_expediente}  Y NUMERO EXPEDIENTE NUEVO: #{@tramite.numero_expediente}", current_user)
+          flash[:notice] = "Folio de trámite actualizado correctamente"
+       else
+          flash[:error] = "No se pudo guardar expediente, verifique los campos"
+       end
+    rescue
+        flash[:error] = "Folio ya existe, intente de nuevo"
+    end
+    redirect_to(:back)
+ end
+
 
 
 protected
@@ -691,6 +712,15 @@ protected
     url=(action && !params.empty?)? "/tramites/#{action}?#{params.to_param}" : {:action => "list"}
     redirect_to url
   end
+
+   def select_object
+        begin
+            @tramite =  Tramite.find(params[:id])
+        rescue ActiveRecord::RecordNotFound
+            flash[:error] = "No se encontro tramite, verifique o contacte al administrador"
+            redirect_to  :action => "index"
+        end
+   end
 
   #### REPORTE PDF #####
 

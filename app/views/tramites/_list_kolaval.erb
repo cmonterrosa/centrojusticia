@@ -56,7 +56,7 @@
     <tr>
        <%if current_user.has_role?("admin")%>
           <td style="vertical-align: middle; text-align: 'center';" width="2%"><%=link_to "x", {:action => "destroy", :controller => "tramites", :id => tramite}, :confirm => "¿Está seguro que desea eliminar el registro?" %></td>
-       <%end%>
+      <%end%>
 
         <%if tramite.fechahora%>
           <td style="vertical-align: middle; text-align: 'center';" width="3%"><%=link_to image_tag("kolaval/ico-print-tramite.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')-%></td>
@@ -73,7 +73,16 @@
          <%end%>
        </td>
        <td><%=h "##{tramite.folio_integrado}"%></td>
-       <td style="vertical-align: middle;" align="center" width="9%"><b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b></td>
+       <td style="vertical-align: middle;" align="center" width="9%">
+         <%if tramite.numero_expediente%>
+            <!-- Si existe registro de comparecencia -->
+              <%if current_user.has_role?(:admin) && Comparecencia.exists?(:tramite_id => tramite.id)%>
+                  <%=h (link_to tramite.numero_expediente, {:controller => "tramites", :action => "cambiar_folio_expediente", :id => tramite}, :confirm => "¿Está seguro que desea modificar el folio de expediente?", :style=> "font-weight: bold;")%>
+              <%else%>
+                    <b><%=h (tramite.numero_expediente)? tramite.numero_expediente : ""%></b>
+              <%end%>
+          <%end%>
+      </td>
        
        <!-- Materia -->
        <%if (current_user.has_role?(:convenios) || current_user.has_role?(:jefeconvenios) || current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) ) %>

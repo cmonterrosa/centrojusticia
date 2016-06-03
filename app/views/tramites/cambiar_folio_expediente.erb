@@ -1,0 +1,47 @@
+<p><%=link_to '<< REGRESAR A LISTADO DE TRAMITES', :action => "list"%></p><br />
+
+<div class="container">
+<% form_for :tramite, @tramite, :url => { :action => "update_folio_expediente", :controller => "tramites", :id => @tramite}, :html => {:class => "formee", :style=>"width: 70%; margin: auto;"} do |f| -%>
+  <fieldset>
+    <legend>CAMBIAR&nbsp;FOLIO&nbsp;DE&nbsp;EXPEDIENTE</legend>
+      <div class="grid-form">
+          <%= error_messages_for :tramite %>
+      </div>
+
+      <div class="grid-6-12">
+        <div class="grid-6-12">
+          <label><b>AÑO: </b><em class="formee-req">*</em></label>
+        </div>
+        <div class="grid-6-12"><%=f.text_field :anio%></div>
+      </div>
+      <div class="grid-6-12">
+        <div class="grid-6-12">
+          <label><b>FOLIO: </b><em class="formee-req">*</em></label>
+        </div>
+        <div class="grid-6-12"><%=f.text_field :folio_expediente%></div>
+      </div>
+
+     <div class="grid-12-12 clear"></div>
+
+      <div class="grid-form-login">
+        <input class="right" type="submit" title="GUARDAR" value="GUARDAR" />
+      </div>
+ </fieldset>
+<%end%>
+</div>
+
+<!-- Validaciones -->
+<script type="text/javascript">
+  var folio = new LiveValidation( 'tramite_folio_expediente', {onlyOnSubmit: true} );
+  folio.add( Validate.Presence );
+  var anio = new LiveValidation( 'tramite_anio', {onlyOnSubmit: true} );
+  anio.add( Validate.Presence );
+</script>
+
+
+
+
+
+
+
+
