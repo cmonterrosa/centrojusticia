@@ -4,8 +4,20 @@
 <div class="container">
   <div class="formee">
     <table align="center" class="subprincipal" width="80%" cellspacing="5" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+      <% if @tramite %>
+          <tr style="font-size: 15px;">
+            <td align="center" >
+              NÚMERO DE EXPEDIENTE: <%=@tramite.numero_expediente%>
+            </td>
+          </tr>
+      <%end%>
+
       <tr class="tdiagnostico">
-        <td align="center" ><label>DETALLE&nbsp;DE&nbsp;ARCHIVOS&nbsp;ADJUNTOS&nbsp;DEL&nbsp;CONVENIO: </label></td>
+        <td align="center" >
+          <label>
+              DETALLE&nbsp;DE&nbsp;ARCHIVOS&nbsp;ADJUNTOS&nbsp;DEL&nbsp;CONVENIO:
+          </label>
+        </td>
       </tr>
     </table>
     <br />
@@ -29,7 +41,9 @@
               <td style="vertical-align: middle;"><%=h a.created_at.strftime("%d/%m/%Y - %H:%M")%></td>
               <td style="vertical-align: middle;"><%=h (a.user)? a.user.nombre_completo : ''%></td>
               <td style="vertical-align: middle;"><%= button_to 'Visualizar', {:action => "download", :id => a}, :method => :post, :class => 'boton', :style => "background: green; font-size: 11px;", :html => { :target => "_blank"} %></td>
-              <td style="vertical-align: middle;"><%= button_to 'Eliminar', {:action => "destroy_convenio", :id => a}, :confirm => '¿Esta seguro que desea eliminar el convenio?', :method => :post, :class => 'boton', :style => "background: red; font-size: 11px;" %></td>
+              <%if a.user == current_user%>
+                  <td style="vertical-align: middle;"><%= button_to 'Eliminar', {:action => "destroy_convenio", :id => a}, :confirm => '¿Esta seguro que desea eliminar el convenio?', :method => :post, :class => 'boton', :style => "background: red; font-size: 11px;" %></td>
+              <%end%>
             </tr>
             <%contador+=1%>
           <%end%>
