@@ -53,7 +53,7 @@ class CustomsController < ApplicationController
   def activity
     @usuario = current_user
     @actividades = Movimiento.find(:all, :conditions => ["user_id = ? AND fecha_inicio > ?", current_user.id, Time.now], :order => "fecha_inicio DESC")
-    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion)
+    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) || current_user.has_role?(:adminusuarios)
       @especialistas = Role.find_by_name("especialistas").todos_usuarios.sort { |a, b| a.expedientes_sin_concluir.size <=> b.expedientes_sin_concluir.size }
     end
   end
