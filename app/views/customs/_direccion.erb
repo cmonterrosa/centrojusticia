@@ -1,59 +1,83 @@
+<!DOCTYPE html>
+
 <%= render :partial => "barra_superior"%>
 
+<html lang="en" class="no-js">
+	<head>
+            <%= stylesheet_link_tag "menu_desplegable/default.css"%>
+            <%= stylesheet_link_tag "menu_desplegable/component.css"%>
+            <%= javascript_include_tag 'menu_desplegable/modernizr.custom.js'%>
+        </head>
+	<body>
+		<div class="container">
+                        <div class="main">
+				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
+					<div class="cbp-hsinner">
+						<ul class="cbp-hsmenu">
+							<li>
+								 <!-- Tramites -->
+                                                                 <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
+								<ul class="cbp-hssubmenu">
+									<li><%=link_to image_tag('kolaval/ico-iniciartramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-iniciartramites.jpg") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Iniciar trámite"%></li>
+                                                                         <li><%=link_to image_tag('kolaval/ico-tramit-otras.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramit-otras.jpg") , {:action => "index", :controller => "extraordinaria"}, :title => "Trámites de otras instituciones"%></li>
+                                                                         <li><%=link_to image_tag('kolaval/ico-tramites-part.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites-part.jpg") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito de particulares"%></li>
+                                                                         <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
+                                                                         <li><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "index", :controller => "invitaciones"}, :title => "Invitaciones"%></li>
+                                                                </ul>
+							</li>
 
-<table width="50%" border="0" cellspacing="0" cellpadding="0">
-  <tr align="center">
-      <td>
-        <a href="/tramites" title="Trámites">
-          <img src="/images/iconos/tramites.png" width="128" height="128" alt="tramites" />
-        </a>
-      </td>
+                                                        <!-- Agenda -->
+                                                        <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
+                                                        </li>
+
+                                                        <%=render :partial => "librocontrol"%>
+                                                        <%=render :partial => "invitaciones"%>
+
+                                                        <!-- Convenios -->
+                                                          <li>
+                                                            <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%></ul>
+                                                          </li>
 
 
-       <td>
-         <a href="/orientacions/show_especialistas_disponibles" title="Especialistas disponibles">
-           <img src="/images/iconos/personal.png" width="128" height="128" alt="especialistas" />
-         </a>
-       </td>
+                                                        <!-- agenda -->
+							<!--
+                                                        <li>
 
-        <td>
-         <a href="/admin/atenciones_no_brindadas" title="Atención no brindada">
-           <img src="/images/iconos/noatencionbrindada.png" width="128" height="128" alt="atencion no brindada" />
-         </a>
-        </td>
-  </tr>
-  <tr align="center">
-     <td class="menu" align="center">Trámites</td>
-     <td class="menu" align="center">Especialistas disponibles</td>
-     <td class="menu" align="center">Atención no brindada</td>
-  </tr>
-  <tr>
-    <th>&nbsp;</th>
-    <th>&nbsp;</th>
-  </tr>
-  <tr align="center">
-       <td>
-         <a href="/admin/show_users" title="Administración de Personal">
-           <img src="/images/iconos/perfiles2.png" width="128" height="128" alt="rh" />
-         </a>
-       </td>
+                                                                <=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%>
+								<ul class="cbp-hssubmenu cbp-hssub-rows">
+									<li><a href="#"><img src="/images/menu_desplegable/7.png" alt="img07"/><span>Lovely Slurp</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/8.png" alt="img08"/><span>Lemony Grappa</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/9.png" alt="img09"/><span>Eggy Liquor</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/10.png" alt="img10"/><span>Fresh Juice</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/1.png" alt="img01"/><span>Delicate Wine</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/2.png" alt="img02"/><span>Fine Spirit</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/3.png" alt="img03"/><span>Heavenly Ale</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/4.png" alt="img04"/><span>Juicy Lemonade</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/5.png" alt="img05"/><span>Wise Whiskey</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/6.png" alt="img06"/><span>Sweet Rum</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/1.png" alt="img01"/><span>Delicate Wine</span></a></li>
+									<li><a href="#"><img src="/images/menu_desplegable/2.png" alt="img02"/><span>Fine Spirit</span></a></li>
+								</ul>
+							</li>
+                                                         -->
 
-       <td>
-        <a href="/agenda/management" title="Calendario">
-          <img src="/images/iconos/calendario.png" width="128" height="128" alt="agenda" />
-        </a>
-       </td>
+                                                        <li>
+                                                          <!-- Estadistica -->
+                                                          <ul><%=link_to image_tag('kolaval/ico-estadistica.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-estadistica.jpg") , {:action => "index", :controller => "estadisticas"}, :title => "Estadística"%></ul>
+                                                        </li>
 
-       <td>
-         <a href="/estadisticas" title="Seguimiento de información estadística del CEJA">
-           <img src="/images/iconos/estadisticas2.png" width="128" height="128" alt="estadisticas" />
-         </a>
-       </td>
-  </tr>
+                                                </ul>
+					</div>
+				</nav>
+			</div>
+		</div>
+		<script src="/javascripts/menu_desplegable/cbpHorizontalSlideOutMenu.min.js"></script>
+		<script>
+			var menu = new cbpHorizontalSlideOutMenu( document.getElementById( 'cbp-hsmenu-wrapper' ) );
+		</script>
+	</body>
+</html>
 
-  <tr>
-      <td class="menu" align="center">Control de Personal</td>
-      <td class="menu" align="center">Agenda</td>
-      <td class="menu" align="center">Estadísticas</td>
-  </tr>
-</table>
+
+
