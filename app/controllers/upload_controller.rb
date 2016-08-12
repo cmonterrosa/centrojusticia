@@ -52,7 +52,8 @@ class UploadController < ApplicationController
   def list_convenios
     @user = current_user
     @convenio = Convenio.find(params[:id]) if params[:id]
-    @adjuntos = Adjunto.find(:all, :conditions => ["(activo = ? or activo IS NOT NULL) AND convenio_id = ?", true, @convenio])
+    @tramite = @convenio.tramite
+    @adjuntos = Adjunto.find(:all, :conditions => ["convenio_id = ?", @convenio])
     @adjunto = Adjunto.new
     unless @adjuntos.empty?
         return render(:partial => 'show_convenios', :layout => "only_jquery")
