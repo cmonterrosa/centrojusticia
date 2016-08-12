@@ -45,7 +45,7 @@
 
               <td style="vertical-align: middle;"><%=contador%></td>
               <td style="vertical-align: middle;"><%=h (a.descripcion) ? a.descripcion : "---"%></td>
-              <td style="vertical-align: middle;"><%=h a.created_at.strftime("%d/%m/%Y - %H:%M")%></td>
+              <td style="vertical-align: middle;"><%=h a.created_at.strftime("%d/%m/%Y - %H:%M:%S %p")%></td>
               <td style="vertical-align: middle;"><%=h (a.user)? a.user.nombre_completo : ''%></td>
               <td style="vertical-align: middle;"><%= button_to 'Visualizar', {:action => "download", :id => a}, :method => :post, :class => 'boton', :style => "background: green; font-size: 11px;", :html => { :target => "_blank"} %></td>
               <%if a.user == current_user%>
