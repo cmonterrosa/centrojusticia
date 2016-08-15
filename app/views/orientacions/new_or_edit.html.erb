@@ -49,7 +49,7 @@
     <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%>
 
    <%if current_user.has_role?("ranking")%>
-    | <%=link_to image_tag('iconos_estadisticos/carga_trabajo.png', :size => "54x54", :mouseover => "iconos_estadisticos/carga_trabajo_2.png") , {:action => "show_cargas_trabajo"}, :title => "Cargas de trabajo", :class => "fancybox fancybox.iframe"%>
+    | <%=link_to image_tag('iconos_estadisticos/carga_trabajo.png', :size => "54x54", :mouseover => "iconos_estadisticos/carga_trabajo_2.png") , {:action => "show_siguientes_especialistas"}, :title => "Listado de especialistas siguientes", :class => "fancybox fancybox.iframe"%>
    <%end%>
 
 
@@ -88,7 +88,7 @@
 
     <%unless @especialista%>
       <div class="grid-8-12">
-        <label style=" font-weight: bold;">Estado | Especialista  | Actividad en semana actual | Reciente (últimos 14 minutos)<em class="formee-req">*</em></label>
+        <label style=" font-weight: bold;"> Estado Actual      |      Especialista      |   Actividad en semana actual     |    última orientacion/comparecencia<em class="formee-req">*</em></label>
 
 
            <%if current_user.has_role?(:ranking)%>

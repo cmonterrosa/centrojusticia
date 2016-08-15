@@ -1,0 +1,69 @@
+<div id="cargastrabajo" style="height: 100%;width: 100%;">
+
+  <div class="ultima_conexion" style="text-align: center; font-size: 17px;">
+      <b>Ultima actualización: <%=Time.now.strftime("%d DE %B DE %Y   /  %H:%M:%S %p").upcase%></b>
+  </div><br />
+
+  <!-- contenido -->
+  <div id="monitor">
+      <table  border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 99%; font-family: 'OpenSans' ">
+
+      <tr>
+        <td style="vertical-align: middle;" width="5%" align="center">Orden</td>
+        <%if current_user && current_user.has_role?(:admin)%>
+          <td style="vertical-align: middle;" width="5%" align="center">Puntaje</td>
+        <%end%>
+        <td style="vertical-align: middle;" width="30%">Especialista</td>
+        <td style="vertical-align: middle;" width="10%" align="center">Semana actual</td>
+        <td style="vertical-align: middle;" width="10%" align="center">Mes actual</td>
+        <td style="vertical-align: middle;" width="15%" align="center">Última orientación/comparecencia</td>
+        <td style="vertical-align: middle;" width="15%" align="center">Estatus actual</td>
+      </tr>
+
+      <%contador=1%>
+      <%@especialistas_semana.each do |e|%>
+        
+   <%
+      case e.estatus_actual
+        when 'DISPONIBLE'
+          background_style = 'background: #00cc44'
+        when 'EN SESION'
+          background_style = 'background:  #e65c00'
+        when /^SESION PROXIMA \(\d{1,2}:\d{1,2}\s(AM|PM)\)$/
+          background_style = 'background: #f3db6a'
+      when 'GUARDIA'
+          background_style='background: #99e6e6;'
+      else
+        background_style=''
+      end
+   %>
+
+       <tr style="<%=h background_style%>">
+          <td style="vertical-align: middle;"><%=contador%></td>
+          <%if current_user && current_user.has_role?(:admin)%>
+              <td style="vertical-align: middle;"><%=h "%.4f" % e.puntaje_final%></td>
+          <%end%>
+          <td style="vertical-align: middle;"><%=h(e.nombre_completo)%></td>
+
+          <!-- semana -->
+          <td style="vertical-align: middle;" style="text-align: center;">
+                 <%=h(e.puntaje_semanal.to_i)%>
+          </td>
+
+          <!-- mes -->
+          <td style="vertical-align: middle;">
+                <%=h(e.puntaje_mensual)%>
+          </td>
+
+          <!-- ultima actividad -->
+          <td style="vertical-align: middle;"><%=h (e.ultima_orientacion)? e.ultima_orientacion.updated_at.strftime("%d/%m/%Y - %H:%M:%S %p") : '--'%></td>
+
+          <!-- estatus -->
+          <td style="vertical-align: middle;"><%=h e.estatus_actual%></td>
+            <%contador+=1%>
+          </tr>
+    <%end%>
+    </table>
+</div>
+</div>
+

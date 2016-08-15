@@ -1,0 +1,30 @@
+<div class=" encabezado titulocalendario">
+    <p style=" font-weight: bold;">LISTA ORDENADA DE ESPECIALISTAS QUE DEBEN ATENDER ORIENTACIONES</p>
+</div>
+
+ <div class="titulocalendario">
+    <p align="center">
+      <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "show_siguientes_especialistas"}, :title => "Recargar"%>
+
+      <%if current_user && current_user.has_role?(:admin)%>
+          <%= link_to image_tag("kolaval/ico-print.jpg", :border =>0) , {:action => "print_cargas_trabajo", :id => "#{current_user.id}.pdf", :alt => "Impresión", :target => "_blank"}, :title => "Imprimir"%>
+      <%end%>
+    </p>
+  </div>
+
+ <div class="grid-12-12" style="text-align: center;">
+  <img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
+</div>
+
+<div id="contenido">
+    <%=render :partial => "estadisticas/partial_show_siguientes_especialistas"%>
+</div>
+
+<div id="error"></div>
+
+<%=periodically_call_remote(:url => {:controller => "orientacions",
+                            :action => "show_siguientes_especialistas", :user_id => current_user},
+                            :frequency => '100',
+                            :before => "Element.show('spinner')",
+                            :success => "Element.hide('spinner')",
+                            :update => { :success => "contenido", :failure => "error" })%>
