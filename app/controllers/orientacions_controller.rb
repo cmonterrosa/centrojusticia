@@ -280,11 +280,11 @@ protected
       especialistas = (ahora >= hora_limite) ? Role.find_by_name("especialistas").usuarios_disponibles_vespertinos : Role.find_by_name("especialistas").usuarios_disponibles
       especialistas.each do |e| e["puntuacion_final"] = e.puntuacion_general end
       especialistas = especialistas.sort{|p1,p2| p1["puntuacion_final"] <=> p2["puntuacion_final"]}
-      finales = []
-      especialistas.each_with_index do |e, index|
-         finales << e && especialistas.delete_at(index) if e.tiene_actividad_reciente?
-     end
-     finales.each do |f| especialistas.push(f) end
+#      finales = []
+#      especialistas.each_with_index do |e, index|
+#         finales << e && especialistas.delete_at(index) if e.tiene_actividad_reciente?
+#     end
+#     finales.each do |f| especialistas.push(f) end
      return especialistas
      #return (especialistas.sort{|p1,p2| p1["puntuacion_final"] <=> p2["puntuacion_final"]})
    end
