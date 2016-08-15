@@ -4,6 +4,10 @@ require 'date'
 class User < ActiveRecord::Base
 
   attr_accessor :puntaje_final
+  attr_accessor :puntaje_semanal
+  attr_accessor :puntaje_mensual
+  attr_accessor :fecha_ultima_orientacion
+  
   
   has_many :comparecencias
   has_many :participantes
@@ -170,7 +174,7 @@ class User < ActiveRecord::Base
 
   def puntuacion_mes_actual
     primer_dia_mes= DateTime.parse("#{Time.now.year}-#{Time.now.month}-1 00:01")
-    return num_orientaciones_periodo(primer_dia_mes,Time.now)
+    return (self.puntaje_mensual = num_orientaciones_periodo(primer_dia_mes,Time.now))
   end
 
   def puntuacion_anio_actual
@@ -179,21 +183,110 @@ class User < ActiveRecord::Base
   end
 
   def puntuacion_semana_actual
-    return (num_orientaciones_desde_inicio_semana)
+    return (self.puntaje_semanal = num_orientaciones_desde_inicio_semana)
+  end
+
+  def puntaje_fecha
+    if uo = ultima_orientacion.updated_at
+      case uo
+      when uo.wday == 1
+          return 1
+      else
+          return (((Time.now - uo) * 24 * 60 * 60) / 1000000.0)
+      end
+    end
+  end
+
+  def puntaje_fecha_anterior
+    # Entre mas reciente sea la orientacion mas alto es el puntaje
+    if uo = ultima_orientacion.updated_at
+      case ultima_orientacion.updated_at
+        when (5.minutes.ago..Time.now)
+          return 1000
+        when (10.minutes.ago..Time.now)
+          return 980
+        when (15.minutes.ago..Time.now)
+          return 950
+        when (20.minutes.ago..Time.now)
+          return 900
+        when (30.minutes.ago..Time.now)
+          return 850
+        when (45.minutes.ago..Time.now)
+          return 800
+        when (60.minutes.ago..Time.now)
+          return 750
+        when (180.minutes.ago..Time.now)
+          return 700
+        when (240.minutes.ago..Time.now)
+          return 600
+        when (270.minutes.ago..Time.now)
+          return 500
+        when (300.minutes.ago..Time.now)
+          return 400
+        when (360.minutes.ago..Time.now)
+          return 300
+        when (420.minutes.ago..Time.now)
+          return 200
+        when (840.minutes.ago..Time.now)
+          return 150
+        when (1439.minutes.ago..Time.now)
+          return 130
+        when (1.day.ago..Time.now)
+          return 100
+        when 2160.minutes.ago..Time.now
+          return 80
+        when (2.day.ago..Time.now)
+          return 60
+        when 3600.minutes.ago..Time.now
+          return 50
+        when 3.day.ago..Time.now
+          return 40
+        when 4.day.ago..Time.now
+          return 30
+        when 5.day.ago..Time.now
+          return 20
+        when 1.week.ago..Time.now
+          return 10
+        else
+          return 0
+        end
+    else
+      return 0
+    end
+    #(30.minutes.ago..Time.now)===a.ultima_orientacion.updated_at
   end
 
   def puntuacion_general
-      return ((puntuacion_semana_actual.to_i) + ((puntuacion_mes_actual.to_i) * 0.01))
+      ##################################################
+      # Formula: semana_actual + mes_actual / total de segundos transcurridos desde la ultima orientacion
+      # 
+      ##################################################
+       self.puntaje_final = (((puntuacion_semana_actual.to_i * 1000) + ((puntuacion_mes_actual.to_i) * 0.01)) / puntaje_fecha)
+       return self.puntaje_final
   end
 
   def tiene_actividad_reciente?
     (numero_solo_orientaciones_recientes > 0)?  true : false
   end
 
+  def ultima_orientacion
+    return self.fecha_ultima_orientacion = Orientacion.find(:first,
+      :joins => "o, tramites t",
+      :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND (t.only_orientacion IS NOT NULL OR t.folio_expediente IS NOT NULL)", self.id],
+      :order => "t.created_at DESC",
+      :select => "t.created_at as updated_at")
+  end
+
   
   def full_description_for_especialistas
+    description=""
     if self.situacion
-         "#{self.estatus_actual}".ljust(18) +   " | "  +   "#{self.nombre_completo}".ljust(40)  +  " | " +  "#{self.puntuacion_semana_actual} | #{self.numero_solo_orientaciones_recientes}"
+        description << (self.estatus_actual + "        |        ")  if self.estatus_actual
+        description << (self.nombre_completo + "        |       ") if self.nombre_completo
+        description << (self.puntuacion_semana_actual.to_s + "        |       ") if self.puntuacion_semana_actual
+        description << (self.fecha_ultima_orientacion.updated_at.strftime("    (%d/%m/%Y -  %H:%M:%S %p)  ")) if self.fecha_ultima_orientacion
+        return description
+       # "#{self.estatus_actual.rjust(28)}"  +   " | "  +   "#{self.nombre_completo.rjust(60)}"  +  " | " +  "#{self.puntuacion_semana_actual}  | #{self.fecha_ultima_orientacion.updated_at}"
     else
       nombre_completo
     end
@@ -263,7 +356,7 @@ def num_orientaciones_dos_dias
 
     def expedientes_sin_concluir(anio=Time.now.year)
      return Tramite.find_by_sql("SELECT * from tramites where id not in (SELECT tramite_id from concluidos) AND
-      id in (SELECT tramite_id from sesions WHERE ((tramite_id IS NOT NULL) AND (CANCEL IS NULL OR CANCEL != 1)) AND
+      id in (SELECT tramite_id from sesions WHERE ((tramite_id IS NOT NULL)) AND
       (mediador_id=#{self.id}))
       and anio=#{anio}")
     end

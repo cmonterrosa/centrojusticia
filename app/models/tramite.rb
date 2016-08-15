@@ -1,3 +1,4 @@
+# Clase principal, columna vertebral, contiene los datos básicos del trámite
 class Tramite < ActiveRecord::Base
   belongs_to :atencion
   belongs_to :subdireccion
@@ -15,7 +16,7 @@ class Tramite < ActiveRecord::Base
   has_many :convenios
 
 
-  #---- Validaciones ----
+  # Validaciones
   validates_uniqueness_of :folio_expediente, :scope => :anio, :allow_blank => true,  :message => "ya se encuentra registrado"
   #validates_presence_of :subdireccion_id, :message => "Seleccione una subdireccion"
 
@@ -30,17 +31,12 @@ class Tramite < ActiveRecord::Base
   end
 
   def folio_integrado
-   # "#{self.anio}/#{self.folio}"
-   "#{self.anio[2..4]}#{self.folio.to_s.rjust(5, '0')}"
+    "#{self.anio[2..4]}#{self.folio.to_s.rjust(5, '0')}"
   end
 
+  # Despliega el folio inverso
   def folio_inverso
-    if self.anio && self.folio
-    "#{self.anio[2..4]}#{self.folio.to_s.rjust(5, '0')}"
-    else
-      false
-    end
-     #"#{self.folio}/#{self.anio}"
+    (self.anio && self.folio)? "#{self.anio[2..4]}#{self.folio.to_s.rjust(5, '0')}" : false
   end
 
   def estatus
@@ -48,20 +44,23 @@ class Tramite < ActiveRecord::Base
     return result
   end
 
+  # Actualización de estatus, guarda registro en tabla histórica que contiene usuario y fechahora
   def update_estatus!(clave,usuario)
     @estatus = Estatu.find_by_clave(clave) if (!clave.nil? && !usuario.nil?)
-    @history = Historia.new(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id ) if @estatus
-    #### Verificamos si existe un estatus superior #####
-    tiene_historia = Historia.find(:all, :conditions => ["tramite_id = ? AND estatu_id = ?", self.id, @estatus.id])
-    unless (self.estatu_id == @estatus.id)
-      if @history.save
-        #---- actualizacion del registro principal --
-        self.update_attributes!(:estatu_id => @estatus.id) if tiene_historia.empty?
-        return true
-      end
-    else
-      return false
-    end
+     if @estatus 
+        @history = Historia.new(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id )
+        # Verificamos si existe un estatus superior #
+        tiene_historia = Historia.find(:all, :conditions => ["tramite_id = ? AND estatu_id = ?", self.id, @estatus.id])
+        unless (self.estatu_id == @estatus.id)
+          if @history.save
+            #---- actualizacion del registro principal --
+            self.update_attributes!(:estatu_id => @estatus.id) if tiene_historia.empty?
+            return true
+          end
+        else
+          return false
+        end
+     end
   end
 
   def update_estatus_with_especialista!(clave,usuario,especialista=nil,justificacion=nil)
@@ -87,8 +86,7 @@ class Tramite < ActiveRecord::Base
             self.update_attributes!(:estatu_id => @history.estatu_id)
             return true
        end
-       
-  end
+   end
 
    def generar_folio
      unless self.folio
@@ -113,10 +111,10 @@ class Tramite < ActiveRecord::Base
      end
    end
 
+   # Llama procedimiento almacenado que genera el siguiente numero de expediente
    def generar_folio_expediente!
       ActiveRecord::Base.connection.execute("CALL update_folio_consecutivo(#{self.anio}, #{self.id})") if (self.anio && self.id) && !self.folio_expediente
    end
-
 
    def numero_expediente
      (self.folio_expediente) ?  "#{self.folio_expediente.to_s.rjust(4, '0')}/#{self.anio}" : nil
@@ -137,6 +135,7 @@ class Tramite < ActiveRecord::Base
      Concluido.find(:first, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") if self.id
    end
 
+   # Regresa el valor true o false dependiendo si el trámite ya fue concluido
    def concluido?
      Concluido.count(:id, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") > 0 if self.id
    end
