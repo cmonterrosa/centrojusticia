@@ -94,7 +94,7 @@ class AgendaController < ApplicationController
        @before = @fecha.yesterday
        @after = @fecha.tomorrow
        @salas = Sala.find(:all, :order => "descripcion")
-       @horarios = Horario.find(:all, :group => "hora,minutos")
+       @horarios = Horario.find(:all, :group => "hora,minutos", :conditions => ["? between fecha_inicio AND fecha_expiracion", @fecha])
     else
        redirect_to :action => @accion
     end
