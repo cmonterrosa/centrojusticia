@@ -138,12 +138,7 @@ class AdminController < ApplicationController
   #------- Administracion de Usuarios ---------
   def members_by_role
      @role = Role.find(params[:id])
-     @users = []
-      User.find(:all).each{|user|
-        unless @role.users.include?(user)
-          @users << user
-        end
-      }
+     @users = @role.todos_usuarios
   end
 
   def add_user
@@ -160,12 +155,7 @@ class AdminController < ApplicationController
 
   def new_user
     @role = Role.find(params[:id])
-    @users = []
-    User.find(:all).each{|user|
-    unless @role.users.include?(user)
-      @users << user
-    end
-    }
+    @users = @role.todos_usuarios
   end
 
   def delete_user
@@ -210,11 +200,12 @@ class AdminController < ApplicationController
     @usuarios = @usuarios.sort{|a,b| a.nombre_completo <=> b.nombre_completo}.paginate(:page => params[:page], :per_page => 25)
     @token = generate_token
   end
+######################################
 # -- termina modulo de administracion de usuarios ----
+#######################################
 
-#--- listado de usuarios por area ---
-
- def show_users_by_area
+# listado de usuarios por area ---
+def show_users_by_area
     @areas = Subdireccion.find(:all, :order => "municipio_id")
  end
 
@@ -262,7 +253,6 @@ class AdminController < ApplicationController
  end
 
 
-
  def change_horario_estatus
    if validate_token(params[:t]) && @horario= Horario.find(params[:id])
      @mensaje = @horario.activo ? "Horario bloqueado" : "Horario desbloqueado"
@@ -300,17 +290,29 @@ class AdminController < ApplicationController
    redirect_to :action => "show_users_by_area"
  end
 
- ######### INICIA ADMINISTRACION DE HORARIOS DE SESIONES ###########
+ ######### INICIA ADMINISTRACION DE HORARIOS Y SALAS DE SESIONES ###########
+
+ def show_salas
+   @salas = Sala.find(:all)
+ end
 
  def show_horarios_sesiones
    @salas = Sala.find(:all, :order=> "descripcion")
-   @horarios = Horario.find(:all, :order => "hora,minutos")
+   @horarios = Horario.find(:all, :order => "hora,minutos").paginate(:page => params[:page], :per_page => 25)
    @token= generate_token
+   render :partial => "show_horarios_sesiones", :layout => "kolaval"
+ end
+
+ def show_horarios_sesiones_by_sala
+   @sala = Sala.find(params[:id])
+   @horarios = Horario.find(:all, :conditions => ["sala_id =?", @sala], :order => "hora,minutos").paginate(:page => params[:page], :per_page => 25)
+   render :partial => "show_horarios_sesiones", :layout => "kolaval"
  end
 
  def new_or_edit_horario_sesion
    @horario = Horario.find(params[:id]) if params[:id]
    @horario ||= Horario.new
+   @fecha = @horario.fecha_expiracion 
  end
 
  def save_horario_sesion
@@ -523,7 +525,7 @@ end
 
 
   ####################################################
-  #  Motivos de conclusion
+  #   Motivos de conclusion
   #
   #
   #####################################################

@@ -26,6 +26,12 @@
         <td>
           <%=link_to image_tag('kolaval/dias-inha.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/dias-inha.jpg") , {:action => "festivos", :controller => "admin"}, :title => "Control de días inhábiles"%>
         </td>
+
+        <td>
+         <a href="/admin/show_materias" title="Administración de especialistas y materias">
+           <img src="/images/iconos/materias2.png" width="128" height="128" alt="Asignación de especialistas y Materias" />
+         </a>
+        </td>
         
   </tr>
   <tr align="center">
@@ -33,19 +39,22 @@
     <td class="menu">Perfiles y Usuarios</td>
     <td class="menu">Perfiles y Estatus</td>
     <td class="menu" align="center">Días inhábiles</td>
+    <td class="menu" align="center">Especialistas y Materias</td>
   </tr>
   <tr>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
   <tr align="center">
-        <td>
-         <a href="/admin/show_materias" title="Administración de especialistas y materias">
-           <img src="/images/iconos/materias2.png" width="128" height="128" alt="Asignación de especialistas y Materias" />
+        
+
+         <td>
+         <a href="/admin/show_salas" title="Salas de sesiones">
+           <img src="/images/iconos/salas.png" width="128" height="128" alt="Salas de sesiones" />
          </a>
         </td>
 
-         <td>
+          <td>
          <a href="/admin/show_horarios_sesiones" title="Administración de horarios de sesiones">
            <img src="/images/iconos/horarios2.png" width="128" height="128" alt="Administración de horarios" />
          </a>
@@ -75,7 +84,8 @@
   </tr>
 
   <tr>
-    <td class="menu" align="center">Especialistas y Materias</td>
+    
+    <td class="menu" align="center">Salas de sesiones</td>
     <td class="menu" align="center">Horarios de sesiones</td>
     <td class="menu" align="center">Flujo</td>
     <td class="menu" align="center">Configuración</td>

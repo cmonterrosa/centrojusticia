@@ -48,7 +48,8 @@ class Sesion < ActiveRecord::Base
 
   def resume
     string = ""
-    string << "[#{self.num_tramite}]    #{self.mediador.nombre.upcase}  " if self.mediador && self.num_tramite
+    #string << "[#{self.num_tramite}]    #{self.mediador.nombre.upcase}  " if self.mediador && self.num_tramite
+    string << "[#{self.tramite.numero_expediente}]    #{self.mediador.nombre.upcase}  " if self.mediador && self.tramite
     string << " Y  #{self.comediador.nombre.upcase}  " if self.comediador
     string << "  (#{self.tiposesion.descripcion}) " if self.tiposesion
     return string
@@ -117,6 +118,7 @@ class Sesion < ActiveRecord::Base
   def cancel!(user=nil)
     self.cancel = true
     self.cancel_user = user.id if user
+    self.activa = false
     self.save
   end
 

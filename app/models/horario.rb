@@ -4,6 +4,15 @@ class Horario < ActiveRecord::Base
   belongs_to :sala
   has_many :sesiones
 
+  #before_save :set_default_fecha_expiracion
+
+
+  # Establece si no está activo la fecha de expiracion
+  def set_default_fecha_expiracion
+    self.fecha_expiracion ||= Time.now unless  self.activo == true
+    self.fecha_expiracion = nil if self.activo == true
+  end
+
   def hora_completa
     case self.hora
     when (1..12)
