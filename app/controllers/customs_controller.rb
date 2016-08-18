@@ -59,7 +59,7 @@ class CustomsController < ApplicationController
   end
 
   def detalle_expedientes
-    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion)
+    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) || current_user.has_role?(:adminusuarios)
       @usuario = User.find(params[:id])
       @expedientes = @usuario.expedientes_sin_concluir
       render :partial => "expedientes_sin_concluir", :layout => "only_jquery"
