@@ -72,51 +72,16 @@ table.sample td.d99 {
    <tr><th align="center"><%=SUBDIRECCION.upcase%></th></tr>
 </table>
 
-<div class="titulocalendario">
-    <p><b>RANKING DE ACTIVIDAD DE ESPECIALISTAS </b></p>
-    <p style="font-size: 17px;">ORIENTACIONES Y COMPARECENCIAS LEVANTADAS DEL MES DE <%=DateTime.now.strftime("%B de %Y").upcase%></p>
-</div>
+
+
+
+
+<%=render :partial => "estadisticas/show_siguientes_especialistas"%>
+
+
 
 <div class="ultima_conexion" style="text-align: center;">
     <i style="font-size: 12px;"> IMPRESO POR: <%=h @usuario.nombre_completo%>  |  <%=h DateTime.now.strftime("%d DE %B - %H:%M:%S").upcase%></i>
   </div>
-  <br />
-
-
-<!-- contenido -->
-<div id="divlista">
-      <table  border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto; width: 95%">
-
-      <tr class="d1">
-        <td style="text-align: center;" width="4%" align="center"><b>#Rank</b></td>
-        <td style="text-align: center;" width="42%"><b>Especialista</b></td>
-        <td style="text-align: center;" width="18%" align="center"><b>Semana actual</b></td>
-        <td style="text-align: center;" width="18%" align="center"><b>Mes actual</b></td>
-        <td style="text-align: center;" width="18%" align="center"><b>Estatus actual</b></td>
-      </tr>
-
-      <%contador=1%>
-      <%@especialistas_semana.each do |e|%>
-      <tr class="d1">
-        <td style="vertical-align: middle;"><%=contador%></td>
-
-        <td style="vertical-align: middle;"><%=h(e.nombre_completo)%></td>
-
-        <!-- semana -->
-        <td style="vertical-align: middle;" style="text-align: center;"><%=h(e['puntuacion_final'].to_i)%></td>
-
-        <!-- mes -->
-        <td style="vertical-align: middle;"><%=h( (e['puntuacion_final'].modulo(1) * 100).to_i)%></td>
-
-        <!-- estatus -->
-        <td style="vertical-align: middle;"><%=h e.estatus_actual%></td>
-
-        <%contador+=1%>
-      </tr>
-    <%end%>
-    </table>
-</div>
-
-
-
+<br />
 
