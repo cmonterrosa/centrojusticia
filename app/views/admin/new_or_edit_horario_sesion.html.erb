@@ -1,49 +1,111 @@
+<!-- Validate Plugin -->
+<%=javascript_include_tag "validations/jquery_validate.js"%>
+<%=javascript_include_tag "fancybox/jquery-1.8.0.min"%>
+<%=javascript_include_tag :defaults%>
+
+<script  type="text/javascript">
+  var statSend = false;
+  function checkSubmit() {
+    if (!statSend) {
+        statSend = true;
+        return true;
+    } else {
+        alert("El formulario ya se esta enviando...");
+        return false;
+    }
+}
+</script>
+
+
+<div class="formee container">
+  <div class="formee-msg-info">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
+
 <% form_for :horario, @horario, :url => { :action => "save_horario_sesion", :id => @horario.id } do |f| -%>
-  <table width="90%" border="0" align="center" cellpadding="2" cellspacing="1">
-    <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" >EDITAR HORARIO DE SESION</td>
-    </tr>
-    <tr align="center">
-      <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4">DATOS</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">Hora</td>
-          <td align="center">Minutos</td>
-          <td align="center">Sala</td>
-          <td align="center">¿Activo?</td>
-        </tr>
-        <tr>
-          <td align="center"><%= f.text_field :hora, :required => true%></td>
-          <td align="center"><%= f.text_field :minutos,  :required => true%></td>
-          <td align="center"> <%= f.select :sala_id, Sala.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
-           <td align="center"><%=f.check_box :activo%></td>
-        </tr>
-      </table></td>
-    </tr>
-    <!-- espacio -->
+  <table>
     <tr>
-      <td colspan="3"><hr /></td>
-    </tr>
-    <!-- FOOTER -->
-    <tr>
-      <td align="right">
-        <table>
-          <tr>
-            <td>
-              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
-            </td>
-            <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "admin"-%>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
+  <fieldset>
+    <legend>EDITAR&nbsp;HORARIO&nbsp;DE&nbsp;SESION</legend>
+
+     <div class="grid-4-12">
+        <label style=" font-weight: bold;">SELECCIONE UNA SALA: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%= f.select(:sala_id, Sala.all.collect {|p| [ p.descripcion, p.id ] }, { :include_blank => true })%>
+         </div>
+      </div>
+
+        <!-- primera linea -->
+     <div class="grid-2-12">
+        <label style=" font-weight: bold;">HORA: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%= f.text_field :hora%>
+         </div>
+      </div>
+
+       <!-- primera linea -->
+     <div class="grid-3-12">
+        <label style=" font-weight: bold;">MINUTOS: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%= f.text_field :minutos%>
+         </div>
+      </div>
+
+         <!-- primera linea -->
+     <div class="grid-3-12">
+        <label style=" font-weight: bold;">¿ACTIVO?: <em class="formee-req">*</em></label>
+         <div class="grid-12-12">
+          <%=f.check_box :activo%>
+         </div>
+      </div>
+
+     <div class="grid-6-12" id="fecha_expiracion_div">
+        <label style=" font-weight: bold;">FECHA DE INICIO:</label>
+         <div class="grid-12-12">
+            <span class="datetime">
+                  <%=f.date_select :fecha_inicio, {:include_blank => true}%>
+            </span>
+         </div>
+      </div>
+
+     <div class="grid-6-12" id="fecha_expiracion_div">
+        <label style=" font-weight: bold;">FECHA DE EXPIRACIÓN:</label>
+         <div class="grid-12-12">
+            <span class="datetime">
+                  <%=f.date_select :fecha_expiracion, {:include_blank => true, :start_year => Time.now.year, :end_year => 9999}%>
+            </span>
+         </div>
+      </div>
+
+      <div class="grid-12-12 clear"></div>
+      <div class="grid-form-login">
+        <input class="right" type="submit" title="GUARDAR" value="GUARDAR" />
+      </div>
+ </fieldset>
+  </tr>
   </table>
-<% end %>
+<%end%>
+
+
+
+<script type="text/javascript">
+  var minutos = new LiveValidation( 'horario_minutos' );
+  minutos.add( Validate.Presence );
+</script>
+</div>
+
+
+
+
+
+
+
+
+
 
 
 
