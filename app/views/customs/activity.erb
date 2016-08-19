@@ -57,6 +57,12 @@
        <td style="vertical-align: middle;"><b>Orientaciones y/o comparecencias que he dado en transcurso del año <%=h Time.now.strftime("%Y")%></b></td>
        <td style="vertical-align: middle;"><%=h @usuario.puntuacion_anio_actual%></td>
     </tr>
+
+    <tr>
+       <td style="vertical-align: middle;"><b>Fecha de la última orientacion / comparecencia brindada</b></td>
+       <td style="vertical-align: middle;"><%=h (@usuario.ultima_orientacion)? @usuario.ultima_orientacion.updated_at.strftime("%d de %B de %Y, %H:%M:%S %p").upcase : '--'%></td>
+    </tr>
+
     <%end%>
 
     <tr>
@@ -67,7 +73,8 @@
 </div>
 
 
-    <%if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) || current_user.has_role?(:adminusuarios)%>
+ <!-- LISTADO DE ESPECIALISTAS -->
+  <% unless @especialistas.empty?%>
       <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 85%; margin: auto;">
           <tr>
               <td>Especialista</td>
@@ -87,22 +94,53 @@
                 <td><%=h sumatoria%></td>
             </tr>
        </table>
-    <%end%>
+<%end%>
 
+<%if current_user.has_role?("especialistas")%>
+  <!-- SESIONES -->
+ <%unless @guardias.empty?%>
+     <div id="divlista">
+        <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 85%; margin: auto;">
+            <tr>
+              <td colspan="4">PROXIMAS SESIONES</td>
+            </tr>
+            <%@sesiones.each do |s|%>
+              <tr>
+                <td><%=h (s.start_at)? s.start_at.strftime("%A %d DE %B DE %Y  / %H:%M %p").upcase : '--'%></td>
+                <td><%=h (s.sala)? s.sala.descripcion : ''%></td>
+                <td><%=h (s.sala)? "NUMERO DE EXPEDIENTE: #{s.tramite.numero_expediente}" : '--'%></td>
+                <td><%=h (s.tramite && s.tramite.comparecencia)? "SOLICITANTE(S): #{s.tramite.comparecencia.solicitantes}" : '--' %></td>
+              </tr>
+            <%end%>
+        </table>
+     </div>
+ <%end%><br /><br />
+
+
+ <!-- GUARDIAS -->
+ <%unless @guardias.empty?%>
+     <div id="divlista">
+        <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 85%; margin: auto;">
+            <tr>
+              <td>PROXIMAS GUARDIAS</td>
+            </tr>
+            <%@guardias.each do |a|%>
+              <tr>
+                <td><%=h a.fecha_inicio.strftime("%A %d DE %B DE %Y").upcase%></td>
+              </tr>
+            <%end%>
+        </table>
+     </div>
+ <%end%><br /><br />
+ <%end%>
 
 <!-- Mis ausencias futuras -->
 
 <%unless @actividades.empty?%>
-    <br /><br />
-
-    <div class="titulocalendario">
-      <p>Actividades y/o ausencias programadas</p>
-    </div>
-    
-    <div id="divlista">
+     <div id="divlista">
         <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 85%; margin: auto;">
             <tr>
-              <td>Tipo</td>
+              <td>Tipo de ausencia</td>
               <td>Fecha inicio</td>
               <td>Fecha fin</td>
             </tr>
@@ -116,6 +154,10 @@
         </table>
      </div>
   <%end%>
+
+
+
+
 
 <br /><br />
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />

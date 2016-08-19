@@ -52,15 +52,21 @@ class CustomsController < ApplicationController
 
   def activity
     @usuario = current_user
-    @actividades = Movimiento.find(:all, :conditions => ["user_id = ? AND fecha_inicio > ?", current_user.id, Time.now], :order => "fecha_inicio DESC")
+    @actividades = Movimiento.find(:all, :select => "m.*", :joins => "m, situacions s", :conditions => ["m.situacion_id=s.id AND s.descripcion NOT IN (?) AND m.user_id = ? AND m.fecha_inicio > ?", ["EN SESION", "GUARDIA", "BAJA"], current_user.id, Time.now], :order => "fecha_inicio DESC")
+    @guardia = Situacion.find_by_descripcion("GUARDIA")
+    @guardias = Movimiento.find(:all, :conditions => ["user_id = ? AND situacion_id = ? AND fecha_inicio > ?", current_user.id, @guardia.id, Time.now], :order => "fecha_inicio")
+    @sesiones = Sesion.find(:all, :conditions => ["(mediador_id = ? OR comediador_id = ?) AND fecha > ? AND (cancel =0 OR CANCEL IS NULL)", current_user.id, current_user.id, Time.now])
+
     if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) || current_user.has_role?(:adminusuarios)
       @especialistas = Role.find_by_name("especialistas").todos_usuarios.sort { |a, b| a.expedientes_sin_concluir.size <=> b.expedientes_sin_concluir.size }
     end
+    @especialistas ||= User.find(:all, :conditions => ["id = ?", current_user.id]) if current_user
   end
 
   def detalle_expedientes
-    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) || current_user.has_role?(:adminusuarios)
-      @usuario = User.find(params[:id])
+    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) || current_user.has_role?(:adminusuarios) || current_user.has_role?(:especialistas)
+      @usuario = (current_user.has_role?(:admin))?  User.find(params[:id]) : nil
+      @usuario ||= (current_user.has_role?(:especialistas))? current_user : User.find(params[:id])
       @expedientes = @usuario.expedientes_sin_concluir
       render :partial => "expedientes_sin_concluir", :layout => "only_jquery"
     else
