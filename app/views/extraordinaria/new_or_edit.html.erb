@@ -7,10 +7,11 @@
 
 
 <% form_for :extraordinaria, @extraordinaria, :url => { :action => "save", :id => @extraordinaria }, :html => {:id => "new_extraordinaria"} do |f| -%>
-  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
-    <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" >ATENCION EXTRAORDINARIA</td>
+  <table class="sample" width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
+    <tr class="titulo">
+      <td colspan="3" style="text-align: center; background: white;">ATENCION EXTRAORDINARIA</td>
     </tr>
+
     <tr align="center">
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
@@ -59,13 +60,13 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
          <tr align="center" class="pregunta">
-          <td>Número de Expediente en el CEJA</td>
+          <td>Número de Exp. en el CEJA (Sólo si tiene)</td>
           <td>Término (Horas)</td>
           <td>Número de Oficio</td>
           <td>Delito</td>
         </tr>
         <tr align="center">
-          <td> <%= f.text_field :num_expediente, :placeholder => "Solo si cuenta con uno, ejemplo: 188/2016"%></td>
+          <td> <%= f.text_field :num_expediente, :placeholder => "Ejemplo: 188/2016"%></td>
           <td> <%= f.text_field :termino%></td>
           <td> <%= f.text_field :num_oficio, :placeholder => "Si viene de un oficio"%></td>
           <td> <%= f.text_area :delito, :size => "40x5", :placeholder => "Si existe un delito"%></td>
