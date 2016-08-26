@@ -2,7 +2,7 @@
 <%=javascript_include_tag "validations/jquery_validate.js"%>
 
 <p>
-   <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%>
+  <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%>
 </p>
 
 
@@ -59,13 +59,13 @@
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
          <tr align="center" class="pregunta">
-          <td>Número de Expediente</td>
+          <td>Número de Expediente en el CEJA</td>
           <td>Término (Horas)</td>
           <td>Número de Oficio</td>
           <td>Delito</td>
         </tr>
         <tr align="center">
-          <td> <%= f.text_field :num_expediente, :placeholder => "Si ya trae de origen"%></td>
+          <td> <%= f.text_field :num_expediente, :placeholder => "Solo si cuenta con uno, ejemplo: 188/2016"%></td>
           <td> <%= f.text_field :termino%></td>
           <td> <%= f.text_field :num_oficio, :placeholder => "Si viene de un oficio"%></td>
           <td> <%= f.text_area :delito, :size => "40x5", :placeholder => "Si existe un delito"%></td>
