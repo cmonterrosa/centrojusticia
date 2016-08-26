@@ -19,17 +19,23 @@
     </tr>
 
     <tr class="d1">
-       <td style="vertical-align: middle;"><b>Solicitante:</b></td>
-       <td style="vertical-align: middle;"><%=h(@extraordinaria ? @extraordinaria.solicitante : "No existe información")%></td>
+       <td style="vertical-align: middle;"><b>Delito:</b></td>
+       <td style="vertical-align: middle;"><%=h(@extraordinaria ? @extraordinaria.delito : "No existe información")%></td>
     </tr>
 
-    <tr class="d0">
+     <tr class="d0">
+       <td style="vertical-align: middle;"><b>Término:</b></td>
+       <td style="vertical-align: middle;"><%=h(@extraordinaria ? @extraordinaria.termino : "No existe información")%></td>
+    </tr>
+
+
+    <tr class="d1">
        <td style="vertical-align: middle;"><b>Procedencia:</b></td>
        <td style="vertical-align: middle;"><%=h(@extraordinaria.procedencia ? @extraordinaria.procedencia.descripcion : "No existe información")%></td>
     </tr>
 
 
-    <tr class="d1">
+    <tr class="d0">
       <td style="vertical-align: middle;"><b>Observaciones:</b></td>
       <td style="vertical-align: middle;"><%=h(@extraordinaria.observaciones ? @extraordinaria.observaciones : "No existe información")%></td>
     </tr>
