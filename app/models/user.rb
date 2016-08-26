@@ -358,7 +358,7 @@ def num_orientaciones_dos_dias
     def expedientes_sin_concluir(anio=Time.now.year)
      return Tramite.find_by_sql("SELECT * from tramites where id not in (SELECT tramite_id from concluidos) AND
       id in (SELECT tramite_id from sesions WHERE (tramite_id IS NOT NULL) AND
-      (mediador_id=#{self.id}) AND (cancel_user IS NULL)) AND anio=#{anio}")
+      (mediador_id=#{self.id}) AND (cancel_user IS NULL OR cancel=0)) AND anio=#{anio}")
     end
 
 
