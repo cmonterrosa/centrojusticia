@@ -14,8 +14,8 @@
      <%Historia.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "created_at").each do |row|%>
        <tr class="d1">
          <td style="vertical-align: middle;" width="27%"><%=row.estatu.descripcion%></td>
-         <td style="vertical-align: middle;" width="23%"><%=row.created_at.strftime("%d de %B de %Y - %H:%M %p")%></td>
-         <td style="vertical-align: middle;" width="50%"><%=(row.user) ? User.find(row.user).nombre_completo : "---"%></td>
+         <td style="vertical-align: middle;" width="23%"><%=row.created_at.strftime("%d de %B de %Y    /   %H:%M:%S  %p")%></td>
+         <td style="vertical-align: middle; font-weight: bold; text-transform: uppercase;" width="50%"><%=(row.user) ? User.find(row.user).nombre_completo : "---"%></td>
 
      </tr>
      <%end%>

@@ -103,12 +103,12 @@ class TramitesController < ApplicationController
             (@comparecencia) ? id_tramites << @comparecencia : nil
           end
       end
-      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}], :order => "anio DESC,folio_expediente DESC") unless id_tramites.empty?
+      @tramites ||= Tramite.find(:all, :conditions => ["id in (?)", id_tramites.map{|i|i.id}], :order => "anio DESC,folio_expediente,folio DESC") unless id_tramites.empty?
    end
 
     ### Estatus ###
     @estatus = Estatu.find(@estatus) if (@estatus && params[:estatus])&&(params[:estatus].size > 0)
-    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id = ?", @estatus], :order => "anio DESC,folio_expediente DESC") if @estatus
+    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id = ?", @estatus], :order => "anio DESC,folio_expediente, folio DESC") if @estatus
 
     ## Default ###
     @tramites ||= Array.new
