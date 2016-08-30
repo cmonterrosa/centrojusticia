@@ -1,10 +1,11 @@
-
-            <%if @extra%>
+<!-- Partial de especialistas -->
+<%if @extra%>
                 <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%>
             <%else%>
                 <%if @especialista%>
                       &nbsp;
                   <%else%>
+                        <h5>Última actualización: <%=h Time.now.strftime("%d de %B de %Y  /  %H:%M:%S %p")%></h5>
                         <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%>
                   <%end%>
-            <%end%>
+<%end%>
