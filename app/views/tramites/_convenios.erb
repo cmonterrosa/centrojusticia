@@ -17,7 +17,7 @@
       </tr>
       <%@convenios.each do |row|%>
         <tr class="d1">
-          <td style="vertical-align: middle;"><%=h (row.folio) ? (link_to "#{row.folio}", {:controller => "convenios", :action => "show", :id => row}, :class => "fancybox fancybox.iframe") : "---"%></td>
+          <td style="vertical-align: middle;"><%=h (row.folio) ? (link_to "#{row.folio}", {:controller => "convenios", :action => "show", :id => row}) : "---" -%></td>
           <td style="vertical-align: middle;"><%=h(row.especialista ? row.especialista.nombre_completo : "---")%></td>
           <td style="vertical-align: middle;"><%=h(row.cantidad_monetaria ? row.cantidad_monetaria : "--")%></td>
           <td style="vertical-align: middle;"><%=h(row.plazo ? row.plazo : "--")%></td>
