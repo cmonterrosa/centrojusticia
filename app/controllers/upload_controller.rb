@@ -75,6 +75,7 @@ class UploadController < ApplicationController
       if @uploaded_file.valid?
           if @uploaded_file.save
             write_log("Adjunto de Convenio creado correctamente: #{@uploaded_file.inspect}", current_user)
+            @convenio.tramite.update_estatus!("adj-car", current_user) if @convenio && @convenio.tramite
             flash[:notice] = "Evidencia cargada correctamente"
             redirect_to :action => "list_convenios", :id => @convenio
           end
@@ -95,7 +96,9 @@ class UploadController < ApplicationController
     end
     if (@uploaded_file.user == current_user) && (@uploaded_file.mark_as_deleted)
       write_log("Adjunto de convenio eliminado correctamente: #{@uploaded_file.inspect}", current_user)
-      @adjuntos = Adjunto.find(:all, :conditions => ["activo = ? AND convenio_id = ?", true, @convenio]) if @convenio
+      @convenio_objeto= Convenio.find(@convenio)
+      @convenio_objeto.tramite.update_estatus!("adj-eli", current_user) if @convenio_objeto && @convenio_objeto.tramite
+      @adjuntos = Adjunto.find(:all, :conditions => ["convenio_id = ?", @convenio]) if @convenio
       flash[:notice] = "Convenio eliminado correctamente"
       return render(:partial => 'show_convenios', :layout => "only_jquery")
     else

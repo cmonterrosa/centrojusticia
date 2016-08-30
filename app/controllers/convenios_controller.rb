@@ -109,7 +109,7 @@ class ConveniosController < ApplicationController
     @convenio.especialista_id = current_user.id
     if @convenio.save
       @tramite.update_estatus!("proc-conv", current_user)
-      flash[:notice] = "convenio guardado correctamente"
+      flash[:notice] = "convenio capturado correctamente"
        unless params[:backurl]
           redirect_to :action => "list_by_tramite", :id => @convenio.tramite
        else

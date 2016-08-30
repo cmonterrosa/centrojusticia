@@ -133,6 +133,15 @@ class Participante < ActiveRecord::Base
      return referencia
    end
 
+   # Metodo que busca una persona o personas
+  def self.search(search)
+    if search
+      find(:all, :conditions => ['CONCAT(nombre, \' \' , paterno, \' \' , materno) LIKE ?', "%#{search}%"], :order => "paterno, materno, nombre", :limit => 25)
+    else
+      find(:all)
+    end
+  end
+
   
 
 
