@@ -46,19 +46,14 @@
 </script>
 
 <p>
-    <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar"%>
+    <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "new_or_edit"}, :title => "Recargar formulario"%>
 
    <%if current_user.has_role?("ranking")%>
     | <%=link_to image_tag('iconos_estadisticos/carga_trabajo.png', :size => "54x54", :mouseover => "iconos_estadisticos/carga_trabajo_2.png") , {:action => "show_siguientes_especialistas"}, :title => "Listado de especialistas siguientes", :class => "fancybox fancybox.iframe"%>
    <%end%>
+</p>
 
-
-   </p>
-    <p class="ultima_conexion">
-     Última actualización: <%=Time.now.strftime("%H:%M:%S")%>
-   </p>
-
-
+    
 <div class="formee container">
   
  <div class="formee-msg-info">
@@ -75,9 +70,13 @@
   <table width="94%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr>
      
-        <fieldset>
-          <legend style="font-size: 16px;">CAPTURA&nbsp;DE&nbsp;NUEVA&nbsp;ORIENTACIÓN</legend>
-    
+      <fieldset>
+      <legend style="font-size: 16px;">CAPTURA&nbsp;DE&nbsp;NUEVA&nbsp;ORIENTACIÓN</legend>
+
+     <div class="grid-12-12" style="text-align: center;">
+        <img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
+      </div>
+
      <!-- primera linea -->
      <div class="grid-4-12">
         <label style=" font-weight: bold;">Fecha/hora:</label>
@@ -93,6 +92,7 @@
 
            <%if current_user.has_role?(:ranking)%>
               <div id ="divespecialistas" class="grid-12-12">
+                <h5>Última actualización: <%=h Time.now.strftime("%d de %B de %Y  /  %H:%M:%S %p")%></h5>
                 <%if @extra%>
                     <%= select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%>
                 <%else%>
@@ -105,23 +105,21 @@
               </div>
             <%else%>
               <div id="divespecialistas" class="grid-12-12">
+                     <h5>Última actualización: <%=h Time.now.strftime("%d de %B de %Y  /  %H:%M:%S %p")%></h5>
                      <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, :disabled => true%>
               </div>
           <%end%>
           
           <%if current_user.has_role?(:ranking)%>
               <div id ="prueba"></div>
-              <p><%=link_to_remote "ACTUALIZAR LISTADO", :update => "divespecialistas", :url => { :action => "update_lista_especialistas", :controller => "orientacions", :orientacion => @orientacion, :tramite_id => @tramite, :extra => @extra }, 404 => "alert('Not found...? Wrong URL...?')", :failure => "alert('HTTP Error ' + request.status + '!')"%></p>
+              <p><%=link_to_remote "- ACTUALIZAR LISTA - ", :update => "divespecialistas", :url => { :action => "update_lista_especialistas", :controller => "orientacions", :orientacion => @orientacion, :tramite_id => @tramite, :extra => @extra }, 404 => "alert('Not found...? Wrong URL...?')", :failure => "alert('HTTP Error ' + request.status + '!')"%></p>
           <%end%>
       </div>
     <%end%>
     
 
-     <div class="grid-12-12 clear"></div>
-     
-     
-
-      <!-- segunda linea -->
+        
+     <!-- segunda linea -->
 
      <div class="grid-3-12">
         <label style=" font-weight: bold;">Apellido Paterno: <em class="formee-req">*</em></label>
@@ -243,7 +241,19 @@
   domicilio.add( Validate.Length, { maximum: 160 } );
 </script>
 
+   
+
 
 <script type="text/javascript">
   showHideListadoDeEstados('orientacion_pais_id', 'estados_municipios', 'orientacion_municipio_id', 156);
 </script>
+
+
+<!-- Actualizacion de listado -->
+<%=periodically_call_remote(:url => {:controller => "orientacions",
+                            :action => "update_lista_especialistas",  :orientacion => @orientacion, :tramite_id => @tramite, :extra => @extra},
+                            :frequency => '300',
+                            :before => "Element.show('spinner')",
+                            :success => "Element.hide('spinner')",
+                            :update => { :success => "divespecialistas", :failure => "error" })%>
+
