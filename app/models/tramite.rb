@@ -44,8 +44,22 @@ class Tramite < ActiveRecord::Base
     return result
   end
 
-  # Actualización de estatus, guarda registro en tabla histórica que contiene usuario y fechahora
+
+    # Actualización de estatus, guarda registro en tabla histórica que contiene usuario y fechahora
   def update_estatus!(clave,usuario)
+    if !clave.nil? && !usuario.nil?
+       if @estatus = Estatu.find_by_clave(clave)
+           is_finish = (self.estatu.is_finish)? true : false
+           if @estatus.descripcion != self.estatu.descripcion
+             self.update_attributes!(:estatu_id => @estatus.id) if !is_finish
+             Historia.create(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id )
+           end
+        end
+   end
+  end
+
+  # Actualización de estatus, guarda registro en tabla histórica que contiene usuario y fechahora
+  def update_estatus_old!(clave,usuario)
     @estatus = Estatu.find_by_clave(clave) if (!clave.nil? && !usuario.nil?)
      if @estatus 
         @history = Historia.new(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id )

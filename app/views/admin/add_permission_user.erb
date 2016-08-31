@@ -3,7 +3,7 @@
 <% form_for :movimiento, @movimiento, :url => { :action => "save_permission"} do |f| -%>
   <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
     <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" >NUEVO AUSENCIA PARA <%=@user.nombre_completo%></td>
+      <td colspan="3" align="center" ><%=link_to @user.nombre_completo, {:action => "permissions_user", :id => @user.id}, :style =>"color: yellow; font-size:14px; font-weight:bold;"%> >> NUEVO REGISTRO DE AUSENCIA</td>
     </tr>
     <tr align="center">
       <td align="center">
@@ -36,7 +36,7 @@
           <td align="center">Observaciones</td>
         </tr>
         <tr>
-          <td align="center"><%=f.text_area :observaciones%></td>
+          <td align="center"><%=f.text_area :observaciones, :size => "100x2"%></td>
           <td align="center"><%=f.hidden_field :user_id, :value =>  @user.id%></td>
         </tr>
       </table></td>
