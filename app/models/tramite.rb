@@ -49,7 +49,7 @@ class Tramite < ActiveRecord::Base
   def update_estatus!(clave,usuario)
     if !clave.nil? && !usuario.nil?
        if @estatus = Estatu.find_by_clave(clave)
-           is_finish = (self.estatu.is_finish)? true : false
+           is_finish = (self.estatu && self.estatu.is_finish)? true : false
            if @estatus.descripcion != self.estatu.descripcion
              self.update_attributes!(:estatu_id => @estatus.id) if !is_finish
              Historia.create(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id )
