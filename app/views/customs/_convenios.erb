@@ -17,11 +17,7 @@
                                                             <ul><%=link_to image_tag('kolaval/orientaciones.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/orientaciones.jpg") , {:action => "list_by_user", :controller => "orientacions"}, :title => "Orientaciones"%></ul>
                                                           </li>
 
-                                                          <!-- Comparecencias -->
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/comparecencias.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/comparecencias.jpg") , {:action => "list_by_user", :controller => "comparecencias"}, :title => "Comparecencias"%></ul>
-                                                          </li>
-
+                                                          <%=render :partial => "invitaciones"%>
 
                                                           <!-- Tramites -->
                                                           <li>
