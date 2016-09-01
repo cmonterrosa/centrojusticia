@@ -251,6 +251,7 @@ def show_cargas_trabajo
   def update_lista_especialistas
     @orientacion = Orientacion.find(params[:id]) if params[:id]
     @orientacion ||= Orientacion.new
+    @fecha = (@orientacion.fechahora)? @orientacion.fechahora.strftime("%Y/%m/%d %H:%M") : Time.now.strftime("%Y/%m/%d %H:%M")
     @extra = params[:extra] if params[:extra]
     if @extra
       @caption = (@extra) ? "CON PERSONAL EXTRAORDINARIO" : ""
@@ -261,6 +262,7 @@ def show_cargas_trabajo
       @especialistas = seleccionar_especialistas
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil
     end
+    @especialista ||= User.find(params[:model][:textfield]) if params[:model][:textfield]
     render :partial => "update_lista_especialistas", :layout => "only_jquery"
   end
 

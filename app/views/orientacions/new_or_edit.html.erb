@@ -15,6 +15,16 @@
 
 			$j('.fancybox').fancybox();
                });
+
+               /* Orientaciones */
+
+$(function() {
+    $j('#orientacion_fechahora').datetimepicker({
+        dayOfWeekStart : 1,
+        lang:'es'
+    });
+});
+
 </script>
 
 <%#*<script type="text/javascript">%>
@@ -77,21 +87,23 @@
         <img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
       </div>
 
-     <!-- primera linea -->
-     <div class="grid-4-12">
-        <label style=" font-weight: bold;">Fecha/hora:</label>
-         <div class="grid-12-12">
-          <%=f.text_field :fechahora, :value => @fecha%>
-         </div>
-      </div>
+     
 
     <%unless @especialista%>
-      <div class="grid-8-12">
-        <label style=" font-weight: bold;"> Estado Actual      |      Especialista      |   Actividad en semana actual     |    última orientacion/comparecencia<em class="formee-req">*</em></label>
+      <div class="grid-10-12" id ="divespecialistas">
 
+          <!-- primera linea -->
+          <div class="grid-4-12">
+            <label style=" font-weight: bold;">Fecha/hora:</label>
+            <div class="grid-12-12">
+            <%=f.text_field :fechahora, :value => @fecha%>
+          </div>
+        </div>
 
-           <%if current_user.has_role?(:ranking)%>
-              <div id ="divespecialistas" class="grid-12-12">
+        <div class="grid-8-12"
+            <label style=" font-weight: bold;"> Estado Actual      |      Especialista      |   Actividad en semana actual     |    última orientacion/comparecencia<em class="formee-req">*</em></label>
+              <%if current_user.has_role?(:ranking)%>
+                 <div id ="divespecialistas_ranking" class="grid-12-12">
                 <h5>Última actualización: <%=h Time.now.strftime("%d de %B de %Y  /  %H:%M:%S %p")%></h5>
                 <%if @extra%>
                     <%= select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%>
@@ -99,23 +111,32 @@
                     <%if @especialista%>
                           &nbsp;
                       <%else%>
-                            <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}%>
+                            <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, :include_blank => true%>
                       <%end%>
                 <%end%>
               </div>
-            <%else%>
-              <div id="divespecialistas" class="grid-12-12">
-                     <h5>Última actualización: <%=h Time.now.strftime("%d de %B de %Y  /  %H:%M:%S %p")%></h5>
-                     <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, :disabled => true%>
-              </div>
-          <%end%>
-          
-          <%if current_user.has_role?(:ranking)%>
-              <div id ="prueba"></div>
-              <p><%=link_to_remote "- ACTUALIZAR LISTA - ", :update => "divespecialistas", :url => { :action => "update_lista_especialistas", :controller => "orientacions", :orientacion => @orientacion, :tramite_id => @tramite, :extra => @extra }, 404 => "alert('Not found...? Wrong URL...?')", :failure => "alert('HTTP Error ' + request.status + '!')"%></p>
-          <%end%>
-      </div>
+              <%else%>
+                <div id="divespecialistas_noranking" class="grid-12-12">
+                       <h5>Última actualización: <%=h Time.now.strftime("%d de %B de %Y  /  %H:%M:%S %p")%></h5>
+                       <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, :disabled => true%>
+                </div>
+              <%end%>
+        </div>
+     </div>
     <%end%>
+
+      <div class="grid-2-12">
+      <%if current_user.has_role?(:ranking)%>
+                <div id ="prueba"></div>
+                <p><%=link_to_remote "- ACTUALIZAR LISTA - ", :update => "divespecialistas", :url => { :action => "update_lista_especialistas", :controller => "orientacions", :orientacion => @orientacion, :tramite_id => @tramite, :extra => @extra },
+                              404 => "alert('Not found...? Wrong URL...?')",
+                              :before => "Element.show('spinner')",
+                              :success => "Element.hide('spinner')",
+                              :with => "'model[textfield]=' + $F('orientacion_user_id')",
+                              :failure => "alert('HTTP Error ' + request.status + '!')"%>
+                </p>
+            <%end%>
+      </div>
     
 
         
@@ -252,8 +273,8 @@
 <!-- Actualizacion de listado -->
 <%=periodically_call_remote(:url => {:controller => "orientacions",
                             :action => "update_lista_especialistas",  :orientacion => @orientacion, :tramite_id => @tramite, :extra => @extra},
-                            :frequency => '300',
+                            :frequency => '60',
                             :before => "Element.show('spinner')",
                             :success => "Element.hide('spinner')",
+                            :with => "'model[textfield]=' + $F('orientacion_user_id')",
                             :update => { :success => "divespecialistas", :failure => "error" })%>
-
