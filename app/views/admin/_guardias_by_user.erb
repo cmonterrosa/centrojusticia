@@ -2,15 +2,12 @@
    <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "guardias_by_user", :id => @user, :t => generate_token}, :title => "Recargar"%>
 </p>
 
-
 <div class="titulocalendario">
   <p>GUARDIAS DE:</p>
   <p><%=@user.nombre_completo%></p>
 </div>
 
-
-
-  <div id="calendar">
+<div id="calendar">
   <h2 id="month">
     <%= link_to "#{(@date.beginning_of_month-1).strftime("%B DE %Y ").upcase}", {:month => (@date.beginning_of_month-1).strftime("%Y-%m")}, :style=> "font-size: 14px;"-%>
     <%= link_to "<", {:month => (@date.beginning_of_month-1).strftime("%Y-%m")}, :class => "flecha_calendario" -%>
