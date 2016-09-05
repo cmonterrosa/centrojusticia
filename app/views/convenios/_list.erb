@@ -28,9 +28,15 @@
   </div>
 <%end%>
 
+
+
   <%unless @tramite%>
         <div style="text-align: center;">
-          <%= link_to 'Nuevo Convenio', {:action => "new_or_edit_without_expediente", :controller => "convenios"}, :class => "boton" %>
+          <%= link_to ' + Nuevo Convenio', {:action => "new_or_edit_without_expediente", :controller => "convenios"}, :class => "boton" %>
+          <br /><br />
+          <%=link_to '', '#', :class => "boton", :style => "background: #ff704d;"%>
+            <span style="font-size:10px;">Sin archivos cargados </span><br />
+
         </div><br />
   <%end%>
 
@@ -38,7 +44,9 @@
 <div id="divlista">
     <table width="94%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin: auto;">
       <tr style="background-color:gray; color:white">
-         <th style="vertical-align: middle;" align="center">&nbsp;</th>
+        <%if current_user.has_role?(:subdireccion)%>
+            <th style="vertical-align: middle;" align="center">&nbsp;</th>
+        <%end%>
          <th style="vertical-align: middle;" align="center">Folio de convenio:</th>
          <th style="vertical-align: middle;" align="center">Núm. de expediente:</th>
           <th style="vertical-align: middle;" align="center">Capturado o modificado por:</th>
@@ -51,15 +59,20 @@
 
 
     <%@convenios.each do |c|%>
-    <tr class="d<%=invert_class(clase)%>">
-      <td>
-      <%=case c.validado
-        when true
-            h(image_tag("iconos/convenio_valido.png", :border =>0, :title => "Validado"))
-        else
-            h(image_tag("iconos/convenio_invalido.png", :border =>0, :title => "Aún sin validar"))
-        end%>
-      </td>
+    <%estilo= (c.numero_adjuntos > 0) ? '' : 'background: #ff704d;'%>
+    <tr class="d<%=invert_class(clase)%>" style="<%=estilo%>">
+        <%if current_user.has_role?(:subdireccion)%>
+          <td>
+            <%=case c.validado
+              when true
+                  h(image_tag("iconos/convenio_valido.png", :border =>0, :title => "Validado"))
+              else
+                  h(image_tag("iconos/convenio_invalido.png", :border =>0, :title => "Aún sin validar"))
+              end%>
+          </td>
+      <%end%>
+
+
       <td style="vertical-align: middle;"><%=h (c.folio)? c.folio : '--'%></td>
        <td style="vertical-align: middle;"><%=h (c.tramite && c.tramite.numero_expediente)? c.tramite.numero_expediente : ''%></td>
        <td style="vertical-align: middle;"><%=h (c.especialista) ? c.especialista.nombre_completo : "----"%></td>
