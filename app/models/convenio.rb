@@ -43,5 +43,9 @@ class Convenio < ActiveRecord::Base
      end
    end
 
+   def numero_adjuntos
+     return Adjunto.count(:convenio_id, :conditions => ["convenio_id = ?", self.id])
+   end
+
 
 end
