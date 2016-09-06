@@ -21,7 +21,7 @@
 /* Main menu style */
 .cbp-hsmenu-wrapper .cbp-hsmenu {
 	width: 97%;
-	max-width: 79em;
+	/*max-width: 79em;*/
 	margin: 0 auto;
 	padding: 0 1.875em;
 	font-size: 14px;
