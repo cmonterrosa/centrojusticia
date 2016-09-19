@@ -11,7 +11,7 @@ class ConveniosController < ApplicationController
     @user = current_user
     if @user.has_role?(:subdireccion)
       @title = "CONVENIOS"
-      @convenios = Convenio.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 25) if @user
+      @convenios = Convenio.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 35) if @user
     else
       @title = "MIS CONVENIOS"
       @convenios = Convenio.find(:all, :conditions => ["especialista_id = ?", @user], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 25) if @user
