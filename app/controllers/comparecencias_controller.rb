@@ -352,7 +352,7 @@ class ComparecenciasController < ApplicationController
        #@margen =  (120 * 60.0) # 120 Minutos
        #@margen = ((60 * 60) * 24) * 3
        @partial = params[:token] && params[:token] == "partial"
-       @user_success = (@tramite.orientacion.user == current_user || current_user.has_role?(:subdireccion))? true : false
+       @user_success = (@tramite.orientacion.especialista == current_user || current_user.has_role?(:subdireccion))? true : false
        @time_success = (@comparecencia.created_at > 3.days.ago)? true : false
        #(Time.now < (@comparecencia.created_at + @margen) || (Time.now < (@comparecencia.updated_at + @margen))) ? true : false
        if @user_success && @time_success
