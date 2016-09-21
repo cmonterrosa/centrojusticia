@@ -25,10 +25,7 @@
                                                             <ul><%=link_to image_tag('kolaval/Ico-monitor-especia.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Ico-monitor-especia.jpg") , {:action => "show_siguientes_especialistas", :controller => "orientacions"}, :title => "Monitor de actividad de orientaciones y/o comparecencias"%></ul>
                                                           </li>
 
-                                                          <!-- Comparecencias -->
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/comparecencias.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/comparecencias.jpg") , {:action => "list_by_user", :controller => "comparecencias"}, :title => "Comparecencias"%></ul>
-                                                          </li>
+                                                          <%=render :partial => "comparecencias"%>
 
                                                           <!-- Mis expedientes -->
                                                           <li>

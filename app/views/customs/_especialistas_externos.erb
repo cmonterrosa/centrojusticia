@@ -22,10 +22,7 @@
                                                               </ul>
                                                           </li>
 
-                                                         <!-- Comparecencias -->
-                                                         <li>
-                                                            <ul><%=link_to image_tag('kolaval/comparecencias.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/comparecencias.jpg") , {:action => "list_by_user", :controller => "comparecencias"}, :title => "Comparecencias"%></ul>
-                                                         </li>
+                                                        <%=render :partial => "comparecencias"%>
 
                                                         <!-- Agenda -->
                                                         <%if current_user.has_role?("lecturaagenda")%>
