@@ -1,22 +1,24 @@
 <div id="divlista">
   <table width="95%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
      <tr>
-       <td style="vertical-align: middle;" align="center">&nbsp;</td>
-        <td style="vertical-align: middle;" align="center">NP</td>
-        <td style="vertical-align: middle;" align="center">Número de Expediente</td>
-        <td style="vertical-align: middle;" align="center">Fecha/Hora&nbsp;de&nbsp;Captura</td>
-        <td style="vertical-align: middle;" align="center">Participante(s)</td>
-        <td style="vertical-align: middle;" colspan="4" align="center">Acciones</td>
+       <td style="vertical-align: middle; width: 5%;" align="center">&nbsp;</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Número de Expediente</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Materia</td>
+        <td style="vertical-align: middle; width: 10%;" align="center">Fecha/Hora&nbsp;de&nbsp;Captura</td>
+        <td style="vertical-align: middle; width: 40%;" align="center">Participante(s)</td>
+        <td style="vertical-align: middle; width: 25%;" colspan="3" align="center">Acciones</td>
     </tr>
-     <%clase=0%>
-     <%counter=1%>
+    
+
     <%@comparecencias.each do |comparecencia|%>
-     <tr class="d<%=invert_class(clase)%>">
-       <td style="vertical-align: middle;"><%=link_to image_tag("kolaval/ico-print-tramite.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => comparecencia.tramite }, :target => "_blank", :title => "Resumen"-%></td>
-        <td style="vertical-align: middle;"><%=h counter%></td>
-        <td style="vertical-align: middle;"><b><%=h (comparecencia.tramite) ? comparecencia.tramite.numero_expediente : "--"%></b></td>
-        <td style="vertical-align: middle;"><%=h (comparecencia.fechahora) ? comparecencia.fechahora.strftime('%d de %B de %Y - %H:%M:%S') : "No existe información"%></td>
-        <td style="vertical-align: middle;">
+     <tr>
+       <td style="vertical-align: middle; width: 5%;"><%=link_to image_tag("kolaval/ico-print-tramite.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => comparecencia.tramite }, :target => "_blank", :title => "Resumen"-%></td>
+        
+        <td style="vertical-align: middle; width: 10%;"><b><%=h (comparecencia.tramite) ? comparecencia.tramite.numero_expediente : "--"%></b></td>
+        <td style="vertical-align: middle; width: 10%;"><b><%=h (comparecencia.tramite && comparecencia.tramite.materia) ? comparecencia.tramite.materia.descripcion : ''%></b></td>
+        <td style="vertical-align: middle; width: 10%;"><%=h (comparecencia.fechahora) ? comparecencia.fechahora.strftime('%d de %B de %Y   -  %H:%M:%S %p') : "No existe información"%></td>
+
+        <td style="vertical-align: middle; width: 40%;">
           <%participantes=[]%>
           <%comparecencia.participantes.each do |p|%>
               <%participantes << "#{p.nombre_completo} (#{p.perfil})"%>
@@ -27,26 +29,26 @@
         <%materia_asignada = Estatu.find_by_clave("mate-asig")%>
         <%if comparecencia.tramite%>
           <% if comparecencia.tramite.estatu_id == materia_asignada.id%>
-            <td style="vertical-align: middle;"><%=link_to "Editar comparecencia",{:controller => "comparecencias", :action => "new_or_edit", :id => comparecencia.tramite}, :class => 'boton'%></td>
-            <td style="vertical-align: middle;">MATERIA ASIGNADA</td>
+              <td style="vertical-align: middle; width: 10%;"><%=link_to "Editar comparecencia",{:controller => "comparecencias", :action => "new_or_edit", :id => comparecencia.tramite}, :class => 'boton'%></td>
           <%else%>
 
             <!-- Convertir si aún no hay más expedientes -->
             <%ultimo_folio_anio = Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", Time.now.year]) %>
             <%if comparecencia.tramite.anio == Time.now.year.to_s && comparecencia.tramite.folio_expediente == ultimo_folio_anio.to_i%>
-                <td style="vertical-align: middle;"><%=link_to "Cambiar a orientación", {:controller => "comparecencias", :action => "change_to_orientacion", :id => comparecencia}, :class => 'boton', :confirm => "¿Está seguro(a) que desea cambiar a orientación?, se borrará lo que haya capturado"%></td>
+                <td style="vertical-align: middle; width: 10%;"><%=link_to "Cambiar a orientación", {:controller => "comparecencias", :action => "change_to_orientacion", :id => comparecencia}, :class => 'boton', :confirm => "¿Está seguro(a) que desea cambiar a orientación?, se borrará lo que haya capturado"%></td>
             <%end%>
-            <!--
-              <td style="vertical-align: middle;"><=link_to "Trámite", {:controller => "tramites", :action => "menu", :id => comparecencia.tramite}, :class => 'boton'%></td>
-            -->
-            <td style="vertical-align: middle;"><%=link_to "Editar comparecencia",{:controller => "comparecencias", :action => "new_or_edit", :id => comparecencia.tramite}, :class => 'boton'%></td>
-            <td style="vertical-align: middle;">&nbsp;</td>
+            <td style="vertical-align: middle; width: 10%;"><%=link_to "Editar comparecencia",{:controller => "comparecencias", :action => "new_or_edit", :id => comparecencia.tramite}, :class => 'boton'%></td>
+            
+            <%if Concluido.find_by_tramite_id(comparecencia.tramite.id)%>
+                 <td style="vertical-align: middle; width: 5%;">Exp. Concluido</td>
+            <%else%>
+                <td style="vertical-align: middle; width: 5%;">&nbsp;</td>
+            <%end%>
+
           <%end%>
         <%end%>
 
       </tr>
-       <%clase = invert_class(clase)%>
-       <%counter+=1%>
     <%end%>
   </table>
 </div>
