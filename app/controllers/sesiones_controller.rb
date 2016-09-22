@@ -106,6 +106,9 @@ class SesionesController < ApplicationController
     @comediadores = Role.find_by_name("ESPECIALISTAS").usuarios_disponibles_sesiones_funcion(@fecha_hora_sesion, "comediador")
     @comediadores += Role.find_by_name("SUBDIRECCION").usuarios_disponibles_sesiones_funcion(@fecha_hora_sesion, "comediador")
 
+     # Ordenamiento
+     @mediadores = @mediadores.sort{|k, v| k.nombre_completo <=> v.nombre_completo}
+     @comediadores = @comediadores.sort{|k, v| k.nombre_completo <=> v.nombre_completo}
 
     if current_user.has_role?("admindireccion") || current_user.has_role?("asignahorario")
       render :partial => 'new_with_date', :layout => 'kolaval'
@@ -330,7 +333,7 @@ class SesionesController < ApplicationController
    @notificacion = (params[:sesion_notificacion]) ? true : false 
    @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id as id from sesions where fecha = ?)",  @fecha])
    @title = "Resultados encontrados"
-   @horarios_disponibles = Horario.find_by_sql(["select * from horarios where id not in (select horario_id  as id from sesions where fecha = ? AND cancel is NULL) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
+   @horarios_disponibles = Horario.find_by_sql(["select * from horarios WHERE id not in (select horario_id  as id from sesions where fecha = ? AND (cancel is NULL OR cancel = 1)) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
   end
 
 
