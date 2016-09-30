@@ -25,6 +25,8 @@
       <% @numero_total_sesiones = Sesion.count(:id, :select => "DISTINCT tramite_id,mediador_id,comediador_id,hora,minutos,sala_id", :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND fecha = ? AND (cancel IS NULL or cancel=false)", current_user, current_user, @fecha])%>
   <%end%>
 
+  <%@numero_total_sesiones ||= Sesion.count(:id, :select => "DISTINCT tramite_id,mediador_id,comediador_id,hora,minutos,sala_id", :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha]) if current_user.has_role?(:controlagenda) %>
+
   <%if @numero_total_sesiones > 0%>
           <p>
              <%if @numero_total_sesiones == 1%>
@@ -111,7 +113,7 @@
                       </td>
                       
                    <%end%>
-                  <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
+                  <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=? AND (? between fecha_inicio AND fecha_expiracion)", horario.hora, horario.minutos, sala.id, true, @fecha])%>
                     <%if current_user.has_role?("asignahorario") || current_user.has_role?("direccion") || current_user.has_role?("subdireccion") || current_user.has_role?("admindireccion")%>
                         <td style="background-color: #D7F2FF;">
                             <%=  link_to "DISPONIBLE", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
