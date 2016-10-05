@@ -40,6 +40,29 @@ class AdminController < ApplicationController
     end
   end
 
+  def change_estatus_tramite
+    @tramite = Tramite.find(params[:id])
+    @estatus =Estatu.find(:all)
+    @nuevos_estatus = Estatu.find(:all, :conditions => ["id NOT IN (?)", @tramite.estatu.id])
+  end
+
+  def update_estatus_expediente
+    if current_user.has_role?(:admin)
+      @tramite = Tramite.find(params[:id])
+      @tramite.update_attributes(params[:tramite])
+      if @tramite.save
+        flash[:notice] = "Estatus actualizado correctamente"
+        redirect_to :action => "list", :controller => "tramites"
+      else
+        flash[:error] = "Error en los parametros"
+        redirect_to(:back)
+      end
+    else
+      flash[:error] = "No tiene permisos"
+      redirect_to(:back)
+    end
+  end
+
   #--- administración de flujo de peticiones
   def flujo
     @flujos = Flujo.find(:all, :order => "orden")

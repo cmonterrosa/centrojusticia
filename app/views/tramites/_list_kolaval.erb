@@ -55,7 +55,8 @@
     <%@tramites.each do |tramite|%>
     <tr>
        <%if current_user.has_role?("admin")%>
-          <td style="vertical-align: middle; text-align: 'center';" width="2%"><%=link_to "x", {:action => "destroy", :controller => "tramites", :id => tramite}, :confirm => "¿Está seguro que desea eliminar el registro?" %></td>
+          <td style="vertical-align: middle; text-align: 'center';" width="2%"><%=link_to "&#10754;", {:action => "destroy", :controller => "tramites", :id => tramite}, :confirm => "¿Está seguro que desea eliminar el registro?", :title => "ELIMINAR" %></td>
+          <td style="vertical-align: middle; text-align: 'center';" width="2%"><%=link_to "&#9416;", {:action => "change_estatus_tramite", :controller => "admin", :id => tramite}, :confirm => "¿Está seguro que desea cambiar el estatus?", :title => "CAMBIAR ESTATUS" %></td>
       <%end%>
 
         <%if tramite.fechahora%>

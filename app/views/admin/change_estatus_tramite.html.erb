@@ -1,0 +1,55 @@
+<p><%=link_to '<< REGRESAR A LISTADO DE TRAMITES', :action => "list", :controller => "tramites"%></p><br />
+
+<div class="container">
+<% form_for :tramite, @tramite, :url => { :action => "update_estatus_expediente", :controller => "admin", :id => @tramite}, :html => {:class => "formee", :style=>"width: 70%; margin: auto;"} do |f| -%>
+  <fieldset>
+    <legend>CAMBIAR&nbsp;ESTATUS&nbsp;DE&nbsp;EXPEDIENTE</legend>
+      <div class="grid-form">
+          <%= error_messages_for :tramite %>
+      </div>
+
+    <div class="grid-12-12">
+        <div class="grid-6-12">
+          <label><b>NÚMERO DE EXPEDIENTE: </b></label>
+        </div>
+        <div class="grid-6-12"><%=h @tramite.numero_expediente%></div>
+      </div>
+
+    <div class="grid-6-12">
+        <div class="grid-6-12">
+          <label><b>ESTATUS ACTUAL: </b></label>
+        </div>
+        <div class="grid-6-12"><%=h @tramite.estatu.descripcion%></div>
+      </div>
+
+
+      <div class="grid-4-12">
+        <div class="grid-6-12">
+          <label><b>ESTATUS NUEVO: </b><em class="formee-req">*</em></label>
+        </div>
+        <div class="grid-6-12"><%= f.select :estatu_id, @estatus.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción', :selected =>@tramite.estatu.id%></div>
+      </div>
+      
+
+     <div class="grid-12-12 clear"></div>
+
+      <div class="grid-form-login">
+        <input class="right" type="submit" title="GUARDAR" value="GUARDAR" />
+      </div>
+ </fieldset>
+<%end%>
+</div>
+
+<!-- Validaciones -->
+<script type="text/javascript">
+  var estatu = new LiveValidation( 'tramite_estatu_id', {onlyOnSubmit: true} );
+  estatu.add( Validate.Presence );
+</script>
+
+
+
+
+
+
+
+
