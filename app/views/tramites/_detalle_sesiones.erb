@@ -8,6 +8,7 @@
         </th>
       </tr>
       <tr class="d0">
+          <td style="vertical-align: middle;"><b>&nbsp;</b></td>
           <td style="vertical-align: middle;"><b>Id</b></td>
           <td style="vertical-align: middle;"><b>Descripción</b></td>
           <td style="vertical-align: middle;"><b>Num Invitación</b></td>
@@ -20,6 +21,12 @@
       </tr>
       <%@sesiones_activas.each do |row|%>
         <tr class="d1">
+
+          <!-- reprogramacion de sesion -->
+          <%if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
+            <td><%= link_to image_tag("kolaval/ico-calen-edicion.png", :border =>0, :size => "16x16") , {:controller => "sesiones", :action => "reprogramar", :id => row, :token => "show"}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post -%></td>
+          <%end%>
+
           <td style="vertical-align: middle;"><%=h (row.clave) ? (link_to "#{row.clave}", {:controller => "sesiones", :action => "show_window", :id => row}, :class => "fancybox fancybox.iframe") : "---"%></td>
           <td style="vertical-align: middle;"><%=h(row.tiposesion_id ? row.tiposesion.descripcion : "---")%></td>
           <td style="vertical-align: middle;"><%=h(row.num_invitacion ? row.num_invitacion : "--")%></td>
