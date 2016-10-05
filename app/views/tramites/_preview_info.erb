@@ -1,0 +1,50 @@
+<%if @tramite.concluido%>
+  <div class="titulocalendario">
+    <!-- Si es cancelado -->
+     <div class="watermark">CONCLUIDO </div>
+     <%if @tramite.concluido%>
+     <table width="95%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-family: 'Nexa Light'; font-size: 14px;">
+            <tr class="d1">
+                <td style="vertical-align: middle;" colspan="2"><b><%=h @tramite.concluido.motivo_conclusion.descripcion_completa%></b></td>
+            </tr>
+            <tr class="d0">
+              <td style="vertical-align: middle;"><span style="color: #019595;"><b>OBSERVACIONES:</b></span></td>
+              <td style="vertical-align: middle;"><%=h @tramite.concluido.observaciones_conclusion%></td>
+            </tr>
+            <tr class="d1">
+              <td style="vertical-align: middle;"><span style="color: #019595;"><b>CONCLUIDO POR  /  FECHA-HORA:</b></span></td>
+              <td style="vertical-align: middle;"><%=h User.find(@tramite.concluido.user_id).nombre_completo%>  /   <%=h @tramite.concluido.created_at.strftime("%d-%m-%Y - %H:%M %p")%></td>
+            </tr>
+     </table>
+      <%end%>
+   </div>
+<%end%>
+
+<table width="95%" class="sample" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 0px solid; font-family: 'Nexa Light'; font-size: 14px;">
+  <tr class="d0">
+    <td colspan="2" style="text-align: center;"><b>INFORMACION DEL TRÁMITE</b></td>
+  </tr>
+
+  <tr class="d1">
+    <td><span style="color: #019595;"><b>NÚMERO DE EXPEDIENTE:</b></span> <%=h @tramite.numero_expediente%></td>
+    <td><span style="color: #019595;"><b>FECHA DE INICIO DEL TRÁMITE:</b> </span> <%=h (@tramite.fechahora)? @tramite.fechahora.strftime("%d de %B de %Y  / %H:%M %p").upcase : ''%></td>
+  </tr>
+  <tr class="d0">
+    <td><span style="color: #019595;"><b>SOLICITANTES:</b></span>  <%=h (@tramite.comparecencia)? @tramite.comparecencia.solicitantes : ''%> </td>
+    <td><span style="color: #019595;"><b>INVOLUCRADOS:</b></span> <%=h (@tramite.comparecencia)? @tramite.comparecencia.involucrados : ''%></td>
+  </tr>
+
+  <%if !@sesiones.empty?%>
+    <tr class="d1">
+      <td colspan="2" style="text-align: center;"><span style="color: #019595;"><b>DETALLE DE SESIONES</b></span></td>
+    </tr>
+
+    <%@sesiones.each do |s|%>
+        <tr class="d0">
+          <td><%=h (s.start_at)? "#{s.fechahora_completa} / #{(s.sala)? s.sala.descripcion : ''}" : ''%></td>
+          <td><%=h (s.mediador_id && s.comediador_id)? s.descripcion_especialistas : ''%></td>
+        </tr>
+    <%end%>
+ <%end%>
+ 
+</table>

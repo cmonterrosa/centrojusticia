@@ -80,7 +80,7 @@
   <table class="tablakolaval" style="width: 98%; margin: auto;">
 
     <tr>
-      <td colspan="2">DETALLE DE SESIÓN <%=h (@sesion.clave) ? @sesion.clave : ''%></td>
+      <td colspan="2">DETALLE DE SESIÓN (<%=h (@sesion.clave) ? @sesion.clave : ''%>)</td>
     </tr>
 
 
@@ -104,14 +104,18 @@
                 <td style="vertical-align: middle; width: 30%;"><b>NÚMERO DE EXPEDIENTE: </b></td>
                 <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.tramite.numero_expediente%></b></td>
               </tr>
+          <%end%>
 
-                <%if @sesion.start_at%>
+           <%if @sesion.start_at%>
                     <tr>
                         <td style="vertical-align: middle; width: 30%;"><b>Hora de inicio de la sesión:</b></td>
                         <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=@sesion.start_at.strftime("%d de %B de %Y   -   %H:%M  %p")%></b></td>
                     </tr>
-                <%end%>
-          <%end%>
+                    <tr>
+                        <td style="vertical-align: middle; width: 30%;"><b>Sala:</b></td>
+                        <td style="vertical-align: middle; width: 70%;"><b class="descripcion_detalle_sesion"><%=h (@sesion.sala)? @sesion.sala.descripcion : 'SIN ASIGNAR'%></b></td>
+                    </tr>
+            <%end%>
 
           <%if @sesion.tramite.mecanismo_alternativo%>
                <tr>

@@ -301,6 +301,7 @@ class SesionesController < ApplicationController
     else
       @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).todos_usuarios
       @notificacion = (params[:sesion_notificacion]) ? true : false
+      @token = params[:token] if params[:token]
       return render(:partial => 'reprogramar', :layout => "only_jquery")
     end
   end
@@ -327,13 +328,11 @@ class SesionesController < ApplicationController
     @fecha = Date.parse(params[:sesion_fecha]) if params[:sesion_fecha]
     #@noweekend = (1..5).include?(@fecha.wday)
     @inhabil = inhabil?(@fecha)
-
-
-
-   @notificacion = (params[:sesion_notificacion]) ? true : false 
-   @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id as id from sesions where fecha = ?)",  @fecha])
-   @title = "Resultados encontrados"
-   @horarios_disponibles = Horario.find_by_sql(["select * from horarios WHERE id not in (select horario_id  as id from sesions where fecha = ? AND (cancel is NULL OR cancel = 1)) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
+    @token = params[:token] if params[:token]
+    @notificacion = (params[:sesion_notificacion]) ? true : false
+    @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id as id from sesions where fecha = ?)",  @fecha])
+    @title = "Resultados encontrados"
+    @horarios_disponibles = Horario.find_by_sql(["select * from horarios WHERE id not in (select horario_id  as id from sesions where fecha = ? AND (cancel is NULL OR cancel = 1)) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
   end
 
 
@@ -354,6 +353,7 @@ class SesionesController < ApplicationController
    @tiposesion = Tiposesion.find(params[:tiposesion]) if params[:tiposesion]
    @sala = @horario.sala ? @horario.sala.id : nil
    @user = current_user ? current_user.id : nil
+   @token = params[:token] if params[:token]
    flash[:error] = "No se pudo actualizar correctamente, verifique"
      if @sesion && @horario && @fecha && @mediador && @comediador
         @sesion_registro_anterior = @sesion.clone
@@ -379,7 +379,11 @@ class SesionesController < ApplicationController
          estatus = Estatu.find_by_clave("invi-proc")
          redirect_to :action => "update_estatus", :controller => "tramites", :new_st => estatus.id, :id => @sesion.tramite
      else
-        redirect_to :action => "show", :id => @sesion, :user => current_user.id
+        if @token
+          redirect_to :action => "show", :controller => "tramites", :id => @sesion.tramite, :user => current_user.id
+        else
+          redirect_to :action => "show", :id => @sesion, :user => current_user.id
+        end
      end
     
   end
@@ -572,8 +576,11 @@ class SesionesController < ApplicationController
          render :text => "<h4 style='color:#ff9305;'>Formato de expediente no valido</h4>"
       else
         folio_expediente, anio=params[:num_tramite].split("/")
-        @tramite = (folio_expediente && anio) ? Tramite.count(:id, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) : 0
-        (@tramite > 0) ? (render :text => "<h4 style='color:green;'>Expediente encontrado correctamente</h4>") : (render :text => "<h4 style='color:red;'>Expediente no encontrado</h4>")
+        @tramite_contador = (folio_expediente && anio) ? Tramite.count(:id, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) : 0
+        @tramite = Tramite.find(:first, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) if @tramite_contador > 0
+        @sesiones = Sesion.find(:all, :conditions => ["tramite_id = ? AND (cancel IS NULL or cancel = 0)", @tramite]) if @tramite
+        @sesiones ||= Array.new
+        (@tramite_contador > 0) ? (render :partial => "tramites/preview_info", :layout => "only_jquery") : (render :text => "<h4 style='color:red;'>Expediente no encontrado</h4>")
       end
     else
       render :text => ""

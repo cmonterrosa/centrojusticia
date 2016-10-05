@@ -1,13 +1,15 @@
 <% form_for :sesion, @sesion, :url => { :action => "save_with_date", :date => @fecha, :horario => @horario, :origin => "agenda" }, :html => {:id => "new_sesion_with_date"}  do |f| -%>
-  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
-    <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" >NUEVA SESIÓN</td>
+  <table width="98%" border="0" align="center" cellpadding="2" cellspacing="1" style="margin:auto;">
+    <tr class="titulo">
+      <td colspan="3" style="text-align: center; background: white;">
+        <span style="font-size: 16px; color: black;">CAPTURA&nbsp;DE&nbsp;SESIÓN&nbsp;</span>
+      </td>
     </tr>
     <tr align="center">
       <td align="center">
           <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
             <tr bgcolor="#E8E8E8" class="subtitulo">
-              <td align="center" colspan="4">DATOS GENERALES</td>
+              <td align="center" colspan="4"><b>DATOS GENERALES</b></td>
             </tr>
             <tr align=" justify" class="pregunta">
               <td align="center">Número de expediente</td>
@@ -33,7 +35,7 @@
       <td align="center">
           <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
             <tr bgcolor="#E8E8E8" class="subtitulo">
-              <td align="center" colspan="4">CAPTURAR DATOS DE LA SESIÓN</td>
+              <td align="center" colspan="4"><b>CAPTURAR DATOS DE LA SESIÓN</b></td>
             </tr>
             <tr align=" justify" class="pregunta">
                 <td align="center">Fecha</td>
@@ -48,7 +50,7 @@
               <%else%>
                 <td align="center"><b><%=@horario.descripcion_completa%></b></td>
               <%end%>
-              <td align="center"><%= f.select :tiposesion_id, @tipos_sesiones.collect{|a| [a.descripcion, a.id]}, :selected => Tiposesion.find_by_descripcion("ORIENTACION CONJUNTA")%></td>
+              <td align="center"><%= f.select :tiposesion_id, @tipos_sesiones.collect{|a| [a.descripcion, a.id]}, :selected => Tiposesion.find_by_descripcion("ORIENTACION CONJUNTA"), :include_blank=> true%></td>
 
               <!-- invitaciones -->
               <%@invitaciones = {"PRIMERA INVITACION" => 1, "SEGUNDA INVITACION" => 2}%>
@@ -66,7 +68,7 @@
       <td align="center">
           <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
             <tr bgcolor="#E8E8E8" class="subtitulo">
-              <td align="center" colspan="1">DETALLE</td>
+              <td align="center" colspan="1"><b>DETALLE</b></td>
             </tr>
             <tr align=" justify" class="pregunta">
                 <td align="center">Observaciones</td>
@@ -134,6 +136,8 @@
 <script type="text/javascript">
   var mediador = new LiveValidation( 'sesion_mediador_id' );
   var comediador = new LiveValidation( 'sesion_comediador_id' );
+  var tipo = new LiveValidation('sesion_tiposesion_id')
   mediador.add( Validate.Presence );
   comediador.add( Validate.Presence );
+  tipo.add( Validate.Presence );
 </script>

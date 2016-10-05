@@ -10,12 +10,12 @@
 
 <div class="titulocalendario">
   <p>
-    AGENDA DIARIA DE SESIONES
+      <b>AGENDA DIARIA DE SESIONES</b>
   </p>
   <p>
-    <%=link_to "<", {:action => "daily_show", :day => @before.day, :month => @before.month, :year => @before.year, :origin => @origin, :type => @type}, :class => "flecha_calendario"-%>&nbsp;
-      <%=day_of_the_week(@fecha.strftime("%u").to_i)%>, <%=(@fecha.strftime("%d de %B de %Y")).upcase%>&nbsp;
-    <%=link_to ">", {:action => "daily_show", :day => @after.day, :month => @after.month, :year => @after.year, :origin => @origin, :type => @type}, :class => "flecha_calendario"-%>
+    <%=link_to "&#10703;", {:action => "daily_show", :day => @before.day, :month => @before.month, :year => @before.year, :origin => @origin, :type => @type}, :class => "flecha_calendario", :title => "ANTERIOR"-%>&nbsp;
+      <%=day_of_the_week(@fecha.strftime("%u").to_i)%>, <%=(@fecha.strftime("%d de")).upcase%>&nbsp;<%=h link_to @fecha.strftime("%B de %Y").upcase, {:controller => "agenda", :action => "management", :month=>@fecha.strftime("%Y-%m")}, :style=>"font-size: 19px;"%>
+    <%=link_to "&#10704;", {:action => "daily_show", :day => @after.day, :month => @after.month, :year => @after.year, :origin => @origin, :type => @type}, :class => "flecha_calendario", :title => "SIGUIENTE"-%>
   </p>
 
   <!-- Contador de sesiones -->
@@ -24,6 +24,8 @@
   <%else%>
       <% @numero_total_sesiones = Sesion.count(:id, :select => "DISTINCT tramite_id,mediador_id,comediador_id,hora,minutos,sala_id", :conditions => ["(mediador_id = ? OR comediador_id = ? ) AND fecha = ? AND (cancel IS NULL or cancel=false)", current_user, current_user, @fecha])%>
   <%end%>
+
+  <%@numero_total_sesiones ||= Sesion.count(:id, :select => "DISTINCT tramite_id,mediador_id,comediador_id,hora,minutos,sala_id", :conditions => ["fecha = ? AND (cancel IS NULL or cancel=false)", @fecha]) if current_user.has_role?(:controlagenda) %>
 
   <%if @numero_total_sesiones > 0%>
           <p>
@@ -67,83 +69,79 @@
       <tbody>
       <!-- horarios -->
       <%@horarios.each do |horario|%>
-      <tr>
-          <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa.upcase) : "--"%></th>
-              <%@salas.each do |sala|%>
+          <tr>
+            <th scope="row"><%=h (horario.hora_completa) ? (horario.hora_completa.upcase) : "--"%></th>
+                <%@salas.each do |sala|%>
+                    <%if @type%>
+                      <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) AND (cancel IS NULL or cancel=0)", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id])%>
 
-             <%if @type%>
-                    <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (mediador_id = ? OR comediador_id = ?) ", @fecha, horario.hora, horario.minutos, sala.id, current_user.id, current_user.id])%>
-
-              <%else%>
-                      <%if current_user.has_role?("asignahorario") || @token == "all"%>
-                            <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
-                      <%else%>
-                            <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? ", @fecha, horario.hora, horario.minutos, sala.id])%>
-                      <%end%>
-              <%end%>
-
-                  <%if sesion%>
-                    <%@backgrounds_colors = colors_to_days%>
-
-                    <%estilo = (sesion.tramite.concluido) ? " background-color: tomato; opacity: 0.50; text-align: center;" : nil%>
-                    <%estilo ||= !(sesion.cancel == nil || sesion.cancel == 0)? "background-color: #F8FB53; text-decoration: line-through; color: white;" : "background-color:  #{@backgrounds_colors[sesion.tiposesion_id - 1]}"%>
-
-                   <%if sesion.tiposesion_id%>
-                      <td style="<%=h estilo%>">
-                        
-                       <!-- Mostramos observaciones si tiene -->
-                       <%if current_user.has_role?("asignahorario") || current_user.has_role?("especialistas")%>
-                          <%=link_to sesion.resume_with_observaciones, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
-                       <%else%>
-                          <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
-                       <%end%>
-
-                       <!-- reprogramacion de sesion -->
-                       <%if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
-                          &nbsp;<%= link_to image_tag("kolaval/ico-calen-edicion.png", :border =>0, :size => "24x24") , {:controller => "sesiones", :action => "reprogramar", :id => sesion}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post -%>
-                      <%end%>
-
-                       <!-- invitaciones -->
-                       <%if current_user.has_role?("controlinvitaciones") || current_user.has_role?("subdireccion")%>
-                          &nbsp;<%= link_to image_tag("kolaval/ico-invitaciones.png", :border =>0, :size => "24x24") , {:controller => "invitaciones", :action => "list_by_sesion", :id => sesion}, :title => "Invitaciones", :confirm => '¿Esta seguro que quiere visualizar las invitaciones?', :method => :post -%>
-                      <%end%>
-
-                      </td>
-                      
-                   <%end%>
-                  <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=true", horario.hora, horario.minutos, sala.id])%>
-                    <%if current_user.has_role?("asignahorario") || current_user.has_role?("direccion") || current_user.has_role?("subdireccion") || current_user.has_role?("admindireccion")%>
-                        <td style="background-color: #D7F2FF;">
-                            <%=  link_to "DISPONIBLE", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
-                        </td>
                     <%else%>
-                        <td style="background-color: #D7F2FF;">DISPONIBLE</td>
+                        <%if current_user.has_role?("asignahorario") || @token == "all"%>
+                              <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (cancel IS NULL or cancel=0) ", @fecha, horario.hora, horario.minutos, sala.id])%>
+                        <%else%>
+                              <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND sala_id = ? AND (cancel IS NULL or cancel=0) ", @fecha, horario.hora, horario.minutos, sala.id])%>
+                        <%end%>
                     <%end%>
-                 <%else%>
-                    <td></td>
-                 <%end%>
+
+                    <%if sesion%>
+                        <%@backgrounds_colors = colors_to_days%>
+                        <%estilo = (sesion.tramite.concluido) ? " background-color: tomato; opacity: 0.50; text-align: center;" : nil%>
+                        <%estilo ||= !(sesion.cancel == nil || sesion.cancel == 0)? "background-color: #F8FB53; text-decoration: line-through; color: white;" : "background-color:  #{@backgrounds_colors[sesion.tiposesion_id - 1]}"%>
+
+                        <%if sesion.tiposesion_id && !sesion.canceled?%>
+                            <td style="<%=h estilo%>">
+                        
+                            <!-- Mostramos observaciones si tiene -->
+                            <%if current_user.has_role?("asignahorario") || current_user.has_role?("especialistas")%>
+                                <%=link_to sesion.resume_with_observaciones, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
+                            <%else%>
+                                <%=link_to sesion.resume, {:action => 'show_window', :controller => 'sesiones', :id => sesion},  :title => "Detalle", :class => "fancybox fancybox.iframe"%>
+                            <%end%>
+
+                            <!-- reprogramacion de sesion -->
+                            <%if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
+                                  &nbsp;<%= link_to image_tag("kolaval/ico-calen-edicion.png", :border =>0, :size => "24x24") , {:controller => "sesiones", :action => "reprogramar", :id => sesion}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post -%>
+                            <%end%>
+
+                            <!-- invitaciones -->
+                            <%if current_user.has_role?("controlinvitaciones") || current_user.has_role?("subdireccion")%>
+                                &nbsp;<%= link_to image_tag("kolaval/ico-invitaciones.png", :border =>0, :size => "24x24") , {:controller => "invitaciones", :action => "list_by_sesion", :id => sesion}, :title => "Invitaciones", :confirm => '¿Esta seguro que quiere visualizar las invitaciones?', :method => :post -%>
+                            <%end%>
+
+                        </td>
+                        <%else%>
+                              <td><%=  link_to "DISPONIBLE", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => sesion.horario_id, :origin => @origin}, :title => 'Capturar nueva sesion'%></td>
+                        <%end%>
+                   <%elsif h = Horario.find(:first, :conditions => ["hora = ? AND minutos = ? AND sala_id = ? AND activo=? AND (? between fecha_inicio AND fecha_expiracion)", horario.hora, horario.minutos, sala.id, true, @fecha])%>
+                        <%if current_user.has_role?("asignahorario") || current_user.has_role?("direccion") || current_user.has_role?("subdireccion") || current_user.has_role?("admindireccion")%>
+                            <td style="background-color: #D7F2FF;">
+                                <%=  link_to "DISPONIBLE", {:action => "new_with_date", :controller => "sesiones", :date => @fecha, :horario => h, :origin => @origin}, :title => 'Capturar nueva sesion'%>
+                            </td>
+                        <%else%>
+                            <td style="background-color: #D7F2FF;">DISPONIBLE</td>
+                        <%end%>
+                  <%else%>
+                            <td>&nbsp;</td>
+                  <%end%>
               <%end%>
           </tr>
         <%end%>
       </tbody>
     </table>
 
+<%else%>
 
-  <%else%>
+  <div class="titulocalendario">
+    <p style="font-size: 18px; text-align: center;"> ES UN DIA NO LABORABLE</p>
+  </div>
 
-<div class="titulocalendario">
-  <p style="font-size: 18px; text-align: center;"> ES UN DIA NO LABORABLE</p>
-</div>
-
-<%end%>
+  <%end%>
 </div>
 
 <div id="error"></div>
 
 <br /><br />
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => @origin, :action => "management", :month => @fecha.strftime("%Y-%m")%><br />
-
-
 
 <%#=periodically_call_remote(:url => { :action => 'update_daily_show', :controller => "agenda", :fecha => @fecha, :origin => @origin},
                             :frequency => '45',

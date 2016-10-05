@@ -63,7 +63,7 @@
          </tr>
     </thead>
     <!-- Recorremos los horarios -->
-    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :notificacion => @notificacion}, :multipart => true, :remote => true ) do -%>
+    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :notificacion => @notificacion, :token => @token}, :multipart => true, :remote => true ) do -%>
           <tbody>
               <% @horarios_disponibles.each do |horario| %>
                             <tr>
