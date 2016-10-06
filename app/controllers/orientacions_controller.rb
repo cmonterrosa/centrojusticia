@@ -20,7 +20,7 @@ class OrientacionsController < ApplicationController
        @orientaciones = Orientacion.find(:all,
                                        :select => "o.*",
                                        :joins => "o, tramites t, estatus e",
-                                       :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?)", @user.id, ['tram-reas', 'tram-inic', 'orie-conf']],
+                                       :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?) AND (t.fechahora between ? AND ?)", @user.id, ['tram-reas', 'tram-inic', 'orie-conf'], 1.month.ago, Time.now],
                                        :order => "o.fechahora")
     else
        @orientaciones = Orientacion.find(:all,
