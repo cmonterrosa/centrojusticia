@@ -119,7 +119,7 @@ class Tramite < ActiveRecord::Base
      end
    end
 
-   def generar_folio_expediente!#_anterior!
+   def generar_folio_expediente_anterior!
      self.transaction do
         #self.reload(:lock => true)
         unless self.folio_expediente
@@ -134,7 +134,7 @@ class Tramite < ActiveRecord::Base
 
    # Llama procedimiento almacenado que genera el siguiente numero de expediente
    def generar_folio_expediente!
-   #   ActiveRecord::Base.connection.execute("CALL update_folio_consecutivo(#{self.anio}, #{self.id})") if (self.anio && self.id) && !self.folio_expediente
+      ActiveRecord::Base.connection.execute("CALL update_folio_consecutivo(#{self.anio}, #{self.id})") if (self.anio && self.id) && !self.folio_expediente
    end
 
    def numero_expediente
