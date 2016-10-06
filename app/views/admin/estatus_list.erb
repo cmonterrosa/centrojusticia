@@ -1,0 +1,54 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+
+
+<%if current_user.has_role?(:admin)%>
+  <%=h link_to 'ADMINISTRACION', {:controller => "admin"}, :class => "boton"%> >>
+<%end%>
+<%=h link_to "ESTATUS",{:action => "estatus_list"}, :class => "boton" %>
+
+
+<p>
+    <%= link_to image_tag("kolaval/ico-actualizar.jpg", :border =>0) , {:action => "estatus_list"}, :title => "Recargar listado"%>
+</p>
+
+<div class="titulocalendario">
+  <p align="center">ESTATUS DEL SISTEMA</p>
+</div>
+
+<table class="tablakolaval" style="margin: auto; width: 80%;">
+    <tr>
+          <td scope="col" abbr="Starter">CLAVE</td>
+          <td scope="col" abbr="Medium">DESCRIPCION</td>
+          <td scope="col" abbr="Medium">JERARQUIA</td>
+          <td scope="col" abbr="Medium">&nbsp;</td>
+    </tr>
+
+<% form_for :estatu, @estatu, :url => { :action => "update_estatus_list", :controller => "admin"}, :html => {:id => "update_estatus_list"} do |f| -%>
+    <%@estatus.each do |e|%>
+        <tr>
+            <td><%=e.clave%></td>
+            <td><%=e.descripcion%></td>
+            <td><%= select "#{e.id}", :jerarquia, (1..45), :selected => e.jerarquia %></td>
+        </tr>
+     <%end%>
+
+
+      <tr>
+          <td align="right" colspan="3">
+            <input id="button4" class="buttonText" type="submit" title="ACTUALIZAR LISTA" value="ACTUALIZAR LISTA" />
+          </td>
+      </tr>
+
+ <%end%>
+</table><br />
+
+

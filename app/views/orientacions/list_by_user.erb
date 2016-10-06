@@ -1,14 +1,17 @@
 <div class="titulocalendario">
   <p>
-    Mi lista de orientaciones pendientes de atención de los últimos 7 días
+    ORIENTACIONES QUE ME HAN SIDO ASIGNADAS  | <%=link_to 'DEL MES ACTUAL', :action => "list_by_user", :type=> "all"%>
   </p>
 </div>
 
+<!--
 <p>
-  <%=link_to "Ver de los últimos 7 días", :action => "list_by_user"%> | <%=link_to "Ver todas", :action => "list_by_user", :type => "all"%> 
+  <=link_to "Ver de los últimos 7 días", :action => "list_by_user"%> | <=link_to "Ver todas", :action => "list_by_user", :type => "all"%> 
 </p>
+-->
 
 
 <%= render :partial => "list_by_user"%>
 <br />
+
 <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "customs"%><br />

@@ -1,10 +1,10 @@
 <%unless @orientaciones.empty?%>
 
 <div id="divlista">
-  <table  border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+  <table  border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; margin:auto;">
     <tr style="background-color:gray; color:white">
       <td style="vertical-align: middle;" align="center">NP</td>
-       <td style="vertical-align: middle;" align="center">Fecha/Hora</td>
+       <td style="vertical-align: middle;" align="center">Fecha/Hora de inicio de trámite</td>
        <td style="vertical-align: middle;" align="center">Solicitante</td>
        <td style="vertical-align: middle;" align="center"><%=h "Estatus"%></td>
        <td style="vertical-align: middle;" colspan="4" align="center">Acciones</td>
@@ -14,13 +14,13 @@
     <%@orientaciones.each do |orientacion|%>
        <tr>
         <td style="vertical-align: middle;"><%=contador%></td>
-        <td style="vertical-align: middle;"><%=orientacion.fechahora.strftime("%Y-%m-%d %H:%M")%></td>
+        <td style="vertical-align: middle;"><%=orientacion.fechahora.strftime("%d de %B de %Y  / %H:%M %p")%></td>
         <td style="vertical-align: middle;"><%=orientacion.solicitante%></td>
         <% if !orientacion.tramite.only_orientacion %>
             <td style="vertical-align: middle;"><%=orientacion.tramite.estatu.descripcion%></td>
               <%  if !(params[:type] == "all")%>
-                  <td style="vertical-align: middle;"><%=link_to "Levantar Comparecencia",{:controller => "comparecencias", :action => "new_or_edit", :id => orientacion.tramite},  :confirm => '¿Esta seguro(a) que desea capturar la comparecencia?', :class => 'boton'%></td>
-                  <td style="vertical-align: middle;"><%=link_to "Sólo Orientación",{:controller => "tramites", :action => "only_orientacion", :id => orientacion.tramite},  :confirm => '¿Esta seguro(a) que será una orientación únicamente?', :class => 'boton'%></td>
+                  <td style="vertical-align: middle;"><%=link_to "Levantar Comparecencia",{:controller => "comparecencias", :action => "new_or_edit", :id => orientacion.tramite},  :confirm => "¿Esta seguro(a) que desea capturar la comparecencia de: #{orientacion.solicitante} ?", :class => 'boton'%></td>
+                  <td style="vertical-align: middle;"><%=link_to "Sólo Orientación",{:controller => "tramites", :action => "only_orientacion", :id => orientacion.tramite},  :confirm => '¿Esta seguro(a) que será una orientación únicamente, no podrá deshacer la operación?', :class => 'boton'%></td>
               <%else%>
                   <td colspan="2">&nbsp;</td>
               <%end%>

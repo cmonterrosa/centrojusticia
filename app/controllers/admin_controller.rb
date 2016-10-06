@@ -63,6 +63,20 @@ class AdminController < ApplicationController
     end
   end
 
+  # Listado de estatus
+  def estatus_list
+    @estatus = Estatu.find(:all, :order => "jerarquia, id")
+  end
+
+  # Actualizacion general de lista de estatus
+  def update_estatus_list
+    params.each{|k,v|
+      Estatu.find(k).update_attributes!(:jerarquia => v[:jerarquia]) if  k =~ /\d{1,2}/ && Estatu.find(k)
+    }
+    flash[:notice] = "Listado de estatus actualizado"
+    redirect_to :action => "estatus_list"
+  end
+
   #--- administración de flujo de peticiones
   def flujo
     @flujos = Flujo.find(:all, :order => "orden")

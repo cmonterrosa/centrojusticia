@@ -17,7 +17,8 @@ class Tramite < ActiveRecord::Base
 
 
   # Validaciones
-  validates_uniqueness_of :folio_expediente, :scope => :anio, :allow_blank => true,  :message => "ya se encuentra registrado"
+  validates_uniqueness_of :folio_expediente, :scope => :anio, :if => "self.anio.to_i > 2014",
+    :allow_nil => true, :message => "ya se encuentra registrado"
   #validates_presence_of :subdireccion_id, :message => "Seleccione una subdireccion"
 
 
@@ -52,7 +53,7 @@ class Tramite < ActiveRecord::Base
           if self.estatu
               is_finish = (self.estatu.is_finish)? true : false
               same_estatus = @estatus.descripcion == self.estatu.descripcion || false
-              self.update_attributes!(:estatu_id => @estatus.id) if !same_estatus && !is_finish
+              self.update_attributes!(:estatu_id => @estatus.id) if (!same_estatus && !is_finish) && (self.estatu.jerarquia > @estatus.jerarquia)
           else
               self.update_attributes!(:estatu_id => @estatus.id)
           end
