@@ -52,8 +52,11 @@ class Tramite < ActiveRecord::Base
        if @estatus = Estatu.find_by_clave(clave)
           if self.estatu
               is_finish = (self.estatu.is_finish)? true : false
-              same_estatus = @estatus.descripcion == self.estatu.descripcion || false
-              self.update_attributes!(:estatu_id => @estatus.id) if (!same_estatus && !is_finish) && (self.estatu.jerarquia > @estatus.jerarquia)
+              #same_estatus = @estatus.descripcion == self.estatu.descripcion || false
+              if @estatus.jerarquia >= self.estatu.jerarquia
+                  self.update_attributes!(:estatu_id => @estatus.id)
+              end
+              #self.update_attributes!(:estatu_id => @estatus.id) if (!same_estatus && !is_finish)
           else
               self.update_attributes!(:estatu_id => @estatus.id)
           end
@@ -116,7 +119,7 @@ class Tramite < ActiveRecord::Base
      end
    end
 
-   def generar_folio_expediente_anterior!
+   def generar_folio_expediente!#_anterior!
      self.transaction do
         #self.reload(:lock => true)
         unless self.folio_expediente
@@ -131,7 +134,7 @@ class Tramite < ActiveRecord::Base
 
    # Llama procedimiento almacenado que genera el siguiente numero de expediente
    def generar_folio_expediente!
-      ActiveRecord::Base.connection.execute("CALL update_folio_consecutivo(#{self.anio}, #{self.id})") if (self.anio && self.id) && !self.folio_expediente
+   #   ActiveRecord::Base.connection.execute("CALL update_folio_consecutivo(#{self.anio}, #{self.id})") if (self.anio && self.id) && !self.folio_expediente
    end
 
    def numero_expediente
