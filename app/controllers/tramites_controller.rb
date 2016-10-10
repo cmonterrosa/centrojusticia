@@ -215,8 +215,11 @@ class TramitesController < ApplicationController
 
   def opciones_conclusion
     if params[:token] == "apply_conclusion"
-      @sesion = Sesion.find(params[:id])
-      if current_user.id == @sesion.mediador_id || current_user.has_role?("convenios") || current_user.has_role?("subdireccion")
+      @sesion = Sesion.find(params[:id]) if params[:id]
+      @tramite = Tramite.find(params[:tramite]) if params[:tramite]
+      @user = current_user
+      @sesion ||= Sesion.find(:first, :conditions => ["tramite_id = ? AND (mediador_id = ? OR comediador_id = ?)", @tramite.id, @user.id, @user.id]) if @tramite
+      if (@sesion) && (@user.id == @sesion.mediador_id) || current_user.has_role?("convenios") || current_user.has_role?("subdireccion")
           @tramite = @sesion.tramite if @sesion
           @concluido = Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id]) if @tramite
           @concluido ||= Concluido.new(:tramite_id => @tramite.id)
@@ -248,7 +251,11 @@ class TramitesController < ApplicationController
       flash[:error] = "No se pudo concluir correctamente"
       #render :text => "<h2 style='color:red;'>No se pudo concluir, verifique</h2>"
     end
-    redirect_to :controller => "sesiones", :action => "show_window", :id => @sesion
+    if @sesion
+      redirect_to :controller => "sesiones", :action => "show_window", :id => @sesion
+    else
+      redirect_to(:back)
+    end
   end
 
   def concluir_undo
