@@ -103,26 +103,55 @@ $(function() {
         <div class="grid-8-12"
             <label style=" font-weight: bold;"> Estado Actual      |      Especialista      |   Actividad en semana actual     |    última orientacion/comparecencia<em class="formee-req">*</em></label>
               <%if current_user.has_role?(:ranking)%>
-                 <div id ="divespecialistas_ranking" class="grid-12-12">
-                <h5>Última actualización: <%=h Time.now.strftime("%d de %B de %Y  /  %H:%M:%S %p")%></h5>
-                <%if @extra%>
-                    <%= select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%>
+                  <div id ="divespecialistas_ranking" class="grid-12-12">
+                    <h5>Última actualización: <%=h Time.now.strftime("%d de %B de %Y  /  %H:%M:%S %p")%></h5>
+                    <%if @extra%>
+                        <%= select :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}%>
+                    <%else%>
+                        <%if @especialista%>
+                              &nbsp;
+                          <%else%>
+                                <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, :include_blank => true%>
+                          <%end%>
+                    <%end%>
+                  </div>
                 <%else%>
-                    <%if @especialista%>
-                          &nbsp;
-                      <%else%>
-                            <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, :include_blank => true%>
-                      <%end%>
-                <%end%>
-              </div>
-              <%else%>
-                <div id="divespecialistas_noranking" class="grid-12-12">
-                       <h5>Última actualización: <%=h Time.now.strftime("%d de %B de %Y  /  %H:%M:%S %p")%></h5>
-                       <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, :disabled => true%>
-                </div>
+                  <div id="divespecialistas_noranking" class="grid-12-12">
+                        <h5>Última actualización: <%=h Time.now.strftime("%d de %B de %Y  /  %H:%M:%S %p")%></h5>
+                           <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialistas.first}, :disabled => true%>
+                  </div>
               <%end%>
         </div>
      </div>
+
+
+    <!-- Actualizacion de listado -->
+  <%=periodically_call_remote(:url => {:controller => "orientacions",
+                              :action => "update_lista_especialistas",  :orientacion => @orientacion, :tramite_id => @tramite, :extra => @extra},
+                              :frequency => '60',
+                              :before => "Element.show('spinner')",
+                              :success => "Element.hide('spinner')",
+                              :with => "'model[textfield]=' + $F('orientacion_user_id')",
+                              :update => { :success => "divespecialistas", :failure => "error" })%>
+
+
+      <!-- SI YA TIENE ASIGNADO ESPECIALISTA Y PERFIL ADMINISTRADOR --->
+      <%else%>
+          <%if current_user.has_role?(:admin)%>
+              <div class="grid-4-12">
+                    <label style=" font-weight: bold;">Fecha/hora existente:</label>
+                    <div class="grid-12-12">
+                      <%=f.text_field :fechahora, :value => @fecha%>
+                    </div>
+              </div>
+
+            <div class="grid-8-12">
+              <div id="divespecialistas_noranking" class="grid-12-12">
+                   <label style=" font-weight: bold;">Especialista seleccionado:</label>
+                   <%= select :orientacion, :user_id, @especialistas.collect{|a| [a.full_description_for_especialistas, a.id]}, {:selected => @especialista.id}%>
+                </div>
+            </div>
+        <%end%>
     <%end%>
 
       <div class="grid-2-12">
@@ -270,11 +299,4 @@ $(function() {
 </script>
 
 
-<!-- Actualizacion de listado -->
-<%=periodically_call_remote(:url => {:controller => "orientacions",
-                            :action => "update_lista_especialistas",  :orientacion => @orientacion, :tramite_id => @tramite, :extra => @extra},
-                            :frequency => '60',
-                            :before => "Element.show('spinner')",
-                            :success => "Element.hide('spinner')",
-                            :with => "'model[textfield]=' + $F('orientacion_user_id')",
-                            :update => { :success => "divespecialistas", :failure => "error" })%>
+
