@@ -25,7 +25,7 @@
         <td style="vertical-align: middle;" align="center">Participantes</td>
         <td style="vertical-align: middle;" align="center">Sesion(es)</td>
         <td style="vertical-align: middle;" align="center"><%=h "Estatus"%></td>
-        <td style="vertical-align: middle;" align="center">&nbsp;</td>
+        <td style="vertical-align: middle;" align="center" colspan="2">&nbsp;</td>
       </tr>
     
 
@@ -64,6 +64,29 @@
 
        <td style="vertical-align: middle; text-align: center;" width="20%"><b><%=tramite.estatus%></b></td>
        <td style="vertical-align: middle; text-align: center;"><%=link_to "CONVENIOS", {:action => "list_by_tramite", :controller => "convenios", :id =>tramite}, :class => "boton" %></td>
+
+       <!--- SI TRAMITE PUEDE CONCLUIRSE -->
+
+       <%unless tramite.concluido?%>
+            <%if @sesiones = Sesion.find(:all, :conditions => ["tramite_id = ?", tramite.id])%>
+                <td style="vertical-align: middle; text-align: center;">
+                    <%=case @sesiones.size
+                          when 0
+                            h " "
+                          when 1
+                            h link_to "CONCLUIR", {:action => "opciones_conclusion", :controller => "tramites", :tramite =>tramite, :token => "apply_conclusion"}, :confirm=> "¿Está seguro(a) que desea concluir el expediente", :class => "fancybox fancybox.iframe boton"
+                          when (2..10)
+                              if (tramite.sesion_activa_mas_reciente) && (tramite.sesion_activa_mas_reciente.mediador_id == current_user.id)
+                                h link_to "CONCLUIR", {:action => "opciones_conclusion", :controller => "tramites", :tramite =>tramite, :token => "apply_conclusion"}, :confirm=> "¿Está seguro(a) que desea concluir el expediente", :class => "fancybox fancybox.iframe boton"
+                              else
+                                " "
+                          end
+                      end %>
+              </td>
+            <%end%>
+          <%else%>
+               <td>&nbsp;</td>
+         <%end%>
       </tr>
     <%end%>
   </table>
