@@ -7,15 +7,13 @@ class ConveniosController < ApplicationController
      render :partial => "list", :layout => "kolaval"
   end
 
+  def search
+   select_convenios
+   render :partial => "list", :layout => "kolaval"
+  end
+
   def list_by_user
-    @user = current_user
-    if @user.has_role?(:subdireccion)
-      @title = "CONVENIOS"
-      @convenios = Convenio.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 35) if @user
-    else
-      @title = "MIS CONVENIOS"
-      @convenios = Convenio.find(:all, :conditions => ["especialista_id = ?", @user], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 25) if @user
-    end
+    select_convenios
     render :partial => "list", :layout => "kolaval"
   end
 
@@ -120,6 +118,24 @@ class ConveniosController < ApplicationController
       render :action => "new_or_edit"
     end
   end
+
+ private
+ 
+   def select_convenios
+      @user = current_user
+      if @user.has_role?(:subdireccion)  || @user.has_role?(:jefeconvenios)
+        @title = "CONVENIOS"
+        @tramites = Tramite.search(params[:search]) if params[:search] && params[:search].size > 0
+        @convenios = Convenio.find(:all, :conditions => ["tramite_id in (?)", @tramites.map{|i| i.id}], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 35) if @tramites && !@tramites.empty?
+        @convenios ||= Convenio.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 35) if @user
+      else
+        @title = "MIS CONVENIOS"
+        @tramites = Tramite.search(params[:search]) if params[:search] && params[:search].size > 0
+        @convenios = Convenio.find(:all, :conditions => ["especialista_id = ? AND tramite_id in (?)", @user, @tramites.map{|i| i.id}], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 35) if @tramites && !@tramites.empty?
+        @convenios ||= Convenio.find(:all, :conditions => ["especialista_id = ?", @user], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 25) if @user
+      end
+   end
+
 
 
 

@@ -28,6 +28,9 @@
   </div>
 <%end%>
 
+ <%@label_busqueda = "NÚMERO DE EXPEDIENTE"%>
+ <%=render :partial => "home/barra_busqueda"%>
+
 
 
   <%unless @tramite%>
@@ -106,7 +109,8 @@
 
 <br />
 
- <% if @convenios.total_entries > @convenios.per_page.to_i %>
+
+ <% if !@convenios.empty? && (@convenios.total_entries > @convenios.per_page.to_i) %>
 <table>
     <tr align="center" >
       <td colspan="5" style="padding: 0;">
