@@ -161,6 +161,11 @@ class Tramite < ActiveRecord::Base
      Concluido.count(:id, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") > 0 if self.id
    end
 
+   # Regresa el objeto de la ultima sesion activa
+   def sesion_activa_mas_reciente
+     Sesion.find(:first, :conditions => ["tramite_id = ? AND (cancel=0 OR cancel IS NULL)", self.id], :order => "fecha DESC, hora, minutos")
+   end
+
    def fecha_conclusion
      tramite_concluido = concluido
      if tramite_concluido && tramite_concluido.created_at
