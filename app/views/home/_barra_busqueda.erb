@@ -1,0 +1,6 @@
+<!-- Barra de búsqueda -->
+<% form_tag({:action => "search"}, {:id => "demo-2"}) do -%>
+  <p>
+    <%= text_field_tag :search, params[:search], :type => "search",  :placeholder => "     #{@label_busqueda}" %>
+  </p>
+<% end %>
