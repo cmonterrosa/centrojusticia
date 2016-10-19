@@ -212,6 +212,13 @@ class AdminController < ApplicationController
     @token = generate_token
   end
 
+  def search
+    @usuarios = User.search(params[:search])
+    @usuarios = @usuarios.sort{|a,b| a.nombre_completo <=> b.nombre_completo}.paginate(:page => params[:page], :per_page => 25)
+    @token = generate_token
+    render :partial => "show_users", :layout => "kolaval"
+  end
+
   def show_users
     case params[:token]
         when 'esp'
@@ -236,6 +243,7 @@ class AdminController < ApplicationController
      end
     @usuarios = @usuarios.sort{|a,b| a.nombre_completo <=> b.nombre_completo}.paginate(:page => params[:page], :per_page => 25)
     @token = generate_token
+    render :partial => "show_users", :layout => "kolaval"
   end
 ######################################
 # -- termina modulo de administracion de usuarios ----
