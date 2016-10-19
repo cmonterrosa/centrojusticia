@@ -73,33 +73,36 @@
         </tr>
 
         <!-- Espacio -->
-            <tr>
-              <td colspan="4">&nbsp;</td>
-            </tr>
+        <tr>
+          <td colspan="4">&nbsp;</td>
+        </tr>
 
         <tr align=" justify" class="pregunta">
           <td align="center" colspan="2"><b>Sexo</b></td>
           <td align="center" colspan="2"><b>Estado Civil</b></td>
         </tr>
+        
         <tr class="pregunta">
           <td align="center" colspan="2"><%= f.select(:sexo, { "Femenino" => "F", "Masculino" => "M"}) %></td>
            <%estado_civil = (@participante.estado_civil) ? @participante.estado_civil.id : nil%>
           <td align="center" colspan="2"><%= f.select :estado_civil_id, EstadoCivil.find(:all).collect{|e| [e.descripcion, e.id]}, {:include_blank => true}, :selected =>estado_civil%></td>
-          </tr>
+        </tr>
         
         <tr align=" justify" class="pregunta">
           <td align="center" width="40%">&nbsp;</td>
           <td align="center" width="40%" colspan="2"><b>Fecha de Nacimiento</b></td>
-          <td align="center" width="20%"><b>O Edad</b></td>
+          <td align="center" width="20%"><b>O Edad (Si no sabe fecha exacta solo ocupe campo edad)</b></td>
         </tr>
         
         <tr class="pregunta">
+
           <td align="center">
                 <%= f.check_box(:sabe_edad, {:onclick => "ena_edad(this, 'participante_fecha_nac', 'participante_anio_nac');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO EDAD
           </td>
 
-          <td align="center" colspan="2"><%=f.date_select :fecha_nac, :start_year => 1918, :end_year => Time.now.year, :include_blank => true%></td>
+          <td align="center" colspan="2"><%=f.date_select :fecha_nac, :start_year => 110.years.ago.year, :end_year => Time.now.year, :include_blank => true%></td>
           <td align="center"><%= f.select(:anio_nac,  hash_of_years)%></td>
+
         </tr>
        </table>
      </td>
@@ -116,14 +119,14 @@
         </tr>
         <tr>
               <td align="center">
-                <%= f.check_box(:sabe_procedencia, {:onclick => "ena_originario(this, 'participante_pais_id', 'participante_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO PROCEDENCIA
+                  <%= f.check_box(:sabe_procedencia, {:onclick => "ena_originario(this, 'participante_pais_id', 'participante_municipio_id');" }, "NO", "SI") %>&nbsp;NO  SABE O NO RESPONDIO PROCEDENCIA
               </td>
         </tr>
 
         <!-- Espacio -->
-            <tr>
-              <td colspan="4">&nbsp;</td>
-            </tr>
+        <tr>
+          <td colspan="4">&nbsp;</td>
+        </tr>
 
 
         <tr align=" justify" class="pregunta">
@@ -184,7 +187,7 @@
         <tr align=" justify" class="pregunta">
           <td align="center" width="40%"><b>Domicilio particular </b></td>
           <td align="center" width="40%"><b>Referencias domiciliarias</b></td>
-          <td align="center" width="20%"><b>Cuadrante</b></td>
+          <td align="center" width="20%"><b>Cuadrante de la Ciudad</b></td>
         </tr>
         <tr>
             <td align="center" width="40%"><%= f.text_area :domicilio, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :width => "100%", :rows => 12%></td>
@@ -217,7 +220,7 @@
             <td align="center" colspan="6"><b>DATOS DE LOCALIZACIÓN</b></td>
           </tr>
           <tr align=" justify" class="pregunta">
-            <td align="center" width="30%"><b>Teléfono Particular</b></td>
+            <td align="center" width="30%"><b>Teléfono Particular o de casa</b></td>
             <td align="center" width="30%"><b>Teléfono Celular</b></td>
             <td align="center" width="40%"><b>Teléfono Celular Adicional</b></td>
           </tr>
@@ -243,17 +246,17 @@
     </tr>
 
     <!-- Observaciones -->
-    <tr align="center">
+    <tr id="observaciones" align="center">
       <td align="center" width="100%">
          <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
             <tr bgcolor="#E8E8E8" class="subtitulo">
               <td align="center" colspan="2" width="100%"><b>DATOS ADICIONALES</b></td>
             </tr>
             <tr align=" justify" class="pregunta">
-              <td align="center" colspan="2" width="100%"><b>Observaciones y/o documentos que exhibe</b></td>
+              <td align="center" colspan="2" width="100%"><b>Observaciones y/o documentos que exhibe (Sólo se imprime para involucrados)</b></td>
             </tr>
             <tr>
-              <td align="center" colspan="2" width="100%"><%= f.text_area :observaciones, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :cols=> "100%", :rows => 12,  :onkeydown => "textCounter(document.getElementById('participante_observaciones'),385);", :onkeyup => "textCounter(document.getElementById('participante_observaciones'),500);"%></td>
+              <td align="center" colspan="2" width="100%"><%= f.text_area :observaciones, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :cols=> "100%", :rows => 7%></td>
             </tr>
         </table>
       </td>
@@ -298,7 +301,7 @@
   referencia_laboral.add( Validate.Length, { maximum: 255 } );
 
   var observaciones = new LiveValidation( 'participante_observaciones' );
-  observaciones.add( Validate.Length, { maximum: 350 } );
+  observaciones.add( Validate.Length, { maximum: 650 } );
 </script>
 
 <script type="text/javascript">

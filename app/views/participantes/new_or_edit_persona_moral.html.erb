@@ -153,10 +153,10 @@
           <td align="center" colspan="4" >DATOS ADICIONALES</td>
         </tr>
         <tr align=" justify" class="pregunta">
-          <td align="center">Observaciones y/o documentos que exhibe</td>
+          <td align="center">Observaciones y/o documentos que exhibe (Sólo se imprime para involucrados)</td>
         </tr>
         <tr>
-            <td align="center"><%= f.text_area :observaciones, :size => "100x5"%></td>
+            <td align="center" colspan="4"><%= f.text_area :observaciones, :cols => "100%",  :rows=> "8"%></td>
         </tr>
       </table>
       </td>
@@ -198,7 +198,7 @@
   referencia.add( Validate.Length, { maximum: 300 } );
 
   var observaciones = new LiveValidation( 'participante_observaciones' );
-  observaciones.add( Validate.Length, { maximum: 350 } );
+  observaciones.add( Validate.Length, { maximum: 700 } );
 </script>
 
 <script type="text/javascript">
