@@ -108,7 +108,7 @@ class TramitesController < ApplicationController
 
     ### Estatus ###
     @estatus = Estatu.find(@estatus) if (@estatus && params[:estatus])&&(params[:estatus].size > 0)
-    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id = ?", @estatus], :order => "anio DESC,folio_expediente, folio DESC") if @estatus
+    @tramites ||= Tramite.find(:all, :conditions => ["estatu_id = ?", @estatus], :order => "anio DESC,folio_expediente DESC, folio DESC") if @estatus
 
     ## Default ###
     @tramites ||= Array.new
@@ -421,6 +421,12 @@ class TramitesController < ApplicationController
                 ##---- INVITACIONES RAZONADAS ----
                 redirect_to :controller => "invitaciones", :action => "list_by_user"
 
+            when "arch-judi"
+                ##--- ASIGNACION DE MATERIA --
+                @archivojudicial = Archivojudicial.find_by_tramite_id(@tramite.id)
+                @archivojudicial ||= Archivojudicial.new
+                return render(:partial => 'enviar_archivo_judicial', :layout => "oficial")
+
             else
                 update_tramite_model
          end
@@ -471,8 +477,22 @@ class TramitesController < ApplicationController
               flash[:error] = "Información incompleta, verifique"
               redirect_to :action => "list"
           end
-      
-       #--- firma de invitaciones --
+
+      elsif params.has_key?(:archivojudicial)
+       if @tramite = Tramite.find(params[:id])
+          @archivojudicial = Archivojudicial.find(:first, :conditions => ["tramite_id = ?", @tramite.id]) || Archivojudicial.new(:tramite_id => @tramite.id)
+          @archivojudicial.update_attributes(params[:archivojudicial])
+          @archivojudicial.user_id = current_user.id
+       end
+       if @archivojudicial && @archivojudicial.save
+            @tramite.update_estatus!("arch-judi",current_user)
+            flash[:notice] = "Expediente enviado a archivo judicial correctamente"
+       else
+            flash[:error] = "No se pudo cambiar el estatus, verifique"
+       end
+       redirect_to :action => "list"
+       
+      #--- firma de invitaciones --
       elsif params.has_key?(:infosesion)
           @tramite = Tramite.find(params[:id])
           @invitacion = Invitacion.find(params[:invitacion]) if params[:invitacion]
