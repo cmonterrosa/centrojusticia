@@ -9,6 +9,17 @@
         </p>
     <%end%>
    </div>
+ <%elsif @tramite.estatu.clave == "arch-judi" %>
+        <div class="titulocalendario">
+          <!-- Si ya fue enviado al archivo judicial -->
+          <div class="watermark">ENVIADO A ARCHIVO</div>
+          <%if @tramite.archivojudicial%>
+            <p>
+              <h4><b style="color: black; font-weight: bold;">Número de oficio:</b> <%=h (@tramite.archivojudicial.numero_oficio)? @tramite.archivojudicial.numero_oficio : "-----"%></h4>
+              <h4><b style="color:black;  font-weight: bold;">Fecha de envío: </b><%=h (@tramite.archivojudicial.fecha) ? @tramite.archivojudicial.fecha.strftime("%d de %B de %Y") : "----"%></h4>
+            </p>
+        <%end%>
+      </div><br />
 <%end%>
 
 <%if @tramite.concluido%>
@@ -292,6 +303,9 @@
 <!--
 <=render :partial => "detalle_conclusion"%>
 -->
+
+<!-- Detalle del envio al archivo judicial -->
+<%=render :partial => "detalle_archivojudicial"%>
 
 </div>
 

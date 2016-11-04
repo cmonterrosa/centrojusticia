@@ -10,6 +10,7 @@ class Tramite < ActiveRecord::Base
   belongs_to :mecanismo_alternativo
   has_one :orientacion
   has_one :comparecencia
+  has_one :archivojudicial
   has_many :historias
   has_many :adjuntos
   has_many :sesions

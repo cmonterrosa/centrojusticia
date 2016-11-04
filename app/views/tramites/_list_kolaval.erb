@@ -53,11 +53,12 @@
 
     <%contador=1%>
     <%@tramites.each do |tramite|%>
-    <tr>
-       <%if current_user.has_role?("admin")%>
-          <td style="vertical-align: middle; text-align: 'center';" width="2%"><%=link_to "&#10754;", {:action => "destroy", :controller => "tramites", :id => tramite}, :confirm => "¿Está seguro que desea eliminar el registro?", :title => "ELIMINAR" %></td>
-          <td style="vertical-align: middle; text-align: 'center';" width="2%"><%=link_to "&#9416;", {:action => "change_estatus_tramite", :controller => "admin", :id => tramite}, :confirm => "¿Está seguro que desea cambiar el estatus?", :title => "CAMBIAR ESTATUS" %></td>
-      <%end%>
+      <%clase  = (tramite.concluido)? 'fondo_concluido' : 'inherit' %>
+      <tr class="<%=h clase%>">
+          <%if current_user.has_role?("admin")%>
+              <td style="vertical-align: middle; text-align: 'center';" width="2%"><%=link_to "&#10754;", {:action => "destroy", :controller => "tramites", :id => tramite}, :confirm => "¿Está seguro que desea eliminar el registro?", :title => "ELIMINAR" %></td>
+              <td style="vertical-align: middle; text-align: 'center';" width="2%"><%=link_to "&#9416;", {:action => "change_estatus_tramite", :controller => "admin", :id => tramite}, :confirm => "¿Está seguro que desea cambiar el estatus?", :title => "CAMBIAR ESTATUS" %></td>
+          <%end%>
 
         <%if tramite.fechahora%>
           <td style="vertical-align: middle; text-align: 'center';" width="3%"><%=link_to image_tag("kolaval/ico-print-tramite.jpg", :border => 0), {:controller => "tramites", :action => "show", :id => tramite }, :title => tramite.fechahora.strftime('%d de %B de %Y - %H:%M:%S')-%></td>
