@@ -69,11 +69,13 @@ h1{
     font-family: "Open Sans";
     color: #F68934;
 }
+
+
+
 a {
 /*	font-family: "Open Sans";*/
 	font-size: 12px;
-	
-        color: blue;
+	color: blue;
         font-family: "Open Sans";
 
 }
@@ -552,4 +554,22 @@ color: red;
  text-indent: 15px;
  display: inline-block;
  width: 15%;
+}
+
+
+
+
+.fondo_concluido{
+    background-color: #fff6af; background-image: -webkit-linear-gradient(90deg, #F6CECE 50%, #F5A9A9 50%); opacity: 0.59; text-align: center;
+    color: #000033;
+}
+
+.fondo_concluido a{
+    /*color: #000033;*/
+    color: #610B0B;
+}
+
+.fondo_concluido hover{
+    background-color: #EBEAD8;
+    color: #610B0B;
 }
