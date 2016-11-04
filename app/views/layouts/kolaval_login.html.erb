@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -7,8 +7,11 @@
   <%= stylesheet_link_tag "oficial"%>
   <%= stylesheet_link_tag "kolaval_login"%>
 </head>
+<body onload="document.getElementById('login').focus()" style="background-color: white;">
 
-<style>
+  <!-- Estilo --->
+  
+<style type="text/css">
 body {
 /*background: url("/images/pjech/fondo_alternativa.jpg");*/
 background-repeat: no-repeat;
@@ -47,8 +50,8 @@ div.centered{
 
 </style>
 
-  <body onload="document.getElementById('login').focus()" style="background-color: white;">
-     <div class="centered">
+
+    <div class="centered">
         <table width="95%" align="center" style=" margin: auto; height: 95%">
           <tr>
               <th align="center"> <%=image_tag("kolaval/logo-inicio-kolaval.jpg", :border => 0)%></th>
