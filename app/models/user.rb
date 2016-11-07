@@ -361,6 +361,14 @@ def num_orientaciones_dos_dias
       (mediador_id=#{self.id}) AND (cancel_user IS NULL OR cancel=0)) AND anio=#{anio}")
     end
 
+  def self.search(search)
+    if search
+      find(:all, :conditions => ['login = ? OR CONCAT(nombre, \' \' , paterno, \' \' , materno) LIKE ?', search, "%#{search}%"], :order => "paterno, materno, nombre")
+    else
+      find(:all)
+    end
+  end
+
 
 
    def disponible?(date=Time.now)

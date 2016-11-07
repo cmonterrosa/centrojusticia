@@ -4,7 +4,7 @@
 require 'date'
 class OrientacionsController < ApplicationController
   require_role [:atencionpublico, :subdireccion, :direccion], :for => [:new_or_edit, :save]
-  require_role [:especialistas, :convenios, :especialistas_externos], :for => [:list_by_user]
+  require_role [:especialistas, :convenios, :especialistas_externos, :subdireccion], :for => [:list_by_user]
   require_role [:admin, :admindireccion, :direccion], :for => [:show_especialistas_disponibles]
 
   def index
@@ -15,19 +15,26 @@ class OrientacionsController < ApplicationController
     @user = current_user
     #@estatus = Estatu.find_by_clave("tram-inic")
     #@estatuses = Estatu.find(:all, :conditions => ["clave in (?)", ['tram-inic', 'tram-reas']])
+    @orientaciones = Orientacion.find(:all,
+                                       :select => "o.*",
+                                       :joins => "o, tramites t, estatus e",
+                                       :conditions => ["o.tramite_id = t.id  AND t.estatu_id=e.id AND e.clave IN (?) AND (t.fechahora between ? AND ?)",  ['tram-reas', 'tram-inic', 'orie-conf'], 1.day.ago, Time.now],
+                                       :order => "o.fechahora") if @user.has_role?(:subdireccion)
+     @title = "TODAS LAS ORIENTACIONES RECIENTES"
 
     if (params[:type] == "all")
-       @orientaciones = Orientacion.find(:all,
+       @orientaciones ||= Orientacion.find(:all,
                                        :select => "o.*",
                                        :joins => "o, tramites t, estatus e",
                                        :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?) AND (t.fechahora between ? AND ?)", @user.id, ['tram-reas', 'tram-inic', 'orie-conf'], 1.month.ago, Time.now],
                                        :order => "o.fechahora")
     else
-       @orientaciones = Orientacion.find(:all,
+       @orientaciones ||= Orientacion.find(:all,
                                        :select => "o.*",
                                        :joins => "o, tramites t, estatus e",
                                        :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?) AND o.created_at > ? ", @user.id, ['tram-reas', 'tram-inic', 'orie-conf'], "#{(Time.now - (10080 * 60.0)).strftime('%Y-%m-%d %H:%M:%S')}" ],
                                        :order => "o.fechahora")
+        @title = "ORIENTACIONES QUE ME HAN SIDO ASIGNADAS"
     end
   end
 

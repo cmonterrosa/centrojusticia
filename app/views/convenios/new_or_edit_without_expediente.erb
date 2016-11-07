@@ -78,7 +78,7 @@
                                 :before => "Element.show('spinner')",
                                 :success => "Element.hide('spinner')",
                                 :update=>"info_convenio",
-                                :url => {:action=>"validar_num_expediente", :controller => "convenios"},
+                                :url => {:action=>"validar_num_expediente", :controller => "convenios", :user_id => current_user.id},
                                 :with=> "expediente_num_expediente"
 %>
 

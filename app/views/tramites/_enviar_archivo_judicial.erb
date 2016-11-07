@@ -1,0 +1,107 @@
+<div class="titulocalendario">
+  <p><b>MANDAR EXPEDIENTE AL ARCHIVO JUDICIAL</b></p>
+</div>
+
+
+<!-- ficha -->
+<%= render :partial => "ficha"%>
+<br /><br />
+
+
+<div class="container">
+   <div class="formee-msg-info">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
+
+
+<% form_for :archivojudicial, @archivojudicial, :url => { :action => "update_estatus", :id => @tramite }, :html => {:id => "mandar_archivo_judicial"} do |f| -%>
+  <table class="subprincipal" width="80%" border="0" cellpadding="4" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
+        <tr id="pregunta1">
+                <!-- Línea Pregunta -->
+                <td width="100%" align="justify" style=" vertical-align:top;" >
+                <div class="grid-12-12">
+                  <label class="uper"><b>1.- Escriba la fecha en que fue enviado al archivo judicial</b><em class="formee-req"> *</em></label>
+                </div>
+                <!-- Línea campo -->
+                <div class="grid-12-12">
+                  <span id="motivos_no_procedentes" class="InputGroup">
+                    <label class="uper"><%= f.date_select :fecha %></label>&nbsp;&nbsp;
+                  </span>
+                </div>
+                <div class="grid-12-12 clean"></div>
+                </td><!-- pregunta 2 -->
+         </tr>
+
+          <tr id="pregunta3">
+                <!-- Línea Pregunta -->
+                <td width="100%" align="justify" style=" vertical-align:top;" >
+                <div class="grid-12-12">
+                  <label class="uper"><b>2.- Escriba el número de oficio.</b><em class="formee-req"> *</em></label>
+                </div>
+                <!-- Línea campo -->
+                <div class="grid-12-12">
+                  <span id="objeto_solicitud">
+                    <label class="uper"> <%= f.text_field :numero_oficio%></label>&nbsp;&nbsp;
+                  </span>
+                </div>
+
+                </td><!-- pregunta 2 -->
+          </tr>
+
+            <tr id="pregunta4">
+                <!-- Línea Pregunta -->
+                <td width="100%" align="justify" style=" vertical-align:top;" >
+                <div class="grid-12-12">
+                  <label class="uper"><b>3.-Observaciones.</b></label>
+                </div>
+                <!-- Línea campo -->
+                <div class="grid-12-12">
+                  <span id="observaciones_generales">
+                    <label class="uper">   <%= f.text_area :observaciones, :size => "132x3"%></label>&nbsp;&nbsp;
+                  </span>
+                </div>
+
+                </td><!-- pregunta 2 -->
+          </tr>
+
+   
+           <tr>
+            <td align="right">
+                <table>
+                  <tr>
+                      <td>
+                      <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar" />
+                    </td>
+                      <td>
+                      <a href="/tramites/list" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+                      </td>
+                  </tr>
+                <tr>
+                <td colspan="2" >&nbsp;</td>
+                </tr>
+              </table>
+            </td>
+            </tr>
+
+  </table>
+
+<% end %>
+</div>
+
+<!--
+<br /><br /><= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "admin", :action => "index"%><br />
+-->
+
+
+<script type="text/javascript">
+  var numero_oficio = new LiveValidation( 'archivojudicial_numero_oficio' );
+  var fecha = new LiveValidation( 'archivojudicial_fecha' );
+  var observaciones = new LiveValidation( 'archivojudicial_observaciones' );
+  numero_oficio.add( Validate.Presence );
+  fecha.add( Validate.Presence );
+  observaciones.add( Validate.Length, { maximum: 160 } );
+</script>

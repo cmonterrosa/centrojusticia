@@ -36,4 +36,5 @@
   var descripcion = new LiveValidation( 'adjunto_descripcion', {onlyOnSubmit: true} );
   descripcion.add( Validate.Presence );
   descripcion.add( Validate.Length, { maximum: 300 } );
+  descripcion.add( Validate.Length, { minimum: 8 } );
 </script>

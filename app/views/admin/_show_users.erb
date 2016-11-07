@@ -6,6 +6,7 @@
 <p><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%></p>
 
 
+
 <div class="titulocalendario">
   <%=link_to 'Listado de Todos los Usuarios Activos',{:action => 'show_users'}, :class=> "boton"%> |
   <%=link_to 'Listado de Especialistas',{:action => 'show_users', :token => 'esp'}, :class=> "boton"%> |
@@ -17,6 +18,10 @@
     </p>
   <%end%>
 </div>
+
+<%@label_busqueda = "NOMBRE DEL USUARIO / LOGIN"%>
+ <%=render :partial => "home/barra_busqueda"%>
+
 
 <!-- contenido -->
 <div id="divlista">
@@ -56,7 +61,7 @@
             h(image_tag("iconos/disponible2.png", :border =>0))
         end%>
       </td>
-      <%@baja = (user.situacion == Situacion.find_by_descripcion("BAJA"))? true : false%>
+      <%@baja = (user.estatus_actual == 'BAJA')? true : false%>
 
       <td style="vertical-align: middle;"><%=h(user.login)%></td>
       <td style="vertical-align: middle;"><%=h(user.nombre_completo)%></td>

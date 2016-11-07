@@ -85,11 +85,11 @@
 
                     <%if sesion%>
                         <%@backgrounds_colors = colors_to_days%>
-                        <%estilo = (sesion.tramite.concluido) ? " background-color: tomato; opacity: 0.50; text-align: center;" : nil%>
+                        <%clase = (sesion.tramite.concluido) ? 'fondo_concluido': 'inherit'%>
                         <%estilo ||= !(sesion.cancel == nil || sesion.cancel == 0)? "background-color: #F8FB53; text-decoration: line-through; color: white;" : "background-color:  #{@backgrounds_colors[sesion.tiposesion_id - 1]}"%>
 
                         <%if sesion.tiposesion_id && !sesion.canceled?%>
-                            <td style="<%=h estilo%>">
+                            <td style="<%=h estilo%>" class="<%=h clase%>">
                         
                             <!-- Mostramos observaciones si tiene -->
                             <%if current_user.has_role?("asignahorario") || current_user.has_role?("especialistas")%>

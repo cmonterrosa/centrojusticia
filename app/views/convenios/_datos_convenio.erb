@@ -13,11 +13,34 @@ $(function() {
 
  <!-- Si viene de la busqueda -->
  <%if params[:expediente_num_expediente]%>
-      <p><h4 style='color:green;'>Expediente encontrado correctamente</h4></p>
+      <p><h4 style='color:green;'>Expediente: <%=@tramite.numero_expediente%> encontrado correctamente</h4></p>
  <%end%>
 
+<!-- Número de expediente -->
+     <div class="grid-12-12">
+        <label style=" font-weight: bold;">Asunto: </label>
+         <div class="grid-12-12">
+          <%=h (@tramite.comparecencia) ? @tramite.comparecencia.asunto : '--'%>
+         </div>
+     </div>
+
+    <!-- Sesiones del trámite -->
+     <div class="grid-10-12">
+        <label style=" font-weight: bold;">Sesiones: </label>
+         <%@sesiones = Sesion.find(:all, :conditions => ["tramite_id = ? AND (cancel IS NULL or cancel=0)", @tramite.id])%>
+        <%if @sesiones && !@sesiones.empty?%>
+            <%@sesiones.each do |s|%>
+                <div class="grid-12-12">
+                    <%=h s.fechahora_completa%> / <%=h s.descripcion_especialistas%>
+                </div>
+            <%end%>
+        <%end%>
+         
+     </div>
+
+
      <!-- Número de expediente -->
-     <div class="grid-4-12">
+     <div class="grid-2-12">
         <label style=" font-weight: bold;">Número de expediente: </label>
          <div class="grid-12-12">
           <%=h @tramite.numero_expediente%>
@@ -25,6 +48,9 @@ $(function() {
      </div>
 
 
+<div class="grid-12-12">
+     <fieldset>
+       <legend><label style="font-size: 14px;">DATOS&nbsp;DEL&nbsp;CONVENIO</label></legend>
    <!-- primera linea -->
      <div class="grid-8-12">
         <label style=" font-weight: bold;">Fecha/hora de la firma: <em class="formee-req">*</em></label>
@@ -81,7 +107,8 @@ $(function() {
 
       <div class="grid-12-12 clear"></div>
 
-
+     </fieldset>
+</div>
        <script type="text/javascript">
   var fechahora = new LiveValidation( 'convenio_fechahora' );
   var descripcion = new LiveValidation( 'convenio_fechahora' );

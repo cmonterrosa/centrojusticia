@@ -37,9 +37,21 @@ class ConveniosController < ApplicationController
       unless params[:expediente_num_expediente] =~ /^\d{1,4}\/\d{4}$/
          render :text => "<h4 style='color:#ff9305;'>Formato de expediente no valido</h4>"
       else
+
+        ### Verificamos si existe una sesion con el usuario correspondiente ####
         folio_expediente, anio=params[:expediente_num_expediente].split("/")
         @tramite = (folio_expediente && anio) ? Tramite.find(:first, :conditions => ["anio = ? and folio_expediente = ?", anio, folio_expediente]) : nil
-        (@tramite) ? (render :partial => "datos_convenio", :layout => "only_jquery") : (render :text => "<h4 style='color:red;'>Expediente no encontrado</h4>")
+         if @tramite
+             @user = User.find(params[:user_id])
+             if @user && (@user.has_role?(:convenios) || @user.has_role?(:subdireccion))
+                 render :partial => "datos_convenio", :layout => "only_jquery"
+             else
+                (Sesion.find(:first, :conditions => ["tramite_id = ? AND (mediador_id = ? OR comediador_id = ?) AND (cancel IS NULL or cancel=0)", @tramite.id, params[:user_id], params[:user_id]])) ? (render :partial => "datos_convenio", :layout => "only_jquery") : (render :text => "<h4 style='color:red;'>Expediente le pertenece a otro especialista</h4>")
+            end
+         else
+           (render :text => "<h4 style='color:orange;'>Trámite no válido, contacte al administrador</h4>")
+          end
+        #(@tramite) ? (render :partial => "datos_convenio", :layout => "only_jquery") : (render :text => "<h4 style='color:red;'>Expediente no encontrado</h4>")
       end
     else
       render :text => ""
