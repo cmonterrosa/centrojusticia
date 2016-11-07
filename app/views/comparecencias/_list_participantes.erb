@@ -6,11 +6,10 @@
 
 
 <%unless @comparecencia.participantes.empty?%>
-  <table class="tablakolaval" width="50%">
+  <table class="tablakolaval" style="margin: auto; width: 86%;">
     
          <!-- Nombre de los integrantes -->
          <tr>
-             <td scope="col" abbr="Starter">NP</td>
              <td scope="col" abbr="Starter">Rol</td>
              <td scope="col" abbr="Starter">Nombre completo o Razón Social</td>
              <td scope="col" abbr="Starter" colspan="4">Acciones</td>
@@ -20,7 +19,7 @@
           <%contador=1%>
           <% @comparecencia.participantes.each do |participante| %>
                               <tr>
-                                <td><%=h contador%></td>
+                                <%#*<td><%=h contador%>
                                 <td> <%=h (participante.perfil) ? participante.perfil : "---"%></td>
                                 <%if participante.tipopersona%>
                                   <td><%=h (participante.tipopersona.descripcion == 'MORAL') ? participante.razon_social : participante.nombre_completo%></td>
@@ -56,9 +55,10 @@
 <table class="table1">
   <thead>
     <tr>
-       <td align="center"><%=h (link_to "Agregar Persona existente", {:action => "new_or_edit_existente", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
-       <td align="center"><%=h (link_to "Agregar Persona Física", {:action => "new_or_edit_persona_fisica", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
-       <td align="center"><%=h (link_to "Agregar Persona Moral", {:action => "new_or_edit_persona_moral", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
+       <td align="center"><%=h (link_to "+ Agregar Persona Física", {:action => "new_or_edit_persona_fisica", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
+       <td align="center"><%=h (link_to "+ Agregar Persona Moral", {:action => "new_or_edit_persona_moral", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
+       <td align="center"><%=h (link_to "+ Agregar Persona existente", {:action => "new_or_edit_existente", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
+
        <!--
        <td align="center"><= link_to image_tag("botones/agregar_persona_moral.png", :width => 250, :height=>"40", :border =>0 ) , :action => "new_or_edit_persona_moral", :controller => "participantes", :id => @comparecencia, :token => @comparecencia-%></td>
        -->
