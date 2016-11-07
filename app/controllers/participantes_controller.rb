@@ -22,6 +22,11 @@ class ParticipantesController < ApplicationController
      @sesion = (params[:sesion])? params[:sesion] : false if @invitacion
   end
 
+  def new_or_edit_existente
+    @comparecencia = Comparecencia.find(params[:id])
+    @tramite = @comparecencia.tramite
+  end
+
   def save
     if Participante.exists?(params[:participante_id])
         @participante =  Participante.find(params[:participante_id])
@@ -69,5 +74,30 @@ class ParticipantesController < ApplicationController
         render :partial => "show", :layout => "only_jquery"
     end
   end
+
+  def search
+     @participantes = Participante.search(params[:search])
+     @total_resultados = @participantes.size
+     @participantes = @participantes.paginate(:page => params[:page], :per_page => 35)
+     @comparecencia = Comparecencia.find(params[:comparecencia])
+     render :partial => "resultados_busqueda", :layout => 'kolaval'
+  end
+
+  def add
+    @comparecencia = Comparecencia.find(params[:comparecencia])
+    @participante = Participante.find(params[:id])
+    @nuevo_participante = @participante.clone
+    @nuevo_participante.comparecencia_id = @comparecencia
+    @nuevo_participante.perfil = (params[:t] && params[:t] == 's') ? 'SOLICITANTE' : 'INVOLUCRADO'
+    @nuevo_participante.observaciones = ""
+    @nuevo_participante.created_at = Time.now
+    if @comparecencia.participantes << @nuevo_participante
+      flash[:notice] = "Participante agregado correctamente"
+    else
+      flash[:error] = "No se pudo agregar participante"
+    end
+      redirect_to :action => "show", :controller => "comparecencias", :id => @comparecencia.tramite
+  end
+
 
 end
