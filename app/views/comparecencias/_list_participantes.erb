@@ -56,6 +56,7 @@
 <table class="table1">
   <thead>
     <tr>
+       <td align="center"><%=h (link_to "Agregar Persona existente", {:action => "new_or_edit_existente", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
        <td align="center"><%=h (link_to "Agregar Persona Física", {:action => "new_or_edit_persona_fisica", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
        <td align="center"><%=h (link_to "Agregar Persona Moral", {:action => "new_or_edit_persona_moral", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
        <!--
