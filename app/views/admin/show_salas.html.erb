@@ -1,0 +1,38 @@
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+
+
+<%if current_user.has_role?(:admin)%>
+  <%=h link_to 'ADMINISTRACION', {:controller => "admin"}, :class => "boton"%> >>
+<%end%>
+<%=h link_to "SALAS DE SESIONES",{:action => "show_salas"}, :class => "boton" %>
+
+
+<div class="titulocalendario">
+  <p align="center">SALAS DE SESIONES</p>
+</div>
+
+<table class="tablakolaval" style="margin: auto; width: 80%;">
+    <tr>
+          <td scope="col" abbr="Starter">SALA</td>
+          <td scope="col" abbr="Medium">CAPACIDAD</td>
+          <td scope="col" abbr="Medium">&nbsp;</td>
+    </tr>
+    <%@salas.each do |s|%>
+        <tr>
+            <td><%=s.descripcion%></td>
+            <td><%=s.capacidad%></td>
+            <td><%=link_to "Horarios", {:action => "show_horarios_sesiones_by_sala", :id => s}, :class => "boton"%></td>
+        </tr>
+     <%end%>
+</table><br />
+
+

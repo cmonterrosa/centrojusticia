@@ -70,7 +70,7 @@
                                 <%guardia = Situacion.find_by_descripcion("GUARDIA")%>
                                 <%@salas.each do |sala|%>
                                     <%if h = Horario.find(:first, :conditions => ["sala_id = ? and hora=? and minutos=? and activo=1", sala.id, horario.hora, horario.minutos])%>
-                                        <%sesion = Sesion.find(:first, :conditions => ["activa = 1 AND fecha = ? AND hora = ? AND minutos = ? AND ((mediador_id = ? OR comediador_id = ?) OR (mediador_id = ? OR comediador_id = ?))", @fecha, horario.hora, horario.minutos, @mediador.id, @mediador.id, @comediador.id, @comediador.id])%>
+                                        <%sesion = Sesion.find(:first, :conditions => ["fecha = ? AND hora = ? AND minutos = ? AND (((mediador_id = ? OR comediador_id = ?) OR (mediador_id = ? OR comediador_id = ?)) AND (cancel IS NULL OR cancel=0))", @fecha, horario.hora, horario.minutos, @mediador.id, @mediador.id, @comediador.id, @comediador.id])%>
                                         <%fecha_hora = DateTime.parse("#{@fecha.year}-#{@fecha.month}-#{@fecha.day} #{horario.hora}:#{horario.minutos}")%>
                                         <%mediador_tiene_guardia=(Movimiento.count(:id, :conditions => ["user_id = ? AND situacion_id = ? AND ? between fecha_inicio AND fecha_fin", @mediador, guardia, fecha_hora]) > 0)? true : false%>
                                         <%comediador_tiene_guardia=(Movimiento.count(:id, :conditions => ["user_id = ? AND situacion_id = ? AND ? between fecha_inicio AND fecha_fin", @comediador, guardia, fecha_hora]) > 0)? true : false%>

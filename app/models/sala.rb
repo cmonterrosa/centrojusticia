@@ -9,7 +9,7 @@ class Sala < ActiveRecord::Base
     @ocupada=nil
     if horario_id && fecha
       fecha = fecha.strftime("%Y-%m-%d")
-      @ocupada = Sesion.find(:first, :conditions => ["fecha= ? AND sala_id = ? AND horario_id = ? AND activa = ?", fecha, self.id, horario_id, true])
+      @ocupada = Sesion.find(:first, :conditions => ["fecha= ? AND sala_id = ? AND horario_id = ? AND activa = ? AND (cancel IS NULL OR cancel=0)", fecha, self.id, horario_id, true])
     end
     return ((@ocupada)? false  : true)
   end
