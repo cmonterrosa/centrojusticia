@@ -1,0 +1,82 @@
+<div class="titulocalendario">
+  <%if @comparecencia &&  @comparecencia.tramite.numero_expediente%>
+    <p>COMPARECENCIA DE NÚMERO DE EXPEDIENTE:
+      <b><%=h link_to @comparecencia.tramite.numero_expediente, {:action => "show", :id => @comparecencia.tramite, :controller => "comparecencias"}, :class => "titulocalendario"%></b>
+      <hr class="LineaHorizontalVerde" />
+    </p>
+
+  <%else%>
+    <p>COMPARECENCIA
+      <hr class="LineaHorizontalVerde" />
+    </p>
+  <%end%>
+</div>
+
+<%=render :partial => "search"%>
+
+<p class="titulocalendario">Resultados encontrados: <%=@total_resultados%></p>
+
+<table class="tablakolaval" style="width: 80%; margin: auto;">
+  <tr>
+      <td>Nombre completo</td>
+      <td>Domicilio</td>
+      <td>Tel. Celular</td>
+      <td>Tel. Casa</td>
+      <td>Año de nac.</td>
+      <td>Estado/Municipio de origen</td>
+      <td>Sexo</td>
+      <td>Capturado:</td>
+      <td colspan="2">&nbsp;</td>
+   </tr>
+
+    <%@participantes.each do |p|%>
+        <tr>
+          <td><%=h p.nombre_completo%></td>
+          <td><%=h p.domicilio%></td>
+          <td><%=h p.telefono_celular%></td>
+          <td><%=h p.telefono_particular%></td>
+          <td><%=h (p.anio_nac && p.anio_nac.to_i < p.created_at.year)? p.anio_nac : '-'%></td>
+          <td><%=h (p.municipio)? p.municipio.descripcion_jerarquica : '-'%></td>
+          <td><%=h (p.sexo)%></td>
+           <td><%=h (p.created_at) ? p.created_at.strftime("%d/%m/%Y - %H:%M") : ''%></td>
+          <td><%=h link_to 'AGREGAR COMO SOLICITANTE', {:action => "add", :id => p,  :comparecencia => @comparecencia, :t => "s"}, :confirm => "¿Está seguro(a) que desea agregarlo como solicitante a la comparecencia?", :class => "boton"%></td>
+          <td><%=h link_to 'AGREGAR COMO INVOLUCRADO', {:action => "add", :id => p, :comparecencia => @comparecencia, :t => "i"}, :confirm => "¿Está seguro(a) que desea agregarlo como involucrado a la comparecencia?", :class => "boton"%></td>
+        </tr>
+    <%end%>
+
+
+
+</table><br />
+
+
+
+
+<% if @participantes.total_entries > @participantes.per_page.to_i %>
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @participantes %>
+          </div>
+            <%= will_paginate @participantes, :params => { :comparecencia => @comparecencia, :search => params[:search]  } %>
+        </div>
+      </td>
+    </tr>
+</table>
+<%end%>
+
+
+<%if Comparecencia.exists?(@comparecencia.id)%>
+  <br />
+  <table class="table1">
+    <thead>
+      <tr>
+        <td align="center"><%=h (link_to "Agregar Persona Física", {:action => "new_or_edit_persona_fisica", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
+        <td align="center"><%=h (link_to "Agregar Persona Moral", {:action => "new_or_edit_persona_moral", :controller => "participantes", :id => @comparecencia, :token => @comparecencia}, :class => 'boton_participantes') -%></td>
+      </tr>
+    </thead>
+  </table>
+<%end%>
+
+

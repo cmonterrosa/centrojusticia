@@ -1,0 +1,23 @@
+<div class="titulocalendario">
+  <%if @comparecencia &&  @comparecencia.tramite.numero_expediente%>
+    <p>COMPARECENCIA DE NÚMERO DE EXPEDIENTE:
+      <b><%=h link_to @comparecencia.tramite.numero_expediente, {:action => "show", :controller => "comparecencias",  :id => @comparecencia.tramite}, :class=> "titulocalendario"%></b>
+      <hr class="LineaHorizontalVerde" />
+    </p>
+
+  <%else%>
+    <p>COMPARECENCIA
+      <hr class="LineaHorizontalVerde" />
+    </p>
+  <%end%>
+</div>
+
+<div class="titulocalendario">
+    <p>AGREGAR PARTICIPANTE YA EXISTENTE</p>
+</div>
+
+
+<%=render :partial => "search"%>
+
+
+
