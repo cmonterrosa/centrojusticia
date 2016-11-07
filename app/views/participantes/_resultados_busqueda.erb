@@ -16,16 +16,17 @@
 
 <p class="titulocalendario">Resultados encontrados: <%=@total_resultados%></p>
 
-<table class="tablakolaval" style="width: 80%; margin: auto;">
+<table class="tablakolaval" style="width: 95%; margin: auto;">
   <tr>
       <td>Nombre completo</td>
       <td>Domicilio</td>
+      <td>Referencias dom.</td>
       <td>Tel. Celular</td>
       <td>Tel. Casa</td>
       <td>Año de nac.</td>
-      <td>Estado/Municipio de origen</td>
+      <td>Edo/Mpio de origen</td>
       <td>Sexo</td>
-      <td>Capturado:</td>
+      <td>Fecha captura:</td>
       <td colspan="2">&nbsp;</td>
    </tr>
 
@@ -33,12 +34,13 @@
         <tr>
           <td><%=h p.nombre_completo%></td>
           <td><%=h p.domicilio%></td>
+          <td><%=h p.referencia_domiciliaria%></td>
           <td><%=h p.telefono_celular%></td>
           <td><%=h p.telefono_particular%></td>
           <td><%=h (p.anio_nac && p.anio_nac.to_i < p.created_at.year)? p.anio_nac : '-'%></td>
           <td><%=h (p.municipio)? p.municipio.descripcion_jerarquica : '-'%></td>
           <td><%=h (p.sexo)%></td>
-           <td><%=h (p.created_at) ? p.created_at.strftime("%d/%m/%Y - %H:%M") : ''%></td>
+           <td><%=h (p.created_at) ? p.created_at.strftime("%d/%m/%Y - %H:%M %p") : ''%></td>
           <td><%=h link_to 'AGREGAR COMO SOLICITANTE', {:action => "add", :id => p,  :comparecencia => @comparecencia, :t => "s"}, :confirm => "¿Está seguro(a) que desea agregarlo como solicitante a la comparecencia?", :class => "boton"%></td>
           <td><%=h link_to 'AGREGAR COMO INVOLUCRADO', {:action => "add", :id => p, :comparecencia => @comparecencia, :t => "i"}, :confirm => "¿Está seguro(a) que desea agregarlo como involucrado a la comparecencia?", :class => "boton"%></td>
         </tr>

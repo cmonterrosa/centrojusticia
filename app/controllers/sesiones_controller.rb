@@ -320,13 +320,13 @@ class SesionesController < ApplicationController
 
   def show_schedules
     @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
-    @salas = Sala.find(:all, :order => "descripcion")
+    
     @sesion= Sesion.find(params[:sesion]) if params[:sesion]
     @mediador = User.find(params[:sesion_mediador_id]) if params[:sesion_mediador_id]
     @comediador = User.find(params[:sesion_comediador_id]) if params[:sesion_comediador_id]
     @horario = Horario.find(params[:horario]) if params[:horario]
     @fecha = Date.parse(params[:sesion_fecha]) if params[:sesion_fecha]
-    #@noweekend = (1..5).include?(@fecha.wday)
+    @salas = Sala.find(:all, :order => "descripcion")
     @inhabil = inhabil?(@fecha)
     @token = params[:token] if params[:token]
     @notificacion = (params[:sesion_notificacion]) ? true : false
