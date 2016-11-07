@@ -31,12 +31,14 @@ propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de l
 * Posee en perfil dedicado a los especialistas externos
 * Impresión en pantalla y física del libro de control con los datos basicos de los expedientes
 * Monitoreo de la actividad de los especialistas
+* Establecer cuando los expedientes han sido enviados al archivo judicial
+* Reutilizar registros de participantes para hacer más eficiente la captura de personas fisicas o morale
 
 
 ## **Acerca de**
 
 - Autor: Carlos Monterrosa López (cmonterrosa at gmail.com)
-- Version: 1.3.4 (2016-08-19)
+- Version: 1.3.5 (2016-11-07)
 - Copyright: Copyright (c) 2016 Poder Judicial del Estado de Chiapas. Todos los derechos reservados.
 - Licencia: GPL
 - Website: (http://www.poderjudicialchiapas.gob.mx)
