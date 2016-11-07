@@ -13,7 +13,7 @@ de conflictos entre particulares y/o personas morales.
 Este sistema informático sirve de referencia para agilizar y organizar la información referente a las actividades
 propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de las característica son las siguientes:
 * Captura de Orientaciones al Público
-* Distribución de Cargas de Trabajo de Especialistas para brindar orientación al público
+* Distribución automatizada y en linea de Cargas de Trabajo de Especialistas para brindar orientación al público
 * Organización de Agenda a nivel de Especialista, Sala y Número de Expediente
 * Impresion de agenda diaria general y por especialista
 * Consulta de Bitácora de Expedientes
@@ -31,12 +31,14 @@ propias desarrolladas en el Centro Estatal de Justicia Alternativa, algunas de l
 * Posee en perfil dedicado a los especialistas externos
 * Impresión en pantalla y física del libro de control con los datos basicos de los expedientes
 * Monitoreo de la actividad de los especialistas
+* Establecer cuando los expedientes han sido enviados al archivo judicial
+* Reutilizar registros de participantes para hacer más eficiente la captura de personas fisicas o morale
 
 
 ## **Acerca de**
 
 - Autor: Carlos Monterrosa López (cmonterrosa at gmail.com)
-- Version: 1.3.3 (2016-03-07)
+- Version: 1.3.5 (2016-11-07)
 - Copyright: Copyright (c) 2016 Poder Judicial del Estado de Chiapas. Todos los derechos reservados.
 - Licencia: GPL
 - Website: (http://www.poderjudicialchiapas.gob.mx)
