@@ -76,11 +76,15 @@ class ParticipantesController < ApplicationController
   end
 
   def search
-     @participantes = Participante.search(params[:search])
-     @total_resultados = @participantes.size
-     @participantes = @participantes.paginate(:page => params[:page], :per_page => 35)
-     @comparecencia = Comparecencia.find(params[:comparecencia])
-     render :partial => "resultados_busqueda", :layout => 'kolaval'
+     if params[:search] && params[:search].size > 4
+      @participantes = Participante.search(params[:search])
+      @total_resultados = @participantes.size
+      @participantes = @participantes.paginate(:page => params[:page], :per_page => 25)
+      @comparecencia = Comparecencia.find(params[:comparecencia])
+      render :partial => "resultados_busqueda", :layout => 'kolaval'
+     else
+      redirect_to(:back)
+     end
   end
 
   def add
