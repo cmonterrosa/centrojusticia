@@ -136,7 +136,9 @@ class Participante < ActiveRecord::Base
    # Metodo que busca una persona o personas
   def self.search(search)
     if search
-      find(:all, :conditions => ['(CONCAT(nombre, \' \' , paterno, \' \' , materno) LIKE ?) or razon_social LIKE ?', "%#{search}%", "%#{search}%"], :order => "paterno, materno, nombre, razon_social", :limit => 225)
+      find(:all, :conditions => ['( CONCAT(nombre, \' \' , paterno, \' \' , materno) LIKE ?)
+            OR ((CONCAT(SUBSTRING_INDEX( `nombre` , \' \', 1 ), \' \' , paterno) LIKE ?))
+            OR (razon_social LIKE ?)', "%#{search}%", "%#{search}%", "%#{search}%"], :order => "paterno, materno, nombre, razon_social", :limit => 225)
     else
       find(:all)
     end

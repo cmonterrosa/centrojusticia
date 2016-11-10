@@ -73,7 +73,8 @@ class TramitesController < ApplicationController
     ### PARTICIPANTE O SOLICITANTE###
     if @participante && !@carpeta_atencion
       id_tramites=Array.new
-      @participantes_comparecencia ||= Participante.find(:all, :select => "id,comparecencia_id",:conditions => ["full_name like ? OR full_name like ?", "#{@participante}%",  "%#{@participante}"])
+      #@participantes_comparecencia ||= Participante.find(:all, :select => "id,comparecencia_id",:conditions => ["full_name like ? OR full_name like ?", "#{@participante}%",  "%#{@participante}"])
+      @participantes_comparecencia = Participante.search(@participante)
       @solicitantes ||= Orientacion.find(:all, :select => "id, tramite_id", :conditions => ["full_name like ? OR full_name like ? OR paterno like ? OR paterno like ?", "#{@participante}%", "%#{@participante}", "#{@participante}%", "%#{@participante}"])
       
       if @participantes_comparecencia
