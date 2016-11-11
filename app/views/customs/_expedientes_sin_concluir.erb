@@ -5,10 +5,11 @@
 </div>
 
 <div id="divlista">
-  <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 98%; margin: auto;">
+  <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 99%; margin: auto;">
     <tr>
        <td>Núm. de Expediente</td>
        <td>Fecha de inicio del trámite</td>
+       <td>Última sesión</td>
        <td>Solicitante(s)</td>
        <td>Involucrado(s)</td>
      </tr>
@@ -17,6 +18,7 @@
       <tr>
         <td><%=h link_to e.numero_expediente, {:action => "show", :controller => "tramites", :id => e, :token => "show_sesion"}%></td>
         <td><%=h (e.fechahora)? e.fechahora.strftime("%d de %B de %Y / %H:%M %P") : ''%></td>
+        <td><%=h (e.fecha_ultima_sesion && e.fecha_ultima_sesion.start_at)? e.fecha_ultima_sesion.title_ultima_sesion: ''%></td>
         <td><%=h (e.comparecencia) ? e.comparecencia.solicitantes : '' %></td>
         <td><%=h (e.comparecencia)? e.comparecencia.involucrados : ''%></td>
       </tr>

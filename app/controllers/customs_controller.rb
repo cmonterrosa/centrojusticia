@@ -2,7 +2,6 @@ class CustomsController < ApplicationController
   before_filter :login_required
   
 
-
   def index
     @usuario=current_user
     if @usuario.has_role?(:admin)
