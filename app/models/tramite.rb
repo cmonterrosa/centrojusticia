@@ -187,6 +187,12 @@ class Tramite < ActiveRecord::Base
      return solicitante
    end
 
+   def fecha_ultima_sesion
+     if s= Sesion.find(:first, :conditions => ["tramite_id = ? AND (cancel is null or cancel =0)", self.id], :order => "fecha DESC,hora DESC")
+        return s
+     end
+   end
+
 
   def self.search(search, perfil=nil)
     if search && search  =~ /^\d{1,4}\/20\d{2}$/

@@ -46,6 +46,14 @@ class Sesion < ActiveRecord::Base
     return string
   end
 
+  def title_ultima_sesion
+    string=" "
+    string << "\r Tipo: #{self.tiposesion.descripcion}     " if self.tiposesion
+    string << "\r /  Sala: #{self.horario.sala.descripcion} " if self.horario.sala
+    string << "\r /  Fecha-hora: #{self.start_at.strftime("%d de %B de %Y / %H:%M %P")} " if self.start_at
+    return string
+  end
+
   def resume
     string = ""
     #string << "[#{self.num_tramite}]    #{self.mediador.nombre.upcase}  " if self.mediador && self.num_tramite
