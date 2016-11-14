@@ -56,7 +56,7 @@ class CustomsController < ApplicationController
     @guardias = Movimiento.find(:all, :conditions => ["user_id = ? AND situacion_id = ? AND fecha_inicio > ?", current_user.id, @guardia.id, Time.now], :order => "fecha_inicio")
     @sesiones = Sesion.find(:all, :conditions => ["(mediador_id = ? OR comediador_id = ?) AND fecha > ? AND (cancel =0 OR CANCEL IS NULL)", current_user.id, current_user.id, Time.now])
 
-    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) || current_user.has_role?(:adminusuarios)
+    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) || current_user.has_role?(:adminusuarios) || current_user.has_role?(:admindireccion)
       @especialistas = Role.find_by_name("especialistas").todos_usuarios.sort { |a, b| a.expedientes_sin_concluir.size <=> b.expedientes_sin_concluir.size }
     end
     @especialistas ||= User.find(:all, :conditions => ["id = ?", current_user.id]) if current_user
