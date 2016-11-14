@@ -63,7 +63,7 @@ class CustomsController < ApplicationController
   end
 
   def detalle_expedientes
-    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) || current_user.has_role?(:adminusuarios) || current_user.has_role?(:especialistas)
+    if current_user.has_role?(:subdireccion) || current_user.has_role?(:direccion) || current_user.has_role?(:adminusuarios) || current_user.has_role?(:especialistas) || current_user.has_role?(:admindireccion)
       @usuario = (current_user.has_role?(:admin))?  User.find(params[:id]) : nil
       @usuario ||= (current_user.has_role?(:especialistas))? current_user : User.find(params[:id])
       @expedientes = @usuario.expedientes_sin_concluir
