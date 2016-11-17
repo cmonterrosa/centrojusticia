@@ -1,4 +1,6 @@
 ActionController::Routing::Routes.draw do |map|
+  map.resources :etnias
+
   map.resources :subdireccions
   map.resources :procedencias
 
