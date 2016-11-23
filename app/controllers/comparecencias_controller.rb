@@ -155,10 +155,10 @@ class ComparecenciasController < ApplicationController
         param["P_DOMICILIO_LABORAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio_laboral)}
         #param["P_TIPO_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.tipo_domicilio_ubicacion)}
         param["P_REFERENCIA_DOMICILIARIA"]=(@solicitante.referencia_domiciliaria)? {:tipo=>"String", :valor=>clean_string(@solicitante.referencia_domiciliaria)} : {:tipo=>"String", :valor=>""}
-        param["P_REFERENCIA_DOMICILIARIA_LABORAL"]=(@solicitante.referencias_domiciliares_laboral)? {:tipo=>"String", :valor=>clean_string(@solicitante.referencias_domiciliares_laboral)} : {:tipo=>"String", :valor=> ""}
+        param["P_REFERENCIA_DOMICILIARIA_LABORAL"]=(@solicitante.referencias_domiciliares_laboral)? {:tipo=>"String", :valor=>clean_string(@solicitante.referencias_domiciliares_laboral)} : nil
 
         param["P_HORARIO_DOMICILIO_PARTICULAR"]= (@solicitante.horario_disponible_domicilio_particular)? {:tipo=>"String", :valor=>@solicitante.horario_disponible_domicilio_particular} : {:tipo=>"String", :valor=> "NO EXISTE INFORMACIÓN"}
-        param["P_HORARIO_DOMICILIO_LABORAL"]=  (@solicitante.horario_disponible_domicilio_laboral)? {:tipo=>"String", :valor=>@solicitante.horario_disponible_domicilio_laboral} : {:tipo=>"String", :valor=>"NO EXISTE INFORMACIÓN"}
+        param["P_HORARIO_DOMICILIO_LABORAL"]=  (@solicitante.horario_disponible_domicilio_laboral)? {:tipo=>"String", :valor=>@solicitante.horario_disponible_domicilio_laboral} : nil
 
         param["P_ESTADO_CIVIL"]=(@solicitante.estado_civil) ? {:tipo=>"String", :valor=>clean_string(@solicitante.estado_civil.descripcion)} :  {:tipo=>"String", :valor=>"---"}
         param["P_ETNIA"]=(@solicitante.pertenece_grupo_etnico && @solicitante.etnia) ? {:tipo=>"String", :valor=>clean_string(@solicitante.etnia.descripcion)} :  {:tipo=>"String", :valor=>""}
