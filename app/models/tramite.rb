@@ -49,21 +49,18 @@ class Tramite < ActiveRecord::Base
 
     # Actualización de estatus, guarda registro en tabla histórica que contiene usuario y fechahora
   def update_estatus!(clave,usuario)
-    if !clave.nil? && !usuario.nil?
-       if @estatus = Estatu.find_by_clave(clave)
+    if @estatus = Estatu.find_by_clave(clave)
           if self.estatu
-              is_finish = (self.estatu.is_finish)? true : false
               #same_estatus = @estatus.descripcion == self.estatu.descripcion || false
-              if @estatus.jerarquia >= self.estatu.jerarquia
+              if (@estatus.jerarquia >= self.estatu.jerarquia)
                   self.update_attributes!(:estatu_id => @estatus.id)
               end
               #self.update_attributes!(:estatu_id => @estatus.id) if (!same_estatus && !is_finish)
           else
-              self.update_attributes!(:estatu_id => @estatus.id)
+              self.update_attributes!(:estatu_id => @estatus.id) unless self.estatu.is_finish
           end
            Historia.create(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id )
-       end
-   end
+       end if !clave.nil? && !usuario.nil?
   end
 
   # Actualización de estatus, guarda registro en tabla histórica que contiene usuario y fechahora
@@ -105,7 +102,7 @@ class Tramite < ActiveRecord::Base
        @history = Historia.new(:tramite_id => self.id, :estatu_id => new_estatus, :user_id => usuario.id ) if new_estatus
        if @history && @history.save
             #---- actualizacion del registro principal --
-            self.update_attributes!(:estatu_id => @history.estatu_id)
+            self.update_attributes!(:estatu_id => @history.estatu_id) unless self.estatu.is_finish
             return true
        end
    end
@@ -193,8 +190,7 @@ class Tramite < ActiveRecord::Base
      end
    end
 
-
-  def self.search(search, perfil=nil)
+   def self.search(search, perfil=nil)
     if search && search  =~ /^\d{1,4}\/20\d{2}$/
       folio, anio = search.split("/")
       find(:all,  :conditions => ['anio = ? AND folio_expediente = ?', anio, folio])
@@ -203,6 +199,16 @@ class Tramite < ActiveRecord::Base
         find(:all, :select => "t.*", :joins => "t, convenios c", :conditions => "t.id=c.tramite_id", :group => "t.id")
       else
         find(:all, :conditions => ["folio_expediente IS NOT NULL"], :order => "anio DESC, folio_expediente DESC")
+      end
+    end
+  end
+
+   def reorganizar_estatus
+    @concluidos = Concluido.find(:all)
+    @tramite_concluido = Estatu.find_by_clave("tram-conc")
+    @concluidos.each do |c|
+      unless c.tramite.estatu == @tramite_concluido
+        puts "=> #{c.tramite.numero_expediente} ACTUALIZADO " if c.tramite.update_attributes!(:estatu_id => @tramite_concluido.id)
       end
     end
   end
