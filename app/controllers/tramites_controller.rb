@@ -423,11 +423,10 @@ class TramitesController < ApplicationController
                 redirect_to :controller => "invitaciones", :action => "list_by_user"
 
             when "arch-judi"
-                ##--- ASIGNACION DE MATERIA --
+                ##--- ARCHIVO JUDICIAL --
                 @archivojudicial = Archivojudicial.find_by_tramite_id(@tramite.id)
                 @archivojudicial ||= Archivojudicial.new
                 return render(:partial => 'enviar_archivo_judicial', :layout => "oficial")
-
             else
                 update_tramite_model
          end
