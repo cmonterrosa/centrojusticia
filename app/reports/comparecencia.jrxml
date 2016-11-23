@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
 	<property name="ireport.zoom" value="2.0"/>
-	<property name="ireport.x" value="367"/>
-	<property name="ireport.y" value="864"/>
+	<property name="ireport.x" value="43"/>
+	<property name="ireport.y" value="624"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -34,6 +34,8 @@
 	<parameter name="P_ESTADO_CIVIL" class="java.lang.String"/>
 	<parameter name="P_DOMICILIO_LABORAL" class="java.lang.String"/>
 	<parameter name="P_REFERENCIA_DOMICILIARIA_LABORAL" class="java.lang.String"/>
+	<parameter name="P_HORARIO_DOMICILIO_LABORAL" class="java.lang.String"/>
+	<parameter name="P_HORARIO_DOMICILIO_PARTICULAR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from users]]>
 	</queryString>
@@ -306,10 +308,10 @@
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="13" y="263" width="531" height="41"/>
-				<textElement textAlignment="Justified" verticalAlignment="Middle">
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
 					<font fontName="Arial" size="8" isBold="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA} + " " + " / <b>HORARIO DISPONIBLE: </b> " + $P{P_HORARIO_DOMICILIO_PARTICULAR}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="23" y="256" width="157" height="10"/>
@@ -340,7 +342,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TIPO_PERSONA}]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
-				<reportElement stretchType="RelativeToTallestObject" x="5" y="-3" width="545" height="88"/>
+				<reportElement stretchType="RelativeToTallestObject" x="5" y="0" width="545" height="85"/>
 				<imageExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/app/reports/imagenes/logo_tribunal.jpg"]]></imageExpression>
 			</image>
 			<staticText>
@@ -428,10 +430,10 @@
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="14" y="394" width="529" height="46"/>
-				<textElement textAlignment="Justified" verticalAlignment="Middle">
+				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
 					<font fontName="Arial" size="8" isBold="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA_LABORAL}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA_LABORAL} + " " + " / <b>HORARIO DISPONIBLE:</b> " + $P{P_HORARIO_DOMICILIO_LABORAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="25" y="387" width="171" height="11"/>

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="768"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -27,6 +27,7 @@
 	<parameter name="P_APODERADO_LEGAL" class="java.lang.String"/>
 	<parameter name="P_EXPEDIENTE" class="java.lang.String"/>
 	<parameter name="P_SUBDIRECCION" class="java.lang.String"/>
+	<parameter name="P_HORARIO_DOMICILIO_LABORAL" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from users]]>
 	</queryString>
@@ -100,7 +101,7 @@
 				<reportElement x="12" y="243" width="518" height="106"/>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="29" y="248" width="489" height="95"/>
+				<reportElement mode="Transparent" x="22" y="248" width="496" height="95"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -124,7 +125,7 @@
 				<text><![CDATA[OBSERVACIONES Y/O DOCUMENTOS QUE EXHIBE:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="29" y="549" width="498" height="139"/>
+				<reportElement mode="Transparent" x="25" y="549" width="502" height="139"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -155,11 +156,11 @@
 				<text><![CDATA[REFERENCIAS DOMICILIARIAS:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="29" y="374" width="489" height="71"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<reportElement mode="Transparent" x="25" y="374" width="493" height="71"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
 					<font fontName="Arial" size="10" isBold="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA} + " " + "  / <b>HORARIO DISPONIBLE:</b> " + $P{P_HORARIO_DOMICILIO_LABORAL}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="13" y="762" width="232" height="20"/>

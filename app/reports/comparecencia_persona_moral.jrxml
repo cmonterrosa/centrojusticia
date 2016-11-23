@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="60"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.y" value="446"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -31,6 +31,7 @@
 	<parameter name="P_APODERADO_LEGAL" class="java.lang.String"/>
 	<parameter name="P_EXPEDIENTE" class="java.lang.String"/>
 	<parameter name="P_SUBDIRECCION" class="java.lang.String"/>
+	<parameter name="P_HORARIO_DOMICILIO_LABORAL" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select * from users]]>
 	</queryString>
@@ -191,7 +192,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SOLICITANTE}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="28" y="274" width="496" height="57"/>
+				<reportElement mode="Transparent" x="28" y="271" width="496" height="67"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="10" isBold="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -240,10 +241,10 @@
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement mode="Transparent" x="28" y="359" width="496" height="39"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
+				<textElement textAlignment="Left" verticalAlignment="Middle" markup="html">
 					<font fontName="Arial" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA} + " " + "  / <b>HORARIO DISPONIBLE:</b> " + $P{P_HORARIO_DOMICILIO_LABORAL}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="36" y="346" width="179" height="15"/>
