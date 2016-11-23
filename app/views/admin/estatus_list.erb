@@ -29,6 +29,7 @@
           <td scope="col" abbr="Starter">CLAVE</td>
           <td scope="col" abbr="Medium">DESCRIPCION</td>
           <td scope="col" abbr="Medium">JERARQUIA</td>
+          <td scope="col" abbr="Medium">FINALIZA</td>
           <td scope="col" abbr="Medium">&nbsp;</td>
     </tr>
 
@@ -38,6 +39,7 @@
             <td><%=e.clave%></td>
             <td><%=e.descripcion%></td>
             <td><%= select "#{e.id}", :jerarquia, (1..45), :selected => e.jerarquia %></td>
+            <td><%=(e.is_finish)? 'SI' : ''%></td>
         </tr>
      <%end%>
 
