@@ -96,8 +96,9 @@ class ComparecenciasController < ApplicationController
        param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio_ubicacion)}
        param["P_DOMICILIO_LABORAL"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio_laboral)}
        #param["P_TIPO_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@involucrado.tipo_domicilio_ubicacion)}
-       param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@involucrado.domicilio_referencias_ubicacion)}
+       param["P_REFERENCIA_DOMICILIARIA"]=(@involucrado.referencia_domiciliaria)? {:tipo=>"String", :valor=>clean_string(@involucrado.referencia_domiciliaria)} : {:tipo=>"String", :valor=>""}
        param["P_REFERENCIA_DOMICILIARIA_LABORAL"]=(@involucrado.referencias_domiciliares_laboral)? {:tipo=>"String", :valor=>clean_string(@involucrado.referencias_domiciliares_laboral)} : {:tipo=>"String", :valor=> ""}
+
        param["P_ESTADO_CIVIL"]=(@involucrado.estado_civil) ? {:tipo=>"String", :valor=>clean_string(@involucrado.estado_civil.descripcion)} :  {:tipo=>"String", :valor=>"---"}
        param["P_ETNIA"]=(@involucrado.pertenece_grupo_etnico && @involucrado.etnia) ? {:tipo=>"String", :valor=>clean_string(@involucrado.etnia.descripcion)} :  {:tipo=>"String", :valor=>""}
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>User.find(@comparecencia.user_id).nombre_completo}
@@ -153,7 +154,7 @@ class ComparecenciasController < ApplicationController
         param["P_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio)}
         param["P_DOMICILIO_LABORAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.domicilio_laboral)}
         #param["P_TIPO_DOMICILIO"]={:tipo=>"String", :valor=>clean_string(@solicitante.tipo_domicilio_ubicacion)}
-        param["P_REFERENCIA_DOMICILIARIA"]={:tipo=>"String", :valor=>clean_string(@solicitante.referencia_domiciliaria)}
+        param["P_REFERENCIA_DOMICILIARIA"]=(@solicitante.referencia_domiciliaria)? {:tipo=>"String", :valor=>clean_string(@solicitante.referencia_domiciliaria)} : {:tipo=>"String", :valor=>""}
         param["P_REFERENCIA_DOMICILIARIA_LABORAL"]=(@solicitante.referencias_domiciliares_laboral)? {:tipo=>"String", :valor=>clean_string(@solicitante.referencias_domiciliares_laboral)} : {:tipo=>"String", :valor=> ""}
 
         param["P_HORARIO_DOMICILIO_PARTICULAR"]= (@solicitante.horario_disponible_domicilio_particular)? {:tipo=>"String", :valor=>@solicitante.horario_disponible_domicilio_particular} : {:tipo=>"String", :valor=> "NO EXISTE INFORMACIÓN"}
