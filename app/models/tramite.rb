@@ -57,7 +57,7 @@ class Tramite < ActiveRecord::Base
               end
               #self.update_attributes!(:estatu_id => @estatus.id) if (!same_estatus && !is_finish)
           else
-              self.update_attributes!(:estatu_id => @estatus.id) unless self.estatu.is_finish
+              self.update_attributes!(:estatu_id => @estatus.id)
           end
            Historia.create(:tramite_id => self.id, :estatu_id => @estatus.id, :user_id => usuario.id )
        end if !clave.nil? && !usuario.nil?
