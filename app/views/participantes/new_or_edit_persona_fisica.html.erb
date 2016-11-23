@@ -194,10 +194,21 @@
             <td align="center" width="40%"><%= f.text_area :referencia_domiciliaria, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :width => "100%", :rows=> 12%></td>
             <td align="center" width="20%"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
         </tr>
-        <!-- Espacio -->
+
+         <!-- horario disponibilidad -->
+           <tr align=" justify" class="pregunta">
+              <td colspan="3"align="center" width="100%"><b>Horario en el que se encuentra en domicilio particular: </b></td>
+            </tr>
+        
+            <tr>
+              <td colspan="3"align="center" width="100%"><%= f.text_field :horario_disponible_domicilio_particular, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "110"%></td>
+            </tr>
+            
+            <!-- Espacio -->
             <tr>
               <td colspan="4">&nbsp;</td>
             </tr>
+
 
         <tr align=" justify" class="pregunta">
           <td align="center" width="50%"><b>Domicilio laboral </b></td>
@@ -208,6 +219,15 @@
             <td align="center" width="50%"><%= f.text_area :domicilio_laboral, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :width=> "100%", :rows => 12%></td>
             <td align="center" width="50%"><%= f.text_area :referencias_domiciliares_laboral, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :width=> "100%", :rows => 12%></td>
         </tr>
+
+        <!-- horario disponibilidad -->
+           <tr align=" justify" class="pregunta">
+              <td colspan="3"align="center" width="100%"><b>Horario en el que se encuentra en domicilio laboral: </b></td>
+            </tr>
+
+            <tr>
+              <td colspan="3"align="center" width="100%"><%= f.text_field :horario_disponible_domicilio_laboral, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "110"%></td>
+            </tr>
 
       </table></td>
     </tr>
@@ -291,9 +311,14 @@
 
 <script type="text/javascript">
   var domicilio = new LiveValidation( 'participante_domicilio' );
-   var domicilio_laboral = new LiveValidation( 'participante_domicilio_laboral' );
+  var domicilio_laboral = new LiveValidation( 'participante_domicilio_laboral' );
+  var horario_domicilio =  new LiveValidation( 'participante_horario_disponible_domicilio_particular' );
+  var horario_domicilio_laboral =  new LiveValidation( 'participante_horario_disponible_domicilio_laboral' );
+
   domicilio.add( Validate.Length, { maximum: 255 } );
   domicilio_laboral.add( Validate.Length, { maximum: 255 } );
+  horario_domicilio.add( Validate.Length, { maximum: 160 } );
+  horario_domicilio_laboral.add( Validate.Length, { maximum: 160 } );
 
   var referencia = new LiveValidation( 'participante_referencia_domiciliaria' );
   var referencia_laboral = new LiveValidation( 'participante_referencias_domiciliares_laboral' );

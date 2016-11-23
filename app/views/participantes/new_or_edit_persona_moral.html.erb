@@ -116,6 +116,16 @@
             <td align="center"><%= f.text_area :referencia_domiciliaria, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }",  :size => "40x11"%></td>
             <td align="center"><%= f.select :cuadrante_id, Cuadrante.find(:all).collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
           </tr>
+
+           <!-- horario disponibilidad -->
+           <tr align=" justify" class="pregunta">
+              <td colspan="3"align="center" width="100%"><b>Horario de labores: </b></td>
+            </tr>
+
+            <tr>
+              <td colspan="3"align="center" width="100%"><%= f.text_field :horario_disponible_domicilio_laboral, :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "110"%></td>
+            </tr>
+
       </table>
       </td>
     </tr>
