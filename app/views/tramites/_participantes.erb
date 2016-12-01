@@ -13,33 +13,49 @@
     <%unless @tramite.comparecencia.participantes.empty?%>
       <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
         <tr style="background-color:gray; color:white">
-          <th colspan="5">
-            PARTICIPANTES
+          <th colspan="7">
+                PARTICIPANTES
           </th>
         </tr>
 
         <%clase=0%>
-        <%contador=1%>
+         <%@comparecencia = @tramite.comparecencia%>
 
-        <%@comparecencia = @tramite.comparecencia%>
-        
-          <% @comparecencia.participantes.each do |participante| %>
+        <%if @comparecencia && !@comparecencia.participantes.empty?%>
 
-        <!-- # @tramite.comparecencia.participantes.each do |participante|%> -->
-        
-          <tr class="d<%=invert_class(clase)%>">
-            <!-- Role -->
-            <td align="left"><%=h (participante.perfil) ? participante.perfil : "---"%></td>
+            <!-- Titulo --->
 
-            <!-- tipo de persona -->
-            <td align="left">PERSONA <%=h participante.tipopersona.descripcion%></td>
+             <tr class="d0">
+                  <th><b>PERFIL</b></th>
+                  <th><b>TIPO DE PERSONA</b></th>
+                  <th><b>NOMBRE</b></th>
+                  <th><b>DOMICILIO PART.</b></th>
+                  <th><b>REFERENCIAS DOM.</b></th>
+                 <th><b>DOMICILIO LABORAL</b></th>
+                 <th><b>REFERENCIAS DOM. LAB</b></th>
+             </tr>
 
-            <!-- Nombre o razón social -->
-            <%nombre = (participante.tipopersona.descripcion == 'MORAL') ? participante.razon_social : participante.nombre_completo %>
-            <td align="left" colspan="3"><%=link_to "#{nombre}", { :action => "show", :controller => "participantes", :id => participante}, :class => "fancybox fancybox.iframe"%></td>
-           </tr>
-          <%clase = invert_class(clase)%>
+
+            <% @comparecencia.participantes.each do |participante| %>
+              <tr class="d<%=invert_class(clase)%>">
+              <!-- Role -->
+              <td align="left"><b><%=h (participante.perfil) ? participante.perfil : "---"%></b></td>
+
+              <!-- tipo de persona -->
+              <td align="left"><%=h participante.tipopersona.descripcion%></td>
+
+              <!-- Nombre o razón social -->
+              <%nombre = (participante.tipopersona.descripcion == 'MORAL') ? participante.razon_social : participante.nombre_completo %>
+              <td align="left"><%=link_to "#{nombre}", { :action => "show", :controller => "participantes", :id => participante}, :class => "fancybox fancybox.iframe"%></td>
+
+              <td align="left"><%=h participante.domicilio%></td>
+              <td align="left"><%=h "#{participante.referencia_domiciliaria} /  #{participante.horario_disponible_domicilio_particular}"%></td>
+              <td align="left"><%=h participante.domicilio_laboral%></td>
+              <td align="left"><%=h "#{participante.referencias_domiciliares_laboral} / #{participante.horario_disponible_domicilio_laboral}"%></td>
+              </tr>
+              <%clase = invert_class(clase)%>
+            <%end%>
         <%end%>
-      </table><br />
-    <%end%>
+      </table>
+    <%end%><br />
   <%end%>

@@ -50,6 +50,8 @@ class Role < ActiveRecord::Base
           return User.find_by_sql("SELECT users.* from users inner join roles_users ru on users.id=ru.user_id
                                  INNER JOIN roles r on ru.role_id=r.id
                                  WHERE users.activo=1 AND users.id not in (select user_id as id from movimientos where situacion_id != 3 AND (\'#{fecha_hora_sesion.strftime('%Y-%m-%d %H:%M:%S')}\' BETWEEN fecha_inicio AND fecha_fin))
+                                 AND users.id not in (select u.id from users u, lactancias lac WHERE u.id=lac.user_id AND (\'#{fecha_hora_sesion.strftime('%Y/%m/%d')}\' >= lac.fecha_inicio) AND (\'#{fecha_hora_sesion.strftime('%Y/%m/%d')}\' <= lac.fecha_fin)
+                                 AND ((\'#{fecha_hora_sesion.strftime('%H:%M %p')}\') BETWEEN lac.horario_inicio AND lac.horario_fin))
                                  AND users.id not in (select #{funcion}_id from sesions WHERE cancel is NULL AND activa = 1 AND fecha = \'#{fecha_hora_sesion.strftime('%Y-%m-%d')}\' AND hora= #{fecha_hora_sesion.strftime('%H')} AND minutos= #{fecha_hora_sesion.strftime('%M')} AND #{funcion}_id is NOT NULL)
                                  AND r.name='#{self.name}'
                                  ORDER BY users.nombre, users.paterno, users.materno")
@@ -57,6 +59,8 @@ class Role < ActiveRecord::Base
            return User.find_by_sql("SELECT users.* from users inner join roles_users ru on users.id=ru.user_id
                                  INNER JOIN roles r on ru.role_id=r.id
                                  WHERE users.activo=1 AND users.id not in (select user_id as id from movimientos where situacion_id != 3 AND (\'#{fecha_hora_sesion.strftime('%Y-%m-%d %H:%M:%S')}\' BETWEEN fecha_inicio AND fecha_fin))
+                                 AND users.id not in (select u.id from users u, lactancias lac WHERE u.id=lac.user_id AND (\'#{fecha_hora_sesion.strftime('%Y/%m/%d')}\' >= lac.fecha_inicio) AND (\'#{fecha_hora_sesion.strftime('%Y/%m/%d')}\' <= lac.fecha_fin)
+                                 AND ((\'#{fecha_hora_sesion.strftime('%H:%M %p')}\') BETWEEN lac.horario_inicio AND lac.horario_fin))
                                  AND users.id not in (select mediador_id from sesions WHERE activa = 1 AND fecha = \'#{fecha_hora_sesion.strftime('%Y-%m-%d')}\' AND hora= #{fecha_hora_sesion.strftime('%H')} AND minutos= #{fecha_hora_sesion.strftime('%M')} AND mediador_id is NOT NULL)
                                  AND  users.id not in (select comediador_id from sesions WHERE cancel is NULL AND activa = 1 AND fecha = \'#{fecha_hora_sesion.strftime('%Y-%m-%d')}\' AND hora= #{fecha_hora_sesion.strftime('%H')} AND minutos= #{fecha_hora_sesion.strftime('%M')} AND comediador_id IS NOT NULL)
                                  AND r.name='#{self.name}'

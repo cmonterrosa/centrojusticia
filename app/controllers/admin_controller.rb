@@ -11,6 +11,15 @@ class AdminController < ApplicationController
     
   end
 
+  def reorganizar_estatus
+    @tramite = Tramite.new
+    if @tramite.reorganizar_estatus
+      flash[:notice] = "Reorganización correcta:"
+    else
+      flash[:error] = "No se pudo reorganizar"
+    end
+    redirect_to :action => "index"
+  end
 
   def index
 
@@ -447,16 +456,78 @@ end
    @movimiento ||= Movimiento.new
  end
 
- def save_permission
+   # Devuelve partial para cambio de situacion de usuario
+  def get_partial_movimiento
+    if @situacion = Situacion.find(params[:movimiento_situacion_id])
+      @title = @situacion.descripcion
+      @user = User.find(params[:user]) || current_user
+      case @title
+          when 'BAJA'
+           render :text => "LAS BAJAS SE REALIZAN UNICAMENTE POR EL ADMINISTRADOR"
+           
+      else
+          render :partial => "new_permiso_general", :layout => "only_jquery"
+      end
+    end
+  end
+
+  
+def save_permission
    @movimiento = Movimiento.new(params[:movimiento])
    @movimiento.autorizo = current_user.id if current_user
+   
+#   case @movimiento.situacion.descripcion
+#        when "PERMISO DE LACTANCIA"
+#          @inicio = Date.parse(params[:movimiento][:fecha_inicio])
+#          @fin = Date.parse(params[:movimiento][:fecha_fin])
+#          @horario = params[:informacion][:rango_horario]
+#          @rango = @inicio..@fin
+#          @rango.each do |r|
+#              m = Movimiento.new(params[:movimiento])
+#              m.update_attributes(:fecha_inicio => "#{r} #{@horario} :00:00", :fecha_fin => "#{r} #{@horario} :59:59" )
+#              m.save
+#          end
+#end
+
+
    (@movimiento.save) ? flash[:notice] = "Permiso creado correctamente" : flash[:error] = "No se pudo guardar, verifique"
    #update status of current
    redirect_to :action => "permissions_user", :t => generate_token, :id => @movimiento.user
  end
 
+ def add_permiso_lactancia
+    if @user = User.find(params[:id]) || current_user
+       @lactancia = Lactancia.new(:user_id => @user.id)
+       @title = "PERMISO DE LACTANCIA"
+       render :partial => "new_permiso_lactancia", :layout => "kolaval"
+    end
+  end
+
+  def save_lactancia
+      @lactancia = Lactancia.new(params[:lactancia])
+      @lactancia.autorizo = current_user.id
+      @lactancia.activa = true
+      if @lactancia.save
+        flash[:notice] = "Registro guardado correctamente"
+        redirect_to :action => "lactancias_list", :id => @lactancia.user.id
+      end
+  end
+
+  def lactancias_list
+    @user = User.find(params[:id])
+    @lactancias = Lactancia.find(:all, :conditions => ["user_id = ?", @user])
+  end
+
+  def destroy_lactancia
+    @lactancia = Lactancia.find(params[:id])
+    @user = @lactancia.user_id
+    if @lactancia.destroy
+      flash[:notice] = "Registro eliminado correctamente"
+    end
+    redirect_to :action => "lactancias_list", :id => @user
+  end
+
  def search_permissions
-   
  end
 
  def detail_permission
@@ -567,6 +638,7 @@ end
         @no_encontrados << "#{anio}/#{folio_expediente}" unless Tramite.count(:folio_expediente, :conditions => ["anio = ? AND folio_expediente = ?", anio, folio_expediente]) > 0
     end
   end
+
 
 
   ####################################################

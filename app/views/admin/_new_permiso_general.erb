@@ -1,0 +1,78 @@
+
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+
+<script type="text/javascript">
+$j( document ).ready(function() {
+    $j('#movimiento_fecha_inicio').datetimepicker({
+      timeFormat: 'h:m',
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: true
+});
+
+$j('#movimiento_fecha_fin').datetimepicker({
+      timeFormat: 'h:m',
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: true
+});
+
+});
+</script>
+
+<div class="titulocalendario">
+  <p><%=h @title%></p>
+</div>
+
+    <div class="grid-6-12">
+       <div class="grid-6-12">
+        <label style=" font-weight: bold;">Escriba la fecha/hora de inicio: <em class="formee-req">*</em></label>
+       </div>
+        <div class="grid-6-12">
+          <%= text_field :movimiento, :fecha_inicio,  :required => true%>
+         </div>
+      </div>
+
+      <div class="grid-6-12">
+       <div class="grid-6-12">
+        <label style=" font-weight: bold;">Escriba la fecha/hora final: <em class="formee-req">*</em></label>
+       </div>
+        <div class="grid-6-12">
+            <%= text_field :movimiento, :fecha_fin,  :required => true%>
+         </div>
+      </div>
+
+      <div class="grid-12-12">
+       <div class="grid-6-12">
+        <label style=" font-weight: bold;">Escriba el número de oficio: </label>
+       </div>
+        <div class="grid-6-12">
+          <%=text_field :movimiento, :numero_oficio, :placeholder => "SOLO SI EXISTE DOCUMENTO QUE LO ACREDITA", :size => "80"%>
+         </div>
+      </div>
+
+
+      <div class="grid-12-12">
+        <label style=" font-weight: bold;">Observaciones: </label>
+        <%=text_area :movimiento, :observaciones, :size => "100x3"%>
+        <%=hidden_field :movimiento, :user_id, :value =>  @user.id%>
+      </div>
+
+
+    <div class="grid-12-12" style="text-align: center;">
+        <input id="button4" class="buttonText" type="submit" title="Guardar" value="GUARDAR REGISTRO"  />
+    </div>
+

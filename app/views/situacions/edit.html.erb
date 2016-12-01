@@ -1,0 +1,20 @@
+<h1>Editing situacion</h1>
+
+<% form_for(@situacion) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :descripcion %><br />
+    <%= f.text_field :descripcion %>
+  </p>
+  <p>
+    <%= f.label :clave %><br />
+    <%= f.text_field :clave %>
+  </p>
+  <p>
+    <%= f.submit 'Update' %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @situacion %> |
+<%= link_to 'Back', situacions_path %>

@@ -53,7 +53,7 @@
 
     
             <tr>
-                <td align="center" colspan="4"><%= f.text_area :resultado, :size => "92x10"%></td>
+                <td align="center" colspan="4"><%= f.text_area :resultado, :size => "90x16"%></td>
             </tr>
      
 
@@ -78,5 +78,5 @@
 
 <script type="text/javascript">
   var resultado = new LiveValidation( 'sesion_resultado' );
-  resultado.add( Validate.Length, { maximum: 500 } );
+  resultado.add( Validate.Length, { maximum: 950 } );
 </script>

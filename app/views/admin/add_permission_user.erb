@@ -1,69 +1,53 @@
 <%= error_messages_for :movimiento %>
 
-<% form_for :movimiento, @movimiento, :url => { :action => "save_permission"} do |f| -%>
-  <table width="100%" border="0" align="center" cellpadding="2" cellspacing="1">
-    <tr bgcolor="#CCCCCC" class="titulo">
-      <td colspan="3" align="center" ><%=link_to @user.nombre_completo, {:action => "permissions_user", :id => @user.id}, :style =>"color: yellow; font-size:14px; font-weight:bold;"%> >> NUEVO REGISTRO DE AUSENCIA</td>
-    </tr>
-    <tr align="center">
-      <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4">DATOS GENERALES</td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">Estatus actual</td>
-          <td align="center">Nuevo Estatus</td>
-          <td align="center">Fecha/hora inicio</td>
-          <td align="center">Fecha/hora fin</td>
-        </tr>
-        <tr>
-          <td align="center"><%=h (@user.situacion) ? @user.situacion.descripcion : "---"%></td>
-          <td align="center"><%= f.select :situacion_id, @situaciones.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%></td>
-          <td align="center"><%= f.text_field :fecha_inicio,  :required => true%></td>
-          <td align="center"><%= f.text_field :fecha_fin,  :required => true%></td>
-        </tr>
-      </table></td>
-    </tr>
-    <!-- segunda barra inferior -->
-      <tr align="center">
-      <td align="center">
-        <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
-        <tr bgcolor="#E8E8E8" class="subtitulo">
-          <td align="center" colspan="4" ></td>
-        </tr>
-        <tr align=" justify" class="pregunta">
-          <td align="center">Observaciones</td>
-        </tr>
-        <tr>
-          <td align="center"><%=f.text_area :observaciones, :size => "100x2"%></td>
-          <td align="center"><%=f.hidden_field :user_id, :value =>  @user.id%></td>
-        </tr>
-      </table></td>
-     </tr>
 
-    <!-- espacio -->
-    <tr>
-      <td colspan="3"><hr /></td>
-    </tr>
-    <!-- FOOTER -->
-    <tr>
-      <td align="right">
-        <table>
-          <tr>
-            <td>
-              <input title="guardar y regresar" alt=" Guardar y regresar a la sección anterior " type="image"  src="/images/botones/btn_guardar.png" width="150" height="40" style="margin-left:90px;"/>
-            </td>
-            <td>
-              <%= link_to image_tag("botones/btn_regresar.png", :width => 170, :height=>"40", :border =>0, :style => "margin-left:90px;" ) ,  :controller => "admin", :action => "show_users"-%>
-            </td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
-<% end %>
+<div class="formee container">
 
+ <div class="formee-msg-info">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Los campos marcados con <em class="formee-req">*</em> son obligatorios.</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
+
+  <div class="titulocalendario">
+    <p><%=link_to @user.nombre_completo, {:action => "permissions_user", :id => @user.id},  :style =>"color: #019595; font-size:16px; font-weight:bold;"%> >> NUEVO REGISTRO DE AUSENCIA</p>
+  </div>
+
+  <% form_for :movimiento, @movimiento, :url => { :action => "save_permission", :id => @user.id }, :html => {:id => "new_orientacion", :onsubmit => "return checkSubmit();"} do |f| -%>
+      <fieldset>
+      <legend style="font-size: 16px;">CAPTURA&nbsp;DE&nbsp;NUEVA&nbsp;AUSENCIA</legend>
+
+      <div class="grid-12-12">
+        <label>MOTIVO:</label>
+        <%= f.select :situacion_id, @situaciones.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción'%>
+      </div>
+
+      <div class="grid-12-12" style="text-align: center;">
+        <img alt="spinner" id="spinner" src="/images/loading_spinner.gif" style="display:none;" />
+      </div>
+
+      <div id="contenido_ausencia"></div>
+
+      </fieldset>
+  <%end%>
+</div>
+
+
+
+
+
+  <%= observe_field 'movimiento_situacion_id',
+    :on => "change",
+    :before => "Element.show('spinner')",
+    :success => "Element.hide('spinner')",
+    :url => {
+    :action => 'get_partial_movimiento',
+    :controller => 'admin'},
+    :update => 'contenido_ausencia',
+    :with=>  " 'movimiento_situacion_id=' + value + '&user=#{@user.id}' "
+%>
 
 
 

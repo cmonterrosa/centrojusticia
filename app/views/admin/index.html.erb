@@ -101,4 +101,10 @@
   </tr>
 </table>
 
+<%if current_user.has_role?(:admin)%>
+  <div class="titulocalendario">
+    <p><%=link_to "REORGANIZAR ESTATUS", {:action => "reorganizar_estatus"}, :class => "boton"%></p>
+  </div>
+<%end%>
+
 <br /><%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home", :action => "index"%><br />

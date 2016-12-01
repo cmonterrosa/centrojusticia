@@ -1,0 +1,121 @@
+
+<script type="text/javascript">
+		$j(document).ready(function() {
+			/*
+			 *  Simple image gallery. Uses default settings
+			 */
+
+			$j('.fancybox').fancybox();
+               });
+</script>
+
+
+<script type="text/javascript">
+$j( document ).ready(function() {
+    $j('#lactancia_fecha_inicio').datepicker({
+      timeFormat: 'h:m',
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: false
+});
+
+$j('#lactancia_fecha_fin').datepicker({
+      timeFormat: 'h:m',
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: false
+});
+
+});
+</script>
+
+<div class="formee container">
+  <div class="formee-msg-warning">
+    <h3>Información importante</h3>
+    <ul>
+      <li>Seleccione el rango de fechas y el horario de inicio de lactancia</li>
+    </ul>
+    <ul><li>&nbsp;</li></ul>
+  </div>
+
+  <div class="titulocalendario">
+  <p><%=h @title%></p>
+</div>
+
+  <% form_for :lactancia, @lactancia, :url => { :action => "save_lactancia", :id => @user.id }, :html => {:id => "new_orientacion", :onsubmit => "return checkSubmit();"} do |f| -%>
+      <fieldset>
+      <legend style="font-size: 16px;">CAPTURA&nbsp;DE&nbsp;NUEVA&nbsp;AUSENCIA</legend>
+
+       
+
+    <div class="grid-6-12">
+       <div class="grid-6-12">
+        <label style=" font-weight: bold;">Escriba la fecha de inicio: <em class="formee-req">*</em></label>
+       </div>
+        <div class="grid-6-12">
+          <%= text_field :lactancia, :fecha_inicio,  :required => true%>
+         </div>
+      </div>
+
+      <div class="grid-6-12">
+       <div class="grid-6-12">
+        <label style=" font-weight: bold;">Escriba la fecha final: <em class="formee-req">*</em></label>
+       </div>
+        <div class="grid-6-12">
+            <%= text_field :lactancia, :fecha_fin,  :required => true%>
+         </div>
+      </div>
+
+      <div class="grid-6-12">
+       <div class="grid-8-12">
+        <label style=" font-weight: bold;">Escriba el número de oficio: <em class="formee-req">*</em></label>
+       </div>
+        <div class="grid-4-12">
+          <%=text_field :lactancia, :numero_oficio, :required => true%>
+         </div>
+      </div>
+
+      <div class="grid-6-12">
+       <div class="grid-4-12">
+        <label style=" font-weight: bold;">Escriba la hora de inicio: <em class="formee-req">*</em></label>
+       </div>
+        <div class="grid-8-12">
+          <span class="datetime">
+            <%=  time_select(:lactancia, :horario_inicio, {:minute_step => 30}, :prompt => {:hour => 'Seleccione hora', :minute => 'Seleccione minuto'})%>
+          </span>
+        </div>
+      </div>
+
+      <div class="grid-6-12">
+       <div class="grid-4-12">
+        <label style=" font-weight: bold;">Escriba la hora de fin: <em class="formee-req">*</em></label>
+       </div>
+        <div class="grid-8-12">
+          <span class="datetime">
+            <%=  time_select(:lactancia, :horario_fin, {:minute_step => 30}, :prompt => {:hour => 'Seleccione hora', :minute => 'Seleccione minuto'})%>
+          </span>
+        </div>
+      </div>
+
+      <div class="grid-12-12">
+        <label style=" font-weight: bold;">Observaciones: </label>
+        <%=text_area :lactancia, :observaciones, :size => "100x3"%>
+        <%=hidden_field :lactancia, :user_id, :value =>  @user.id%>
+      </div>
+
+
+    <div class="grid-12-12" style="text-align: center;">
+        <input id="button4" class="buttonText" type="submit" title="Guardar" value="GUARDAR REGISTRO"  />
+    </div>
+
+      </fieldset>
+  <%end%>
+</div>
+<script type="text/javascript">
+  var domicilio = new LiveValidation( 'informacion_rango_horario' );
+  domicilio.add( Validate.Presence );
+</script>
