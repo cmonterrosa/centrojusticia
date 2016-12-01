@@ -1,0 +1,22 @@
+<h1>Listing situacions</h1>
+
+<table>
+  <tr>
+    <th>Descripcion</th>
+    <th>Clave</th>
+  </tr>
+
+<% @situacions.each do |situacion| %>
+  <tr>
+    <td><%=h situacion.descripcion %></td>
+    <td><%=h situacion.clave %></td>
+    <td><%= link_to 'Show', situacion %></td>
+    <td><%= link_to 'Edit', edit_situacion_path(situacion) %></td>
+    <td><%= link_to 'Destroy', situacion, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New situacion', new_situacion_path %>

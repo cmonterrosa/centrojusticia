@@ -1,11 +1,12 @@
-<div class="titulocalendario">
+<%if  !@comparecencia.participantes.empty? && @datosinvitacion%>
+
+ <div class="titulocalendario">
   <p>
     LISTA DE INVITADOS
   </p>
 </div>
 
 
-<%if  !@comparecencia.participantes.empty? && @datosinvitacion%>
   <table class="tablakolaval" width="92%">
     
          <!-- Nombre de los integrantes -->
@@ -69,7 +70,7 @@
 
 <%else%>
 <div class="titulocalendario">
-  <p>Para ver la lista de invitados, es necesario guardar los datos generales de la invitación</p>
+  <p style="text-transform: uppercase;">Para ver la lista de invitados, es necesario guardar la información general de la invitación</p>
 </div>
 
 <%end%>

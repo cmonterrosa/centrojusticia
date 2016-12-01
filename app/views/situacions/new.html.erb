@@ -1,0 +1,19 @@
+<h1>New situacion</h1>
+
+<% form_for(@situacion) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :descripcion %><br />
+    <%= f.text_field :descripcion %>
+  </p>
+  <p>
+    <%= f.label :clave %><br />
+    <%= f.text_field :clave %>
+  </p>
+  <p>
+    <%= f.submit 'Create' %>
+  </p>
+<% end %>
+
+<%= link_to 'Back', situacions_path %>

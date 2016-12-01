@@ -1,0 +1,58 @@
+<div class="titulocalendario">
+    <p><%=link_to @user.nombre_completo, {:action => "permissions_user", :id => @user.id},  :style =>"color: #019595; font-size:16px; font-weight:bold;"%> >> PERMISOS DE LACTANCIA </p>
+</div>
+
+
+<div id="divlista">
+    <!-- Historico de movimientos -->
+    <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 98%; margin: auto;">
+     <tr>
+          <td style="vertical-align: middle; width: 12%;">Fecha de inicio</td>
+          <td style="vertical-align: middle; width: 12%;">Fecha de fin</td>
+          <td style="vertical-align: middle; width: 12%;">Horario de inicio</td>
+          <td style="vertical-align: middle; width: 12%;">Horario fin</td>
+          <td style="vertical-align: middle; width: 12%;">Registró</td>
+          <td style="vertical-align: middle; width: 18%;">Número de oficio</td>
+          <td style="vertical-align: middle; width: 18%;">Observaciones</td>
+          <td style="vertical-align: middle;" colspan="2">&nbsp;</td>
+      </tr>
+      <%@lactancias.each do |m|%>
+        <tr>
+            <td style="vertical-align: middle;"><b><%=m.fecha_inicio.strftime("%d de %B de %Y")%></b></td>
+            <td style="vertical-align: middle;"><b><%=m.fecha_fin.strftime("%d de %B de %Y")%></b></td>
+            <td style="vertical-align: middle;"><b><%=m.horario_inicio.strftime("%H:%M %p")%></b></td>
+            <td style="vertical-align: middle;"><b><%=m.horario_fin.strftime("%H:%M %p")%></b></td>
+            <td style="vertical-align: middle;"><b><%=h (m.autorizo) ? User.find(m.autorizo).nombre_completo : "---"%></b></td>
+            <td style="vertical-align: middle;"><b><%=h (m.numero_oficio) ? m.numero_oficio : "---"%></b></td>
+            <td style="vertical-align: middle;"><b><%=h (m.observaciones) ? m.observaciones : "---"%></b></td>
+            <!--
+            <td style="vertical-align: middle;"><=link_to "Detalle", {:action => "detail_lactancia", :id => m}, :class => 'boton', :title => "Detalle del Registro"-%></td>
+            -->
+            <%if m.autorizo == current_user || current_user.has_role?(:admindireccion)%>
+              <td style="vertical-align: middle;"><%=link_to "Eliminar", {:action => "destroy_lactancia", :id => m}, :class => 'boton', :title => "Eliminar Registro", :confirm => "¿Está seguro que desea eliminar el registro de lactancia?"-%></td>
+            <%end%>
+         </tr>
+        <%clase = invert_class(clase)%>
+      <%end%>
+    </table><br /><br />
+
+
+
+  
+
+
+
+    <!-- Historico de movimientos -->
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+     <tr>
+        <th colspan="2" align="center">
+          <%=link_to "REGISTRAR NUEVO PERMISO DE LACTANCIA", {:action => "add_permiso_lactancia", :controller => "admin", :id => @user, :t => generate_token}, :class => 'boton', :title => "Capturar nuevo registro"%>
+       </th>
+     </tr>
+    </table>
+</div>
+
+
+
+
+

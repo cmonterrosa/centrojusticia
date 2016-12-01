@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :participantes
   has_many :tramites
   has_many :orientacions
+  has_many :lactancias
 
   
   # ---------------------------------------
@@ -315,6 +316,9 @@ def num_orientaciones_dos_dias
     @baja = (self.situacion == Situacion.find_by_descripcion("BAJA"))? true : nil
     @estatus_actual = (@baja) ? "BAJA" : nil
 
+    # Si tiene permiso de lactancia
+    @estatus_actual ||= "LACTANCIA" if tiene_permiso_lactancia?(Time.now)
+
     # Buscamos si tiene algun otro movimiento
     @movimiento = Movimiento.find(:first, :conditions => ["user_id = ? AND (? between fecha_inicio AND fecha_fin)", self.id, Time.now], :order => "fecha_fin DESC")
     @estatus_actual ||= (@movimiento.situacion)? @movimiento.situacion.descripcion : nil if @movimiento
@@ -353,13 +357,15 @@ def num_orientaciones_dos_dias
   end
 
 
+  def tiene_permiso_lactancia?(fecha=Time.now)
+    return true if (Lactancia.count(:user_id, :conditions => ["user_id = ? AND (? between fecha_inicio AND fecha_fin) AND (? between horario_inicio AND horario_fin)", self.id, fecha, fecha.strftime("%H:%M")])) > 0
+  end
 
-
-    def expedientes_sin_concluir(anio=Time.now.year)
+  def expedientes_sin_concluir(anio=Time.now.year)
      return Tramite.find_by_sql("SELECT * from tramites where id not in (SELECT tramite_id from concluidos) AND
       id in (SELECT tramite_id from sesions WHERE (tramite_id IS NOT NULL) AND
       (mediador_id=#{self.id}) AND (cancel_user IS NULL OR cancel=0)) AND (anio >= 2016)")
-    end
+  end
 
   def self.search(search)
     if search

@@ -7,9 +7,9 @@
       </th>
      </tr>
      <tr class="d0">
-        <td style="vertical-align: middle;" width="27%"><b>Descripción</b></td>
-        <td style="vertical-align: middle;" width="23%"><b>Fecha/hora</b></td>
-        <td style="vertical-align: middle;" width="50%"><b>Modificó</b></td>
+        <th style="vertical-align: middle;" width="26%"><b>DESCRIPCIÓN</b></th>
+        <th style="vertical-align: middle;" width="26%"><b>FECHA/HORA</b></th>
+        <th style="vertical-align: middle;" width="48%"><b>MODIFICÓ</b></th>
      </tr>
      <%Historia.find(:all, :conditions => ["tramite_id = ?", @tramite.id], :order => "created_at").each do |row|%>
        <tr class="d1">

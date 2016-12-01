@@ -68,6 +68,10 @@
        <th colspan="2" align="center">
           <%=link_to "REGISTRAR NUEVA AUSENCIA", {:action => "add_permission_user", :controller => "admin", :id => @user, :t => generate_token}, :class => 'boton', :title => "Capturar nuevo registro"%>
        </th>
+
+       <th colspan="2" align="center">
+          <%=link_to "PERMISOS DE LACTANCIA", {:action => "lactancias_list", :controller => "admin", :id => @user, :t => generate_token}, :class => 'boton', :title => "Capturar nuevo registro"%>
+       </th>
      </tr>
     </table>
 </div>
