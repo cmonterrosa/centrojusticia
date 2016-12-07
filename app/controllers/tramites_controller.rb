@@ -264,7 +264,7 @@ class TramitesController < ApplicationController
      @tramite = Tramite.find(params[:id])
      @concluido = Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id]) if @tramite
      @concluido ||= Concluido.new(:tramite_id => @tramite.id)
-     @conclusion_improcedente = MotivoConclusion.find_by_fundamento("Artículo 103 fracción II y Artículo 84 del Reglamento de Justicia Alternativa")
+     @conclusion_improcedente = MotivoConclusion.find_by_fundamento("Artículo 103 fracción II y Artículo 84 del Reglamento de Justicia")
      @concluido.update_attributes(:motivo_conclusion_id => @conclusion_improcedente.id)
      @concluido.user = current_user
      if @concluido.save
