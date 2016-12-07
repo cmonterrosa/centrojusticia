@@ -1,0 +1,69 @@
+<div class="titulocalendario">
+    <p>BUSQUEDA DE ORIENTACIONES
+      <hr class="LineaHorizontalVerde" />
+    </p>
+ </div>
+
+<%=render :partial => "search_participante"%>
+
+
+<p style="text-align: center; margin: auto;">
+  <%=link_to "ORIENTACION EN BLANCO", {:action => "new_or_edit"}, :class => "boton"%>
+</p>
+
+<p class="titulocalendario">Resultados encontrados: <%=@total_resultados%></p>
+
+<table class="tablakolaval" style="width: 95%; margin: auto;">
+  <tr>
+      <td>Nombre completo</td>
+      <td>Dirección</td>
+      <td>Teléfono</td>
+      <td>Correo</td>
+      <td>Edo/Mpio de origen</td>
+      <td>Sexo</td>
+      <td>Especialista que brindó orientación:</td>
+      <td>Fecha captura:</td>
+      <td colspan="2">&nbsp;</td>
+   </tr>
+
+    <%@participantes.each do |p|%>
+        <tr>
+          <td><%=h p.solicitante%></td>
+          <td><%=h p.direccion%></td>
+          <td><%=h p.telefono%></td>
+          <td><%=h p.correo%></td>
+          <td><%=h (p.municipio)? p.municipio.descripcion_jerarquica : '-'%></td>
+          <td><%=h (p.sexo)%></td>
+          <td><%=h (p.especialista_id) ? User.find(p.especialista_id).nombre_completo : '-'%></td>
+          <td><%=h (p.created_at) ? p.created_at.strftime("%d/%m/%Y - %H:%M %p") : ''%></td>
+
+           <td><%=h link_to 'NUEVA ORIENTACION', {:action => "new_or_edit", :p => p.id}, :confirm => "¿Está seguro(a) que la persona desea una nueva orientación?", :class => "boton"%></td>
+        </tr>
+    <%end%>
+
+
+
+</table><br />
+
+
+
+
+<% if @participantes.total_entries > @participantes.per_page.to_i %>
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @participantes %>
+          </div>
+            <%= will_paginate @participantes, :params => { :comparecencia => @comparecencia, :search => params[:search]  } %>
+        </div>
+      </td>
+    </tr>
+</table>
+<%end%>
+
+
+
+
+
