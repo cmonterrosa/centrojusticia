@@ -26,27 +26,27 @@
             <!-- Titulo --->
 
              <tr class="d0">
-                  <th><b>PERFIL</b></th>
-                  <th><b>TIPO DE PERSONA</b></th>
-                  <th><b>NOMBRE</b></th>
-                  <th><b>DOMICILIO PART.</b></th>
-                  <th><b>REFERENCIAS DOM.</b></th>
-                 <th><b>DOMICILIO LABORAL</b></th>
-                 <th><b>REFERENCIAS DOM. LAB</b></th>
+                  <th style="width: 10%;"><b>PERFIL</b></th>
+                  <th style="width: 8%;"><b>PERSONA</b></th>
+                  <th style="width: 18%;"><b>NOMBRE</b></th>
+                  <th style="width: 15%;"><b>DOMICILIO PART.</b></th>
+                  <th style="width: 19%;"><b>REFERENCIAS DOM.</b></th>
+                 <th style="width: 15%;"><b>DOMICILIO LABORAL</b></th>
+                 <th style="width: 15%;"><b>REFERENCIAS DOM. LAB</b></th>
              </tr>
 
 
             <% @comparecencia.participantes.each do |participante| %>
               <tr class="d<%=invert_class(clase)%>">
               <!-- Role -->
-              <td align="left"><b><%=h (participante.perfil) ? participante.perfil : "---"%></b></td>
+              <td align="center"><b><%=h (participante.perfil) ? participante.perfil : "---"%></b></td>
 
               <!-- tipo de persona -->
-              <td align="left"><%=h participante.tipopersona.descripcion%></td>
+              <td align="center"><%=h participante.tipopersona.descripcion%></td>
 
               <!-- Nombre o razón social -->
               <%nombre = (participante.tipopersona.descripcion == 'MORAL') ? participante.razon_social : participante.nombre_completo %>
-              <td align="left"><%=link_to "#{nombre}", { :action => "show", :controller => "participantes", :id => participante}, :class => "fancybox fancybox.iframe"%></td>
+              <td align="center"><%=link_to "#{nombre}", { :action => "show", :controller => "participantes", :id => participante}, :class => "fancybox fancybox.iframe"%></td>
 
               <td align="left"><%=h participante.domicilio%></td>
               <td align="left"><%=h "#{participante.referencia_domiciliaria} /  #{participante.horario_disponible_domicilio_particular}"%></td>

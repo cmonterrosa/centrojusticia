@@ -40,5 +40,16 @@ class Orientacion < ActiveRecord::Base
     end
   end
 
+  # Metodo que busca una persona o personas
+  def self.search(search)
+    if search
+      find(:all, :conditions => ['( CONCAT(nombre, \' \' , paterno, \' \' , materno) LIKE ?)
+            OR ((CONCAT(SUBSTRING_INDEX( `nombre` , \' \', 1 ), \' \' , paterno) LIKE ?))', "%#{search}%", "%#{search}%"], :order => "fechahora DESC, paterno, materno, nombre, created_at", :limit => 225)
+    else
+      find(:all)
+    end
+  end
+
+
  
 end

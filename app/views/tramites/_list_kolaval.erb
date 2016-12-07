@@ -120,6 +120,13 @@
         <%end%>
 
 
+         <!-- Editar archivo enviado al archivo judicial -->
+         <% if Archivojudicial.exists?(:tramite_id => tramite.id) %>
+              <%if (aj = Archivojudicial.find(:first, :conditions => ["user_id = ?", current_user.id])) || current_user.has_role?(:jefeconvenios)%>
+                    <td style="vertical-align: middle;"><%=h (link_to "Editar envío a archivo", {:controller => "tramites", :action => "edit_archivo_judicial", :id => aj.id}, :confirm => "¿Está seguro que desea editar el envío a archivo judicial?" , :class => "boton")%></td>
+              <%end%>
+         <%end%>
+
         <!-- Cancelacion de tramites -->
         <%if (tramite.estatu_id == comparecencia_concluida.id || tramite.estatu_id == tramite_extraordinario.id || tramite.estatu_id == materia_asignada.id ) && (current_user.has_role?("cancelatramite") || current_user.has_role?("direccion"))%>
              <td style="vertical-align: middle;"><%=h (link_to "Cancelar", {:controller => "tramites", :action => "cancel_form", :id => tramite.id}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea cancelar el registro?" )%></td>

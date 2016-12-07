@@ -1,0 +1,11 @@
+<div class="formee container">
+  <%= stylesheet_link_tag "formee/formee-style.css" %>
+
+  <!-- Barra de búsqueda -->
+<% form_tag({:action => "search"}, {:id => "demo-2"}) do -%>
+  <p>
+    <%@label_busqueda = "           NOMBRE COMPLETO"%>
+    <%= text_field_tag :search, params[:search], :type => "search",  :placeholder => "    #{@label_busqueda}", :style=>"width: 380px;" %>
+  </p>
+<% end %>
+ </div>

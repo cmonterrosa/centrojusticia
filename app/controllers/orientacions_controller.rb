@@ -11,6 +11,23 @@ class OrientacionsController < ApplicationController
    
   end
 
+  def search_participante
+    unless params[:search]
+      render :partial => "search_participante", :layout => "kolaval"
+    end
+  end
+
+    def search
+     if params[:search] && params[:search].size > 4
+      @participantes = Orientacion.search(params[:search])
+      @total_resultados = @participantes.size
+      @participantes = @participantes.paginate(:page => params[:page], :per_page => 25)
+      render :partial => "resultados_busqueda", :layout => 'kolaval'
+     else
+      redirect_to(:back)
+     end
+  end
+
   def list_by_user
     @user = current_user
     #@estatus = Estatu.find_by_clave("tram-inic")
@@ -64,6 +81,15 @@ class OrientacionsController < ApplicationController
     @extra = true if params[:t] == "extra"
     @orientacion = Orientacion.find(:first, :conditions => ["tramite_id = ?", params[:id]]) if params[:id]
     @orientacion ||= Orientacion.new
+     if params[:p]
+       @orientacion_padre = Orientacion.find(params[:p])
+       @orientacion = @orientacion_padre.dup if @orientacion_padre
+       @orientacion.id=nil
+       @orientacion.created_at = nil if @orientacion
+       @orientacion.user_id = nil if @orientacion
+       @orientacion.especialista_id = nil if @orientacion
+       @orientacion.fechahora = nil if @orientacion
+     end
     @fecha = (@orientacion.fechahora)? @orientacion.fechahora.strftime("%Y/%m/%d %H:%M") : Time.now.strftime("%Y/%m/%d %H:%M")
     if @extra
       @caption = (@extra) ? "CON PERSONAL EXTRAORDINARIO" : ""

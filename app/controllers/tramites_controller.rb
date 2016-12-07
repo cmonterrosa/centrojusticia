@@ -620,6 +620,18 @@ class TramitesController < ApplicationController
     (@motivo_cancelacion) ? (return render(:partial => 'descripcion_motivo_conclusion', :layout => false)) :  (return render :text => "")
   end
 
+  def edit_archivo_judicial
+    @archivojudicial = Archivojudicial.find(params[:id])
+    if @archivojudicial.user == current_user || current_user.has_role?(:jefeconvenios)
+        @tramite = @archivojudicial.tramite
+        render :partial => "enviar_archivo_judicial", :layout => "kolaval"
+    else
+        flash[:warning] = "No tiene permisos de acceder"
+        redirect_to(:back)
+    end
+  end
+
+
   def only_orientacion
     @tramite = Tramite.find(params[:id])
     @estatus = Estatu.find_by_clave("no-compar")
