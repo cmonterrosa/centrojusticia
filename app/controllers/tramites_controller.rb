@@ -236,6 +236,7 @@ class TramitesController < ApplicationController
     end
   end
 
+  # Concluir tramite procedente
   def concluir
     @tramite = Tramite.find(params[:id])
     @sesion = Sesion.find(params[:sesion]) if params[:sesion]
@@ -257,6 +258,23 @@ class TramitesController < ApplicationController
     else
       redirect_to(:back)
     end
+  end
+
+  def concluir_improcedente
+     @tramite = Tramite.find(params[:id])
+     @concluido = Concluido.find(:first, :conditions => ["tramite_id = ?", @tramite.id]) if @tramite
+     @concluido ||= Concluido.new(:tramite_id => @tramite.id)
+     @conclusion_improcedente = MotivoConclusion.find_by_fundamento("Artículo 103 fracción II y Artículo 84 del Reglamento de Justicia Alternativa")
+     @concluido.update_attributes(:motivo_conclusion_id => @conclusion_improcedente.id)
+     @concluido.user = current_user
+     if @concluido.save
+      @tramite.update_estatus!("tram-conc",current_user)
+      write_log("Expediente concluido correctamente: #{@concluido.inspect}", current_user)
+      flash[:notice] = "Expediente concluido correctamente"
+    else
+      flash[:error] = "No se pudo concluir correctamente"
+    end
+    redirect_to(:back)
   end
 
   def concluir_undo
