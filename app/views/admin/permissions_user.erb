@@ -28,13 +28,18 @@
           <td style="vertical-align: middle;"><b><%=m.fecha_fin.strftime("%d de %B de %Y  (%H:%M %p)")%></b></td>
           <td style="vertical-align: middle;"><b><%=h (m.autorizo) ? User.find(m.autorizo).nombre_completo : "---"%></b></td>
           <td style="vertical-align: middle;"><%=link_to "Detalle", {:action => "detail_permission", :id => m}, :class => 'boton', :title => "Detalle del Registro"-%></td>
+          <!-- Reprogramar -->
           <%if m.fecha_inicio >= Time.now || Time.now <= (m.fecha_inicio + 3600) || (current_user.has_role?("admin")) || current_user.has_role?("admindireccion")%> <!-- 60 minutos -->
-            <td style="vertical-align: middle;"><%=link_to "Cancelar", {:action => "cancel_permission", :id => m, :user => @user}, :confirm => "¿Esta seguro que desea cancelar el registro?", :method => :delete, :class => 'boton', :title => "Cancelar Registro"-%></td>
             <td style="vertical-align: middle;"><%=link_to "Reprogramar", {:action => "redit_permission", :id => m, :user => @user}, :confirm => "¿Esta seguro que desea reprogramar el registro?", :method => :delete, :class => 'boton', :title => "Reprogramar Registro"-%></td>
           <%else%>
              <td style="vertical-align: middle;">&nbsp;</td>
-             <td style="vertical-align: middle;">&nbsp;</td>
-          <%end%>
+           <%end%>
+
+           <!-- Cancelar -->
+           <%if (m.fecha_fin >= Time.now) && (m.autorizo == current_user.id || current_user.has_role?(:admindireccion))%>
+              <td style="vertical-align: middle;"><%=link_to "Cancelar", {:action => "cancel_permission", :id => m, :user => @user}, :confirm => "¿Esta seguro que desea cancelar el registro?", :method => :delete, :class => 'boton', :title => "Cancelar Registro"-%></td>
+           <%end%>
+
         </tr>
         <%clase = invert_class(clase)%>
       <%end%>
