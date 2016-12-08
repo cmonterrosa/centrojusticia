@@ -19,6 +19,8 @@
 
 
 <div class="container">
+  <%=render :partial => "layouts/notificaciones_acciones"%>
+
   <div class="formee-msg-info">
     <h3>Información importante</h3>
     <ul>
@@ -100,14 +102,20 @@
     <tr>
     <td align="right">
       <table>
-        <tr>
-          <td>
-            <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar"  />
-          </td>
-          <td>
-            <a href="/sesiones/show_window/<%=h @sesion.id%>" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
-          </td>
-        </tr>
+        
+        
+          <tr>
+            <td>
+              <input id="button4" class="buttonText" type="submit" title="Guardar y Regresar" value="Guardar y Regresar"  />
+            </td>
+
+             <%if @sesion%>
+                <td>
+                    <a href="/sesiones/show_window/<%=h @sesion.id%>" id="buttonc" class="buttonText"><img src="/images/formee/form-ic-error.png"/>&nbsp;&nbsp;Regresar sin Guardar</a>
+                </td>
+            <%end%>
+          </tr>
+        
         <tr>
           <td colspan="2" >&nbsp;</td>
         </tr>
