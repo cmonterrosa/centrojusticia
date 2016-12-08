@@ -127,10 +127,14 @@
               <%end%>
          <%end%>
 
-         <!-- Concluir si tiene asignacion de materia y si tiene perfil de subdirector -->
-         <%if tramite.noprocedente && (current_user.has_role?(:subdireccion) || current_user.has_role?(:convenios))%>
+         <!-- Concluir perfil de jefe convenios o subdirector-->
+         <%if tramite.tiene_numero_expediente? && (current_user.has_role?(:subdireccion) || current_user.has_role?(:jefeconvenios))%>
                   <%unless tramite.concluido?%>
-                        <td style="vertical-align: middle;"><%=h (link_to "Concluir expediente", {:controller => "tramites", :action => "concluir_improcedente", :id => tramite.id}, :confirm => "¿Está seguro que desea concluir el expediente?" , :class => "boton")%></td>
+                         <%if tramite.noprocedente%>
+                                  <td style="vertical-align: middle;"><%=h (link_to "Concluir expediente improcedente", {:controller => "tramites", :action => "concluir_improcedente", :id => tramite.id}, :confirm => "¿Está seguro que desea concluir el expediente improcedente?" , :class => "boton")%></td>
+                         <%else%>
+                                  <td style="vertical-align: middle;"><%=h (link_to "Concluir expediente", {:controller => "tramites", :action => "opciones_conclusion", :tramite => tramite.id, :token => "apply_conclusion"}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro(a) que desea concluir el expediente?" )%></td>
+                         <%end%>
                   <%end%>
         <%end%>
 
