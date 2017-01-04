@@ -17,7 +17,7 @@ class Role < ActiveRecord::Base
   def todos_usuarios
     return User.find_by_sql("SELECT users.* from users inner join roles_users ru on users.id=ru.user_id 
                              INNER JOIN roles r on ru.role_id=r.id
-                             WHERE users.activo=true AND r.name='#{self.name}'")
+                             WHERE users.activo=true AND r.name='#{self.name}' AND users.updated_at IS NOT NULL")
   end
 
   def usuarios_disponibles_vespertinos(date=Time.now)
