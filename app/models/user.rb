@@ -188,13 +188,17 @@ class User < ActiveRecord::Base
   end
 
   def puntaje_fecha
-    if uo = ultima_orientacion.updated_at
-      case uo
-      when uo.wday == 1
-          return 1
-      else
-          return (((Time.now - uo) * 24 * 60 * 60) / 1000000.0)
-      end
+    if ultima_orientacion && ultima_orientacion.updated_at
+        if uo = ultima_orientacion.updated_at
+          case uo
+          when uo.wday == 1
+            return 1
+          else
+            return (((Time.now - uo) * 24 * 60 * 60) / 1000000.0)
+          end
+        end
+    else
+      return 1
     end
   end
 
