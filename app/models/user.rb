@@ -263,8 +263,9 @@ class User < ActiveRecord::Base
       # 
       ##################################################
       self.puntaje_final = 0 if self.last_login == nil
-       self.puntaje_final ||= (((puntuacion_semana_actual.to_i * 1000) + ((puntuacion_mes_actual.to_i) * 0.01)) / puntaje_fecha)
-       return self.puntaje_final
+      self.puntaje_final ||= 0 if self.updated_at == nil
+      self.puntaje_final ||= (((puntuacion_semana_actual.to_i * 1000) + ((puntuacion_mes_actual.to_i) * 0.01)) / puntaje_fecha)
+      return self.puntaje_final
   end
 
   def tiene_actividad_reciente?
