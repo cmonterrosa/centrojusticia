@@ -29,6 +29,11 @@
                                                                             <li><%=link_to image_tag('kolaval/ico-tramites-part.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites-part.jpg") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito de particulares"%></li>
                                                                           <%end%>
 
+                                                                          <!-- Bitacora de atencion -->
+                                                                          <%if current_user.has_role?("bitacora")%>
+                                                                            <li><%=link_to image_tag('kolaval/ico-bitacora-aten.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-bitacora-aten.jpg") , {:action => "select_personas_atendidas", :controller => "estadisticas"}, :title => "Bitacora de atencion"%></li>
+                                                                          <%end%>
+
                                                                         <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
                                                                 </ul>
 							  </li>
