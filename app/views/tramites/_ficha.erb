@@ -9,7 +9,7 @@
                 <!-- Registros -->
                 <tr align="center">
                   <td>
-                      <%numero_expediente = (@tramite.numero_expediente) ? @tramite.numero_expediente : @tramite.folio%>
+                      <%numero_expediente = (@tramite.numero_expediente) ? @tramite.numero_expediente : '---'%>
                       <%=link_to "#{numero_expediente}", {:action => "show", :id => @tramite}, :target => "_blank"%>
                   </td>
                   <td><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
