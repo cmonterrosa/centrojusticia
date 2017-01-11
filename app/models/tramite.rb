@@ -46,6 +46,9 @@ class Tramite < ActiveRecord::Base
     return result
   end
 
+  def solo_orientacion?
+    (self.only_orientacion)? true : false
+  end
 
     # Actualización de estatus, guarda registro en tabla histórica que contiene usuario y fechahora
   def update_estatus!(clave,usuario)
