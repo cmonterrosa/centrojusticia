@@ -219,7 +219,7 @@
 
         <!-- Modificar asignacion de materia -->
         <%if (tramite.estatu_id == materia_asignada.id || tramite.estatu_id = tramite_no_admitido.id) && (current_user.has_role?("convenios") || current_user.has_role?("asignamateria")) && (current_user.has_role?(:jefeconvenios) || Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id  in (?) and user_id = ?", tramite.id, [materia_asignada.id, tramite_no_admitido.id], current_user.id ]))%>
-             <%unless tramite.estatu_id=solo_orientacion.id%>
+             <%unless tramite.solo_orientacion?%>
                   <td style="vertical-align: middle;"><%=h (link_to "Cambiar materia", {:controller => "tramites", :action => "change_materia", :id => tramite.id}, :class => 'boton') %></td>
              <%end%>
         <%end%>
