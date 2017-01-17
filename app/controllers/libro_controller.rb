@@ -30,6 +30,7 @@ class LibroController < ApplicationController
         param["P_FIN"]={:tipo=>"String", :valor=> @fin}
         param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{fecha_string(Time.now)}"}
+
         if File.exists?(REPORTS_DIR + "/librook.jasper")
           send_doc_jdbc("librook", "librook", param, output_type = 'pdf')
         else
