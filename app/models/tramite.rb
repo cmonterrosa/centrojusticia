@@ -197,6 +197,14 @@ class Tramite < ActiveRecord::Base
      end
    end
 
+   def detalle_archivo_judicial
+     if aj = Archivojudicial.find(:first, :conditions => ["tramite_id = ?", self.id])
+        "ENVIADO A ARCHIVO JUDICIAL MEDIANTE OFICIO: #{aj.numero_oficio} CON FECHA: #{aj.fecha.strftime('%d/%m/%Y').upcase}."
+     else
+       return ''
+     end
+   end
+
    def self.search(search, perfil=nil)
     if search && search  =~ /^\d{1,4}\/20\d{2}$/
       folio, anio = search.split("/")
