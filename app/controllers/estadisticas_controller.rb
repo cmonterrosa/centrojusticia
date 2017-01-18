@@ -3,8 +3,8 @@
 require 'rubygems'
 require 'gruff'
 require 'fastercsv'
-require 'httparty'
-require "httpclient"
+#require 'httparty'
+#require "httpclient"
 require 'json'
 
 
