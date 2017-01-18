@@ -4,7 +4,8 @@ require 'rubygems'
 require 'gruff'
 require 'fastercsv'
 require 'httparty'
-
+require "httpclient"
+require 'json'
 
 
 class EstadisticasController < ApplicationController
@@ -62,36 +63,37 @@ class EstadisticasController < ApplicationController
     end
 
 
+def get_ip_address(server, hostname=nil, user=nil, pass = nil)
+  base = "#{server}/hosts"
+  http = HTTPClient.new
+  http.set_auth(base,  user, pass)
+  response = http.get("#{base}/#{hostname.upcase}.json")
+  a = JSON.parse response.body
+  return  a["host"]["ip"]
+end
 
-    def remote_calculo_estadisticas
+
+
+    def remote_calculo_estadisticas(subdireccion=nil)
       @listado_areas_activas = Array.new
       raw_config = File.read(RAILS_ROOT + "/config/areas.yml")
       areas = AREAS_CONFIG
       areas ||= YAML.load(raw_config)[RAILS_ENV]
+      configuracion ||= YAML.load(raw_config)["configuracion"]
       begin
         @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
         (areas) ? (puts "archivo de areas existe") : (puts "No existe archivo de configuracion")
         unless areas.empty?
           @objeto_total = 0
           AREAS_CONFIG.each do |url|
-                host, port = url[1].split("http://").last.split(":")
-                if url_is_active?(host, port)
-                  response = nil
-                  intentos=0
-                   while (intentos < 10)
-                        #puts("=> Connecting to GET RESOURCE IN : #{url[0]} WITH: #{url[1]}")
-                        puts( "#{intentos} - Trying: #{url[1]}/estadisticas/estadisticas_generales.xml?fecha_inicio='#{@inicio}'&fecha_fin='#{@fin}'")
-                        response = HTTParty.get( "#{url[1]}/estadisticas/estadisticas_generales.xml?fecha_inicio='#{@inicio}'&fecha_fin='#{@fin}'", :timeout => 50000)
-                        break if response
-                        intentos+=1
-                   end 
-                   if response 
-                        instance_variable_set('@' + "#{url[0]}",response['hash']['CEJA'])
-                        if eval("@#{url[0]}")
-                            @listado_areas_activas << url[0]
-                            puts("=> OBJECT #{url[0]} ADD TO ARRAY")
-                        end
-                    end
+                host, port = url[0], url[1]
+                address = get_ip_address(configuracion["server"], host, configuracion["user"], configuracion["password"])
+                if response = HTTParty.get( "http://#{address}:#{port}/estadisticas/estadisticas_generales.xml?fecha_inicio='#{@inicio}'&fecha_fin='#{@fin}'", :timeout => 50000)
+                   instance_variable_set('@' + "#{url[0]}",response['hash']['CEJA'])
+                   if eval("@#{url[0]}")
+                       @listado_areas_activas << url[0]
+                       puts("=> OBJECT #{url[0]} ADD TO ARRAY")
+                   end
                 end
             end
          end
@@ -104,8 +106,9 @@ class EstadisticasController < ApplicationController
       @titulo  ||= "No pudo realizar la conexión exitosamente, intente nuevamente"
       ### INICIALIZACION DE VARIABLES ###
       @total_materias = @total_expedientes_generados =  @personas_morales =@participantes_hombres =  @participantes_mujeres = 0
-      @procedencias = @especialistas = @materias = Array.new
-      @contador_materias = Hash.new
+      @procedencias = @especialistas = @materias = @procedencias =  Array.new
+      @contador_materias =  Hash.new
+      @contador_procedencias = []
       Materia.find(:all).each do |m|
         @contador_materias[m.descripcion] = 0
       end
@@ -119,10 +122,20 @@ class EstadisticasController < ApplicationController
             @participantes_mujeres += eval("@#{a}")['participantes_mujeres']  if (eval("@#{a}")['participantes_mujeres'])
             @especialistas += eval("@#{a}")['especialistas']  if (eval("@#{a}")['especialistas'])
             @total_materias += eval("@#{a}")['total_materias']  if (eval("@#{a}")['total_materias'])
+            ## Materias ##
             if (eval("@#{a}")['materias'])
               @materias += eval("@#{a}")['materias']
               @materias.each do |m|
                   @contador_materias[m['nombre']] +=m['total']
+              end
+            end
+            ## Procedencias ##
+            if (eval("@#{a}")['procedencias'])
+              @procedencias += eval("@#{a}")['procedencias']
+              @procedencias.each do |p|
+                     if p['numero_atenciones']
+                      @contador_procedencias[p['descripcion']] +=p['numero_atenciones'].to_i
+                     end
               end
             end
         end
@@ -152,6 +165,7 @@ class EstadisticasController < ApplicationController
              ### Contabilizamos materia ####
              @detalle_materias = Array.new
              @materias = Materia.find(:all, :order => "descripcion")
+             @concluidos = Materia.find(:all, :order => "descripcion")
              @total_materias = Tramite.count(:materia_id, :conditions => ["folio_expediente IS NOT NULL AND materia_id IS NOT NULL AND (fechahora between ? AND ?)",  @inicio, @fin])
              @materias.each do |materia|
               total = Tramite.count(:materia_id, :conditions => ["folio_expediente IS NOT NULL AND materia_id = ? AND (fechahora between ? AND ?)", materia.id, @inicio, @fin])
@@ -180,6 +194,7 @@ class EstadisticasController < ApplicationController
                t.id in (?) AND
                (e.created_at between ? AND ?)", @tramites_creados.collect{|i|i.id}, @inicio, @fin],
                :group => "e.descripcion")
+             @concluidos = Concluido.count(:id, :conditions => ["tramite_id in (?)", @tramites_creados.collect{|i|i.id}])
 
 
              #especialistas_compact = User.find_by_sql("select u.id, u.paterno, u.materno, u.nombre from users u inner join roles_users ru on u.id=ru.user_id inner join roles r on ru.role_id=r.id Where r.name = 'especialistas' order by u.login")
@@ -196,6 +211,7 @@ class EstadisticasController < ApplicationController
                                         "inicio" => @inicio,
                                         "fin" => @fin,
                                         "total-expedientes_generados" => @total_expedientes_generados,
+                                        "total-concluidos" => @concluidos,
                                         "personas-morales" => @personas_morales,
                                         "participantes-hombres" => @participantes_hombres,
                                         "participantes-mujeres" => @participantes_mujeres,
@@ -207,6 +223,9 @@ class EstadisticasController < ApplicationController
                                         "especialistas" => especialistas_array.each do |e| e end,
                                         "procedencias" => @procedencias.each do |p| 
                                           {p.descripcion => p.numero_atenciones.to_i }
+                                        end,
+                                        "etnias" => @etnias.each do |e|
+                                          {e.descripcion => e.numero_participantes}
                                         end
                                     }
                                 }
@@ -433,9 +452,28 @@ end
   end
 
 
+  # Selecciona el reporte de bitacora
   def select_personas_atendidas
    
   end
+
+    def imprimir_bitacora
+        params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+        @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+        param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
+        param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+        param["P_INICIO"]={:tipo=>"String", :valor=> @inicio}
+        param["P_FIN"]={:tipo=>"String", :valor=> @fin}
+        param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
+        param["P_FECHA"]={:tipo=>"String", :valor=>"#{fecha_string(Time.now)}"}
+
+        if File.exists?(REPORTS_DIR + "/bitacora.jasper")
+          send_doc_jdbc("bitacora", "bitacora", param, output_type = 'pdf')
+        else
+          render :text => "Error"
+        end
+
+   end
 
   def search_personas_atendidas
     params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
