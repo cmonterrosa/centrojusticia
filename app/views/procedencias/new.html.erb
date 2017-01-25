@@ -1,15 +1,18 @@
 <h1>NUEVA INSTITUCIÓN</h1>
 
+<div class="formee">
 <% form_for(@procedencia) do |f| %>
   <%= f.error_messages %>
 
-  <p>
+  <div class="grid-12-12">
     DESCRIPCIÓN:<br />
-    <%= f.text_field :descripcion, :size => 120, :required => true %>
-  </p>
-  <p>
+    <%= f.text_area :descripcion, :size => 120, :required => true %>
+  </div>
+
+  <div class="grid-12-12">
     <%= f.submit 'GUARDAR' %>
-  </p>
+  </div>
 <% end %>
+</div>
 
 <%= link_to 'Atrás', procedencias_path, :class => "boton"%>

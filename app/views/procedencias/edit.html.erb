@@ -1,16 +1,18 @@
 <h1>Editar Institución</h1>
 
+<div class="formee">
 <% form_for(@procedencia) do |f| %>
   <%= f.error_messages %>
 
-  <p>
-    Anote la descripción:<br />
-    <%= f.text_field :descripcion, :size => 120, :required => true %>
-  </p>
-  <p>
+  <div class="grid-10-12">
+      Anote la descripción:<br />
+     <%= f.text_area :descripcion, :size => 120, :required => true %>
+  </div>
+  <div class="grid-12-12">
     <%= f.submit 'ACTUALIZAR' %>
-  </p>
+  </div>
 <% end %>
 
+</div>
 <%= link_to 'Mostrar', @procedencia, :class => "boton" %> |
 <%= link_to 'Atrás', procedencias_path, :class => "boton" %>
