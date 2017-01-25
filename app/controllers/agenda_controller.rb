@@ -158,5 +158,5 @@ class AgendaController < ApplicationController
    def set_layout
     (action_name == 'daily_show_pdf')? 'pdf' : 'kolaval'
   end
-
+#comentario
 end
