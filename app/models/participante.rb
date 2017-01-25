@@ -138,7 +138,7 @@ class Participante < ActiveRecord::Base
     if search
       find(:all, :conditions => ['( CONCAT(nombre, \' \' , paterno, \' \' , materno) LIKE ?)
             OR ((CONCAT(SUBSTRING_INDEX( `nombre` , \' \', 1 ), \' \' , paterno) LIKE ?))
-            OR (razon_social LIKE ?)', "%#{search}%", "%#{search}%", "%#{search}%"], :order => "paterno, materno, nombre, razon_social", :limit => 225)
+            OR (razon_social LIKE ?)', "%#{search}%", "%#{search}%", "%#{search}%"], :order => "created_at DESC, paterno, materno, nombre, razon_social", :limit => 225)
     else
       find(:all)
     end
