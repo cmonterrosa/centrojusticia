@@ -59,7 +59,10 @@ class AdminController < ApplicationController
     if current_user.has_role?(:admin)
       @tramite = Tramite.find(params[:id])
       @tramite.update_attributes(params[:tramite])
+      # Dejamos en blanco el folio de expediente si estatus es solo orientacion
+      @tramite.folio_expediente = nil if @tramite.estatu == Estatu.find_by_clave("no-compar") || Estatu.find_by_clave("tram-inic")
       if @tramite.save
+        @tramite.update_estatus!(@tramite.estatu.clave, current_user)
         flash[:notice] = "Estatus actualizado correctamente"
         redirect_to :action => "list", :controller => "tramites"
       else
