@@ -180,12 +180,28 @@ class ComparecenciasController < ApplicationController
         param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.apoderado_legal)}
         param["P_RAZON_SOCIAL"]={:tipo=>"String", :valor=>clean_string(@solicitante.razon_social)}
         (@comparecencia.tramite.numero_expediente) ? param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>@comparecencia.tramite.numero_expediente} : nil
-        if File.exists?(REPORTS_DIR + "/comparecencia.jasper")
-          (@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
-          #send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
-        else
-          render :text => "Error"
+        
+        #si el participante pertenece a un grupo etnico se agrega al reporte el apartado de nombre y firma del traductor
+        if @solicitante.pertenece_grupo_etnico          
+          if File.exists?(REPORTS_DIR + "/comparecencia_etnia.jasper")
+            (@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia_etnia", "comparecencia_etnia", param, output_type = 'pdf')
+          else
+            render :text => "Error"
+          end
+        else          
+          if File.exists?(REPORTS_DIR + "/comparecencia.jasper")
+            (@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
+          else
+            render :text => "Error"
+          end
         end
+        
+        #if File.exists?(REPORTS_DIR + "/comparecencia.jasper")
+        #  (@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
+          #send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
+        #else
+        #  render :text => "Error"
+        #end
     else
         render :text => "Imposible generar reporte involucrado, verifique los parámetros"
     end
