@@ -121,12 +121,25 @@ class ComparecenciasController < ApplicationController
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora)}"}
         param["P_APODERADO_LEGAL"]={:tipo=>"String", :valor=>clean_string(@involucrado.apoderado_legal)}
         (@comparecencia.tramite.numero_expediente) ? param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>@comparecencia.tramite.numero_expediente} : nil
-        if File.exists?(REPORTS_DIR + "/involucrado.jasper")
-          (@involucrado.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("involucrado_persona_moral", "involucrado_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("involucrado", "involucrado", param, output_type = 'pdf')
-          #send_doc_jdbc("involucrado", "involucrado", param, output_type = 'pdf')
+        if @involucrado.etnia 
+          if File.exists?(REPORTS_DIR + "/involucrado_etnia.jasper")
+            (@involucrado.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("involucrado_persona_moral", "involucrado_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("involucrado_etnia", "involucrado_etnia", param, output_type = 'pdf')            
+          else
+            render :text => "Error"
+          end
         else
-          render :text => "Error"
+          if File.exists?(REPORTS_DIR + "/involucrado.jasper")
+            (@involucrado.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("involucrado_persona_moral", "involucrado_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("involucrado", "involucrado", param, output_type = 'pdf')            
+          else
+            render :text => "Error"
+          end
         end
+        #if File.exists?(REPORTS_DIR + "/involucrado.jasper")
+        #  (@involucrado.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("involucrado_persona_moral", "involucrado_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("involucrado", "involucrado", param, output_type = 'pdf')
+          #send_doc_jdbc("involucrado", "involucrado", param, output_type = 'pdf')
+        #else
+        #  render :text => "Error"
+        #end
 
     else
       flash[:error] = "Imposible generar reporte del involucrado, verifique parámetros"
