@@ -1,7 +1,7 @@
 #!/bin/env ruby
 # encoding: utf-8
 require 'rubygems'
-require 'gruff'
+#require 'gruff'
 require 'fastercsv'
 #require 'httparty'
 #require "httpclient"
