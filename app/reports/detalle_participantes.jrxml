@@ -17,8 +17,7 @@ ORDER BY
      razon_social DESC,
      paterno ASC,
      materno ASC,
-     nombre ASC
-]]>
+     nombre ASC]]>
 	</queryString>
 	<field name="nombre_participante" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -35,7 +34,7 @@ ORDER BY
 	<detail>
 		<band height="10" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="255" height="10"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="221" height="10"/>
 				<textElement markup="html">
 					<font size="8"/>
 				</textElement>

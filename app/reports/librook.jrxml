@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="libro" pageWidth="1008" pageHeight="612" orientation="Landscape" whenNoDataType="BlankPage" columnWidth="986" leftMargin="11" rightMargin="11" topMargin="11" bottomMargin="11">
-	<property name="ireport.zoom" value="3.0"/>
-	<property name="ireport.x" value="2406"/>
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="APP_URL" class="java.lang.String"/>
 	<parameter name="P_SUBDIRECCION" class="java.lang.String"/>
@@ -20,7 +20,7 @@
         mat.descripcion as materia,
         mec.descripcion as mecanismo_alternativo,
 	UPPER(CONCAT('ENVIADO A ARCHIVO JUDICIAL MEDIANTE OFICIO: ', aj.numero_oficio, ', CON FECHA: ', DATE_FORMAT(aj.fecha,'%d/%m/%Y'), '.')) as numero_oficio,
-	comp.asunto, comp.id as comparecencia_id
+	comp.asunto, comp.id as comparecencia_id, observaciones_conclusion
 FROM tramites t
 
 LEFT JOIN mecanismo_alternativos mec
@@ -66,13 +66,18 @@ ORDER BY
 	<field name="mecanismo_alternativo" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
+	<field name="numero_oficio" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<field name="asunto" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<field name="comparecencia_id" class="java.lang.Integer">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="numero_oficio" class="java.lang.String"/>
+	<field name="observaciones_conclusion" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -119,28 +124,28 @@ ORDER BY
 				<text><![CDATA[FECHA DE INICIO]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="162" y="0" width="254" height="22"/>
+				<reportElement x="160" y="0" width="221" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[PARTICIPANTES]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="419" y="0" width="55" height="22"/>
+				<reportElement x="384" y="0" width="68" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[MATERIA]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="756" y="0" width="130" height="22"/>
+				<reportElement x="688" y="0" width="130" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FECHA Y CAUSA DE CONCLUSIÓN]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="477" y="0" width="189" height="22"/>
+				<reportElement x="455" y="0" width="158" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -154,7 +159,7 @@ ORDER BY
 				<text><![CDATA[NÚMERO DE EXPEDIENTE]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="668" y="0" width="83" height="22"/>
+				<reportElement x="617" y="0" width="68" height="22"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -164,7 +169,14 @@ ORDER BY
 				<reportElement x="6" y="0" width="970" height="1" forecolor="#010101"/>
 			</line>
 			<staticText>
-				<reportElement x="896" y="1" width="83" height="21"/>
+				<reportElement x="821" y="1" width="83" height="21"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[FECHA DE ENVÍO A ARCHIVO JUDICIAL]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="904" y="1" width="75" height="21"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -189,7 +201,7 @@ ORDER BY
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{numero_expediente}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="756" y="21" width="130" height="53" isRemoveLineWhenBlank="true"/>
+				<reportElement x="688" y="21" width="130" height="53" isRemoveLineWhenBlank="true"/>
 				<textElement textAlignment="Justified" verticalAlignment="Top">
 					<font size="8"/>
 				</textElement>
@@ -199,12 +211,12 @@ ORDER BY
 				<reportElement x="6" y="1" width="970" height="1" forecolor="#010101"/>
 			</line>
 			<subreport>
-				<reportElement stretchType="RelativeToBandHeight" x="162" y="3" width="254" height="71"/>
-				<subreportParameter name="P_FIN">
-					<subreportParameterExpression><![CDATA[$P{P_FIN}]]></subreportParameterExpression>
-				</subreportParameter>
+				<reportElement stretchType="RelativeToBandHeight" x="160" y="3" width="221" height="71"/>
 				<subreportParameter name="SUBREPORT_DIR">
 					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="P_FIN">
+					<subreportParameterExpression><![CDATA[$P{P_FIN}]]></subreportParameterExpression>
 				</subreportParameter>
 				<subreportParameter name="P_ANIO">
 					<subreportParameterExpression><![CDATA[$P{P_ANIO}]]></subreportParameterExpression>
@@ -228,39 +240,46 @@ ORDER BY
 				<subreportExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/app/reports/detalle_participantes.jasper"]]></subreportExpression>
 			</subreport>
 			<textField isBlankWhenNull="true">
-				<reportElement x="419" y="3" width="55" height="20"/>
+				<reportElement x="384" y="2" width="68" height="32"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{materia}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" pattern="" isBlankWhenNull="true">
-				<reportElement stretchType="RelativeToBandHeight" x="477" y="3" width="189" height="76"/>
+				<reportElement stretchType="RelativeToBandHeight" x="455" y="3" width="158" height="76"/>
 				<textElement textAlignment="Justified">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{asunto}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="668" y="3" width="84" height="21"/>
+				<reportElement x="617" y="3" width="68" height="21"/>
 				<textElement textAlignment="Center">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{mecanismo_alternativo}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement x="756" y="3" width="130" height="16"/>
+				<reportElement x="688" y="2" width="130" height="16"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" pdfFontName="Helvetica"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{fecha_conclusion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="896" y="4" width="80" height="70" isRemoveLineWhenBlank="true"/>
+				<reportElement x="821" y="4" width="80" height="70" isRemoveLineWhenBlank="true"/>
 				<textElement textAlignment="Justified">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{numero_oficio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="904" y="4" width="75" height="70"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{observaciones_conclusion}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
