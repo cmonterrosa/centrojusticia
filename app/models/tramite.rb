@@ -199,7 +199,8 @@ class Tramite < ActiveRecord::Base
 
    def detalle_archivo_judicial
      if aj = Archivojudicial.find(:first, :conditions => ["tramite_id = ?", self.id])
-        "ENVIADO A ARCHIVO JUDICIAL MEDIANTE OFICIO: #{aj.numero_oficio} CON FECHA: #{aj.fecha.strftime('%d/%m/%Y').upcase}."
+        # "ENVIADO A ARCHIVO JUDICIAL MEDIANTE OFICIO: #{aj.numero_oficio} CON FECHA: #{aj.fecha.strftime('%d/%m/%Y').upcase}."
+        " #{aj.fecha.strftime('%d/%m/%Y').upcase} MEDIANTE OFICIO: #{aj.numero_oficio}"
      else
        return ''
      end
