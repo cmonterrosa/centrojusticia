@@ -63,15 +63,12 @@
           <td style="vertical-align: middle;">
             <%=h tramite.detalle_archivo_judicial%>
           </td>
-          <td style="vertical-align: middle;">
-            <%=h (tramite.concluido?)? tramite.concluido.observaciones_conclusion : '-'%>
-          </td>
           <!-- observaciones -->
-          <!--
           <td style="vertical-align: middle;">
-                <=h (tramite.concluido?)? tramite.concluido.observaciones_conclusion : '-'%>
-          </td>
-          -->
+            <!-- <%=h (tramite.concluido?)? tramite.concluido.observaciones_conclusion : '-'%> -->
+            <%=h (tramite.seguimiento?)? tramite.seguimiento.fecha_seguimiento : ''%><br/>
+            <%=h (tramite.seguimiento?)? tramite.seguimiento.descripcion : '-'%>
+          </td>       
         </tr>
      <%end%>
   </table>

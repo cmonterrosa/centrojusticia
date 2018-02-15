@@ -162,6 +162,24 @@ class Tramite < ActiveRecord::Base
      Concluido.count(:id, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") > 0 if self.id
    end
 
+   def convenio?
+     Convenio.count(:id, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") > 0 if self.id
+   end
+
+   def convenio
+     Convenio.find(:first, :conditions => ["tramite_id = ?", self.id], :order => "updated_at") if self.id
+   end
+
+   def seguimiento?
+    if convenio
+      Seguimiento.count(:id, :conditions => ["convenio_id = ?", convenio.id], :order => "updated_at") > 0 if self.id
+    end
+   end
+
+   def seguimiento
+     Seguimiento.find(:first, :conditions => ["convenio_id = ?", convenio.id], :order => "fechahora DESC") if self.id
+   end
+
    def tiene_numero_expediente?
      (self.folio_expediente && self.anio)
    end

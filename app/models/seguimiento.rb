@@ -6,4 +6,8 @@ class Seguimiento < ActiveRecord::Base
 
   validates_presence_of :convenio_id, :message => ".- Debe de estar vinculado a un convenio"
 
+  def fecha_seguimiento     
+     "[#{self.fechahora.strftime('%d DE %B DE %Y - %H:%M %p').upcase}]"     
+  end
+
 end
