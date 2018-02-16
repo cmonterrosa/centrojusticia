@@ -172,12 +172,12 @@ class Tramite < ActiveRecord::Base
 
    def seguimiento?
     if convenio
-      Seguimiento.count(:id, :conditions => ["convenio_id = ?", convenio.id], :order => "updated_at") > 0 if self.id
+      Seguimiento.count(:id, :conditions => ["convenio_id = ? and manifestacion_seguimiento_id=10", convenio.id], :order => "updated_at") > 0 if self.id
     end
    end
 
    def seguimiento
-     Seguimiento.find(:first, :conditions => ["convenio_id = ?", convenio.id], :order => "fechahora DESC") if self.id
+     Seguimiento.find(:first, :conditions => ["convenio_id = ? and manifestacion_seguimiento_id=10", convenio.id], :order => "fechahora DESC") if self.id
    end
 
    def tiene_numero_expediente?
