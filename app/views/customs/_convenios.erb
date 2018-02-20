@@ -7,71 +7,78 @@
         </head>
 	<body>
 		<div class="container">
-                        <div class="main">
+      <div class="main">
 				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
 					<div class="cbp-hsinner">
 						<ul class="cbp-hsmenu">
 
-                                                          <!-- Orientaciones -->
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/orientaciones.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/orientaciones.jpg") , {:action => "list_by_user", :controller => "orientacions"}, :title => "Orientaciones"%></ul>
-                                                          </li>
+              <!-- Orientaciones -->
+              <li>
+                <ul><%=link_to image_tag('kolaval/orientaciones.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/orientaciones.jpg") , {:action => "list_by_user", :controller => "orientacions"}, :title => "Orientaciones"%></ul>
+              </li>
 
-                                                          <%=render :partial => "comparecencias"%>
+              <%=render :partial => "comparecencias"%>
 
-                                                          <%=render :partial => "invitaciones"%>
+              <%=render :partial => "invitaciones"%>
 
-                                                          <!-- Tramites -->
-                                                          <li>
-                                                              <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
-                                                              <ul class="cbp-hssubmenu">
-								<%if  current_user.has_role?("atencionpublico")%>
-                                                                    <li><%=link_to image_tag('kolaval/ico-iniciartramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-iniciartramites.jpg") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Iniciar trámite"%></li>
-                                                                <%end%>
-                                                                <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
+              <!-- Tramites -->
+              <li>
+                <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
+                <ul class="cbp-hssubmenu">
+								  <%if  current_user.has_role?("atencionpublico")%>
+                    <li><%=link_to image_tag('kolaval/ico-iniciartramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-iniciartramites.jpg") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Iniciar trámite"%></li>
+                  <%end%>
+                  <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
                                                                 
-                                                                <!-- por escrito de instituciones externas -->
-                                                                <%if current_user.has_role?("oficinasubdireccion") || current_user.has_role?("captura_inicios_externos")%>
-                                                                    <li><%=link_to image_tag('kolaval/ico-tramit-otras.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramit-otras.jpg") , {:action => "index", :controller => "extraordinaria"}, :title => "Trámites de otras instituciones"%></li>
-                                                                <%end%>
+                  <!-- por escrito de instituciones externas -->
+                  <%if current_user.has_role?("oficinasubdireccion") || current_user.has_role?("captura_inicios_externos")%>
+                    <li><%=link_to image_tag('kolaval/ico-tramit-otras.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramit-otras.jpg") , {:action => "index", :controller => "extraordinaria"}, :title => "Trámites de otras instituciones"%></li>
+                  <%end%>
 
 
-                                                                <!-- Bitacora -->
-                                                                  <%if current_user.has_role?("bitacora")%>
-                                                                    <li>
-                                                                          <%=link_to image_tag('kolaval/ico-bitacora-aten.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-bitacora-aten.jpg") , {:action => "select_personas_atendidas", :controller => "estadisticas"}, :title => "Bitacora de atencion"%>
-                                                                    </li>
-                                                                    <%end%>
-                                                              </ul>
-                                                          </li>
+                  <!-- Bitacora -->
+                  <%if current_user.has_role?("bitacora")%>
+                    <li>
+                      <%=link_to image_tag('kolaval/ico-bitacora-aten.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-bitacora-aten.jpg") , {:action => "select_personas_atendidas", :controller => "estadisticas"}, :title => "Bitacora de atencion"%>
+                    </li>
+                  <%end%>
+                </ul>
+              </li>
 
 
-                                                         <!-- Agenda -->
-                                                        <%if current_user.has_role?("lecturaagenda")%>
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Agenda"%></ul>
-                                                          </li>
-                                                        <%end%>
+              <!-- Agenda -->
+              <%if current_user.has_role?("lecturaagenda")%>
+                <li>
+                  <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Agenda"%></ul>
+                </li>
+              <%end%>
 
 
-                                                       <!-- convenios -->
-                                                       <li>
-                                                              <%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%>
-                                                              <ul class="cbp-hssubmenu">
-                                                                <!-- Seguimiento de convenios -->
-                                                                <li>
-                                                                    <%=link_to image_tag('kolaval/ico-convenio-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio-seguimiento.jpg") , {:action => "index", :controller => "seguimientos"}, :title => "Seguimiento de Convenios"%>
-                                                                </li>
+              <!-- convenios -->
+                <li>
+                  <%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%>
+                  <ul class="cbp-hssubmenu">
+                    <!-- Seguimiento de convenios -->
+                    <li>
+                      <%=link_to image_tag('kolaval/ico-convenio-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio-seguimiento.jpg") , {:action => "index", :controller => "seguimientos"}, :title => "Seguimiento de Convenios"%>
+                    </li>
 
-                                                                <!-- Bitacora  de seguimiento de convenios -->
-                                                                <%if current_user.has_role?("bitacora") || current_user.has_role?("subdireccion")%>
-                                                                    <li>
-                                                                        <%=link_to image_tag('kolaval/Icono-bitacora-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Icono-bitacora-seguimiento.jpg") , {:action => "bitacora", :controller => "seguimientos"}, :title => "Bitacora de seguimiento de convenios"%>
-                                                                    </li>
-                                                                 <%end%>
-                                                              </ul>
-                                                          </li>
-                                                    </ul>
+                    <!-- Bitacora  de seguimiento de convenios -->
+                    <%if current_user.has_role?("bitacora") || current_user.has_role?("subdireccion")%>
+                      <li>
+                        <%=link_to image_tag('kolaval/Icono-bitacora-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Icono-bitacora-seguimiento.jpg") , {:action => "bitacora", :controller => "seguimientos"}, :title => "Bitacora de seguimiento de convenios"%>
+                      </li>
+                    <%end%>
+                  </ul>
+                </li>
+
+                <%if current_user.has_role?("librocontrol") || current_user.has_role?("jefeconvenios")%>
+                  <li>
+                    <%=link_to image_tag('kolaval/ico-libro-control.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-libro-control.jpg") , {:action => "index", :controller => "libro"}, :title => "Libro de control"%>
+                  </li>
+                <%end%>
+
+              </ul>
 					</div>
 				</nav>
 			</div>
