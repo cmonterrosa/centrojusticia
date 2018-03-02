@@ -1,0 +1,104 @@
+<div class="titulocalendario">
+  <p>
+    LIBRO ELECTRONICO DE CONTROL PARA VISITA
+  </p>
+</div>
+
+
+<div class="titulocalendario">
+  <%if @inicio.strftime("%d de %B de %Y") == @fin.strftime("%d de %B de %Y")%>
+      <p>
+       <%=@inicio.strftime("%d de %B de %Y")%>
+      </p>
+  <%else%>
+      <p>
+        PERIODO COMPRENDIDO ENTRE EL <%=@inicio.strftime("%d de %B de %Y").upcase%> Y EL DÍA <%=@fin.strftime("%d de %B de %Y").upcase%>
+      </p>
+  <%end%>
+</div>
+
+
+    <!-- impresion de libro-->   
+
+    <table class="tabla_dp" >
+      <tr align="center">
+        <td align="center">
+          <% form_for :tramite, @tramite, :url => { :action => "imprimir", :controller => "libro", :fecha_inicio => @inicio, :fecha_fin => @fin }, :html => { :target => "_blank"} do |f| -%>
+            <div class="grid-center">
+              <input type="submit" title="IMPRIMIR LIBRO" value="IMPRIMIR LIBRO" />
+            </div>
+          <%end%> 
+        </td>
+        <td align="center">
+          <%=h (link_to "IMPRIMIR DICTAMEN", {:controller => "visita", :action => "imprimir_dictamen", :id => @visita.id}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea cancelar el registro?" )%>
+        </td>
+        <td align="center">
+          <%=h (link_to "FINALIZAR VISITA", {:controller => "visita", :action => "finalizar_visita", :id => @visita.id}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea finalizar la visita?" )%>
+        </td>        
+      </tr>  
+    </table>
+
+
+
+<div id="divlista">
+  <table width="99%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; font-size: 11px;">
+     <tr>
+       <td style="vertical-align: middle; width: 5%;" align="center">Número de expediente</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Fecha de Inicio</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Solicitantes</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Involucrados</td>
+       <td style="vertical-align: middle; width: 5%;" align="center">Materia</td>
+       <td style="vertical-align: middle; width: 18%;" align="center">Asunto</td>
+       <td style="vertical-align: middle; width: 9%;" align="center">Medio Alternativo</td>
+       <td style="vertical-align: middle; width: 14%;" align="center">Fecha y causa de conclusión</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Fecha de Envío a Archivo Judicial</td>
+       <td style="vertical-align: middle; width: 9%;" align="center">Observaciones</td>
+     </tr>
+     
+     <%for tramite in @tramites%>
+        <%comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", tramite])%>
+        <tr>
+          <!-- numero de expediente -->
+          <td style="vertical-align: middle;"><%=link_to "#{tramite.numero_expediente}", {:controller => "tramites", :action => "show", :id => tramite}, :target => "_blank"%></td>
+          <td style="vertical-align: middle;"><%=h tramite.fechahora.strftime("%A %d DE %B de %Y - %H:%M %p")%></td>
+          <td style="vertical-align: middle;"><%=h (comparecencia) ? comparecencia.solicitantes : ''%></td>
+          <td style="vertical-align: middle;"><%=h (comparecencia) ? comparecencia.involucrados : ''%></td>
+          <td style="vertical-align: middle;"><%=h (tramite.materia)? tramite.materia.descripcion : '-'%></td>
+          <td style="vertical-align: middle; text-align: justify;"><%=h (comparecencia)? comparecencia.asunto : '-'%></td>
+          <td style="vertical-align: middle;"><%=h (tramite.mecanismo_alternativo)? tramite.mecanismo_alternativo.descripcion : '-'%></td>
+          <td style="vertical-align: middle;">
+            <span style="color: #550000;"><%=h (tramite.concluido?)? tramite.fecha_conclusion : '-'%></span><br />
+            <%=h (tramite.concluido?)? tramite.causa_conclusion : '-'%>
+          </td>
+          <td style="vertical-align: middle;">
+            <%=h tramite.detalle_archivo_judicial%>
+          </td>
+          <!-- observaciones -->
+          <td style="vertical-align: middle;">
+            <!-- <%=h (tramite.concluido?)? tramite.concluido.observaciones_conclusion : '-'%> -->
+            <%=h (tramite.seguimiento?)? tramite.seguimiento.fecha_seguimiento : ''%><br/>
+            <%=h (tramite.seguimiento?)? tramite.seguimiento.descripcion : '-'%>
+          </td>
+          
+        </tr>
+     <%end%>
+  </table>
+</div>
+
+
+<br />
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @tramites %>
+          </div>
+          <%= will_paginate @tramites, :params => { :fecha_inicio => @inicio, :fecha_fin => @fin  } %>
+        </div>
+      </td>
+    </tr>
+</table>
+
+
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
