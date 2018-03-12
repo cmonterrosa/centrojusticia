@@ -1,8 +1,7 @@
 class CreateEstatusVisitas < ActiveRecord::Migration
   def self.up
     create_table :estatus_visitas do |t|
-    	t.string :descripcion
-      t.timestamps
+    	t.string :descripcion      
     end
 
     EstatusVisita.create(:descripcion => "INICIADA") unless EstatusVisita.exists?(:descripcion => "INICIADA")
