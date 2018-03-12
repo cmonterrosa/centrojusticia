@@ -6,9 +6,9 @@
 
 
 <div class="titulocalendario">
-  <%if @inicio.strftime("%d de %B de %Y") == @fin.strftime("%d de %B de %Y")%>
+  <%if @inicio == @fin%>
       <p>
-       <%=@inicio.strftime("%d de %B de %Y")%>
+       <%= @inicio.strftime("%d de %B de %Y")%>
       </p>
   <%else%>
       <p>
@@ -26,7 +26,7 @@
           <%=h (link_to "IMPRIMIR LIBRO", {:controller => "libro", :action => "imprimir", :fecha_inicio => @inicio, :fecha_fin => @fin}, :target => "_blank", :class => "fancybox fancybox.iframe boton") %>
         </td>       
         <td align="center">
-          <%=h (link_to "FINALIZAR VISITA", {:controller => "visita", :action => "finalizar_visita", :id => @visita.id}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea finalizar la visita?" )%>
+          <%=h (link_to "FINALIZAR VISITA", {:controller => "visita", :action => "finalizar_visita", :id => @visitaid}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea finalizar la visita?" )%>
         </td>        
       </tr>  
     </table>

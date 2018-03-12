@@ -15,32 +15,31 @@
 					<div class="cbp-hsinner">
 						<ul class="cbp-hsmenu">
 							<li>
-								 <!-- Tramites -->
-                                                                 <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
+								<!-- Tramites -->
+                <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
 								<ul class="cbp-hssubmenu">
 									<li><%=link_to image_tag('kolaval/ico-iniciartramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-iniciartramites.jpg") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Iniciar trámite"%></li>
-                                                                         <li><%=link_to image_tag('kolaval/ico-tramit-otras.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramit-otras.jpg") , {:action => "index", :controller => "extraordinaria"}, :title => "Trámites de otras instituciones"%></li>
-                                                                         <li><%=link_to image_tag('kolaval/ico-tramites-part.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites-part.jpg") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito de particulares"%></li>
-                                                                         <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
-                                                                         <li><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "index", :controller => "invitaciones"}, :title => "Invitaciones"%></li>
-                                                                </ul>
+                  <li><%=link_to image_tag('kolaval/ico-tramit-otras.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramit-otras.jpg") , {:action => "index", :controller => "extraordinaria"}, :title => "Trámites de otras instituciones"%></li>
+                  <li><%=link_to image_tag('kolaval/ico-tramites-part.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites-part.jpg") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito de particulares"%></li>
+                  <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
+                  <li><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "index", :controller => "invitaciones"}, :title => "Invitaciones"%></li>
+                </ul>
 							</li>
+                <!-- Agenda -->
+              <li>
+                <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
+              </li>
+                
+              <%=render :partial => "librocontrol"%>
+              <%=render :partial => "invitaciones"%>
 
-                                                        <!-- Agenda -->
-                                                        <li>
-                                                            <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
-                                                        </li>
-
-                                                        <%=render :partial => "librocontrol"%>
-                                                        <%=render :partial => "invitaciones"%>
-
-                                                        <!-- Convenios -->
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%></ul>
-                                                          </li>
+              <!-- Convenios -->
+              <li>
+                <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%></ul>
+              </li>
 
 
-                                                        <!-- agenda -->
+              <!-- agenda -->
 							<!--
                                                         <li>
 								
@@ -62,43 +61,50 @@
 							</li>
                                                          -->
 
-                                                        <li>
-                                                          <!-- Estadistica -->
-                                                          <ul><%=link_to image_tag('kolaval/ico-estadistica.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-estadistica.jpg") , {:action => "index", :controller => "estadisticas"}, :title => "Estadística"%></ul>
-                                                        </li>
+              <li>
+                <!-- Estadistica -->
+                <ul><%=link_to image_tag('kolaval/ico-estadistica.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-estadistica.jpg") , {:action => "index", :controller => "estadisticas"}, :title => "Estadística"%></ul>
+              </li>
+
+              <li>
+                <!-- Visitaduria -->
+                <%=link_to image_tag('iconos/busqueda_general.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/busqueda_general.png") , {:action => "index", :controller => "visita"}, :title => "Visitaduria"%>                
+                <ul class="cbp-hssubmenu">
+                  <!-- Administracion -->
+
+                  <li><%=link_to image_tag('iconos/calendario.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/calendario.png") , {:action => "index", :controller => "visita"}, :title => "Iniciar Visita"%></li>
+                  <li><%=link_to image_tag('iconos/comparecencias.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/comparecencias.png") , {:action => "list", :controller => "visita"}, :title => "Listado de visitas"%></li>
+                </ul>
+              </li>
 
                                                       
-                                                        <!-- admin -->
-                                                        <li>
-                                                          <%=link_to image_tag('kolaval/ico-administracion.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-administracion.jpg") , {:action => "index", :controller => "admin"}, :title => "Admin"%>
-                                                          <ul class="cbp-hssubmenu">
-                                                                            <!-- Administracion -->
+              <!-- admin -->
+              <li>
+                <%=link_to image_tag('kolaval/ico-administracion.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-administracion.jpg") , {:action => "index", :controller => "admin"}, :title => "Admin"%>
+                <ul class="cbp-hssubmenu">
+                  <!-- Administracion -->
+                  <li><%=link_to image_tag('kolaval/ico-administracion.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-administracion.jpg") , {:action => "index", :controller => "admin"}, :title => "Admin"%></li>
+                  <!-- Cuadrantes -->
+                  <li><%=link_to image_tag('kolaval/ico-cuadrantes.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-cuadrantes.jpg") , {:action => "index", :controller => "cuadrantes"}, :title => "Cuadrantes"%></li>
+                  <li>
+                  <!-- Empleados -->
+                  <%=link_to image_tag('kolaval/capacitacion/ico-empleados.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-empleados.jpg") , {:action => "index", :controller => "empleados"}, :title => "Administración de Empleados"%>
+                  </li>
+                  <li>
+                  <!-- Estudios -->
+                    <%=link_to image_tag('kolaval/capacitacion/ico-estudios.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-estudios.jpg") , {:action => "index", :controller => "estudios"}, :title => "Estudios académicos"%>
+                  </li>
+                  <li>
+                    <!-- Instituciones -->
+                    <%=link_to image_tag('kolaval/capacitacion/ico-insti-academ.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-insti-academ.jpg") , {:action => "index", :controller => "institucion_academicas"}, :title => "Instituciones académicas"%>
+                  </li>
 
-                                                                          <li><%=link_to image_tag('kolaval/ico-administracion.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-administracion.jpg") , {:action => "index", :controller => "admin"}, :title => "Admin"%></li>
-                                                                            <!-- Cuadrantes -->
-                                                                         <li><%=link_to image_tag('kolaval/ico-cuadrantes.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-cuadrantes.jpg") , {:action => "index", :controller => "cuadrantes"}, :title => "Cuadrantes"%></li>
-                                                                         <li>
-                                                                            <!-- Empleados -->
-                                                                            <%=link_to image_tag('kolaval/capacitacion/ico-empleados.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-empleados.jpg") , {:action => "index", :controller => "empleados"}, :title => "Administración de Empleados"%>
-                                                                        </li>
-                                                                        <li>
-                                                                            <!-- Estudios -->
-                                                                            <%=link_to image_tag('kolaval/capacitacion/ico-estudios.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-estudios.jpg") , {:action => "index", :controller => "estudios"}, :title => "Estudios académicos"%>
-                                                                        </li>
-                                                                        <li>
-                                                                            <!-- Instituciones -->
-                                                                            <%=link_to image_tag('kolaval/capacitacion/ico-insti-academ.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-insti-academ.jpg") , {:action => "index", :controller => "institucion_academicas"}, :title => "Instituciones académicas"%>
-                                                                        </li>
-
-                                                                        <!-- Ausencias de personal -->
-                                                                        <li>
-                                                                              <ul><%=link_to image_tag('kolaval/ausencia-personal.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ausencia-personal.jpg") , {:action => "select_bitacora_ausencias_personal", :controller => "estadisticas"}, :title => "Reporte de ausencias de personal"%></ul>
-                                                                        </li>
-                                                          </ul>
-
-                                                          
-                                                        </li>
-							
+                  <!-- Ausencias de personal -->
+                  <li>
+                    <ul><%=link_to image_tag('kolaval/ausencia-personal.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ausencia-personal.jpg") , {:action => "select_bitacora_ausencias_personal", :controller => "estadisticas"}, :title => "Reporte de ausencias de personal"%></ul>
+                  </li>
+                </ul>
+              </li>							
 							
 						</ul>
 					</div>

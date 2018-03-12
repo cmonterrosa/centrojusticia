@@ -1,0 +1,73 @@
+<div class="titulocalendario">
+  <p>
+    RESUMEN DE LA VISITA REALIZADA
+  </p>
+</div>
+
+
+    <!-- impresion de libro-->   
+
+    <table class="tabla_dp" >
+      <tr align="center">        
+        <td align="center">
+          <%=h (link_to "IMPRIMIR DICTAMEN", {:controller => "visita", :action => "imprimir_dictamen", :id => @visita.id}, :target => "_blank", :class => "fancybox fancybox.iframe boton")%>
+        </td>        
+      </tr>  
+    </table>
+
+
+
+  <div id="divlista" width="60%">
+  <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;width: 50%;margin: auto;">
+     <tr>
+      <td colspan="2">
+        Datos generales de la visita
+      </td>
+     </tr>
+
+     <tr>
+      <td style="vertical-align: middle;"><b>Tipo de visita realizada:</b></td>
+      <td style="vertical-align: middle;"><%= (@visita.tipovisita_id)? @visita.tipovisita.descripcion : "--"%></td>
+     </tr>
+     <tr>
+      <td style="vertical-align: middle;"><b>Fecha inicial de la visita:</b></td>
+      <td style="vertical-align: middle;"><%=@visita.created_at.strftime("%d de %B %X de %Y")%></td>
+     </tr>
+     <tr>
+      <td style="vertical-align: middle;"><b>Fecha final de la visita:</b></td>
+      <td style="vertical-align: middle;"><%= (@visita.fechahora_fin)? @visita.fechahora_fin.strftime("%d de %B %X de %Y") : "--"%></td>
+     </tr>
+     <tr>
+      <td style="vertical-align: middle;"><b>Estatus de la visita:</b></td>
+      <td style="vertical-align: middle;"><%= (@visita.estatus_visita_id)? @visita.estatus_visita.descripcion : "--"%></td>
+     </tr>
+     <tr>
+      <td style="vertical-align: middle;"><b>Magistrado Visitador:</b></td>
+      <td style="vertical-align: middle;"><%= (@visita.user_id)? @visita.user.nombre_completo : "--"%></td>
+     </tr>
+     <tr>
+      <td style="vertical-align: middle;"><b>Rango de fechas revisadas:</b></td>
+      <td style="vertical-align: middle;"><%=@visita.periodo_inicio.strftime("%x") + " - " + ((@visita.periodo_fin)? @visita.periodo_fin.strftime("%x") : "--")%></td>
+     </tr>
+   
+  </table>
+  <br /><br />
+
+  <!-- Roles that belongs-->
+  <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;width: 50%;margin: auto;">
+     <tr>
+      <td>
+        Observaciones
+      </td>
+     </tr>
+     <tr align="center">
+        <td style="vertical-align: middle;"><%=@visita.observaciones%></td>
+     </tr>     
+    
+  </table><br /><br />  
+
+</div>
+
+
+
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />

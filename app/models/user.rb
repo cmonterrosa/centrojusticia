@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :tramites
   has_many :orientacions
   has_many :lactancias
+  has_many :participantevisitas
 
   
   # ---------------------------------------

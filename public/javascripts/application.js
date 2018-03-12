@@ -509,6 +509,26 @@ $(function() {
     });
 });
 
+$(function() {
+  $j('#visita_periodo_inicio').datepicker({
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: true
+  });
+});
+
+$(function() {
+  $j('#visita_periodo_fin').datepicker({
+      showMonthAfterYear: false,
+      numberOfMonths: 2,
+      showOn: 'both',
+      buttonImage: '/images/iconos/calendar_mini.png',
+      buttonImageOnly: true
+  });
+});
+
 // Habilita/Deshabilita Catalogo de Estados si selecciona diferente de Mexico
 function showHideListadoDeEstados(comboSelect, divField,divSub, clave){
     var select = document.getElementById(comboSelect);

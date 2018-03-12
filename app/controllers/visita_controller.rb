@@ -6,35 +6,53 @@ class VisitaController < ApplicationController
 	end
 
 	def visita
-			#--- creamos nuevo objeto -----      
-			#@inicio = @fin = Time.now
+			#--- creamos nuevo objeto -----      			
       @visita ||= Visita.new
     	@visita.update_attributes(params[:visita])
     	@visita.user_id = current_user.id
     	@visita.estatus_visita_id = 1        
     	@visita.periodo_fin = (@visita.periodo_inicio==@visita.periodo_fin) ? @visita.periodo_fin + 86340 : @visita.periodo_fin
     	@inicio, @fin = @visita.periodo_inicio, @visita.periodo_fin + 86340
-          	   	
-
+    	         	   	
       if @visita.save
         flash[:notice] = "Registro guardado correctamente"
         #redirect_to :action => "list_by_user", :controller => "orientacions"
         #redirect_to :action => "search", :controller => "libro", :fecha_inicio => @visita.periodo_inicio, :fecha_fin => @visita.periodo_fin
+        redirect_to :action => "list_tramites", :controller => "visita", :id => @visita.id, :ini => @visita.periodo_inicio, :final => @visita.periodo_fin
 
         #params[:periodo_fin] = (params[:periodo_inicio]==params[:periodo_fin]) ? params[:periodo_fin] + " 23:59" : params[:periodo_fin]
-
-    		#@inicio, @fin = DateTime.parse(params[:periodo_inicio]), DateTime.parse(params[:periodo_fin] + " 23:59")
-    		
-
-        @tramites = Tramite.find(:all, :conditions => ["(anio IS NOT NULL AND anio between ? AND ? )
-      	AND (folio_expediente IS NOT NULL)
-      	AND (fechahora between ? AND ?)", @inicio.year, @fin.year, @inicio, @fin],
-      	:order => "anio, folio_expediente")
-    		@tramites = @tramites.paginate(:page => params[:page], :per_page => 25)
+    		#@inicio, @fin = DateTime.parse(params[:periodo_inicio]), DateTime.parse(params[:periodo_fin] + " 23:59")   		
+        
       else
         flash[:error] = "no se pudo guardar el registro, verifique"
         render :action => "visita"
       end
+	end
+
+	def list_tramites
+		if @visita = Visita.find(params[:id])
+			#@inicio = Date.parse(params[:ini])
+			#@fin = Date.parse(params[:final])
+			@inicio = @visita.periodo_inicio
+			@fin = @visita.periodo_fin
+			@tramites = Tramite.find(:all, :conditions => ["(anio IS NOT NULL AND anio between ? AND ? )
+     		AND (folio_expediente IS NOT NULL)
+     		AND (fechahora between ? AND ?)", @inicio.year, @fin.year, @inicio, @fin],
+     		:order => "anio, folio_expediente")
+  		@tramites = @tramites.paginate(:page => params[:page], :per_page => 25)
+  		@visitaid = params[:id] 
+		else
+			flash[:error] = "no se pudo guardar el registro, verifique"
+      render :action => "visita"
+		end  	
+	end
+
+
+	def list
+		@visitas = Visita.find(:all, :order => "created_at DESC, id DESC").paginate(:page => params[:page], :per_page => 25) 
+		#@tramites = (current_user.has_role?(:convenios) || current_user.has_role?(:jefeconvenios))? Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "anio DESC, folio_expediente DESC, fechahora DESC").paginate(:page => params[:page], :per_page => 25) : nil
+    #@tramites ||= (current_user.has_role?("atencionpublico"))? Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 25) : Tramite.find(:all, :conditions => ["estatu_id in (?)", @estatus_unicos], :order => "anio DESC, folio_expediente DESC, fechahora DESC").paginate(:page => params[:page], :per_page => 25)
+
 	end
 
 
@@ -52,11 +70,16 @@ class VisitaController < ApplicationController
 		if @visita = Visita.find(params[:id])
 			@visita.update_attributes(:estatus_visita_id => 2, :fechahora_fin => Time.now)
 			@inicio = @fin = Time.now
-			render :action => "index"
+			#render :action => "resumen"
+			redirect_to :action => "resumen", :controller => "visita", :id => @visita.id
 		else
 			flash[:error] = "no se pudo guardar el registro, verifique"
       render :action => "index"
 		end
+	end
+
+	def resumen
+		@visita = Visita.find(params[:id])
 	end
 
 	def imprimir_dictamen
