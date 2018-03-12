@@ -1,5 +1,5 @@
 class VisitaController < ApplicationController
-	require_role [:librocontrol, :visitadores, :direccion]
+	require_role [:librocontrol, :visitadores, :direccion, :subdireccion]
 
 	def index
 		@inicio = @fin = Time.now
