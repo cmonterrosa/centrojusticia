@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="580"/>
+	<property name="ireport.x" value="36"/>
+	<property name="ireport.y" value="288"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
 	<style name="Detail" isDefault="false" fontName="Arial" fontSize="12"/>
+	<style name="Crosstab Data Text" isDefault="false" hAlign="Center"/>
+	<subDataset name="dataset1">
+		<queryString>
+			<![CDATA[select concat(nombre, " ", paterno, " ", materno) as nombre_participante from participantevisitas
+join users on users.id = participantevisitas.user_id;]]>
+		</queryString>
+		<field name="nombre_participante" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+	</subDataset>
 	<parameter name="APP_URL" class="java.lang.String"/>
 	<parameter name="P_EXPEDIENTE" class="java.lang.String"/>
 	<parameter name="P_SUBDIRECCION" class="java.lang.String"/>
@@ -19,79 +29,67 @@
 	<parameter name="P_EXPINI" class="java.lang.String"/>
 	<parameter name="P_EXPFIN" class="java.lang.String"/>
 	<parameter name="P_OBSERVACIONES" class="java.lang.String"/>
+	<parameter name="P_PARTICIPANTES" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select * from tipovisitas]]>
+		<![CDATA[select concat(nombre, " ", paterno, " ", materno) as nombre_participante from participantevisitas
+join users on users.id = participantevisitas.user_id;]]>
 	</queryString>
-	<field name="id" class="java.lang.Integer">
+	<field name="nombre_participante" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="descripcion" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="created_at" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="updated_at" class="java.sql.Timestamp">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
+	<variable name="nombre_participante_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{nombre_participante}]]></variableExpression>
+	</variable>
+	<variable name="nombre_participante_2" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{nombre_participante}]]></variableExpression>
+	</variable>
+	<variable name="nombre_participante_3" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{nombre_participante}]]></variableExpression>
+	</variable>
+	<variable name="nombre_participante_4" class="java.lang.Integer" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{nombre_participante}]]></variableExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
 		<band height="789" splitType="Stretch">
 			<rectangle radius="10">
-				<reportElement x="4" y="117" width="547" height="184"/>
+				<reportElement x="4" y="130" width="547" height="134"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="15" y="148" width="131" height="14"/>
+				<reportElement x="15" y="229" width="131" height="14"/>
 				<textElement>
 					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[MAGISTRADO VISITADOR:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="14" y="219" width="201" height="14"/>
-				<textElement>
-					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[RANGO DE EXPEDIENTES REVISADOS:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="15" y="184" width="157" height="14"/>
+				<reportElement x="14" y="174" width="157" height="14"/>
 				<textElement>
 					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FECHA DE INICIO DE LA VISITA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="14" y="236" width="164" height="14"/>
+				<reportElement x="14" y="211" width="157" height="14"/>
 				<textElement>
 					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[RANGO DE FECHAS REVISADAS:]]></text>
-			</staticText>
-			<rectangle radius="10">
-				<reportElement key="INICIO" style="Detail" x="4" y="413" width="544" height="100"/>
-			</rectangle>
-			<staticText>
-				<reportElement mode="Opaque" x="29" y="407" width="273" height="19"/>
-				<textElement textAlignment="Center">
-					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[OBSERVACIONES Y/O DOCUMENTOS QUE EXHIBE:]]></text>
+				<text><![CDATA[PERIODO SUJETO A REVISIÓN:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="202" width="125" height="14"/>
+				<reportElement x="15" y="192" width="125" height="14"/>
 				<textElement>
 					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[FECHA FIN DE LA VISITA:]]></text>
 			</staticText>
 			<rectangle radius="10">
-				<reportElement x="4" y="323" width="545" height="67"/>
+				<reportElement x="4" y="288" width="545" height="130"/>
 			</rectangle>
 			<staticText>
-				<reportElement mode="Opaque" x="33" y="111" width="216" height="15"/>
+				<reportElement mode="Opaque" x="33" y="124" width="216" height="15"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="9" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -120,68 +118,58 @@
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["NÚMERO DE EXPEDIENTE: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["NÚMERO DE VISITA: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="14" y="167" width="142" height="14"/>
+				<reportElement x="14" y="157" width="142" height="14"/>
 				<textElement>
 					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[TIPO DE VISITA REALIZADA:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="24" y="319" width="191" height="15"/>
+				<reportElement mode="Opaque" x="24" y="284" width="191" height="15"/>
 				<textElement textAlignment="Center">
 					<font fontName="Arial" size="8" isBold="true" isStrikeThrough="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
-				<text><![CDATA[Visitadores]]></text>
+				<text><![CDATA[OTROS PARTICIPANTES DE LA VISITA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="150" y="148" width="363" height="14"/>
+				<reportElement x="150" y="229" width="363" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_VISITADOR}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="158" y="167" width="100" height="14"/>
+				<reportElement x="158" y="157" width="100" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TIPOVISITA}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="178" y="184" width="167" height="14"/>
+				<reportElement x="177" y="174" width="167" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_INICIO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="15" y="334" width="131" height="16"/>
+				<reportElement x="15" y="299" width="131" height="16"/>
 				<textElement>
 					<font fontName="Arial" size="10" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[MAGISTRADO VISITADOR:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="150" y="334" width="288" height="16"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_VISITADOR}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="15" y="426" width="517" height="77"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_OBSERVACIONES}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="188" y="236" width="293" height="14"/>
+				<reportElement x="175" y="211" width="293" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA["del " + $P{P_PERINICIO} + " al " + $P{P_PERFIN}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="215" y="219" width="156" height="14"/>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_EXPINI}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="149" y="202" width="166" height="14"/>
+				<reportElement x="149" y="192" width="166" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FIN}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="15" y="319" width="501" height="36"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{nombre_participante}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

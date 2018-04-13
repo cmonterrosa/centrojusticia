@@ -25,6 +25,11 @@
         <!-- resumen general -->
         <td style="vertical-align: middle;"><%=link_to "Resumen", {:controller => "visita", :action => "resumen", :id => e.id}, :class => 'boton'  -%></td>
 
+        <!-- CONCLUIR VISITA -->
+        <% if e.estatus_visita.descripcion == "INICIADA" %>
+          <td style="vertical-align: middle;"><%=h (link_to "FINALIZAR", {:controller => "visita", :action => "finalizar_visita", :id => e.id}, :class => 'boton') %></td>  
+        <%end%>
+
      </tr>
     <%end%>
   </table>

@@ -1,20 +1,35 @@
 
 <% form_for :visita, @visita, :url => { :action => "visita", :id => @visita }, :html => {:id => "visita"} do |f| -%>
 
+ 
  <table class="tabla_dp" >
   <tr align="center">
-      <th align="center">Seleccione el tipo de visita</th>
-      <th align="center">Fecha inicio</th>
-      <th align="center">Fecha fin</th>
+    <th align="center">SELECCIONE EL TIPO DE VISITA: </th>
+    <td align="center"> <%= f.select :tipovisita_id, Tipovisita.all.collect{|a| [a.descripcion, a.id]}, :selected => "ORDINARIA", :prompt => 'Seleccione una opción' %></td>
       
   </tr>
   <tr align="center">
-      <td align="center"> <%= f.select :tipovisita_id, Tipovisita.all.collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción' %></td>      
-      <td align="center"><%=f.text_field :periodo_inicio, :value => @fin.strftime("%Y/%m/%d"), :size => 16%></td>
-      <td align="center"><%=f.text_field :periodo_fin,  :value => @fin.strftime("%Y/%m/%d"), :size => 16%></td>
-      
+    <th align="center"></th>
+    <th align="center">Fecha inicio</th>
+    <th align="center">Fecha fin</th>    
+  </tr>
+  <tr>    
+    <th align="center">PERIODO DE LA VISITA:</th>
+    <td align="center"><%=f.text_field :fechahora_inicio, :value => @fin.strftime("%Y/%m/%d"), :size => 16%></td>
+    <td align="center"><%=f.text_field :fechahora_fin,  :value => @fin.strftime("%Y/%m/%d"), :size => 16%></td>
+  </tr>  
+  <tr align="center">
+    <th align="center"></th>
+    <th align="center">Fecha inicio</th>
+    <th align="center">Fecha fin</th>          
+  </tr>
+  <tr align="center">
+    <th align="center">PERIODO SUJETO A REVISIÓN:</th>
+    <td align="center"><%=f.text_field :periodo_inicio, :value => @fin.strftime("%Y/%m/%d"), :size => 16%></td>
+    <td align="center"><%=f.text_field :periodo_fin,  :value => @fin.strftime("%Y/%m/%d"), :size => 16%></td>           
   </tr>
   
+  <tr><td></td></tr>
   <tr align="center">
     <td>&nbsp;</td>
     <td><%= f.submit "Iniciar Visita"%></td>    

@@ -25,9 +25,11 @@
         <td align="center">
           <%=h (link_to "IMPRIMIR LIBRO", {:controller => "libro", :action => "imprimir", :fecha_inicio => @inicio, :fecha_fin => @fin}, :target => "_blank", :class => "fancybox fancybox.iframe boton") %>
         </td>       
-        <td align="center">
-          <%=h (link_to "FINALIZAR VISITA", {:controller => "visita", :action => "finalizar_visita", :id => @visitaid}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea finalizar la visita?" )%>
-        </td>        
+        <% if @visita.estatus_visita.descripcion == "INICIADA" %>    
+          <td align="center">
+            <%=h (link_to "FINALIZAR VISITA", {:controller => "visita", :action => "finalizar_visita", :id => @visitaid}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea finalizar la visita?" )%>
+          </td>
+        <%end%>        
       </tr>  
     </table>
 

@@ -31,43 +31,78 @@
      </tr>
      <tr>
       <td style="vertical-align: middle;"><b>Fecha inicial de la visita:</b></td>
-      <td style="vertical-align: middle;"><%=@visita.created_at.strftime("%d de %B %X de %Y")%></td>
+      <td style="vertical-align: middle;"><%=@visita.created_at.strftime("%d de %B de %Y")%></td>
      </tr>
      <tr>
       <td style="vertical-align: middle;"><b>Fecha final de la visita:</b></td>
-      <td style="vertical-align: middle;"><%= (@visita.fechahora_fin)? @visita.fechahora_fin.strftime("%d de %B %X de %Y") : "--"%></td>
-     </tr>
-     <tr>
-      <td style="vertical-align: middle;"><b>Estatus de la visita:</b></td>
-      <td style="vertical-align: middle;"><%= (@visita.estatus_visita_id)? @visita.estatus_visita.descripcion : "--"%></td>
+      <td style="vertical-align: middle;"><%= (@visita.fechahora_fin)? @visita.fechahora_fin.strftime("%d de %B de %Y") : "--"%></td>
      </tr>
      <tr>
       <td style="vertical-align: middle;"><b>Magistrado Visitador:</b></td>
       <td style="vertical-align: middle;"><%= (@visita.user_id)? @visita.user.nombre_completo : "--"%></td>
      </tr>
      <tr>
-      <td style="vertical-align: middle;"><b>Rango de fechas revisadas:</b></td>
+      <td style="vertical-align: middle;"><b>Estatus de la visita:</b></td>
+      <td style="vertical-align: middle;"><%= (@visita.estatus_visita_id)? @visita.estatus_visita.descripcion : "--"%></td>
+     </tr>
+     
+     <tr>
+      <td style="vertical-align: middle;"><b>Periodo sujeto a revisión:</b></td>
       <td style="vertical-align: middle;"><%=@visita.periodo_inicio.strftime("%x") + " - " + ((@visita.periodo_fin)? @visita.periodo_fin.strftime("%x") : "--")%></td>
      </tr>
    
   </table>
   <br /><br />
 
-  <!-- Roles that belongs-->
-  <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;width: 50%;margin: auto;">
-     <tr>
-      <td>
-        Observaciones
-      </td>
-     </tr>
-     <tr align="center">
-        <td style="vertical-align: middle;"><%=@visita.observaciones%></td>
-     </tr>     
-    
-  </table><br /><br />  
 
+  <div class="titulocalendario">
+  <p>OTROS PARTICIPANTES</p>
 </div>
 
+<div id="scroll" width="60%">
+      <table class="tablakolaval" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 50%; margin: auto;">
+                <tr align="center" class="d0">
+                  <td width="80%" bgcolor="#E8E8E8">NOMBRE DEL PARTICIPANTE VISITADOR</td>
+                  <td width="20%" bgcolor="#E8E8E8" colspan="3">ACCIÓN</td>
+                </tr>
+            <!-- Registros -->
+            <%contador=1%>
+            <% for participante in @participantes.sort{|p1,p2| p1.user_id <=> p2.user_id} %>
+               <tr align="center" class="d1">
+                  <td>
+                      <%=participante.user.nombre_completo%>
+                  </td>
+                  <% if @visita.estatus_visita.descripcion == "INICIADA" %>
+                    <td>
+                      <%= button_to 'Quitar', { :action => 'quitar_participante', :controller => "visita", :visita => @visita.id, :id => participante.id}, :confirm => '¿Esta seguro?', :method => :post %>
+                    </td>
+                  <%end%>
+                </tr>
+                <%contador+=1%>
+              <%end%>
+       </table>
+</div><br /><br />
+
+<% if @visita.estatus_visita.descripcion == "INICIADA" %>
+  <div id="scroll">
+  <% form_tag :action => 'agregar_participante', :role => @role, :visita => @visita.id do -%>
+  <table class="sample" width="50%" border="0" cellspacing="2" cellpadding="0" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+        <tr style="background-color:gray; color:white">
+            <th colspan="2">
+                AGREGAR PARTICIPANTE
+            </th>
+        </tr>
+
+        <tr class="d3">
+            <th><%= collection_select("participantevisita", "user_id", @visitadores, :id, :nombre_completo, :prompt => '>> SELECCIONE PARTICIPANTE <<')    %></th>
+            <th class="boton"><%= submit_tag "Agregar", :onclick => "return comprobar();" %></th>
+        </tr>
+  </table>
+  <% end %>
+  </div>
+<%end%>
+
+<br />
 
 
-<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "visita", :action => "list" %><br />

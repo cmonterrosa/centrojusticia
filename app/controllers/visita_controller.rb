@@ -55,6 +55,33 @@ class VisitaController < ApplicationController
 
 	end
 
+	def agregar_participante
+    #@visita = Visita.find(params[:visita])
+    #@visita.participantevisitas << Role.find(params[:role][:role_id])
+    @participante = Participantevisita.new
+    @participante.visita_id = params[:visita]
+    @participante.user_id = params[:participantevisita][:user_id]
+    @participante.tipoparticipantevisita_id = 1
+    if @participante.save
+      flash[:notice] = "Perfil agregado correctamente al usuario"
+    else
+      flash[:error] = "El perfil no fue agregado al usuario"
+    end
+      redirect_to :action => "resumen", :id => params[:visita]
+	end
+
+	def quitar_participante
+	  @participante = Participantevisita.find(params[:id])
+	  #@user = User.find(params[:id])
+	  @participante.delete()
+	   if @participante.save!
+	     flash[:notice] = "Elemento eliminado del perfil correctamente"
+	   else
+	     flash[:error] = "No se pudo eliminar, verifique"
+	   end
+	    redirect_to :action => "resumen", :id => params[:visita]
+	end
+
 
 	def calcelar_visita
 		if @visita = Visita.find(params[:id])
@@ -80,6 +107,8 @@ class VisitaController < ApplicationController
 
 	def resumen
 		@visita = Visita.find(params[:id])
+		@participantes = @visita.participantevisitas    
+    @visitadores = Role.find_by_name('visitadores').users
 	end
 
 	def imprimir_dictamen
