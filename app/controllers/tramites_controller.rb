@@ -756,6 +756,18 @@ class TramitesController < ApplicationController
     redirect_to(:back)
  end
 
+ def guardar_observaciones
+    @tramite = Tramite.find(params[:id])
+    @tramite.update_attributes!(params[:tramite])
+    #@tramite.observaciones_generales = params[:observaciones_generales]
+    if @tramite.save
+      flash[:notice] = "Observaciones guardadas correctamente"
+    else
+      flash[:error] = "No se pudieron guardar las observaciones"
+    end
+      redirect_to :action => "show", :id => params[:id]
+ end
+
 
 
 protected

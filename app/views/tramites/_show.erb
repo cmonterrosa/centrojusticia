@@ -311,10 +311,32 @@
 
 <br />
 
+<!-- Guardar observaciones generales -->
+<% if current_user.has_role?(:direccion) ||  current_user.has_role?(:convenios) ||  current_user.has_role?(:subdireccion) %>
+  <% form_for :tramite, @tramite, :url => { :action => "guardar_observaciones", :id => @tramite.id }, :html => {:id => "tramite"} do |f| -%>
+    <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
+      <tr bgcolor="#E8E8E8" class="subtitulo">
+        <td align="center" colspan="2" ><b>OBSERVACIONES GENERALES</b></td>
+      </tr>
+      <tr>
+        <th class="text"><div style="width: 100%"> <%=f.text_area :observaciones_generales, :cols => 90, :rows => 5 %></div></th> 
+      </tr>
+      <tr>
+        <td align="center">
+          <%= f.submit "GUARDAR OBSERVACIONES", :confirm => "¿Está seguro que desea guardar la observacion?" %>
+          <!--  <%=h (link_to "GUARDAR OBSERVACIONES", {:controller => "tramites", :action => "guardar_observaciones", :id => @tramite.id}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea guardar la observacion?" )%> -->
+        </td>
+      </tr>          
+    </table>
+    <br /><br />
+  <%end%>
+<%end%>
+       
+
 
 <%if @layout_final == "kolaval"%>
   <div>
-    <p align="center">
+    <p align="center"> 
         <%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
     </p>
   </div>

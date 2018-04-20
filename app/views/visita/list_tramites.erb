@@ -25,7 +25,7 @@
         <td align="center">
           <%=h (link_to "IMPRIMIR LIBRO", {:controller => "libro", :action => "imprimir", :fecha_inicio => @inicio, :fecha_fin => @fin}, :target => "_blank", :class => "fancybox fancybox.iframe boton") %>
         </td>       
-        <% if @visita.estatus_visita.descripcion == "INICIADA" %>    
+        <% if @visita.estatus_visita.descripcion == "INICIADA" and current_user.has_role?(:visitadores) %>    
           <td align="center">
             <%=h (link_to "FINALIZAR VISITA", {:controller => "visita", :action => "finalizar_visita", :id => @visitaid}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea finalizar la visita?" )%>
           </td>
@@ -71,8 +71,9 @@
           <!-- observaciones -->
           <td style="vertical-align: middle;">
             <!-- <%=h (tramite.concluido?)? tramite.concluido.observaciones_conclusion : '-'%> -->
-            <%=h (tramite.seguimiento?)? tramite.seguimiento.fecha_seguimiento : ''%><br/>
-            <%=h (tramite.seguimiento?)? tramite.seguimiento.descripcion : '-'%>
+            <!-- <%=h (tramite.seguimiento?)? tramite.seguimiento.fecha_seguimiento : ''%><br/>
+            <%=h (tramite.seguimiento?)? tramite.seguimiento.descripcion : '-'%> -->
+            <%=h (tramite.observaciones_generales?)? tramite.observaciones_generales : ''%><br/>
           </td>
           
         </tr>

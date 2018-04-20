@@ -37,7 +37,7 @@
      <div class="grid-8-12">
         <label style=" font-weight: bold;">SELECCIONE UNA OPCION: <em class="formee-req">*</em></label>
          <div class="grid-12-12">
-          <%= f.select :mecanismo_alternativo_id, @mecanismos_alternativos.collect{|a| [a.descripcion, a.id]}, :include_blank => true%>
+          <%= f.select :mecanismo_alternativo_id, @mecanismos_alternativos.collect{|a| [a.descripcion, a.id]}, :include_blank => "NINGUNO"%>
          </div>
       </div>
 
