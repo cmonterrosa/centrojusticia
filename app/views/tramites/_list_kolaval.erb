@@ -68,7 +68,7 @@
          <!-- MENU -->
          <%if current_user.has_role?(:admin)%>
               <%=link_to (image_tag 'kolaval/ico-opciones.jpg', :size => "24x24"), {:action => "menu", :id => tramite}, :title => "MENU DE ETAPAS"%>
-         <%elsif  current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion)%>
+         <%elsif  current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion) || current_user.has_role?(:admindireccion)%>
               <%=link_to (image_tag 'kolaval/ico-opciones.jpg', :size => "24x24"), {:action => "menu", :id => tramite}, :title => "MENU DE ETAPAS"%>
          <%else%>
              &nbsp;
