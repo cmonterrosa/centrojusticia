@@ -400,6 +400,8 @@ class ComparecenciasController < ApplicationController
           @tramite.undo_status
           @tramite.update_estatus!("no-compar",current_user)
           @tramite.update_attributes!(:folio_expediente => nil)
+          @tramite.update_attributes!(:estatu_id => 3)
+          @tramite.update_attributes!(:only_orientacion => 1)
           flash[:notice] = "Registro cambiado a 'Solo Orientacion'"
           msj = "<h3 class='formee-msg-success'>#{flash[:notice]}</h3>"
       else
