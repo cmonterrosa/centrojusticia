@@ -9,6 +9,8 @@ class ExtraordinariaController < ApplicationController
         @extraordinarias = Extraordinaria.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 15)
       elsif current_user.has_role?(:especialistas_externos)
         @extraordinarias = Extraordinaria.find(:all, :conditions => ["user_id = ?", current_user.id], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 15)
+      elsif current_user.has_role?(:oficinasubdireccion)
+        @extraordinarias = Extraordinaria.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 15)
       else
         @extraordinarias = Extraordinaria.find(:all, :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 15)
       end
