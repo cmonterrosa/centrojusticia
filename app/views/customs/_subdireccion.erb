@@ -53,15 +53,10 @@
                   <ul><%=link_to image_tag('kolaval/Icono-bitacora-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Icono-bitacora-seguimiento.jpg") , {:action => "bitacora", :controller => "seguimientos"}, :title => "Bitacora de seguimiento de convenios"%></ul>
                 </li>
 
+                <!-- Monitor -->
                 <li>
-                  <!-- Visitaduria -->
-                  <%=link_to image_tag('iconos/busqueda_general.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/busqueda_general.png") , {:action => "index", :controller => "visita"}, :title => "Visitaduria"%>                
-                  <ul class="cbp-hssubmenu">
-                    <!-- submenu visitas -->
-                    <!-- <li><%=link_to image_tag('iconos/calendario.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/calendario.png") , {:action => "index", :controller => "visita"}, :title => "Iniciar Visita"%></li> -->
-                    <li><%=link_to image_tag('iconos/comparecencias.png', :size => "128x128", :size => "128x128", :mouseover => "iconos/comparecencias.png") , {:action => "list", :controller => "visita"}, :title => "Listado de visitas"%></li>
-                </ul>
-              </li>
+                  <ul><%=link_to image_tag('kolaval/Ico-monitor-especia.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Ico-monitor-especia.jpg") , {:action => "show_siguientes_especialistas", :controller => "orientacions"}, :title => "Monitor de actividad de orientaciones y/o comparecencias"%></ul>
+                </li>            
             </ul>
 					</div>
 				</nav>

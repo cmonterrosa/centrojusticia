@@ -53,7 +53,7 @@
        <%end%>
 
         <!-- Comparecencia -->
-        <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td>
+        <td style="vertical-align: middle;"><%=h (link_to "Comparecencia", {:controller => "comparecencias", :action => "new_or_edit", :id => e.tramite.id}, :class => 'boton') %></td> 
         
         <!-- Eliminar si es inicio de tramite-->
         <%if (current_user.has_role?("admin") || e.tramite.estatus == tramite_iniciado_por_escrito)%>
