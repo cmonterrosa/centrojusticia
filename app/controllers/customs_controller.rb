@@ -36,6 +36,8 @@ class CustomsController < ApplicationController
         return render(:partial => 'asignahorario', :layout => "oficial")
     elsif @usuario.has_role?(:capacitacion)
         return render(:partial => 'capacitacion', :layout => "oficial")
+    elsif @usuario.has_role?(:especialistajuzgado)
+        return render(:partial => 'especialista_juzgado', :layout => 'oficial')
     else
         return render(:partial => 'publico_general', :layout => "oficial")
     end
