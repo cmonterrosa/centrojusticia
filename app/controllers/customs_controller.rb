@@ -14,6 +14,8 @@ class CustomsController < ApplicationController
         return render(:partial => 'admindireccion', :layout => "oficial")
     elsif @usuario.has_role?(:subdireccion)
         return render(:partial => 'subdireccion', :layout => "oficial")
+    elsif @usuario.has_role?(:especialistajuzgado)
+        return render(:partial => 'especialista_juzgado', :layout => 'oficial')
     elsif @usuario.has_role?(:especialistas)
         return render(:partial => 'especialistas', :layout => "oficial")
     elsif @usuario.has_role?(:especialistas_externos)
@@ -35,9 +37,7 @@ class CustomsController < ApplicationController
     elsif @usuario.has_role?(:asignahorario)
         return render(:partial => 'asignahorario', :layout => "oficial")
     elsif @usuario.has_role?(:capacitacion)
-        return render(:partial => 'capacitacion', :layout => "oficial")
-    elsif @usuario.has_role?(:especialistajuzgado)
-        return render(:partial => 'especialista_juzgado', :layout => 'oficial')
+        return render(:partial => 'capacitacion', :layout => "oficial")    
     else
         return render(:partial => 'publico_general', :layout => "oficial")
     end
@@ -125,7 +125,7 @@ class CustomsController < ApplicationController
 
   def mis_expedientes
     @user = (params[:id])? User.find(params[:id]) : current_user
-    if @user.has_role?(:especialistas) || @user.has_role?(:especialistas_externos)
+    if @user.has_role?(:especialistas) || @user.has_role?(:especialistas_externos) || @user.has_role?(:especialistajuzgado)
         ### Si recibe parametros ###
         @carpeta_atencion = (params[:carpeta_atencion] =~ /^\d{1,4}\/\d{4}$/) ? params[:carpeta_atencion].strip : nil if params[:carpeta_atencion]
         folio_expediente, anio=@carpeta_atencion.split("/") if @carpeta_atencion
