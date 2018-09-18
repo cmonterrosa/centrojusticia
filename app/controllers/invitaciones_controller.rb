@@ -4,7 +4,7 @@ include SendDocHelper
 class InvitacionesController < ApplicationController
   require_role [:direccion, :subdireccion, :invitadores, :controlinvitaciones, :jefeatencionpublico]
 
-  before_filter :invitaciones_habilitadas
+  #before_filter :invitaciones_habilitadas
 
   def index
     @user = (params[:id])? User.find(params[:id]) : current_user
@@ -116,10 +116,18 @@ class InvitacionesController < ApplicationController
 
   end
 
-  def show_entregadas
+  #def show_entregadas
+  #  @invitaciones = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
+  #                                  :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
+  #                                  :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND invitacions.entregada IS NOT NULL", ["invi-firm", "invi-proc"]],
+  #                                  :order => "t.anio DESC, t.folio_expediente DESC").paginate(:page => params[:page], :per_page => 25)
+
+  #end
+
+    def show_entregadas
     @invitaciones = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
                                     :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
-                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND invitacions.entregada IS NOT NULL", ["invi-firm", "invi-proc"]],
+                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND invitacions.entregada IS NOT NULL"],
                                     :order => "t.anio DESC, t.folio_expediente DESC").paginate(:page => params[:page], :per_page => 25)
 
   end
@@ -425,11 +433,21 @@ class InvitacionesController < ApplicationController
 #                                    :conditions => ["invitacions.participante_id=p.id AND p.cuadrante_id=cu.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ? AND invitacions.invitador_id = ?", "invi-razo", current_user.id],
 #                                    :order => "cu.descripcion")
 
-    @invitaciones_asignadas = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id as cuadrante, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
-                                    :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
-                                    :conditions => ["invitador_id = ? AND invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ?", current_user.id, "invi-razo"],
-                                    :order => "t.anio DESC, t.folio_expediente DESC")
-    @invitaciones =  @invitaciones_asignadas
+    @user = (params[:id])? User.find(params[:id]) : current_user
+    if @user.has_role?(:invitadores)          
+      @invitaciones_asignadas = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id as cuadrante, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
+                                      :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
+                                      :conditions => ["invitador_id = ? AND invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ?", current_user.id, "invi-razo"],
+                                      :order => "t.anio DESC, t.folio_expediente DESC")
+      @invitaciones =  @invitaciones_asignadas
+    else      
+        @invitaciones_todas = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id as cuadrante, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
+                                      :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
+                                      :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ?", "invi-razo"],
+                                      :order => "t.anio DESC, t.folio_expediente DESC")    
+        @invitaciones =  @invitaciones_todas
+    end
+    
     #@invitaciones = Invitacion.find(:all, :conditions => ["entregada = ? AND invitador_id = ?", true, current_user.id], :order => "fecha_hora_entrega DESC")
   end
 
