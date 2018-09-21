@@ -155,6 +155,7 @@ class ComparecenciasController < ApplicationController
         param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
         param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
         param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
+        param["P_LUGAR"]={:tipo=>"String", :valor=>LUGAR}
         param["P_FECHA"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora)}"}
         @comparecencia.procedencia ? param["P_PROCEDENCIA"]={:tipo=>"String", :valor=>@comparecencia.procedencia.upcase} : param["P_PROCEDENCIA"]={:tipo=>"String", :valor=>"SIN INFORMACION"}
         (@solicitante.tipopersona.descripcion == "MORAL") ?  param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.apoderado_legal} :  param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@solicitante.nombre_completo}

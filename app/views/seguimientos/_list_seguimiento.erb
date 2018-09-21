@@ -20,8 +20,8 @@
        <%clase = invert_class(clase)%>
         <!-- Edicion -->
           <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "seguimientos", :action => "new_or_edit", :id => s.id, :c => @convenio}, :class => 'boton') %></td>
-        <!-- resumen general -->
-          <td style="vertical-align: middle;"><%=link_to "Eliminar", {:controller => "seguimientos", :action => "destroy", :id => s.id, :c => @convenio}, :class => 'boton'  -%></td>
+        <!-- eliminacion de convenio 
+         <td style="vertical-align: middle;"><%=link_to "Eliminar", {:controller => "seguimientos", :action => "destroy", :id => s.id, :c => @convenio}, :class => 'boton'  -%></td> -->
     </tr>
     <%end%>
   </table>

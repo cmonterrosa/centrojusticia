@@ -819,6 +819,26 @@ function enaOrigenEtnico(radioButton, comboSelect){
             }
 }
 
+function enaCalidadMigratoria(radioButton, comboSelect){
+    var select = document.getElementById(comboSelect);
+    if(typeof radioButton == "object")
+        var radio = radioButton;
+    else
+        if(document.getElementById(radioButton+'_si').checked)
+            {
+              radio = document.getElementById(radioButton+'_si');
+               document.getElementById("calidad_migratoria").style.display = "table-row";
+               select.style.display   = "table-row";
+            }
+
+        else
+            {
+            radio = document.getElementById(radioButton+'_no');
+            document.getElementById("calidad_migratoria").style.display = "none";
+            select.style.display   = "none";
+            }
+}
+
 
 function LoadOrigenEtnico(radioButton, comboSelect){
     var select = document.getElementById(comboSelect);

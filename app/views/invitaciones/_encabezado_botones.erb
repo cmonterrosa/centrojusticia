@@ -1,7 +1,7 @@
 
 
 <!-- Botones de encabezado  -->
-<%if current_user.has_role?(:invitadores)%>
+<%if current_user.has_role?(:invitadores) and not current_user.has_role?(:admin)%>
  <!-- contenido -->
 <div class="titulocalendario">
   <p style="font-family: 'Nexa Bold';">MIS INVITACIONES</p>
