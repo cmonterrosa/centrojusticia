@@ -3,8 +3,8 @@
 class TramitesController < ApplicationController
   layout :set_layout
   before_filter :login_required
-  require_role [:cancelatramite, :direccion], :for => [:cancel]
-  require_role [:especialistas, :subdireccion, :direccion, :convenios, :asignahorario, :admindireccion], :for => [:menu]
+  require_role [:cancelatramite, :direccion, :especialistajuzgado], :for => [:cancel]
+  require_role [:especialistas, :subdireccion, :direccion, :convenios, :asignahorario, :admindireccion, :especialistajuzgado], :for => [:menu]
   require_role [:admin, :admindireccion], :for => [:destroy, :show_numero_expediente]
 
 

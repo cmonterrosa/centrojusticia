@@ -93,21 +93,21 @@
 				<text><![CDATA[NOMBRE DEL SOLICITANTE:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="138" y="136" width="283" height="11"/>
+				<reportElement mode="Transparent" x="138" y="136" width="273" height="11"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SOLICITANTE}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="427" y="136" width="37" height="11"/>
+				<reportElement x="413" y="136" width="30" height="11"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[EDAD:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="464" y="136" width="86" height="11"/>
+				<reportElement mode="Transparent" x="443" y="136" width="107" height="11"/>
 				<textElement verticalAlignment="Top">
 					<font fontName="Arial" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -135,7 +135,7 @@
 				<text><![CDATA[ORIGINARIO DE:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="83" y="162" width="338" height="12"/>
+				<reportElement mode="Transparent" x="83" y="162" width="328" height="12"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -356,7 +356,7 @@
 				<text><![CDATA[CENTRO ESTATAL DE JUSTICIA ALTERNATIVA]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="17" y="10" width="523" height="11" forecolor="#7C2425"/>
+				<reportElement x="20" y="10" width="523" height="11" forecolor="#7C2425"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica"/>
 				</textElement>
@@ -370,28 +370,28 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECCION}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="427" y="162" width="37" height="12"/>
+				<reportElement x="413" y="162" width="30" height="12"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[ETNIA:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="464" y="163" width="86" height="12"/>
+				<reportElement mode="Transparent" x="444" y="162" width="106" height="12"/>
 				<textElement textAlignment="Left">
 					<font fontName="Arial" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_ETNIA}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="427" y="149" width="52" height="11"/>
+				<reportElement x="413" y="149" width="52" height="11"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[EDO. CIVIL:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="479" y="149" width="71" height="11"/>
+				<reportElement mode="Transparent" x="465" y="149" width="85" height="11"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -447,8 +447,8 @@
 				</textElement>
 				<text><![CDATA[REFERENCIAS DEL DOMICILIO LABORAL]]></text>
 			</staticText>
-			<textField>
-				<reportElement x="245" y="57" width="299" height="15" forecolor="#7C2425"/>
+			<textField isBlankWhenNull="true">
+				<reportElement x="244" y="57" width="299" height="15" forecolor="#7C2425"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="10" isBold="true" isItalic="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>

@@ -14,34 +14,53 @@
 				<nav class="cbp-hsmenu-wrapper" id="cbp-hsmenu-wrapper">
 					<div class="cbp-hsinner">
 						<ul class="cbp-hsmenu">
+              
+              <!-- Tramites -->
+              <li>
+                <%if current_user.has_role?("atencionpublico")%>
+                  <%=link_to image_tag('kolaval/ico-tramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Trámites"%>
+                  <ul class="cbp-hssubmenu">
+                    <li><%=link_to image_tag('kolaval/ico-iniciartramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-iniciartramites.jpg") , {:action => "new_or_edit", :controller => "orientacions"}, :title => "Iniciar trámite"%></li>
+                    <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>
+                  </ul>
+                <%end%>  
+              </li>
 
-                                                          <!-- Orientaciones -->
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/orientaciones.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/orientaciones.jpg") , {:action => "list_by_user", :controller => "orientacions"}, :title => "Orientaciones"%></ul>
-                                                          </li>
+
+              <!-- Orientaciones -->
+              <li>
+                <ul><%=link_to image_tag('kolaval/orientaciones.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/orientaciones.jpg") , {:action => "list_by_user", :controller => "orientacions"}, :title => "Orientaciones"%></ul>
+              </li>
                                                                                                                    
 
-                                                          <%=render :partial => "comparecencias"%>
+              <%=render :partial => "comparecencias"%>
 
-                                                          <!-- Mis expedientes -->
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/ico-mis-expedientes.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-mis-expedientes.jpg") , {:action => "mis_expedientes", :controller => "customs"}, :title => "Expedientes donde intervengo"-%></ul>
-                                                          </li>
+              <!-- Mis expedientes -->
+              <li>
+                <ul><%=link_to image_tag('kolaval/ico-mis-expedientes.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-mis-expedientes.jpg") , {:action => "mis_expedientes", :controller => "customs"}, :title => "Expedientes donde intervengo"-%></ul>
+              </li>
 
-                                                          <!-- Mis convenios -->
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Mis convenios"-%></ul>
-                                                          </li>
+              <!-- Mis convenios -->
+              <li>
+                <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Mis convenios"-%></ul>
+              </li>
 
                                                           
-                                                        <!-- Agenda -->
-                                                        <%if current_user.has_role?("lecturaagenda")%>
-                                                          <li>
-                                                            <ul><%=link_to image_tag('kolaval/miagenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/miagenda.jpg") , {:action => "show_calendario", :controller => "customs"}, :title => "Mi calendario de sesiones"%></ul>
-                                                          </li>
-                                                        <%end%>
+              <!-- Agenda -->
+              <%if current_user.has_role?("lecturaagenda")%>
+                <li>
+                  <ul><%=link_to image_tag('kolaval/miagenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/miagenda.jpg") , {:action => "show_calendario", :controller => "customs"}, :title => "Mi calendario de sesiones"%></ul>
+                </li>
+              <%end%>
 
-                                                </ul>
+               <!-- Invitaciones -->
+              <%if current_user.has_role?("invitadores")%>
+                <li>
+                  <ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "list_by_user", :controller => "invitaciones"}, :title => "Invitaciones"%></ul>
+                </li>
+              <%end%>
+
+            </ul>
 					</div>
 				</nav>
 			</div>
