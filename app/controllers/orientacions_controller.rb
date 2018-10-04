@@ -96,7 +96,7 @@ class OrientacionsController < ApplicationController
       @caption = (@extra) ? "CON PERSONAL EXTRAORDINARIO" : ""
       @caption_type_specialist = (@extra) ? "Extraordinario" : ""
       @especialistas = Role.find_by_name("convenios").users.sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
-      @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil    
+      @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil  
     else
       @especialistas = seleccionar_especialistas
       @especialista = (!@orientacion.especialista_id.nil?) ? User.find(@orientacion.especialista_id) : nil

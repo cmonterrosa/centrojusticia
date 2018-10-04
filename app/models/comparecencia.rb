@@ -1,4 +1,4 @@
-class Comparecencia < ActiveRecord::Base
+ class Comparecencia < ActiveRecord::Base
   belongs_to :tramite
   belongs_to :user
   has_many :participantes
@@ -34,14 +34,20 @@ class Comparecencia < ActiveRecord::Base
     if @involucrados = Participante.find(:all, :conditions => ["comparecencia_id = ? AND perfil = 'INVOLUCRADO'", self.id], :order => "created_at")
     case @involucrados.size
       when 1
-        cadena= ((@involucrados.first) ? (@involucrados.first.articulo_por_su_genero + " C. #{@involucrados.first.nombre_completo}") : '')
+        cadena= ((@involucrados.first) ? (@involucrados.first.articulo_por_su_genero.downcase + " <b>C. #{@involucrados.first.nombre_completo.mb_chars.downcase.titleize}</b>") : '')
         @descripcion << cadena
       when 2
-        @descripcion << @involucrados.map{|i|(i.articulo_por_su_genero + " C. #{i.nombre_completo}")}.join(" Y ")
+        #@descripcion << @involucrados.map{|i|(i.articulo_por_su_genero + " C. #{i.nombre_completo}")}.join(" Y ")
+        @descripcion << " los <b>CC."
+        @descripcion << @involucrados.map{|i|(" #{i.nombre_completo.mb_chars.downcase.titleize}")}.join(" Y ")
+        @descripcion << "</b>"
       when 3..10
-        @descripcion << @involucrados.map{|i|(i.articulo_por_su_genero + " C. #{i.nombre_completo}")}.join(" , ")
+        #@descripcion << @involucrados.map{|i|(i.articulo_por_su_genero + " C. #{i.nombre_completo}")}.join(" , ")
+        @descripcion << " los <b>CC."
+        @descripcion << @involucrados.map{|i|(" #{i.nombre_completo.mb_chars.downcase.titleize}")}.join(", ")
+        @descripcion << "</b>"
     else
-      @descripcion << "LOS INVOLUCRADOS"
+      @descripcion << "los involucrados"
      end
     end
   end
@@ -52,14 +58,19 @@ class Comparecencia < ActiveRecord::Base
       case @solicitantes.size
         when 1
           @sexo_solicitante = @solicitantes.first.sexo if (@solicitantes && @solicitantes.first)
-          cadena=(@sexo_solicitante == 'F')? "DE LA " : "DEL " if @sexo_solicitante
+          cadena=(@sexo_solicitante == 'F')? "de la " : "del " if @sexo_solicitante
           @descripcion << cadena
-          @descripcion <<  ((@solicitantes && @solicitantes.first) ? ("C. #{@solicitantes.first.nombre_completo}") : '')
-        when 2..9
-          @descripcion << "DE "
-          @descripcion << @solicitantes.map{|i|("C. #{i.nombre_completo}")}.join(" Y ")
+          @descripcion <<  ((@solicitantes && @solicitantes.first) ? ("<b>C. #{@solicitantes.first.nombre_completo.mb_chars.downcase.titleize}</b>") : '')
+        when 2
+          @descripcion << "de los <b>CC. "
+          @descripcion << @solicitantes.map{|i|("#{i.nombre_completo.mb_chars.downcase.titleize}")}.join(" Y ")
+          @descripcion << "</b>"
+        when 3..10
+          @descripcion << "de los <b>CC. "
+          @descripcion << @solicitantes.map{|i|("#{i.nombre_completo.mb_chars.downcase.titleize}")}.join(", ")
+          @descripcion << "</b>"
       else
-        @descripcion << "LOS SOLICITANTES"
+        @descripcion << "los solicitantes"
       end
     end
   end

@@ -49,15 +49,15 @@ class InvitacionesController < ApplicationController
     @datosinvitacion ||= Datosinvitacion.new
     ##### Prellenado de parametros ######
     @subdireccion = current_user.subdireccion
-    @datosinvitacion.subdireccion ||= (@subdireccion.descripcion) ? @subdireccion.descripcion : nil if @subdireccion
+    @datosinvitacion.subdireccion ||= (@subdireccion.descripcion) ? @subdireccion.descripcion.downcase.titleize : nil if @subdireccion
     @datosinvitacion.subdirector ||= @subdireccion.titular if @subdireccion
-    @datosinvitacion.cargo ||= @subdireccion.cargo if @subdireccion
+    @datosinvitacion.cargo ||= @subdireccion.cargo.downcase.capitalize if @subdireccion
     @datosinvitacion.fechahora_sesion ||= @sesion.fechahora_completa.camelize
     @datosinvitacion.materia ||= (@sesion.tramite && @sesion.tramite.materia)? @sesion.tramite.materia.descripcion : nil if @sesion.tramite
     @datosinvitacion.especialista ||= (@sesion.mediador) ? @sesion.mediador.nombre_completo : nil
     @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '')
     @datosinvitacion.lugar ||= LUGAR
-    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d DE")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month]}".gsub(/^0/, '') : nil
+    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d de")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month].downcase}".gsub(/^0/, '') : nil
     @datosinvitacion.solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.full_name : nil
     @datosinvitacion.genero_solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.sexo : nil
     @datosinvitacion.genero_solicitante = (@datosinvitacion.genero_solicitante == 'F')? 'LA' : 'EL' if @datosinvitacion.genero_solicitante
@@ -90,7 +90,7 @@ class InvitacionesController < ApplicationController
     @datosinvitacion.especialista ||= (@sesion.mediador) ? @sesion.mediador.nombre_completo : nil
     @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d de %B de %Y")
     @datosinvitacion.lugar ||= LUGAR
-    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d de")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month]}" : nil
+    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d de").downcase} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month].downcase}" : nil
     @datosinvitacion.solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.full_name : nil
     @datosinvitacion.genero_solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.sexo : nil
     unless @sesion
@@ -279,15 +279,15 @@ class InvitacionesController < ApplicationController
        param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
        param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>(@sesion.tramite) ? @sesion.tramite.numero_expediente : nil}
        #param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=>(@datosinvitacion.fecha_actual) ? @datosinvitacion.fecha_actual.strftime("%d DE %B DE %Y").upcase : nil}
-       param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=> (@datosinvitacion.fecha_actual)? "#{@datosinvitacion.fecha_actual.strftime("%d DE")} #{Date::MONTHNAMES[@datosinvitacion.fecha_actual.month]} DE #{@datosinvitacion.fecha_actual.year}".upcase.gsub(/^0/,'') : nil}
+       param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=> (@datosinvitacion.fecha_actual)? "#{@datosinvitacion.fecha_actual.strftime("%d de ")} #{Date::MONTHNAMES[@datosinvitacion.fecha_actual.month].downcase} de #{@datosinvitacion.fecha_actual.year}".gsub(/^0/,'') : nil}
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>@datosinvitacion.especialista}
        param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>@datosinvitacion.subdireccion}
-       param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@datosinvitacion.solicitante}
-       param["P_INVITADO"]={:tipo=>"String", :valor=>@participante.nombre_completo}
-       param["P_FECHA_SOLICITUD"]={:tipo=>"String", :valor=>@datosinvitacion.fecha_solicitud}
-       param["P_FECHAHORA_SESION"]={:tipo=>"String", :valor=>@datosinvitacion.fechahora_sesion}
-       param["P_MATERIA"]={:tipo=>"String", :valor=>@datosinvitacion.materia}
-       param["P_LUGAR"]={:tipo=>"String", :valor=>(@datosinvitacion.lugar)? "#{@datosinvitacion.lugar}, Chiapas" : nil }
+       param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@datosinvitacion.solicitante.mb_chars.downcase.titleize}
+       param["P_INVITADO"]={:tipo=>"String", :valor=>@participante.nombre_completo.mb_chars.downcase.titleize}
+       param["P_FECHA_SOLICITUD"]={:tipo=>"String", :valor=>@datosinvitacion.fecha_solicitud.downcase}
+       param["P_FECHAHORA_SESION"]={:tipo=>"String", :valor=>@datosinvitacion.fechahora_sesion.downcase}
+       param["P_MATERIA"]={:tipo=>"String", :valor=>@datosinvitacion.materia.downcase}
+       param["P_LUGAR"]={:tipo=>"String", :valor=>(@datosinvitacion.lugar)? "#{@datosinvitacion.lugar.mb_chars.downcase.titleize}, Chiapas" : nil }
        param["P_GENERO"]={:tipo=>"String", :valor=>@datosinvitacion.genero_solicitante}
        param["P_DIRECCION_OFICINAS"]=(@configuracion.pie_pagina)? {:tipo=>"String", :valor=>@configuracion.pie_pagina} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
        param["P_ESPECIALISTA_SEXO"]={:tipo=>"String", :valor=>@sesion.mediador.articulo_segun_genero} if @datosinvitacion.especialista && @sesion.mediador
@@ -297,6 +297,7 @@ class InvitacionesController < ApplicationController
           case @invitacion.numero_invitacion
             when 2
               @leyenda_invitacion="Segundo citatorio"
+              param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
             when 3
               @leyenda_invitacion="TERCERA INVITACIÓN"
             when 4
@@ -306,11 +307,31 @@ class InvitacionesController < ApplicationController
           end
       end
 
+      ###  Leyenda del parrafo de asignacion segun sexo y segun si es uno o dos mediadores   ###
+      if @sesion.mediador_id == @sesion.comediador_id 
+        if @sesion.mediador.sexo == "F"           
+          param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}
+        else           
+          param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designado para atender el asunto el especialista <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}
+        end
+      else
+        if @sesion.mediador.sexo == "F" && @sesion.comediador.sexo == "M"           
+          param["P_DESIGNACION"]={:tipo=>"String", :valor=> "han sido designados para atender el asunto los especialistas <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize} y #{@sesion.comediador.nombre_completo.mb_chars.downcase.titleize}</b>, la primera en su caracter de titular."}
+        elsif @sesion.mediador.sexo == "F" && @sesion.comediador.sexo == "F"           
+          param["P_DESIGNACION"] = {:tipo=>"String", :valor=> "han sido designadas para atender el asunto las especialistas <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize} y #{@sesion.comediador.nombre_completo.mb_chars.downcase.titleize}</b>, la primera en su caracter de titular."}
+        else          
+          param["P_DESIGNACION"] = {:tipo=>"String", :valor=> "han sido designados para atender el asunto los especialistas <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize} y #{@sesion.comediador.nombre_completo.mb_chars.downcase.titleize}</b>, el primero en su caracter de titular."}
+        end
+      end
+
       #param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
        if current_user.has_role?("direccion")
-          d = Subdireccion.find_by_cargo("Director General")
+          d = Subdireccion.find_by_cargo("DIRECTOR GENERAL")
           param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular}
           param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo}
+       elsif current_user.has_role?("especialistajuzgado")
+          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>current_user.nombre_completo}
+          param["P_CARGO"]={:tipo=>"String", :valor=>current_user.cargo}
        else
           param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@datosinvitacion.subdirector}
           param["P_CARGO"]={:tipo=>"String", :valor=>@datosinvitacion.cargo}
