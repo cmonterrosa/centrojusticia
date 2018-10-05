@@ -331,7 +331,7 @@ class InvitacionesController < ApplicationController
           param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo}
        elsif current_user.has_role?("especialistajuzgado")
           param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>current_user.nombre_completo}
-          param["P_CARGO"]={:tipo=>"String", :valor=>current_user.cargo}
+          param["P_CARGO"]={:tipo=>"String", :valor=>current_user.categoria}
        else
           param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@datosinvitacion.subdirector}
           param["P_CARGO"]={:tipo=>"String", :valor=>@datosinvitacion.cargo}
