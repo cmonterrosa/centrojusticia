@@ -327,14 +327,14 @@ class InvitacionesController < ApplicationController
       #param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
        if current_user.has_role?("direccion")
           d = Subdireccion.find_by_cargo("DIRECTOR GENERAL")
-          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular}
-          param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo}
+          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular.mb_chars.downcase.titleize}
+          param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo.mb_chars.downcase.titleize}
        elsif current_user.has_role?("especialistajuzgado")
-          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>current_user.nombre_completo}
-          param["P_CARGO"]={:tipo=>"String", :valor=>current_user.categoria}
+          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>current_user.nombre_completo.mb_chars.downcase.titleize}
+          param["P_CARGO"]={:tipo=>"String", :valor=>current_user.categoria.mb_chars.downcase.titleize}
        else
-          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@datosinvitacion.subdirector}
-          param["P_CARGO"]={:tipo=>"String", :valor=>@datosinvitacion.cargo}
+          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@datosinvitacion.subdirector.mb_chars.downcase.titleize}
+          param["P_CARGO"]={:tipo=>"String", :valor=>@datosinvitacion.cargo.mb_chars.downcase.titleize}
        end
        @comparecencia = @invitacion.sesion.tramite.comparecencia if @invitacion.sesion.tramite
        if @invitacion.save
