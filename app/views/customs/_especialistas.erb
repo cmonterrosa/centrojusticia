@@ -53,6 +53,13 @@
                 </li>
               <%end%>
 
+              <%if current_user.has_role?("controlagenda")%>
+                <li>
+                  <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
+                </li>
+              <%end%>
+
+
               <!-- Monitor de especialistas -->
               <%if current_user.has_role?("atencionpublico")%>
                 <li>
