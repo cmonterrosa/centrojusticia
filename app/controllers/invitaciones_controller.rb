@@ -310,9 +310,11 @@ class InvitacionesController < ApplicationController
       ###  Leyenda del parrafo de asignacion segun sexo y segun si es uno o dos mediadores   ###
       if @sesion.mediador_id == @sesion.comediador_id 
         if @sesion.mediador.sexo == "F"           
-          param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}
+          #param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}
+          param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista quien suscribe el presente ocurso."}
         else           
-          param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designado para atender el asunto el especialista <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}
+          #param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designado para atender el asunto el especialista <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}
+          param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designado para atender el asunto el especialista quien suscribe el presente ocurso."}
         end
       else
         if @sesion.mediador.sexo == "F" && @sesion.comediador.sexo == "M"           
