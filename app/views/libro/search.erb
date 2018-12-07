@@ -37,7 +37,7 @@
         </td>       
         <% if current_user.has_role?(:subdireccion) %>                        
           <td align="center">
-          <%=h (link_to "cierre de año", {:controller => "RAZON APERTURA/CIERRE", :action => "index", :fecha_inicio => @inicio, :fecha_fin => @fin}, :target => "_blank", :class => "fancybox fancybox.iframe boton") %>
+          <%=h (link_to "RAZON APERTURA/CIERRE", {:controller => "cierreanio", :action => "index", :fecha_inicio => @inicio, :fecha_fin => @fin}, :target => "_blank", :class => "fancybox fancybox.iframe boton") %>
           </td> 
         <%end%>        
       </tr>  
