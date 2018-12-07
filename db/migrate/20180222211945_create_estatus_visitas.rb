@@ -1,7 +1,9 @@
 class CreateEstatusVisitas < ActiveRecord::Migration
   def self.up
-    create_table :estatus_visitas do |t|
-    	t.string :descripcion      
+    if !table_exists?("estatus_visitas")
+      create_table :estatus_visitas do |t|
+      	t.string :descripcion      
+      end
     end
 
     EstatusVisita.create(:descripcion => "INICIADA") unless EstatusVisita.exists?(:descripcion => "INICIADA")

@@ -20,13 +20,28 @@
 
 
     <!-- impresion de libro-->
-    <p>
+    <!-- <p>
       <% form_for :tramite, @tramite, :url => { :action => "imprimir", :controller => "libro", :fecha_inicio => @inicio, :fecha_fin => @fin }, :html => { :target => "_blank"} do |f| -%>
         <div class="grid-center">
           <input type="submit" title="IMPRIMIR LIBRO" value="IMPRIMIR LIBRO" />
+          <input type="submit" title="RAZON DE INICIO DE AÑO" value="IMPRIMIR LIBRO" />
+          <input type="submit" title="RAZON DE CIERRE DE AÑO" value="IMPRIMIR LIBRO" />
         </div>
       <%end%>
-    </p>
+    </p> -->
+
+    <table class="tabla_dp" >
+      <tr align="center">        
+        <td align="center">
+          <%=h (link_to "IMPRIMIR LIBRO", {:controller => "libro", :action => "imprimir", :fecha_inicio => @inicio, :fecha_fin => @fin}, :target => "_blank", :class => "fancybox fancybox.iframe boton") %>
+        </td>       
+        <% if current_user.has_role?(:subdireccion) %>                        
+          <td align="center">
+          <%=h (link_to "cierre de año", {:controller => "RAZON APERTURA/CIERRE", :action => "index", :fecha_inicio => @inicio, :fecha_fin => @fin}, :target => "_blank", :class => "fancybox fancybox.iframe boton") %>
+          </td> 
+        <%end%>        
+      </tr>  
+    </table>
 
 
 
@@ -46,6 +61,15 @@
      </tr>
      
      <%for tramite in @tramites%>
+      <!-- leyenda de inicio de año -->
+      <%if tramite.folio_expediente== 1  %>
+        <tr>
+          <td colspan="1"></td>
+          <td colspan="9"> <%=simple_format h @mensajeapertura %> </td>
+        </tr>
+      <%end%>      
+      
+        <!-- listado de todos los tramites -->
         <%comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", tramite])%>
         <tr>
           <!-- numero de expediente -->
@@ -71,6 +95,17 @@
             <%=simple_format h (tramite.observaciones_generales?)? tramite.observaciones_generales : '-'%>
           </td>       
         </tr>
+        
+        <!-- leyenda de cierre de año -->
+        <%if @tramites.index(tramite).between?(0,@tramites.size-2) %>
+          <%if @tramites[@tramites.index(tramite)+1].folio_expediente == 1  %>
+            <tr>
+              <td colspan="1"></td>
+              <td colspan="9"> <%=simple_format h @mensajecierre %> </td>
+            </tr>
+          <%end%>
+        <%end%>       
+        
      <%end%>
   </table>
 </div>

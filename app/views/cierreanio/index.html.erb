@@ -1,0 +1,34 @@
+<div class="titulocalendario">
+  <p>
+    RAZONAMIENTO DE INICIO O CIERRE DE AÑO
+  </p>
+</div>
+
+
+<% form_for :cierreanio, @cierreanio, :url => { :action => "generar_razonamiento", :fecha => @fecha, :sesion => @sesion}, :html => {:id => "cierreanio"} do |f| -%>
+ <table class="tabla_dp" >
+  <tr align="center">
+      <th align="center">Tipo de razonamiento</th>      
+      <th align="center">
+		<span id="ct_migrante" class="InputGroup">              
+              <label class="uper">APERTURA<%= f.radio_button :tipo_razon, "APERTURA", :checked => "" %></label>&nbsp;&nbsp;
+              <label class="uper">CIERRE<%= f.radio_button :tipo_razon, "CIERRE", :checked => "" %></label>
+        </span>
+      </th>      
+      <th align="center">&nbsp;</th>
+  </tr>
+  <tr align="center">
+      <th align="center">Seleccione fecha</th>            
+      <td align="center"><%=f.text_field :fecha, :value => @inicio.strftime("%Y/%m/%d"), :size => 16%></td>     
+      <th align="center">&nbsp;</th>
+  </tr>
+  <tr><td colspan="2">&nbsp;</td> </tr> 
+  <tr align="center">            
+      <td colspan="2"><%= f.submit "Generar Razonamiento"%></td>          
+  </tr>
+</table>
+<% end %>
+<br />
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "libro", :action => "index"%><br />
+
+

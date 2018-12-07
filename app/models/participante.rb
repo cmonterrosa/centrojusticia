@@ -12,6 +12,18 @@ class Participante < ActiveRecord::Base
   has_many :invitacions
   has_many :seguimientos
 
+  #campos requeridos por estadistica
+  belongs_to :fuente_ingreso
+  belongs_to :tipovivienda
+  belongs_to :servicio_medico
+  belongs_to :ocupacion
+  belongs_to :alfabetismo
+  belongs_to :estado_psicofisico
+  belongs_to :tipoasesor
+  belongs_to :calidad_migratoria
+  belongs_to :estatus_migratorio  
+  belongs_to :nivel_academico
+
   #def before_save
     #self.paterno.upcase! if self.paterno
     #self.materno.upcase! if self.materno

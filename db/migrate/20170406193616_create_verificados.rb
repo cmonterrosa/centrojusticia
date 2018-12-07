@@ -1,9 +1,11 @@
 class CreateVerificados < ActiveRecord::Migration
   def self.up
-    create_table :verificados do |t|
+	if !table_exists?("verificados")
+	    create_table :verificados do |t|
 
-      t.timestamps
-    end
+	      t.timestamps
+	    end
+	end
   end
 
   def self.down

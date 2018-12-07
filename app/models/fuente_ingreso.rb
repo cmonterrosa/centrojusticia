@@ -1,0 +1,3 @@
+class FuenteIngreso < ActiveRecord::Base
+	has_many :participantes
+end

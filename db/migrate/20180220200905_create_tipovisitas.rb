@@ -1,8 +1,10 @@
 class CreateTipovisitas < ActiveRecord::Migration
   def self.up
-    create_table :tipovisitas do |t|
-    	t.string :descripcion
-      t.timestamps
+    if !table_exists?("tipovisitas")
+      create_table :tipovisitas do |t|
+      	t.string :descripcion
+        t.timestamps
+      end
     end
 
     Tipovisita.create(:descripcion => "ORDINARIA") unless Tipovisita.exists?(:descripcion => "ORDINARIA")
