@@ -6,7 +6,7 @@ class OrientacionsController < ApplicationController
   require_role [:atencionpublico, :subdireccion, :direccion], :for => [:new_or_edit, :save]
   require_role [:especialistas, :convenios, :especialistas_externos, :subdireccion], :for => [:list_by_user]
   require_role [:admin, :admindireccion, :direccion], :for => [:show_especialistas_disponibles]
-  require_role [:jefeatencionpublico, :atencionpublico, :direccion, :subdireccion], :for => [:show_siguientes_especialistas]
+  require_role [:jefeatencionpublico, :monitor_especialistas, :direccion, :subdireccion], :for => [:show_siguientes_especialistas]
 
   def index
    
