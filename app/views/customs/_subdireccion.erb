@@ -56,7 +56,13 @@
                 <!-- Monitor -->
                 <li>
                   <ul><%=link_to image_tag('kolaval/Ico-monitor-especia.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Ico-monitor-especia.jpg") , {:action => "show_siguientes_especialistas", :controller => "orientacions"}, :title => "Monitor de actividad de orientaciones y/o comparecencias"%></ul>
-                </li>            
+                </li>
+                <li> 
+                <!-- Visitaduria -->                
+                <li>                                  
+                  <ul><%=link_to image_tag('iconos/comparecencias.png', :size => "120x128", :size => "120x128", :mouseover => "iconos/comparecencias.png") , {:action => "list", :controller => "visita"}, :title => "Listado de visitas"%></ul>
+                </li>
+              </li>            
             </ul>
 					</div>
 				</nav>
