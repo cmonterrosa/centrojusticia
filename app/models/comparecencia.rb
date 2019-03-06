@@ -57,10 +57,14 @@
     if @solicitantes = Participante.find(:all, :conditions => ["comparecencia_id = ? AND perfil = 'SOLICITANTE'", self.id], :order => "created_at")
       case @solicitantes.size
         when 1
-          @sexo_solicitante = @solicitantes.first.sexo if (@solicitantes && @solicitantes.first)
-          cadena=(@sexo_solicitante == 'F')? "de la " : "del " if @sexo_solicitante
+          @sexo_solicitante = @solicitantes.first.sexo if (@solicitantes && @solicitantes.first && @solicitantes.first.sexo)
+          if @solicitantes.first.tipopersona_id==1
+            cadena=(@sexo_solicitante == 'F')? "de la <b>C.</b>" : "del <b>C.</b>" if @sexo_solicitante
+          else
+            cadena= "de la persona moral"
+          end  
           @descripcion << cadena
-          @descripcion <<  ((@solicitantes && @solicitantes.first) ? ("<b>C. #{@solicitantes.first.nombre_completo.mb_chars.downcase.titleize}</b>") : '')
+          @descripcion <<  ((@solicitantes && @solicitantes.first) ? (" <b>#{@solicitantes.first.nombre_completo.mb_chars.downcase.titleize}</b>") : '')
         when 2
           @descripcion << "de los <b>CC. "
           @descripcion << @solicitantes.map{|i|("#{i.nombre_completo.mb_chars.downcase.titleize}")}.join(" Y ")
