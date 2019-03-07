@@ -283,7 +283,7 @@ class InvitacionesController < ApplicationController
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>@datosinvitacion.especialista}
        param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>@datosinvitacion.subdireccion}
        param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@datosinvitacion.solicitante.mb_chars.downcase.titleize}
-       param["P_INVITADO"]={:tipo=>"String", :valor=>@participante.nombre_completo.mb_chars.downcase.titleize}
+       param["P_INVITADO"]={:tipo=>"String", :valor=> @participante.tipopersona_id==1? " C. #{@participante.nombre_completo.mb_chars.downcase.titleize}" : @participante.nombre_completo.mb_chars.downcase.titleize}
        param["P_FECHA_SOLICITUD"]={:tipo=>"String", :valor=>@datosinvitacion.fecha_solicitud.downcase}
        param["P_FECHAHORA_SESION"]={:tipo=>"String", :valor=>@datosinvitacion.fechahora_sesion.downcase}
        param["P_MATERIA"]={:tipo=>"String", :valor=>@datosinvitacion.materia.downcase}
