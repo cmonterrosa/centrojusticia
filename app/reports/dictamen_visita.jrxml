@@ -31,9 +31,11 @@
 	<parameter name="P_PARTICIPANTES" class="java.lang.String"/>
 	<parameter name="P_IDVISITA" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[select concat(nombre, " ", paterno, " ", materno) as nombre_participante from participantevisitas
-join users on users.id = participantevisitas.user_id;]]>
+		<![CDATA[select id from users;]]>
 	</queryString>
+	<field name="id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

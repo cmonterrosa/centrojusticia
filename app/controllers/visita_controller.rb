@@ -113,6 +113,8 @@ class VisitaController < ApplicationController
 
 	def imprimir_dictamen
 		@visita = Visita.find(params[:id])
+    @participantesvisitas = Participantevisita.find(:all, :conditions => ["visita_id=?", @visita.id])
+    @parts = @participantesvisitas.map{|i|("#{i.user.nombre_completo}")}.join(" <br/>")
 		param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
         param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
         param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
@@ -127,6 +129,7 @@ class VisitaController < ApplicationController
         param["P_EXPINI"]={:tipo=>"String", :valor=> @visita.periodo_inicio}
         param["P_EXPFIN"]={:tipo=>"String", :valor=> @visita.periodo_fin}
         param["P_OBSERVACIONES"]={:tipo=>"String", :valor=> @visita.observaciones}
+        param["P_PARTICIPANTES"]={:tipo=>"String", :valor=> @parts}
 
         if File.exists?(REPORTS_DIR + "/dictamen_visita.jasper")
           send_doc_jdbc("dictamen_visita", "dictamen_visita", param, output_type = 'pdf')
