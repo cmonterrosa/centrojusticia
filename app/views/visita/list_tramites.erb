@@ -51,6 +51,14 @@
      </tr>
      
      <%for tramite in @tramites%>
+        <!-- leyenda de inicio de año -->
+        <%if tramite.folio_expediente== 1  %>
+          <tr>
+            <td colspan="1"></td>
+            <td colspan="9"> <%=simple_format h @mensajeapertura %> </td>
+          </tr>
+        <%end%>
+
         <%comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", tramite])%>
         <tr>
           <!-- numero de expediente -->
@@ -77,6 +85,17 @@
           </td>
           
         </tr>
+
+        <!-- leyenda de cierre de año -->
+        <%if @tramites.index(tramite).between?(0,@tramites.size-2) %>
+          <%if @tramites[@tramites.index(tramite)+1].folio_expediente == 1  %>
+            <tr>
+              <td colspan="1"></td>
+              <td colspan="9"> <%=simple_format h @mensajecierre %> </td>
+            </tr>
+          <%end%>
+        <%end%>
+
      <%end%>
   </table>
 </div>

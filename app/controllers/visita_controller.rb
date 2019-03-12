@@ -35,6 +35,29 @@ class VisitaController < ApplicationController
 			#@fin = Date.parse(params[:final])
 			@inicio = @visita.periodo_inicio
 			@fin = @visita.periodo_fin
+
+      @razonapertura = Cierreanio.find(:first, :conditions =>["fecha between ? and ? and tipo_razon='APERTURA'",@inicio, @fin])
+    @razoncierre = Cierreanio.find(:first, :conditions =>["fecha between ? and ? and tipo_razon='CIERRE'",@inicio, @fin])
+    if @razonapertura
+      @mensajeapertura = "EL SUSCRITO #{User.find_by_id(@razonapertura.user_id).nombre_completo}, #{@razonapertura.cargo} DEL CENTRO ESTATAL DE JUSTICIA ALTERNATIVA DEL TRIBUNAL SUPERIOR DE JUSTICIA DEL
+ESTADO DE CHIAPAS, DE CONFORMIDAD CON LO DISPUESTO POR EL ARTÍCULO 28 DE LA LEY DE JUSTICIA ALTERNATIVA DEL ESTADO DE CHIAPAS Y 16 DE SU REGLAMENTO, HAGO
+CONSTAR QUE CON FECHA #{@razonapertura.fecha.strftime("%d de ")} #{Date::MONTHNAMES[@razonapertura.fecha.month].downcase} de #{@razonapertura.fecha.year}, SE PROCEDE A LA APERTURA DEL LIBRO ELECTRÓNICO DEL SISTEMA INFORMÁTICO KOLAVAL, CORRESPONDIENTE AL
+AÑO JUDICIAL #{@razonapertura.fecha.year}. DOY FE."
+    else
+      @mensajeapertura = nil
+    end
+
+    if @razoncierre
+      @mensajecierre = "EL SUSCRITO #{User.find_by_id(@razoncierre.user_id).nombre_completo}, #{@razoncierre.cargo} DEL CENTRO ESTATAL DE JUSTICIA ALTERNATIVA DEL TRIBUNAL SUPERIOR DE JUSTICIA DEL
+ESTADO DE CHIAPAS, DE CONFORMIDAD CON LO DISPUESTO POR EL ARTÍCULO 28 DE LA LEY DE JUSTICIA ALTERNATIVA DEL ESTADO DE CHIAPAS Y 16 DE SU REGLAMENTO, HAGO
+CONSTAR QUE CON FECHA #{@razoncierre.fecha.strftime("%d de ")} #{Date::MONTHNAMES[@razoncierre.fecha.month].downcase} de #{@razoncierre.fecha.year}, SE PROCEDE AL CIERRE DEL LIBRO ELECTRÓNICO DEL SISTEMA INFORMÁTICO KOLAVAL, CORRESPONDIENTE AL
+AÑO JUDICIAL #{@razoncierre.fecha.year}. DOY FE."
+    else
+      @mensajecierre = nil
+    end
+
+
+
 			@tramites = Tramite.find(:all, :conditions => ["(anio IS NOT NULL AND anio between ? AND ? )
      		AND (folio_expediente IS NOT NULL)
      		AND (fechahora between ? AND ?)", @inicio.year, @fin.year, @inicio, @fin],
@@ -120,11 +143,10 @@ class VisitaController < ApplicationController
         param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
         param["P_VISITADOR"]={:tipo=>"String", :valor=> @visita.user.nombre_completo}
         param["P_EXPEDIENTE"]={:tipo=>"String", :valor=> @visita.user_id}
-        param["P_INICIO"]={:tipo=>"String", :valor=> @visita.created_at.strftime("%d de %B de %Y")}
-        param["P_FIN"]={:tipo=>"String", :valor=> @visita.periodo_fin.strftime("%d de %B de %Y")}
-        param["P_PERINICIO"]={:tipo=>"String", :valor=>@visita.periodo_inicio.strftime("%d de %B de %Y")}
-        #param["P_PERFIN"]={:tipo=>"String", :valor=>"#{fecha_string(Time.now)}"}
-        param["P_PERFIN"]={:tipo=>"String", :valor=>Time.now.strftime("%d de %B de %Y")}
+        param["P_INICIO"]={:tipo=>"String", :valor=> @visita.fechahora_inicio.strftime("%d de %B de %Y")}
+        param["P_FIN"]={:tipo=>"String", :valor=> @visita.fechahora_fin.strftime("%d de %B de %Y")}
+        param["P_PERINICIO"]={:tipo=>"String", :valor=>@visita.periodo_inicio.strftime("%d de %B de %Y")}  
+        param["P_PERFIN"]={:tipo=>"String", :valor=>@visita.periodo_fin.strftime("%d de %B de %Y")}
         param["P_TIPOVISITA"]={:tipo=>"String", :valor=> @visita.tipovisita.descripcion}
         param["P_EXPINI"]={:tipo=>"String", :valor=> @visita.periodo_inicio}
         param["P_EXPFIN"]={:tipo=>"String", :valor=> @visita.periodo_fin}
