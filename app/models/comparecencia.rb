@@ -34,7 +34,12 @@
     if @involucrados = Participante.find(:all, :conditions => ["comparecencia_id = ? AND perfil = 'INVOLUCRADO'", self.id], :order => "created_at")
     case @involucrados.size
       when 1
-        cadena= ((@involucrados.first) ? (@involucrados.first.articulo_por_su_genero.downcase + " <b>C. #{@involucrados.first.nombre_completo.mb_chars.downcase.titleize}</b>") : '')
+         @sexo_involucrado = @involucrados.first.sexo if (@involucrados && @involucrados.first && @involucrados.first.sexo)
+        if @involucrados.first.tipopersona_id==1
+          cadena= ((@involucrados.first) ? (@involucrados.first.articulo_por_su_genero.downcase + " <b>C. #{@involucrados.first.nombre_completo.mb_chars.downcase.titleize}</b>") : '')
+        else
+          cadena= "la pesona moral <b>#{@involucrados.first.razon_social.mb_chars.downcase.titleize}</b>"
+        end
         @descripcion << cadena
       when 2
         #@descripcion << @involucrados.map{|i|(i.articulo_por_su_genero + " C. #{i.nombre_completo}")}.join(" Y ")

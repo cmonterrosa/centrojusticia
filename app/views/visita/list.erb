@@ -27,7 +27,7 @@
 
         <!-- CONCLUIR VISITA -->
         <% if e.estatus_visita.descripcion == "INICIADA" and current_user.has_role?(:visitadores) %>
-          <td style="vertical-align: middle;"><%=h (link_to "FINALIZAR", {:controller => "visita", :action => "finalizar_visita", :id => e.id}, :class => 'boton') %></td>  
+          <td style="vertical-align: middle;"><%=h (link_to "FINALIZAR", {:controller => "visita", :action => "finalizar_visita", :id => e.id}, :class => 'boton', :confirm => "¿Está seguro/a que desea finalizar la visita?") %></td>  
         <%end%>
 
      </tr>
