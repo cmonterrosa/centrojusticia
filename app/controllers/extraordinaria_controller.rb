@@ -39,7 +39,7 @@ class ExtraordinariaController < ApplicationController
     @especialistas = Role.find_by_name("especialistas").todos_usuarios
     @especialistas_externos = Role.find_by_name("especialistas_externos").todos_usuarios
     @especialistas=(@especialistas_externos + @especialistas).sort{|p1,p2|p1.nombre_completo <=> p2.nombre_completo}
-    @tramite.anio = params[:extraordinaria][:fechahora].split("/")[0] if params[:extraordinaria][:fechahora]
+    @tramite.anio = params[:extraordinaria][:fechahora].split("-")[0] if params[:extraordinaria][:fechahora]
     @tramite.anio ||= Time.now.year
     @tramite.generar_folio unless @tramite.folio
     @tramite.subdireccion_id = current_user.subdireccion_id unless @tramite.subdireccion
