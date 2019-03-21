@@ -67,7 +67,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FECHA_ACTUAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="33" y="269" width="501" height="411"/>
+				<reportElement x="33" y="269" width="501" height="473"/>
 				<textElement textAlignment="Justified" lineSpacing="1_1_2" markup="html">
 					<font fontName="SansSerif" size="11" pdfEncoding="Cp1252"/>
 				</textElement>
