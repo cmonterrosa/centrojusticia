@@ -36,7 +36,7 @@
                   <%end%>
 
 
-                  <!-- Bitacora -->
+                  <!-- Bitacora de atencion-->
                   <%if current_user.has_role?("bitacora")%>
                     <li>
                       <%=link_to image_tag('kolaval/ico-bitacora-aten.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-bitacora-aten.jpg") , {:action => "select_personas_atendidas", :controller => "estadisticas"}, :title => "Bitacora de atencion"%>
@@ -47,7 +47,7 @@
 
 
               <!-- Agenda -->
-              <%if current_user.has_role?("lecturaagenda")%>
+              <%if current_user.has_role?("lecturaagenda") || current_user.has_role?("controlagenda")%>
                 <li>
                   <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Agenda"%></ul>
                 </li>
@@ -82,6 +82,13 @@
                 <%if current_user.has_role?("librocontrol") || current_user.has_role?("jefeconvenios")%>
                   <li>
                     <%=link_to image_tag('kolaval/ico-libro-control.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-libro-control.jpg") , {:action => "index", :controller => "libro"}, :title => "Libro de control"%>
+                  </li>
+                <%end%>
+
+                 <!-- Administracion de Usuarios -->
+                <%if current_user.has_role?("adminusuarios")%>
+                  <li>
+                    <ul><%=link_to image_tag('kolaval/admon-usuarios.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/admon-usuarios.jpg") , {:action => "show_users", :controller => "admin"}, :title => "Control de Usuarios"%></ul>
                   </li>
                 <%end%>
 
