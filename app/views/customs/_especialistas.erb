@@ -44,10 +44,33 @@
                 <ul><%=link_to image_tag('kolaval/ico-mis-expedientes.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-mis-expedientes.jpg") , {:action => "mis_expedientes", :controller => "customs"}, :title => "Expedientes donde intervengo"-%></ul>
               </li>
 
-              <!-- Mis convenios -->
-              <li>
-                <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Mis convenios"-%></ul>
-              </li>
+              
+              <!-- convenios -->
+              <%if current_user.has_role?("convenios")%>
+                 <li>
+                  <%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%>
+                  <ul class="cbp-hssubmenu">
+                    <!-- Seguimiento de convenios -->
+                    <li>
+                      <%=link_to image_tag('kolaval/ico-convenio-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio-seguimiento.jpg") , {:action => "index", :controller => "seguimientos"}, :title => "Seguimiento de Convenios"%>
+                    </li>
+
+                    <!-- Bitacora  de seguimiento de convenios -->
+                    <%if current_user.has_role?("bitacora") || current_user.has_role?("jefeconvenios")%>
+                      <li>
+                        <%=link_to image_tag('kolaval/Icono-bitacora-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Icono-bitacora-seguimiento.jpg") , {:action => "bitacora", :controller => "seguimientos"}, :title => "Bitacora de seguimiento de convenios"%>
+                      </li>
+                    <%end%>
+                  </ul>
+                </li>
+                <%else%>
+                  <!-- Mis convenios -->
+                <li>
+                  <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Mis convenios"-%></ul>
+                </li>
+              <%end%>
+
+              
 
                                                           
               <!-- Agenda -->
@@ -65,7 +88,7 @@
 
 
               <!-- Monitor de especialistas -->
-              <%if current_user.has_role?("atencionpublico")%>
+              <%if current_user.has_role?("monitor_especialistas")%>
                 <li>
                   <ul><%=link_to image_tag('kolaval/Ico-monitor-especia.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Ico-monitor-especia.jpg") , {:action => "show_siguientes_especialistas", :controller => "orientacions"}, :title => "Monitor de actividad de orientaciones y/o comparecencias"%></ul>
                 </li>

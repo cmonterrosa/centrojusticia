@@ -283,7 +283,7 @@ class InvitacionesController < ApplicationController
        param["P_ESPECIALISTA"]={:tipo=>"String", :valor=>@datosinvitacion.especialista}
        param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>@datosinvitacion.subdireccion}
        param["P_SOLICITANTE"]={:tipo=>"String", :valor=>@datosinvitacion.solicitante.mb_chars.downcase.titleize}
-       param["P_INVITADO"]={:tipo=>"String", :valor=> @participante.tipopersona_id==1? " C. #{@participante.nombre_completo.mb_chars.downcase.titleize}" : @participante.nombre_completo.mb_chars.downcase.titleize}
+       param["P_INVITADO"]={:tipo=>"String", :valor=> @participante.tipopersona_id==1? "C. #{@participante.nombre_completo.mb_chars.downcase.titleize}" : @participante.nombre_completo.mb_chars.downcase.titleize}
        param["P_FECHA_SOLICITUD"]={:tipo=>"String", :valor=>@datosinvitacion.fecha_solicitud.downcase}
        param["P_FECHAHORA_SESION"]={:tipo=>"String", :valor=>@datosinvitacion.fechahora_sesion.downcase}
        param["P_MATERIA"]={:tipo=>"String", :valor=>@datosinvitacion.materia.downcase}
@@ -311,24 +311,24 @@ class InvitacionesController < ApplicationController
       if @sesion.mediador_id == @sesion.comediador_id 
         if @sesion.mediador.sexo == "F"
           if current_user.has_role?("especialistajuzgado")
-            param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista quien suscribe el presente ocurso."}
+            param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista público quien suscribe el presente ocurso."}
           else
-            param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}          
+            param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista públlico <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}          
           end  
         else
           if current_user.has_role?("especialistajuzgado")
-            param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designado para atender el asunto el especialista quien suscribe el presente ocurso."}
+            param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designado para atender el asunto el especialista público quien suscribe el presente ocurso."}
           else           
-            param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designado para atender el asunto el especialista <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}          
+            param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designado para atender el asunto el especialista público <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}          
           end
         end
       else
         if @sesion.mediador.sexo == "F" && @sesion.comediador.sexo == "M"           
-          param["P_DESIGNACION"]={:tipo=>"String", :valor=> "han sido designados para atender el asunto los especialistas <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize} y #{@sesion.comediador.nombre_completo.mb_chars.downcase.titleize}</b>, la primera en su caracter de titular."}
+          param["P_DESIGNACION"]={:tipo=>"String", :valor=> "han sido designados para atender el asunto los especialistas públicos <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize} y #{@sesion.comediador.nombre_completo.mb_chars.downcase.titleize}</b>, la primera en su caracter de titular."}
         elsif @sesion.mediador.sexo == "F" && @sesion.comediador.sexo == "F"           
-          param["P_DESIGNACION"] = {:tipo=>"String", :valor=> "han sido designadas para atender el asunto las especialistas <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize} y #{@sesion.comediador.nombre_completo.mb_chars.downcase.titleize}</b>, la primera en su caracter de titular."}
+          param["P_DESIGNACION"] = {:tipo=>"String", :valor=> "han sido designadas para atender el asunto las especialistas públicos <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize} y #{@sesion.comediador.nombre_completo.mb_chars.downcase.titleize}</b>, la primera en su caracter de titular."}
         else          
-          param["P_DESIGNACION"] = {:tipo=>"String", :valor=> "han sido designados para atender el asunto los especialistas <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize} y #{@sesion.comediador.nombre_completo.mb_chars.downcase.titleize}</b>, el primero en su caracter de titular."}
+          param["P_DESIGNACION"] = {:tipo=>"String", :valor=> "han sido designados para atender el asunto los especialistas públicos <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize} y #{@sesion.comediador.nombre_completo.mb_chars.downcase.titleize}</b>, el primero en su caracter de titular."}
         end
       end
 

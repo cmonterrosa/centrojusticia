@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
-	<property name="ireport.zoom" value="1.5"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="612" pageHeight="792" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
@@ -38,37 +38,37 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="802" splitType="Stretch">
+		<band height="764" splitType="Stretch">
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="33" y="214" width="501" height="39"/>
+				<reportElement mode="Transparent" x="33" y="206" width="501" height="39"/>
 				<textElement lineSpacing="1_1_2">
 					<font fontName="Arial" size="11" isBold="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_INVITADO} + "\n" + "Presente."]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_INVITADO} + "\n" + "Presente"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="33" y="111" width="501" height="22" forecolor="#000000"/>
+				<reportElement x="33" y="104" width="501" height="22" forecolor="#000000"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Expediente: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="33" y="144" width="501" height="15" forecolor="#000000"/>
+				<reportElement x="33" y="136" width="501" height="15" forecolor="#000000"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_LUGAR} + ";"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="33" y="159" width="501" height="14" forecolor="#000000"/>
+				<reportElement x="33" y="151" width="501" height="14" forecolor="#000000"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FECHA_ACTUAL}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="33" y="269" width="501" height="377"/>
+				<reportElement x="33" y="257" width="501" height="398"/>
 				<textElement textAlignment="Justified" lineSpacing="1_1_2" markup="html">
 					<font size="11"/>
 				</textElement>
@@ -84,63 +84,46 @@
 
 "Le hacemos saber que " + $P{P_DESIGNACION} + "<br><br>"+
 
-"<b>Atentamente</b>"]]></textFieldExpression>
+"<b>Atentamente</b> <br><br><br>" +
+
+"<b>" + $P{P_SUBDIRECTOR} + "</b><br>" +
+"<b>" + $P{P_CARGO} + "</b><br><br>" +
+"C.c.p. Expediente"]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
-				<reportElement stretchType="RelativeToTallestObject" x="12" y="3" width="521" height="92"/>
+				<reportElement stretchType="RelativeToTallestObject" x="12" y="3" width="545" height="92"/>
 				<imageExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/app/reports/imagenes/logo_tribunal.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement style="Title" x="189" y="30" width="343" height="20" forecolor="#7C2425"/>
+				<reportElement style="Title" x="211" y="30" width="343" height="20" forecolor="#7C2425"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Centro Estatal de Justicia Alternativa]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="266" y="49" width="266" height="15" forecolor="#7C2425"/>
+				<reportElement x="288" y="50" width="266" height="15" forecolor="#7C2425"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="10" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECCION}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement x="33" y="747" width="501" height="20"/>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font fontName="Arial" size="8" isBold="true" pdfFontName="Helvetica-Bold"/>
-				</textElement>
-				<text><![CDATA[C.C.P Archivo/Expediente]]></text>
-			</staticText>
 			<textField>
-				<reportElement x="33" y="790" width="321" height="11"/>
-				<textElement>
+				<reportElement x="33" y="751" width="499" height="11"/>
+				<textElement textAlignment="Left">
 					<font size="7"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["Conmutador: (961) 6178700 ext. 8514, 8517, 8520,  página web: www.poderjudicialchiapas.gob.mx"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="33" y="780" width="441" height="10"/>
-				<textElement>
+				<reportElement x="33" y="741" width="499" height="10"/>
+				<textElement textAlignment="Left">
 					<font size="7"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["Calle Candoquis número 290, esquina con Avenida Pino, Fraccionamiento el Bosque, C.P. 29047 Tuxtla Gutiérrez, Chiapas"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="33" y="674" width="499" height="14"/>
-				<textElement>
-					<font size="11" isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECTOR}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="33" y="688" width="499" height="15"/>
-				<textElement>
-					<font isBold="true"/>
-				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_CARGO}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_DIRECCION_OFICINAS}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="33" y="194" width="501" height="15" forecolor="#000000"/>
+				<reportElement x="33" y="186" width="501" height="15" forecolor="#000000"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="11" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>

@@ -142,7 +142,7 @@ AÑO JUDICIAL #{@razoncierre.fecha.year}. DOY FE."
         param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
         param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
         param["P_VISITADOR"]={:tipo=>"String", :valor=> @visita.user.nombre_completo}
-        param["P_EXPEDIENTE"]={:tipo=>"String", :valor=> @visita.user_id}
+        param["P_EXPEDIENTE"]={:tipo=>"String", :valor=> @visita.id}
         param["P_INICIO"]={:tipo=>"String", :valor=> @visita.fechahora_inicio.strftime("%d de %B de %Y")}
         param["P_FIN"]={:tipo=>"String", :valor=> @visita.fechahora_fin.strftime("%d de %B de %Y")}
         param["P_PERINICIO"]={:tipo=>"String", :valor=>@visita.periodo_inicio.strftime("%d de %B de %Y")}  
