@@ -57,7 +57,7 @@
                   </ul>
                 </li>
 
-                <%if current_user.has_role?(:controlinvitaciones)%>
+                <%if current_user.has_role?("controlinvitaciones")%>
                   <li>
                     <ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "index", :controller => "invitaciones"}, :title => "Invitaciones"%></ul>
                   </li>
