@@ -23,7 +23,7 @@
           <td align="center">Especialistas</td>
         </tr>
         <tr>
-          <td align="center"><%=f.text_field :fechahora%></td>
+          <td align="center"><%=f.text_field :fechahora, :value => @fecha%></td>
           <%unless @especialista%>
               <td align="center"><%= f.select :user_id, @especialistas.collect{|a| [a.nombre_completo, a.id]}, :include_blank => true%></td>
           <%else%>
