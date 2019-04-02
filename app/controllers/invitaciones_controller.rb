@@ -313,7 +313,7 @@ class InvitacionesController < ApplicationController
           if current_user.has_role?("especialistajuzgado")
             param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista público quien suscribe el presente ocurso."}
           else
-            param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista públlico <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}          
+            param["P_DESIGNACION"]={:tipo=>"String", :valor=> "ha sido designada para atender el asunto la especialista público <b>#{@datosinvitacion.especialista.mb_chars.downcase.titleize}</b>."}          
           end  
         else
           if current_user.has_role?("especialistajuzgado")
