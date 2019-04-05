@@ -82,22 +82,23 @@ class SeguimientosController < ApplicationController
 
   end
 
-  def destroy
-    @seguimiento = Seguimiento.find(params[:id]) if params[:id]
-    @convenio = Convenio.find(params[:c]) if params[:c]
-    if @seguimiento.user == current_user || current_user.has_role?(:subdireccion)
-          if @seguimiento.destroy
-            flash[:notice] = "Registro eliminado correctamente"
-          else
-            flash[:error] = "No tiene privilegios para eliminar el registro"
-          end
-          if @convenio
-            redirect_to :action => "list_by_convenio", :c => @convenio
-          else
-            redirect_to :action => "bitacora"
-          end
-    end
-  end
+  #---------------comentado por el problema de elimniacion-truncate de todos los seguimientos sin explicacion aparente
+  #def destroy
+  # @seguimiento = Seguimiento.find(params[:id]) if params[:id]
+  #  @convenio = Convenio.find(params[:c]) if params[:c]
+  #  if @seguimiento.user == current_user || current_user.has_role?(:subdireccion)
+  #        if @seguimiento.destroy
+  #          flash[:notice] = "Registro eliminado correctamente"
+  #        else
+  #          flash[:error] = "No tiene privilegios para eliminar el registro"
+  #        end
+  #        if @convenio
+  #          redirect_to :action => "list_by_convenio", :c => @convenio
+  #        else
+  #          redirect_to :action => "bitacora"
+  #        end
+  #  end
+  #end
 
   def get_datos_participante
     @participante ||= Participante.new

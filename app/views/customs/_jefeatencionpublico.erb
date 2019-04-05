@@ -42,14 +42,7 @@
                 	<li>
                   	<ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "show_all", :controller => "invitaciones"}, :title => "Control de Invitaciones"%></ul>
                   </li>
-                <%end%>
-
-                <!-- Monitor de especialistas -->
-                <%if current_user.has_role?("monitor_especialistas")%>
-                  <li>
-                    <ul><%=link_to image_tag('kolaval/Ico-monitor-especia.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Ico-monitor-especia.jpg") , {:action => "show_siguientes_especialistas", :controller => "orientacions"}, :title => "Monitor de actividad de orientaciones y/o comparecencias"%></ul>
-                  </li>
-                <%end%>
+                <%end%>                
 
 						</ul>
 					</div>

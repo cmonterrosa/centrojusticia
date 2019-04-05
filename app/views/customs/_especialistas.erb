@@ -65,6 +65,11 @@
                       <%=link_to image_tag('kolaval/ico-convenio-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio-seguimiento.jpg") , {:action => "index", :controller => "seguimientos"}, :title => "Seguimiento de Convenios"%>
                     </li>
 
+                    <!-- Mis convenios -->
+                    <li>
+                      <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Mis convenios"-%></ul>
+                    </li>
+
                     <!-- Bitacora  de seguimiento de convenios -->
                     <%if current_user.has_role?("bitacora") || current_user.has_role?("jefeconvenios")%>
                       <li>
