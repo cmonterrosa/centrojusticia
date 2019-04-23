@@ -72,18 +72,26 @@
                   </ul>
                 </li>
 
-                 <!-- Invitaciones -->
+              <!-- Invitaciones -->
               <%if current_user.has_role?("invitadores")%>
                 <li>
                    <ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "list_by_user", :controller => "invitaciones"}, :title => "Invitaciones"%></ul>
                 </li>
               <%end%>
 
-                <%if current_user.has_role?("librocontrol") || current_user.has_role?("jefeconvenios")%>
-                  <li>
-                    <%=link_to image_tag('kolaval/ico-libro-control.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-libro-control.jpg") , {:action => "index", :controller => "libro"}, :title => "Libro de control"%>
-                  </li>
-                <%end%>
+              <!-- libro de control -->
+              <%if current_user.has_role?("librocontrol") || current_user.has_role?("jefeconvenios")%>
+                <li>
+                  <%=link_to image_tag('kolaval/ico-libro-control.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-libro-control.jpg") , {:action => "index", :controller => "libro"}, :title => "Libro de control"%>
+                </li>
+              <%end%>
+
+              <!-- Monitor de especialistas -->
+              <%if current_user.has_role?("monitor_especialistas")%>
+                <li>
+                  <ul><%=link_to image_tag('kolaval/Ico-monitor-especia.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Ico-monitor-especia.jpg") , {:action => "show_siguientes_especialistas", :controller => "orientacions"}, :title => "Monitor de actividad de orientaciones y/o comparecencias"%></ul>
+                </li>
+              <%end%>
 
                  <!-- Administracion de Usuarios -->
                 <%if current_user.has_role?("adminusuarios")%>
