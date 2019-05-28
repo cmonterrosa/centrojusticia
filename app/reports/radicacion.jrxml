@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="612" pageHeight="792" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" isDefault="false" fontName="Arial" fontSize="12"/>
+	<parameter name="P_FECHA_ACTUAL" class="java.lang.String"/>
+	<parameter name="P_SOLICITANTES_DESCRIPCION" class="java.lang.String"/>
+	<parameter name="APP_URL" class="java.lang.String"/>
+	<parameter name="P_EXPEDIENTE" class="java.lang.String"/>
+	<parameter name="P_SUBDIRECCION" class="java.lang.String"/>
+	<parameter name="P_INVITADO" class="java.lang.String"/>
+	<parameter name="P_FECHA_SOLICITUD" class="java.lang.String"/>
+	<parameter name="P_LUGAR" class="java.lang.String"/>
+	<parameter name="P_SUBDIRECTOR" class="java.lang.String"/>
+	<parameter name="P_CARGO" class="java.lang.String"/>
+	<parameter name="P_INVOLUCRADOS_DESCRIPCION" class="java.lang.String"/>
+	<parameter name="P_FECHA_ORIENTACION" class="java.lang.String"/>
+	<parameter name="P_FIRMANTE" class="java.lang.String"/>
+	<parameter name="P_TIPOCOMPARECENCIA" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from users]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="login" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="764" splitType="Stretch">
+			<textField>
+				<reportElement x="33" y="138" width="501" height="22" forecolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["NÚMERO DE EXPEDIENTE: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="186" width="501" height="541"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2" markup="html">
+					<font fontName="Calibri" size="11" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["RADICACIÓN.- En atención a la comparecencia " + $P{P_TIPOCOMPARECENCIA}  + " realizada por <b>" + $P{P_SOLICITANTES_DESCRIPCION} + "</b> el día <b>" + $P{P_FECHA_SOLICITUD} + "</b>, en la que solicita se invite a " + $P{P_INVOLUCRADOS_DESCRIPCION} + ", a efecto de llegar a un acuerdo armonioso para solucionar la controversia que ha surgido entre ellos; al respecto se determina: " + "<br><br>" +
+"1. RADICACIÓN DEL EXPEDIENTE.- Se radica la solicitud bajo el número de expediente al rubro indicado, haciéndose las anotaciones correspondientes en el libro de control y/o electrónico del Sistema Informático KOLAVAL, que se lleven al efecto. " + "<br><br>" +
+"2. ADMISIÓN DE LA SOLICITUD.- De conformidad con los artículos 32, fracción II, 51, 52, 53, 54 y 55 de la Ley de Justicia Alternativa y 76, 77, 78, 84 y 85 de su Reglamento, se admite a trámite la solicitud planteada." + "<br>" +
+"3. DESIGNACIÓN DE ESPECIALISTAS.- Desígnese a los especialistas públicos atendiendo a la carga de trabajo de esta Subdirección, para que se ocupen del asunto." + "<br>" +
+"4. FECHA Y HORA DE LA SESIÓN DE ORIENTACIÓN CONJUNTA.- Procédase a señalar fecha y hora, a fin de llevarse a cabo la sesión conjunta de orientación, según la agenda de sesiones de esta Subdirección. " + "<br>" +
+"5. INVITACIÓN AL INVOLUCRADO.- Con apoyo en lo dispuesto por los artículos 55 de la ley en cita y 86 de su reglamento, por conducto del (a) invitador (a ) habilitado (a ) invítese preferentemente en forma personal a la parte involucrada en el domicilio indicado, o bien vía telefónica, electrónica, a través de la parte solicitante o por cualquier otro medio disponible; haciéndole del conocimiento que podrá acompañarse de persona de su confianza y presentar la documentación que considere necesaria para el desahogo de la sesión. Asimismo, que es necesario presentarse con una identificación oficial, todo en original y copia fotostática." + "<br>" +
+ "6. DOMICILIO DEL (A) SOLICITANTE.- Se tiene como domicilio del (a) solicitante para recibir toda clase de comunicaciones el que se indica en su solicitud. Así lo determinó y firma " + $P{P_SUBDIRECTOR} + ", Subdirector Regional Centro del Centro Estatal de Justicia Alternativa, en la ciudad de " + $P{P_LUGAR} + ", Chiapas; el " + $P{P_FECHA_ACTUAL}  + "." + "<br>"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement stretchType="RelativeToTallestObject" x="12" y="9" width="543" height="92"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/app/reports/imagenes/logo_tribunal.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="206" y="41" width="343" height="20" forecolor="#7C2425"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Centro Estatal de Justicia Alternativa]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="283" y="60" width="266" height="15" forecolor="#7C2425"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECCION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="752" width="499" height="11"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Conmutador: (961) 6178700 ext. 8514, 8517, 8520,  página web: www.poderjudicialchiapas.gob.mx"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="742" width="499" height="10"/>
+				<textElement>
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Calle Candoquis número 290, esquina con Avenida Pino, fraccionamiento El Bosque, C.P. 29047 Tuxtla Gutiérrez, Chiapas"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+</jasperReport>

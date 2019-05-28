@@ -62,6 +62,14 @@
                                 <%else%>
                                     <td>&nbsp;</td>
                                 <%end%>
+
+                                <% if participante.perfil=="SOLICITANTE" %>
+                                    <td> <%=link_to 'Radicacion', {:action => "radicacion", :controller => "invitaciones", :participante => participante, :comparecencia => @comparecencia}, :class => 'boton'%></td>
+                                <%else%>
+                                    <td>&nbsp;</td>
+                                <%end%>
+
+
                               </tr>
             <%contador+=1%>
             <%end%>

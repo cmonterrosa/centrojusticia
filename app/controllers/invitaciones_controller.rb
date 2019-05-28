@@ -390,6 +390,59 @@ class InvitacionesController < ApplicationController
     end
   end
 
+
+  def radicacion    
+    @participante = Participante.find(params[:participante])
+    @perfil = @participante.perfil
+    @comparecencia = Comparecencia.find(params[:comparecencia])
+    @tramite = Tramite.find(@comparecencia.tramite_id)
+    @tipo = "verbal"
+    if @tramite.atencion_id == 1 || @tramite.atencion_id == 2
+      @tipo = "verbal"
+    elsif @tramite.atencion_id == 3 || @tramite.atencion_id == 5
+      @tipo = "escrita"
+    end 
+    
+    param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
+    param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+    param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
+    param["P_LUGAR"]={:tipo=>"String", :valor=>LUGAR.mb_chars.downcase.titleize}
+    param["P_FECHA_SOLICITUD"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora).mb_chars.downcase}"}
+    #param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=> (@datosinvitacion.fecha_actual)? "#{@datosinvitacion.fecha_actual.strftime("%d de ")} #{Date::MONTHNAMES[@datosinvitacion.fecha_actual.month].downcase} de #{@datosinvitacion.fecha_actual.year}".gsub(/^0/,'') : nil}    
+    param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>(@tramite) ? @tramite.numero_expediente : nil}
+    param["P_SOLICITANTE"]={:tipo=>"String", :valor=>""}
+    #param["P_INVITADO"]={:tipo=>"String", :valor=>""}
+    param["P_INVOLUCRADOS_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.descripcion_involucrados_con_articulo} if @comparecencia && @comparecencia.descripcion_involucrados_con_articulo
+    param["P_SOLICITANTES_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.solicitantes.mb_chars.downcase.titleize} if @comparecencia && @comparecencia.solicitantes
+    param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>""}
+    param["P_TIPOCOMPARECENCIA"]={:tipo=>"String", :valor=>@tipo}
+    param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=>DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '')}
+
+    
+    if current_user.has_role?("especialistajuzgado")
+      param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>current_user.nombre_completo.mb_chars.downcase.titleize}
+      param["P_CARGO"]={:tipo=>"String", :valor=>current_user.categoria.mb_chars.downcase.titleize}
+    else
+      #param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@datosinvitacion.subdirector.mb_chars.downcase.titleize}
+      #param["P_CARGO"]={:tipo=>"String", :valor=>@datosinvitacion.cargo.mb_chars.downcase.titleize}
+      d = Subdireccion.find(:conditions=>["carg=SUBDIRECTOR REGIONAL and id=1"])
+      param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular.mb_chars.downcase.titleize}
+      param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo.mb_chars.downcase.titleize}
+    end
+
+
+    if File.exists?(REPORTS_DIR + "/radicacion.jasper")
+      #(@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
+      send_doc_jdbc("radicacion", "radicacion", param, output_type = 'pdf')
+    else
+      render :text => "Error"
+    end       
+        
+  end
+
+
+
+
   def destroy
     if params[:id] && @invitacion = Invitacion.find(params[:id])
       (@invitacion.destroy) ? flash[:notice] = "Registro eliminado correctamente" : flash[:error] = "No se pudo eliminar, verique"
