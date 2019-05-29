@@ -422,12 +422,10 @@ class InvitacionesController < ApplicationController
     if current_user.has_role?("especialistajuzgado")
       param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>current_user.nombre_completo.mb_chars.downcase.titleize}
       param["P_CARGO"]={:tipo=>"String", :valor=>current_user.categoria.mb_chars.downcase.titleize}
-    else
-      #param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@datosinvitacion.subdirector.mb_chars.downcase.titleize}
-      #param["P_CARGO"]={:tipo=>"String", :valor=>@datosinvitacion.cargo.mb_chars.downcase.titleize}
-      d = Subdireccion.find(:conditions=>["carg=SUBDIRECTOR REGIONAL and id=1"])
+    else      
+      d = Subdireccion.find(:first, :conditions => ["cargo='SUBDIRECTOR REGIONAL' AND id=1"])
       param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular.mb_chars.downcase.titleize}
-      param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo.mb_chars.downcase.titleize}
+      param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo.mb_chars.downcase.titleize}      
     end
 
 
