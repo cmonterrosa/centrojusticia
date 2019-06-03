@@ -154,6 +154,8 @@ class InvitacionesController < ApplicationController
   def generar
     @invitacion = Invitacion.find(params[:id])
     if @invitacion
+       @subdireccion = current_user.subdireccion
+       @subdirector = @subdireccion.titular if @subdireccion
        @sesion = @invitacion.sesion
        @tramite = @sesion.tramite
        @involucrado = Participante.find(params[:p]) if params[:p]
@@ -207,9 +209,10 @@ class InvitacionesController < ApplicationController
       param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
 
        if current_user.has_role?("direccion")
-          d = Subdireccion.find_by_cargo("Director General")
-          param["P_FIRMANTE"]={:tipo=>"String", :valor=>d.titular}
-          param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo}
+          #d = Subdireccion.find_by_cargo("Director General")
+          #param["P_FIRMANTE"]={:tipo=>"String", :valor=>d.titular}
+          param["P_FIRMANTE"]={:tipo=>"String", :valor=>@subdirector.mb_chars.downcase.titleize}
+          param["P_CARGO"]={:tipo=>"String", :valor=>@subdireccion.cargo.mb_chars.downcase.titleize}
        else
           param["P_FIRMANTE"]={:tipo=>"String", :valor=>@invitacion.subdireccion.titular}
           param["P_CARGO"]={:tipo=>"String", :valor=>@invitacion.subdireccion.cargo}
@@ -253,6 +256,8 @@ class InvitacionesController < ApplicationController
 
   
   def imprimir
+    @subdireccion = current_user.subdireccion
+    @subdirector = @subdireccion.titular if @subdireccion
     @participante = Participante.find(params[:participante])
     @perfil = @participante.perfil
     @sesion = Sesion.find(params[:id])
@@ -334,9 +339,10 @@ class InvitacionesController < ApplicationController
 
       #param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
        if current_user.has_role?("direccion")
-          d = Subdireccion.find_by_cargo("DIRECTOR GENERAL")
-          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular.mb_chars.downcase.titleize}
-          param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo.mb_chars.downcase.titleize}
+          #d = Subdireccion.find_by_cargo("DIRECTOR GENERAL")
+          param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@subdirector.mb_chars.downcase.titleize}
+          param["P_CARGO"]={:tipo=>"String", :valor=>@subdireccion.cargo.mb_chars.downcase.titleize}
+          #param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo.mb_chars.downcase.titleize}
        elsif current_user.has_role?("especialistajuzgado")
           param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>current_user.nombre_completo.mb_chars.downcase.titleize}
           param["P_CARGO"]={:tipo=>"String", :valor=>current_user.categoria.mb_chars.downcase.titleize}
@@ -391,7 +397,9 @@ class InvitacionesController < ApplicationController
   end
 
 
-  def radicacion    
+  def radicacion
+    @subdireccion = current_user.subdireccion
+    @subdirector = @subdireccion.titular if @subdireccion
     @participante = Participante.find(params[:participante])
     @perfil = @participante.perfil
     @comparecencia = Comparecencia.find(params[:comparecencia])
@@ -416,16 +424,19 @@ class InvitacionesController < ApplicationController
     param["P_SOLICITANTES_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.solicitantes.mb_chars.downcase.titleize} if @comparecencia && @comparecencia.solicitantes
     param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>""}
     param["P_TIPOCOMPARECENCIA"]={:tipo=>"String", :valor=>@tipo}
-    param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=>DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '')}
+    param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=>DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '').mb_chars.downcase}
 
     
     if current_user.has_role?("especialistajuzgado")
       param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>current_user.nombre_completo.mb_chars.downcase.titleize}
       param["P_CARGO"]={:tipo=>"String", :valor=>current_user.categoria.mb_chars.downcase.titleize}
     else      
-      d = Subdireccion.find(:first, :conditions => ["cargo='SUBDIRECTOR REGIONAL' AND id=1"])
-      param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular.mb_chars.downcase.titleize}
-      param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo.mb_chars.downcase.titleize}      
+      #d = Subdireccion.find(:first, :conditions => ["cargo='SUBDIRECTOR REGIONAL' AND id=1"])
+      #param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>d.titular.mb_chars.downcase.titleize}
+      #param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo.mb_chars.downcase.titleize}
+
+      param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@subdirector.mb_chars.downcase.titleize}
+      param["P_CARGO"]={:tipo=>"String", :valor=>@subdireccion.cargo.mb_chars.downcase.capitalize} if @subdireccion
     end
 
 
