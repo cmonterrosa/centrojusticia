@@ -32,14 +32,14 @@
 	<title>
 		<band height="764" splitType="Stretch">
 			<textField>
-				<reportElement x="33" y="115" width="501" height="22" forecolor="#000000"/>
+				<reportElement x="33" y="108" width="501" height="22" forecolor="#000000"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["NÚMERO DE EXPEDIENTE: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="33" y="152" width="501" height="571"/>
+				<reportElement x="33" y="139" width="501" height="605"/>
 				<textElement textAlignment="Justified" lineSpacing="1_1_2" markup="html">
 					<font fontName="Calibri" size="11" pdfEncoding="Cp1252"/>
 				</textElement>
@@ -48,11 +48,11 @@
 "2. ADMISIÓN DE LA SOLICITUD.- De conformidad con los artículos 32, fracción II, 51, 52, 53, 54 y 55 de la Ley de Justicia Alternativa del Estado de Chiapas, y 76, 77, 78, 84 y 85 de su Reglamento, se admite a trámite la solicitud planteada." + "<br><br>" +
 "3. DESIGNACIÓN DE ESPECIALISTAS.- Desígnese a los especialistas públicos atendiendo a la carga de trabajo de esta Subdirección, para que se ocupen del asunto." + "<br><br>" +
 "4. FECHA Y HORA DE LA SESIÓN DE ORIENTACIÓN CONJUNTA.- Procédase a señalar fecha y hora, a fin de llevarse a cabo la sesión conjunta de orientación, según la agenda de sesiones de esta Subdirección. " + "<br><br>" +
-"5. INVITACIÓN AL INVOLUCRADO.- Con apoyo en lo dispuesto por los artículos 55 de la Ley en cita y 86 de su Reglamento, por conducto del (a) invitador (a ) habilitado (a ) invítese preferentemente en forma personal a la parte involucrada en el domicilio indicado, o bien vía telefónica, electrónica, a través de la parte solicitante o por cualquier otro medio disponible; haciéndole del conocimiento que podrá acompañarse de persona de su confianza y presentar la documentación que considere necesaria para el desahogo de la sesión. Asimismo, que es necesario presentarse con una identificación oficial, todo en original y copia fotostática." + "<br>" +
- "6. DOMICILIO DEL (A) SOLICITANTE.- Se tiene como domicilio del (a) solicitante para recibir toda clase de comunicaciones el que se indica en su solicitud. " + "<br><br>" + "Así lo determinó y firma " + $P{P_SUBDIRECTOR} + ", Subdirector Regional Centro del Centro Estatal de Justicia Alternativa, en la ciudad de " + $P{P_LUGAR} + ", Chiapas; el " + $P{P_FECHA_ACTUAL}  + "." + "<br>"]]></textFieldExpression>
+"5. INVITACIÓN AL INVOLUCRADO.- Con apoyo en lo dispuesto por los artículos 55 de la Ley en cita y 86 de su Reglamento, por conducto del (a) invitador (a ) habilitado (a ) invítese preferentemente en forma personal a la parte involucrada en el domicilio indicado, o bien vía telefónica, electrónica, a través de la parte solicitante o por cualquier otro medio disponible; haciéndole del conocimiento que podrá acompañarse de persona de su confianza y presentar la documentación que considere necesaria para el desahogo de la sesión. Asimismo, que es necesario presentarse con una identificación oficial, todo en original y copia fotostática." + "<br><br>" +
+ "6. DOMICILIO DEL (A) SOLICITANTE.- Se tiene como domicilio del (a) solicitante para recibir toda clase de comunicaciones el que se indica en su solicitud. " + "<br><br>" + "Así lo determinó y firma " + $P{P_SUBDIRECTOR} + ", " + $P{P_CARGO} + " del Centro Estatal de Justicia Alternativa, en la ciudad de " + $P{P_LUGAR} + ", Chiapas; el " + $P{P_FECHA_ACTUAL}  + "." + "<br>"]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
-				<reportElement stretchType="RelativeToTallestObject" x="12" y="9" width="543" height="92"/>
+				<reportElement stretchType="RelativeToTallestObject" x="12" y="3" width="543" height="92"/>
 				<imageExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/app/reports/imagenes/logo_tribunal.jpg"]]></imageExpression>
 			</image>
 			<staticText>
