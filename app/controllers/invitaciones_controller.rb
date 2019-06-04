@@ -436,7 +436,7 @@ class InvitacionesController < ApplicationController
       #param["P_CARGO"]={:tipo=>"String", :valor=>d.cargo.mb_chars.downcase.titleize}
 
       param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@subdirector.mb_chars.downcase.titleize}
-      param["P_CARGO"]={:tipo=>"String", :valor=>@subdireccion.cargo.mb_chars.downcase.capitalize} if @subdireccion
+      param["P_CARGO"]={:tipo=>"String", :valor=>@subdireccion.cargo.mb_chars.downcase.titleize} if @subdireccion
     end
 
 
