@@ -41,7 +41,7 @@
 			<textField>
 				<reportElement x="33" y="139" width="501" height="605"/>
 				<textElement textAlignment="Justified" lineSpacing="1_1_2" markup="html">
-					<font fontName="Calibri" size="11" pdfEncoding="Cp1252"/>
+					<font fontName="SansSerif" size="10" pdfEncoding="Cp1252"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["RADICACIÓN.- En atención a la comparecencia " + $P{P_TIPOCOMPARECENCIA}  + " realizada por <b>" + $P{P_SOLICITANTES_DESCRIPCION} + "</b> el día <b>" + $P{P_FECHA_SOLICITUD} + "</b>, en la que solicita se invite a " + $P{P_INVOLUCRADOS_DESCRIPCION} + ", a efecto de llegar a un acuerdo armonioso para solucionar la controversia que ha surgido entre ellos; al respecto se determina: " + "<br><br>" +
 "1. RADICACIÓN DEL EXPEDIENTE.- Se radica la solicitud bajo el número de expediente al rubro indicado, haciéndose las anotaciones correspondientes en el libro de control y/o electrónico del Sistema Informático KOLAVAL, que se lleven al efecto. " + "<br><br>" +
@@ -52,7 +52,7 @@
  "6. DOMICILIO DEL (A) SOLICITANTE.- Se tiene como domicilio del (a) solicitante para recibir toda clase de comunicaciones el que se indica en su solicitud. " + "<br><br>" + "Así lo determinó y firma " + $P{P_SUBDIRECTOR} + ", " + $P{P_CARGO} + " del Centro Estatal de Justicia Alternativa, en la ciudad de " + $P{P_LUGAR} + ", Chiapas; el " + $P{P_FECHA_ACTUAL}  + "." + "<br>"]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
-				<reportElement stretchType="RelativeToTallestObject" x="12" y="3" width="543" height="92"/>
+				<reportElement stretchType="RelativeToTallestObject" x="12" y="7" width="543" height="92"/>
 				<imageExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/app/reports/imagenes/logo_tribunal.jpg"]]></imageExpression>
 			</image>
 			<staticText>
