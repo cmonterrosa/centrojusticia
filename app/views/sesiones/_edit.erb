@@ -28,7 +28,7 @@
                <td align="center" align="center" colspan="2">Invitación</td>
              </tr>
              <tr>
-               <td align="center" colspan="2">  <%=f.select(:num_invitacion, @invitaciones.map { |k,v| [ k, v ] })%></td>
+               <td align="center" colspan="2">  <%=f.select(:num_invitacion, @invitaciones.map { |k,v| [ k, v ] }, { :include_blank => true })%></td>
              </tr>
 
 

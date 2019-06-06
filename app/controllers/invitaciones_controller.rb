@@ -413,7 +413,7 @@ class InvitacionesController < ApplicationController
     
     param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
     param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
-    param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION}
+    param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION.mb_chars.downcase.titleize}
     param["P_LUGAR"]={:tipo=>"String", :valor=>LUGAR.mb_chars.downcase.titleize}
     param["P_FECHA_SOLICITUD"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora).mb_chars.downcase}"}
     #param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=> (@datosinvitacion.fecha_actual)? "#{@datosinvitacion.fecha_actual.strftime("%d de ")} #{Date::MONTHNAMES[@datosinvitacion.fecha_actual.month].downcase} de #{@datosinvitacion.fecha_actual.year}".gsub(/^0/,'') : nil}    

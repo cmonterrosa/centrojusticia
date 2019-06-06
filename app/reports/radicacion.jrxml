@@ -32,14 +32,14 @@
 	<title>
 		<band height="764" splitType="Stretch">
 			<textField>
-				<reportElement x="33" y="108" width="501" height="22" forecolor="#000000"/>
+				<reportElement x="70" y="108" width="457" height="22" forecolor="#000000"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["NÚMERO DE EXPEDIENTE: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="33" y="139" width="501" height="605"/>
+				<reportElement x="70" y="139" width="457" height="605"/>
 				<textElement textAlignment="Justified" lineSpacing="1_1_2" markup="html">
 					<font fontName="SansSerif" size="10" pdfEncoding="Cp1252"/>
 				</textElement>
@@ -52,18 +52,18 @@
  "6. DOMICILIO DEL (A) SOLICITANTE.- Se tiene como domicilio del (a) solicitante para recibir toda clase de comunicaciones el que se indica en su solicitud. " + "<br><br>" + "Así lo determinó y firma " + $P{P_SUBDIRECTOR} + ", " + $P{P_CARGO} + " del Centro Estatal de Justicia Alternativa, en la ciudad de " + $P{P_LUGAR} + ", Chiapas; el " + $P{P_FECHA_ACTUAL}  + "." + "<br>"]]></textFieldExpression>
 			</textField>
 			<image scaleImage="FillFrame">
-				<reportElement stretchType="RelativeToTallestObject" x="12" y="7" width="543" height="92"/>
+				<reportElement stretchType="RelativeToTallestObject" x="30" y="7" width="519" height="92"/>
 				<imageExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/app/reports/imagenes/logo_tribunal.jpg"]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement style="Title" x="206" y="41" width="343" height="20" forecolor="#7C2425"/>
+				<reportElement style="Title" x="198" y="41" width="343" height="20" forecolor="#7C2425"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font fontName="Arial" size="11" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<text><![CDATA[Centro Estatal de Justicia Alternativa]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="283" y="60" width="266" height="15" forecolor="#7C2425"/>
+				<reportElement x="275" y="63" width="266" height="15" forecolor="#7C2425"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="10" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
 				</textElement>
