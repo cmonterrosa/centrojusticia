@@ -294,7 +294,9 @@ class InvitacionesController < ApplicationController
        param["P_MATERIA"]={:tipo=>"String", :valor=>@datosinvitacion.materia.downcase}
        param["P_LUGAR"]={:tipo=>"String", :valor=>(@datosinvitacion.lugar)? "#{@datosinvitacion.lugar.mb_chars.downcase.titleize}, Chiapas" : nil }
        param["P_GENERO"]={:tipo=>"String", :valor=>@datosinvitacion.genero_solicitante}
-       param["P_DIRECCION_OFICINAS"]=(@configuracion.pie_pagina)? {:tipo=>"String", :valor=>@configuracion.pie_pagina} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+       param["P_DIRECCION_OFICINAS"]=(@subdireccion.direccion)? {:tipo=>"String", :valor=>@subdireccion.direccion} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+       param["P_PIE_PAGINA"]=(@configuracion.pie_pagina)? {:tipo=>"String", :valor=>@configuracion.pie_pagina} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+       param["P_TELEFONOS_OFICINAS"]=(@subdireccion.telefonos)? {:tipo=>"String", :valor=>@subdireccion.telefonos} : ""
        param["P_ESPECIALISTA_SEXO"]={:tipo=>"String", :valor=>@sesion.mediador.articulo_segun_genero} if @datosinvitacion.especialista && @sesion.mediador
 
       ### Numero de invitacion ###
