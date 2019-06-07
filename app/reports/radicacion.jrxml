@@ -32,14 +32,14 @@
 	<title>
 		<band height="764" splitType="Stretch">
 			<textField>
-				<reportElement x="70" y="108" width="457" height="22" forecolor="#000000"/>
+				<reportElement x="70" y="112" width="457" height="22" forecolor="#000000"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["NÚMERO DE EXPEDIENTE: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement x="70" y="139" width="457" height="605"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="70" y="140" width="457" height="624"/>
 				<textElement textAlignment="Justified" lineSpacing="1_1_2" markup="html">
 					<font fontName="SansSerif" size="10" pdfEncoding="Cp1252"/>
 				</textElement>
