@@ -52,7 +52,7 @@ class InvitacionesController < ApplicationController
     @datosinvitacion.subdireccion ||= (@subdireccion.descripcion) ? @subdireccion.descripcion.downcase.titleize : nil if @subdireccion
     @datosinvitacion.subdirector ||= @subdireccion.titular if @subdireccion
     @datosinvitacion.cargo ||= @subdireccion.cargo.downcase.capitalize if @subdireccion
-    @datosinvitacion.fechahora_sesion ||= @sesion.fechahora_completa.camelize
+    @datosinvitacion.fechahora_sesion ||= @sesion.fechahora_completa_corta.camelize
     @datosinvitacion.materia ||= (@sesion.tramite && @sesion.tramite.materia)? @sesion.tramite.materia.descripcion : nil if @sesion.tramite
     @datosinvitacion.especialista ||= (@sesion.mediador) ? @sesion.mediador.nombre_completo : nil
     @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '')
@@ -85,7 +85,7 @@ class InvitacionesController < ApplicationController
     @datosinvitacion.subdireccion ||= (@subdireccion.descripcion) ? @subdireccion.descripcion : nil if @subdireccion
     @datosinvitacion.subdirector ||= @subdireccion.titular if @subdireccion
     @datosinvitacion.cargo ||= @subdireccion.cargo if @subdireccion
-    @datosinvitacion.fechahora_sesion ||= @sesion.fechahora_completa
+    @datosinvitacion.fechahora_sesion ||= @sesion.fechahora_completa_corta
     @datosinvitacion.materia ||= (@sesion.tramite && @sesion.tramite.materia)? @sesion.tramite.materia.descripcion : nil if @sesion.tramite
     @datosinvitacion.especialista ||= (@sesion.mediador) ? @sesion.mediador.nombre_completo : nil
     @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d de %B de %Y")
