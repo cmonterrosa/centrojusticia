@@ -123,6 +123,20 @@ class Sesion < ActiveRecord::Base
     end
    end
 
+   def fechahora_completa_corta
+    nueva_fecha = self.start_at
+    if nueva_fecha
+      case self.hora
+        when (1..11)
+          return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} AM"
+        when (12..24)
+          return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} PM"
+      end
+    end
+   end
+
+
+
   def cancel!(user=nil)
     self.cancel = true
     self.cancel_user = user.id if user
@@ -226,6 +240,12 @@ class Sesion < ActiveRecord::Base
        end
     end
   end
+
+  def num_invitacion_descripcion
+    if self.num_invitacion
+     (self.num_invitacion==1)? "primera" : "segunda"
+    end
+  end 
 
 
 def diez_dias_habiles(fecha=DateTime.now)
