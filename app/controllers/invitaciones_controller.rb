@@ -303,7 +303,7 @@ class InvitacionesController < ApplicationController
       if @invitacion && @invitacion.numero_invitacion
           case @invitacion.numero_invitacion
             when 2
-              @leyenda_invitacion="Segundo citatorio"
+              @leyenda_invitacion="Segundo y último citatorio"
               param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
             when 3
               @leyenda_invitacion="TERCERA INVITACIÓN"
