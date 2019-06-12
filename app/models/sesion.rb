@@ -1,4 +1,5 @@
 require 'date'
+require 'time'
 class Sesion < ActiveRecord::Base
   belongs_to :tramite
   belongs_to :horario
@@ -126,11 +127,12 @@ class Sesion < ActiveRecord::Base
    def fechahora_completa_corta
     nueva_fecha = self.start_at
     if nueva_fecha
-      case self.hora
-        when (1..11)
-          return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} AM"
-        when (12..24)
-          return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{self.hora.to_s.rjust(2, '0')}:#{self.minutos.to_s.rjust(2, '0')} PM"
+      @hora = Time.parse("#{self.hora.to_s.rjust(2, '0')}:00").strftime("%I")          
+      case self.hora        
+        when (1..11)          
+          return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{@hora}:#{self.minutos.to_s.rjust(2, '0')} AM" 
+        when (12..24)          
+          return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{@hora.to_s}:#{self.minutos.to_s.rjust(2, '0')} PM" 
       end
     end
    end
