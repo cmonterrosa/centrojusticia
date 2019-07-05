@@ -18,7 +18,7 @@
     
         <%@invitaciones.each do |invitacion|%>
           <tr>
-            <td><%=h (invitacion.entregada)? (image_tag "iconos/true.png", :border =>0): "-"%></td>
+            <td><%=h (invitacion.entregada)? (image_tag "iconos/true.png", :border =>0): (image_tag "iconos/false.png", :border =>0)%></td>
             <td><%=h (invitacion.sesion.tramite) ? (link_to "#{invitacion.sesion.tramite.numero_expediente}", :action => "show", :controller => "tramites", :id => invitacion.sesion.tramite.id, :target => "_blank") : ""%></td>
             <td><%=h (invitacion.participante) ? invitacion.participante.nombre_completo : "----"%></td>
             <td><%=h (invitacion.sesion.start_at)? invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---"%></td>

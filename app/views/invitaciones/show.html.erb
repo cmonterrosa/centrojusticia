@@ -27,16 +27,26 @@
         <td style="vertical-align: middle;"><%=h((@invitacion.participante.cuadrante_id) ? Cuadrante.find(@invitacion.participante.cuadrante_id).descripcion : "---")%></td>
       </tr>
 
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b>Estatus:</b></td>
+        <td style="vertical-align: middle;"><%=h((@invitacion.estatus))%></td>
+      </tr>
+
+      <tr class="d0">
+        <td style="vertical-align: middle;"><b>Justificacion:</b></td>
+        <td style="vertical-align: middle;"><%=h((@invitacion.justificacion) ? @invitacion.justificacion : "---")%></td>
+      </tr>
+
+      <tr class="d1">
+        <td style="vertical-align: middle;"><b>Invitador:</b></td>
+        <td style="vertical-align: middle;"><%=h((@invitacion.invitador) ? @invitacion.invitador.nombre_completo : "---")%></td>
+      </tr>
+
     <%if @invitacion.entregada == true%>
       <tr class="d0">
         <td style="vertical-align: middle;"><b>Fecha de entrega:</b></td>
         <td style="vertical-align: middle;"><%=h((@invitacion.fecha_hora_entrega) ? @invitacion.fecha_hora_entrega.strftime("%d de %B de %Y / %H:%M") : "No se ha entregado")%></td>
-      </tr>
-
-      <tr class="d1">
-        <td style="vertical-align: middle;"><b>Entregada por:</b></td>
-        <td style="vertical-align: middle;"><%=h((@invitacion.invitador_id) ? User.find(@invitacion.invitador_id).nombre_completo : "---")%></td>
-      </tr>
+      </tr>      
     
       <tr class="d0">
         <td style="vertical-align: middle;"><b>Justificación:</b></td>

@@ -111,7 +111,8 @@ class InvitacionesController < ApplicationController
      #@invitaciones = Invitacion.find(:all, :conditions => ["entregada IS NULL and participante_id IS NOT NULL"], :order => ["created_at DESC"])
      @invitaciones = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
                                     :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
-                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND invitacions.entregada IS NULL", ["invi-firm", "invi-proc"]],
+                                    #:conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND invitacions.entregada IS NULL", ["invi-firm", "invi-proc"]],
+                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND (invitacions.entregada IS NULL or invitacions.entregada is false)"],
                                     :order => "t.anio DESC, t.folio_expediente DESC").paginate(:page => params[:page], :per_page => 25)
 
   end
@@ -119,7 +120,8 @@ class InvitacionesController < ApplicationController
   def show_entregadas
     @invitaciones = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
                                     :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
-                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND invitacions.entregada IS NOT NULL", ["invi-firm", "invi-proc"]],
+                                    #:conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND invitacions.entregada IS NOT NULL", ["invi-firm", "invi-proc"]],
+                                    :conditions => ["invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND invitacions.entregada is true"],
                                     :order => "t.anio DESC, t.folio_expediente DESC").paginate(:page => params[:page], :per_page => 25)
 
   end
@@ -271,6 +273,7 @@ class InvitacionesController < ApplicationController
     @invitacion.numero_invitacion ||= @sesion.num_invitacion if @sesion.num_invitacion
     @tramite = @sesion.tramite
     @configuracion = Configuracion.find(:all).first
+    @juzgado = (JUZGADO)? JUZGADO : nil
     @configuracion.pie_pagina
     
     if @sesion && @datosinvitacion
@@ -293,15 +296,26 @@ class InvitacionesController < ApplicationController
        param["P_FECHAHORA_SESION"]={:tipo=>"String", :valor=>@datosinvitacion.fechahora_sesion.downcase}
        param["P_MATERIA"]={:tipo=>"String", :valor=>@datosinvitacion.materia.downcase}
        param["P_LUGAR"]={:tipo=>"String", :valor=>(@datosinvitacion.lugar)? "#{@datosinvitacion.lugar.mb_chars.downcase.titleize}, Chiapas" : nil }
-       param["P_GENERO"]={:tipo=>"String", :valor=>@datosinvitacion.genero_solicitante}
-       param["P_DIRECCION_OFICINAS"]=(@subdireccion.direccion)? {:tipo=>"String", :valor=>@subdireccion.direccion} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+       param["P_GENERO"]={:tipo=>"String", :valor=>@datosinvitacion.genero_solicitante}       
        param["P_PIE_PAGINA"]=(@configuracion.pie_pagina)? {:tipo=>"String", :valor=>@configuracion.pie_pagina} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
        param["P_TELEFONOS_OFICINAS"]=(@subdireccion.telefonos)? {:tipo=>"String", :valor=>@subdireccion.telefonos} : ""
        param["P_ESPECIALISTA_SEXO"]={:tipo=>"String", :valor=>@sesion.mediador.articulo_segun_genero} if @datosinvitacion.especialista && @sesion.mediador
+       param["P_DIRECCION_OFICINAS"]=(@subdireccion.direccion)? {:tipo=>"String", :valor=>@subdireccion.direccion} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+       if @juzgado and @juzgado != "" and @datosinvitacion.materia.downcase == "penal" and current_user.has_role?("especialistajuzgado")
+         param["P_DIRECCION_OFICINAS"]=(@subdireccion.direccion)? {:tipo=>"String", :valor=>"el <b>#{@juzgado}</b>, con domicilio en <b>#{@subdireccion.direccion}</b>"} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+       else
+        param["P_DIRECCION_OFICINAS"]=(@subdireccion.direccion)? {:tipo=>"String", :valor=>@subdireccion.direccion} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+
+       end
+       #param["P_JUZGADO"]={:tipo=>"String", :valor=>(JUZGADO)? JUZGADO : nil}  
 
       ### Numero de invitacion ###
       if @invitacion && @invitacion.numero_invitacion
           case @invitacion.numero_invitacion
+            when 1
+              if @datosinvitacion.materia.upcase == "PENAL"
+                @leyenda_invitacion="Primera Invitación"  
+              end
             when 2
               @leyenda_invitacion="Segundo y último citatorio"
               param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
@@ -353,13 +367,22 @@ class InvitacionesController < ApplicationController
           param["P_CARGO"]={:tipo=>"String", :valor=>@datosinvitacion.cargo.mb_chars.downcase.titleize}
        end
        @comparecencia = @invitacion.sesion.tramite.comparecencia if @invitacion.sesion.tramite
+       #selección del reporte a imprimir depediendo si es solicitante o involucrado y si es materia penal o no
        if @invitacion.save
             if @perfil == 'SOLICITANTE'
-                param["P_INVOLUCRADOS_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.descripcion_involucrados_con_articulo} if @comparecencia && @comparecencia.descripcion_involucrados_con_articulo
-                (File.exists?(REPORTS_DIR + "/nueva_invitacion.jasper"))?  send_doc_jdbc("nueva_invitacion", "nueva_invitacion", param, output_type = 'pdf') : (render :text => "<h3>Error de invitación del solicitante, contacte al administrador del sistema</h3>")
+                 param["P_INVOLUCRADOS_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.descripcion_involucrados_con_articulo} if @comparecencia && @comparecencia.descripcion_involucrados_con_articulo
+                if @datosinvitacion.materia.downcase == "penal" and current_user.has_role?("especialistajuzgado")
+                  (File.exists?(REPORTS_DIR + "/nueva_invitacion_penal.jasper"))?  send_doc_jdbc("nueva_invitacion_penal", "nueva_invitacion_penal", param, output_type = 'pdf') : (render :text => "<h3>Error de invitación del solicitante, contacte al administrador del sistema</h3>")
+                else
+                  (File.exists?(REPORTS_DIR + "/nueva_invitacion.jasper"))?  send_doc_jdbc("nueva_invitacion", "nueva_invitacion", param, output_type = 'pdf') : (render :text => "<h3>Error de invitación del solicitante, contacte al administrador del sistema</h3>")
+                end
             else
-                param["P_SOLICITANTES_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.descripcion_solicitantes_con_articulo} if @comparecencia && @comparecencia.descripcion_solicitantes_con_articulo
+               param["P_SOLICITANTES_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.descripcion_solicitantes_con_articulo} if @comparecencia && @comparecencia.descripcion_solicitantes_con_articulo
+              if @datosinvitacion.materia.downcase == "penal" and current_user.has_role?("especialistajuzgado")
+                (File.exists?(REPORTS_DIR + "/nueva_invitacion_involucrado_penal.jasper"))?  send_doc_jdbc("nueva_invitacion_involucrado_penal", "nueva_invitacion", param, output_type = 'pdf') : (render :text => "<h3>Error de invitación del involucrado, contacte al administrador del sistema</h3>")
+              else                
                 (File.exists?(REPORTS_DIR + "/nueva_invitacion_involucrado.jasper"))?  send_doc_jdbc("nueva_invitacion_involucrado", "nueva_invitacion", param, output_type = 'pdf') : (render :text => "<h3>Error de invitación del involucrado, contacte al administrador del sistema</h3>")
+              end  
             end
         end
     else
@@ -378,11 +401,13 @@ class InvitacionesController < ApplicationController
     @cuadrantes = current_user.cuadrantes
     @invitaciones_cuadrantes = Invitacion.find(:all, :select => "invitacions.*, cu.descripcion as cuadrante, t.id as tramite_id, s.fecha as fecha_sesion",
                                     :joins => ["invitacions,participantes p, cuadrantes cu, sesions s, tramites t, estatus e"],
-                                    :conditions => ["invitacions.participante_id=p.id AND p.cuadrante_id=cu.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND cu.id in (?)", ["invi-firm", "invi-proc"], @cuadrantes.map{|x|x.id}],
+                                    #:conditions => ["invitacions.participante_id=p.id AND p.cuadrante_id=cu.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave in (?) AND cu.id in (?)", ["invi-firm", "invi-proc"], @cuadrantes.map{|x|x.id}],
+                                    :conditions => ["invitacions.participante_id=p.id AND p.cuadrante_id=cu.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id "],
                                     :order => "cu.descripcion")
     @invitaciones_asignadas =  Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id as cuadrante, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at, s.fecha as fecha_sesion",
                                     :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
-                                    :conditions => ["invitador_id = ? AND invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ?", current_user.id, "invi-proc"],
+                                    #:conditions => ["invitador_id = ? AND invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ?", current_user.id, "invi-proc"],
+                                    :conditions => ["invitador_id = ? AND invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id", current_user.id],
                                     :order => "t.anio DESC, t.folio_expediente DESC")
     @invitaciones = @invitaciones_cuadrantes + @invitaciones_asignadas
     @invitaciones.sort{|p1, p2| p1.fecha_sesion <=> p2.fecha_sesion}
@@ -423,7 +448,7 @@ class InvitacionesController < ApplicationController
     param["P_SOLICITANTE"]={:tipo=>"String", :valor=>""}
     #param["P_INVITADO"]={:tipo=>"String", :valor=>""}
     param["P_INVOLUCRADOS_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.descripcion_involucrados_con_articulo} if @comparecencia && @comparecencia.descripcion_involucrados_con_articulo
-    param["P_SOLICITANTES_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.solicitantes.mb_chars.downcase.titleize} if @comparecencia && @comparecencia.solicitantes
+    param["P_SOLICITANTES_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.solicitantes_full} if @comparecencia && @comparecencia.solicitantes
     param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>""}
     param["P_TIPOCOMPARECENCIA"]={:tipo=>"String", :valor=>@tipo}
     param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=>DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '').mb_chars.downcase}
@@ -520,7 +545,8 @@ class InvitacionesController < ApplicationController
 
     @invitaciones_asignadas = Invitacion.find(:all, :select => "invitacions.*, p.cuadrante_id as cuadrante, t.id as tramite_id, t.anio, t.folio_expediente, t.created_at",
                                     :joins => ["invitacions,participantes p, sesions s, tramites t, estatus e"],
-                                    :conditions => ["invitador_id = ? AND invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ?", current_user.id, "invi-razo"],
+                                    #:conditions => ["invitador_id = ? AND invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND e.clave = ?", current_user.id, "invi-razo"],
+                                    :conditions => ["invitador_id = ? AND invitacions.participante_id=p.id AND invitacions.sesion_id=s.id AND s.tramite_id=t.id AND t.estatu_id=e.id AND invitacions.entregada is true", current_user.id],
                                     :order => "t.anio DESC, t.folio_expediente DESC")                     
     @invitaciones =  @invitaciones_asignadas
     #@invitaciones = Invitacion.find(:all, :conditions => ["entregada = ? AND invitador_id = ?", true, current_user.id], :order => "fecha_hora_entrega DESC")

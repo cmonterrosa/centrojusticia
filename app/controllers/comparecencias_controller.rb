@@ -391,7 +391,7 @@ class ComparecenciasController < ApplicationController
        #@margen = ((60 * 60) * 24) * 3
        @partial = params[:token] && params[:token] == "partial"
        @user_success = (@tramite.orientacion.especialista == current_user || current_user.has_role?(:subdireccion))? true : false
-       @time_success = (@comparecencia.created_at > 3.days.ago)? true : false
+       @time_success = (@comparecencia.created_at > 180.days.ago)? true : false
        #(Time.now < (@comparecencia.created_at + @margen) || (Time.now < (@comparecencia.updated_at + @margen))) ? true : false
        if @user_success && @time_success
           @participantes = @comparecencia.participantes
@@ -406,7 +406,7 @@ class ComparecenciasController < ApplicationController
           flash[:notice] = "Registro cambiado a 'Solo Orientacion'"
           msj = "<h3 class='formee-msg-success'>#{flash[:notice]}</h3>"
       else
-          flash[:error] = "No se pudo cambiar a solo orientacion, no le pertenece o tiene más de 3 que capturo comparecencia, contacte al administrador"
+          flash[:error] = "No se pudo cambiar a solo orientacion, no le pertenece o tiene más de 180 días que capturó comparecencia, contacte al administrador"
           msj = "<h3 class='formee-msg-error'>#{flash[:error]}</h3>"
       end
       (@partial)? (render :text => msj ) : (redirect_to :action => "list_by_user")

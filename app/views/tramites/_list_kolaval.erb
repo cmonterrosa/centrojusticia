@@ -144,10 +144,10 @@
         <%end%>
 
          <!-- Cambiar a solo orientacion solo admin y oficina administrativa -->
-         <%if (tramite.estatu_id == comparecencia_concluida.id) && (current_user.has_role?(:admin) || current_user.has_role?(:admindireccion))%>
+         <%if (tramite.estatu_id == comparecencia_concluida.id) && (current_user.has_role?(:admindireccion) || current_user.has_role?(:especialistajuzgado))%>
                 <%ultimo_folio_anio = Tramite.maximum(:folio_expediente, :conditions => ["anio = ?", Time.now.year]) %>
-                <%if comparecencia = Comparecencia.find(:first, :select => "id, tramite_id", :conditions => ["tramite_id = ?", tramite.id])%>
-                    <%if comparecencia.tramite.anio == Time.now.year.to_s && comparecencia.tramite.folio_expediente == ultimo_folio_anio.to_i%>
+                <%if comparecencia = Comparecencia.find(:first, :select => "id, tramite_id", :conditions => ["tramite_id = ?", tramite.id])%>                    
+                    <%if comparecencia.tramite.anio == Time.now.year.to_s%>
                           <td style="vertical-align: middle;"><%=h (link_to "Cambiar a orientacion", {:controller => "comparecencias", :action => "change_to_orientacion", :id => comparecencia.id, :token => "partial"}, :class => "fancybox fancybox.iframe boton", :confirm => "¿Está seguro que desea cancelar el registro?" )%></td>
                     <%end%>
                 <%end%>
