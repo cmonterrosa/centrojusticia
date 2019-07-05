@@ -315,7 +315,8 @@ class InvitacionesController < ApplicationController
           case @invitacion.numero_invitacion
             when 1
               if @datosinvitacion.materia.upcase == "PENAL"
-                @leyenda_invitacion="Primera Invitación"  
+                @leyenda_invitacion="Primera Invitación"
+                param["P_NUMERO_INVITACION"]= {:tipo=>"String", :valor=>@leyenda_invitacion}
               end
             when 2
               @leyenda_invitacion="Segundo y último citatorio"
