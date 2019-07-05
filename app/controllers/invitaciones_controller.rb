@@ -273,7 +273,7 @@ class InvitacionesController < ApplicationController
     @invitacion.numero_invitacion ||= @sesion.num_invitacion if @sesion.num_invitacion
     @tramite = @sesion.tramite
     @configuracion = Configuracion.find(:all).first
-    @juzgado = (JUZGADO)? JUZGADO : nil
+    @juzgado = (JUZGADO)? JUZGADO.mb_chars.downcase.titleize : nil
     @configuracion.pie_pagina
     
     if @sesion && @datosinvitacion
