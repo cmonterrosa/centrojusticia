@@ -42,7 +42,7 @@
                 <li>
                    <ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "list_by_user", :controller => "invitaciones"}, :title => "Invitaciones"%></ul>
                 </li>
-              <%elsif current_user.has_role?("invitadores")%>
+              <%elsif current_user.has_role?("controlinvitaciones")%>
                 <li>
                   <ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "show_all", :controller => "invitaciones"}, :title => "Control de Invitaciones"%></ul>
                 </li>
