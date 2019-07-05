@@ -47,6 +47,16 @@ class Invitacion < ActiveRecord::Base
      return nil
    end
 
+   def estatus
+    if self.entregada == true
+      return "ENTREGADA"
+    elsif self.entregada == false
+      return "NO SE PUDO ENTREGAR"
+    else
+      return "EN PROCESO DE ENTREGA"
+    end
+   end
+
 
 
 end

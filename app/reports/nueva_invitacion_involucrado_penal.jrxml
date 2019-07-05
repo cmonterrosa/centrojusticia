@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="612" pageHeight="792" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="320"/>
+	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
+	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
+	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+	<style name="Detail" isDefault="false" fontName="Arial" fontSize="12"/>
+	<parameter name="P_FECHA_ACTUAL" class="java.lang.String"/>
+	<parameter name="P_SOLICITANTE" class="java.lang.String"/>
+	<parameter name="APP_URL" class="java.lang.String"/>
+	<parameter name="P_ESPECIALISTA" class="java.lang.String"/>
+	<parameter name="P_EXPEDIENTE" class="java.lang.String"/>
+	<parameter name="P_SUBDIRECCION" class="java.lang.String"/>
+	<parameter name="P_INVITADO" class="java.lang.String"/>
+	<parameter name="P_FECHA_SOLICITUD" class="java.lang.String"/>
+	<parameter name="P_FECHAHORA_SESION" class="java.lang.String"/>
+	<parameter name="P_DIRECCION_OFICINAS" class="java.lang.String"/>
+	<parameter name="P_MATERIA" class="java.lang.String"/>
+	<parameter name="P_LUGAR" class="java.lang.String"/>
+	<parameter name="P_GENERO" class="java.lang.String"/>
+	<parameter name="P_SUBDIRECTOR" class="java.lang.String"/>
+	<parameter name="P_CARGO" class="java.lang.String"/>
+	<parameter name="P_INVOLUCRADOS_DESCRIPCION" class="java.lang.String"/>
+	<parameter name="P_NUMERO_INVITACION" class="java.lang.String"/>
+	<parameter name="P_FECHA_ORIENTACION" class="java.lang.String"/>
+	<parameter name="P_FIRMANTE" class="java.lang.String"/>
+	<parameter name="P_SEDE" class="java.lang.String"/>
+	<parameter name="P_DESIGNACION" class="java.lang.String"/>
+	<parameter name="P_DIRECCION" class="java.lang.String"/>
+	<parameter name="P_JUZGADO" class="java.lang.String"/>
+	<parameter name="P_TELEFONOS_OFICINAS" class="java.lang.String"/>
+	<parameter name="P_PIE_PAGINA" class="java.lang.String"/>
+	<parameter name="P_SOLICITANTES_DESCRIPCION" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from users]]>
+	</queryString>
+	<field name="id" class="java.lang.Integer"/>
+	<field name="login" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="764" splitType="Stretch">
+			<textField isBlankWhenNull="true">
+				<reportElement mode="Transparent" x="57" y="213" width="297" height="81"/>
+				<textElement lineSpacing="1_1_2">
+					<font fontName="Arial" size="10" isBold="true" isUnderline="false" isStrikeThrough="false" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_INVITADO} + "\n" +
+$P{P_DIRECCION} + "\n" +
+"Presente"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="109" width="501" height="22" forecolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Expediente: " + $P{P_EXPEDIENTE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="144" width="501" height="15" forecolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_LUGAR} + ";"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="159" width="501" height="14" forecolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_FECHA_ACTUAL}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="57" y="298" width="477" height="444"/>
+				<textElement textAlignment="Justified" lineSpacing="1_1_2" markup="html">
+					<font fontName="SansSerif" size="10" pdfEncoding="Cp1252"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["En atención a la solicitud " + $P{P_SOLICITANTES_DESCRIPCION} + ", realizada el día " + $P{P_FECHA_SOLICITUD} +
+" del año en curso,  y con fundamento en los artículos 14, 15, 21, 25 y 27 de la Ley Nacional " +
+"de Mecanismos Alternativos de Solución de Controversias en materia Penal, se le invita a comparecer a la sesión programada para el día <b><u>" + $P{P_FECHAHORA_SESION} +
+"</u></b>, en nuestras instalaciones ubicadas en " + $P{P_DIRECCION_OFICINAS} +
+", con la finalidad de dirimir una controversia jurídica de carácter " + $P{P_MATERIA} +
+", en cuya sesión se prevé que los intervinientes, en libre ejercicio de su autonomía, propongan soluciones a la controversia en que se encuentran involucrados. <br/><br/>" +
+
+"No omito manifestarle que podrá acompañarse de persona de su confianza y presentar " +
+"la documentación que considere necesaria para el desahogo de la sesión. Asimismo," +
+" será necesario presentarse con una identificación oficial y copia fotostática de la misma." + "<br/><br/>" +
+
+"Asimismo, le hago saber que " + $P{P_DESIGNACION} + "<br><br>"+
+
+"<b>Atentamente</b>" + "<br><br><br>" +
+
+"<b>" + $P{P_SUBDIRECTOR} + "</b><br>" +
+"<b>" + $P{P_CARGO} + "</b>"]]></textFieldExpression>
+			</textField>
+			<image scaleImage="FillFrame">
+				<reportElement stretchType="RelativeToTallestObject" x="12" y="9" width="543" height="92"/>
+				<imageExpression class="java.lang.String"><![CDATA[$P{APP_URL} + "/app/reports/imagenes/logo_tribunal.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement style="Title" x="206" y="41" width="343" height="20" forecolor="#7C2425"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font fontName="Arial" size="11" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Centro Estatal de Justicia Alternativa]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="283" y="60" width="266" height="15" forecolor="#7C2425"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="10" isBold="true" isItalic="false" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SUBDIRECCION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="752" width="499" height="11"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_TELEFONOS_OFICINAS} + ",  página web: www.poderjudicialchiapas.gob.mx"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="33" y="191" width="501" height="15" forecolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="11" isBold="true" isUnderline="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_NUMERO_INVITACION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="33" y="742" width="499" height="10"/>
+				<textElement textAlignment="Center">
+					<font size="7"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_PIE_PAGINA}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+</jasperReport>
