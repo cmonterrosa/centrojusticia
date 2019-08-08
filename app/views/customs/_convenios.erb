@@ -18,8 +18,7 @@
               </li>
 
               <%=render :partial => "comparecencias"%>
-
-              <%=render :partial => "invitaciones"%>
+             
 
               <!-- Tramites -->
               <li>
@@ -33,6 +32,11 @@
                   <!-- por escrito de instituciones externas -->
                   <%if current_user.has_role?("oficinasubdireccion") || current_user.has_role?("captura_inicios_externos")%>
                     <li><%=link_to image_tag('kolaval/ico-tramit-otras.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramit-otras.jpg") , {:action => "index", :controller => "extraordinaria"}, :title => "Trámites de otras instituciones"%></li>
+                  <%end%>
+
+                  <!-- inicio de tramies por escrito -->
+                  <%if current_user.has_role?("oficinasubdireccion")%>
+                    <li><%=link_to image_tag('kolaval/ico-tramites-part.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites-part.jpg") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito de particulares"%></li>
                   <%end%>
 
 
