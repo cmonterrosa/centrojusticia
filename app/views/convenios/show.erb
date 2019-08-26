@@ -91,7 +91,11 @@
               </tr>
               <%@adjuntos.each do |a|%>
                 <tr>
-                  <td style="text-align: left;"><%=link_to a.descripcion, {:action => "download", :controller => "upload", :id => a}, :target => "_blank"%></td>
+                  <% unless current_user.has_role?(:especialistas)%>
+                    <td style="text-align: left;"><%=link_to a.descripcion, {:action => "download", :controller => "upload", :id => a}, :target => "_blank"%></td>
+                  <%else%>
+                      <td style="text-align: left;"><%=h (a.descripcion) ? a.descripcion: ''%></td>
+                  <%end%>
                   <td style="text-align: left;"><%=h (a.user) ? a.user.nombre_completo: ''%></td>
                   <td style="text-align: left;"><%=h (a.created_at) ? a.created_at.strftime('%d de %B de %Y - %H:%M'): ''%></td>
                 </tr>

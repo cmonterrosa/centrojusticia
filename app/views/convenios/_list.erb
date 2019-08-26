@@ -97,8 +97,11 @@
                           <td style="vertical-align: middle;"><%=h (link_to "Seguimiento", {:controller => "seguimientos", :action => "list_by_convenio", :c => c.id}, :class => 'boton') %></td>
                     <%end%>
         <%end%>
-
-        <td style="vertical-align: middle;"><%=h (link_to "Archivos adjuntos", {:controller => "upload", :action => "list_convenios", :id => c.id}, :class => 'boton fancybox fancybox.iframe') %></td>
+        
+        <!-- bloquear el boton de archivos adjuntos para los especialistas -->
+        <% unless current_user.has_role?(:especialistas)  %>
+          <td style="vertical-align: middle;"><%=h (link_to "Archivos adjuntos", {:controller => "upload", :action => "list_convenios", :id => c.id}, :class => 'boton fancybox fancybox.iframe') %></td>
+        <%end%>
         <td style="vertical-align: middle;"><%=h (link_to "Detalle", {:controller => "convenios", :action => "show", :id => c.id}, :class => 'boton') %></td>
         <td style="vertical-align: middle;"><%=h (link_to "Editar", {:controller => "convenios", :action => "new_or_edit", :id => c.id, :t => c.tramite}, :class => 'boton') %></td>
         <td style="vertical-align: middle;"><%=h (link_to "Eliminar", {:controller => "convenios", :action => "destroy", :id => c.id, :t => c.tramite}, :class => 'boton', :confirm => "¿Está seguro que desea eliminar el registro?") %></td>
