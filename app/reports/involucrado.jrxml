@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="612" pageHeight="792" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
 	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="743"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -211,7 +211,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_REFERENCIA_DOMICILIARIA} + " " + " / <b>HORARIO DISPONIBLE: </b> " + $P{P_HORARIO_DOMICILIO_PARTICULAR}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="14" y="730" width="271" height="20"/>
+				<reportElement mode="Transparent" x="14" y="730" width="271" height="34"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -232,7 +232,7 @@
 				<text><![CDATA[NOMBRE Y FIRMA DEL SOLICITANTE]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="312" y="730" width="249" height="20"/>
+				<reportElement mode="Transparent" x="312" y="730" width="249" height="34"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
