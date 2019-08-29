@@ -264,7 +264,7 @@ class InvitacionesController < ApplicationController
     @perfil = @participante.perfil
     @sesion = Sesion.find(params[:id])
     @datosinvitacion = Datosinvitacion.find(:first, :conditions => ["sesion_id = ?", @sesion]) if @sesion
-    @invitacion = Invitacion.find(:first, :conditions => ["participante_id = ?", @participante ]) if @participante
+    @invitacion = Invitacion.find(:first, :conditions => ["participante_id = ? and sesion_id = ?", @participante, @sesion ]) if @participante
     @invitacion ||= Invitacion.new
     @invitacion.datosinvitacion = @datosinvitacion if @datosinvitacion
     @invitacion.participante ||= @participante if @participante
