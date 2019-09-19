@@ -228,7 +228,13 @@ class TramitesController < ApplicationController
           @comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", @tramite.id]) if @tramite
           #@motivos_conclusion = MotivoConclusion.find(:all, :order => "fundamento")
           #@tramite.materia.descripcion == "PENAL" ? @motivos_conclusion = MotivoConclusion.find(:all, :conditions => ["materia_id = ?", @tramite.materia_id], :order => "fundamento") : @motivos_conclusion = MotivoConclusion.find(:all, :conditions => ["materia_id IS ?", nil], :order => "fundamento") 
-          @motivos_conclusion = @tramite.materia.descripcion == "PENAL" ? MotivoConclusion.find(:all, :conditions => ["activo=1 AND materia_id = ?", @tramite.materia_id], :order => "fundamento") : MotivoConclusion.find(:all, :conditions => ["activo=1 AND materia_id IS ?", nil], :order => "fundamento") 
+          #@motivos_conclusion = @tramite.materia.descripcion == "PENAL" ? MotivoConclusion.find(:all, :conditions => ["activo=1 AND materia_id = ?", @tramite.materia_id], :order => "fundamento") : MotivoConclusion.find(:all, :conditions => ["activo=1 AND materia_id IS ?", nil], :order => "fundamento") 
+          if @tramite.materia.descripcion == "PENAL" || @tramite.materia.descripcion == "JUSTICIA ADOLESCENTES"
+            @motivos_conclusion = MotivoConclusion.find(:all, :conditions => ["activo=1 AND materia_id = 2", @tramite.materia_id], :order => "fundamento")
+          else
+            @motivos_conclusion = MotivoConclusion.find(:all, :conditions => ["activo=1 AND materia_id IS ?", nil], :order => "fundamento") 
+          end
+
           @fecha = @concluido.created_at || Time.now
           render :partial => "concluir", :layout => "only_jquery"
       else
