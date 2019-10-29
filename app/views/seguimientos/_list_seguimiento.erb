@@ -29,7 +29,8 @@
 
 <br />
 
-<% if @seguimientos.total_entries > @seguimientos.per_page.to_i %>
+
+<% if !@seguimientos.empty? && (@seguimientos.total_entries > @seguimientos.per_page.to_i) %>
 <table>
     <tr align="center" >
       <td colspan="5" style="padding: 0;">
@@ -37,7 +38,7 @@
           <div class="page_info">
             <%= page_entries_info @seguimientos %>
           </div>
-          <%= will_paginate @seguimientos %>
+          <%= will_paginate @seguimientos, :params => { :fecha_inicio => @inicio, :fecha_fin => @fin } %>
         </div>
       </td>
     </tr>

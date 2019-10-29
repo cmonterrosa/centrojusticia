@@ -4,7 +4,7 @@
   </p>
 </div>
 
-<% form_tag({:action => "bitacora"} ) do -%>
+<% form_tag({:action => "bitacora", :fecha => @fecha, :sesion => @sesion} ) do -%>
  <table>
   <tr align="center">
       <th align="center">Fecha inicio</th>

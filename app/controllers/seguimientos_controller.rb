@@ -2,6 +2,7 @@ class SeguimientosController < ApplicationController
   require_role [:convenios, :direccion, :subdireccion]
   
   def index
+    @inicio = @fin = Time.now
     @tramites = Tramite.find(:all, :conditions => ["folio_expediente IS NOT NULL"], :order => "anio DESC, folio_expediente DESC")
     @tramites ||= Array.new
     if current_user.has_role?(:convenios)
