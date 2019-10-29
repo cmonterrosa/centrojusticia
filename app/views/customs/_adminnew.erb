@@ -33,10 +33,24 @@
               <%=render :partial => "librocontrol"%>
               
 
-              <!-- Convenios -->
-              <li>
-                <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%></ul>
-              </li>
+              <!-- convenios -->
+                <li>
+                  <%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%>
+                  <ul class="cbp-hssubmenu">
+                    <!-- Seguimiento de convenios -->
+                    <li>
+                      <%=link_to image_tag('kolaval/ico-convenio-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio-seguimiento.jpg") , {:action => "index", :controller => "seguimientos"}, :title => "Seguimiento de Convenios"%>
+                    </li>
+                    <!-- captura de convenios -->                    
+                      <li>
+                        <ul><%=link_to image_tag('kolaval/ico-convenio.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-convenio.jpg") , {:action => "list_by_user", :controller => "convenios"}, :title => "Convenios"-%></ul>
+                      </li>                           
+                    <!-- Bitacora  de seguimiento de convenios -->                    
+                      <li>
+                        <%=link_to image_tag('kolaval/Icono-bitacora-seguimiento.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Icono-bitacora-seguimiento.jpg") , {:action => "bitacora", :controller => "seguimientos"}, :title => "Bitacora de seguimiento de convenios"%>
+                      </li>                    
+                  </ul>
+                </li>
 
 
               <!-- agenda -->
@@ -98,6 +112,11 @@
                     <!-- Instituciones -->
                     <%=link_to image_tag('kolaval/capacitacion/ico-insti-academ.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/capacitacion/ico-insti-academ.jpg") , {:action => "index", :controller => "institucion_academicas"}, :title => "Instituciones académicas"%>
                   </li>
+
+                   <!-- Monitor de especialistas -->
+                  <li>
+                    <ul><%=link_to image_tag('kolaval/Ico-monitor-especia.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/Ico-monitor-especia.jpg") , {:action => "show_siguientes_especialistas", :controller => "orientacions"}, :title => "Monitor de actividad de orientaciones y/o comparecencias"%></ul>
+                    </li>                  
 
                   <!-- Ausencias de personal -->
                   <li>
