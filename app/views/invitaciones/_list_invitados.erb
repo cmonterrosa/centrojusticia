@@ -14,7 +14,7 @@
            <td scope="col" abbr="Starter">&nbsp;</td>
              <td scope="col" abbr="Starter">Rol</td>
              <td scope="col" abbr="Starter">Nombre completo o Razón Social</td>
-             <td scope="col" abbr="Starter" colspan="5">Acciones</td>
+             <td scope="col" abbr="Starter" colspan="8">Acciones</td>
          </tr>
     
     
@@ -69,6 +69,19 @@
 
                                   <%else%>
                                     <td> <%=link_to 'Radicacion', {:action => "radicacion", :controller => "invitaciones", :participante => participante, :comparecencia => @comparecencia}, :class => 'boton'%></td>
+                                  <%end%>
+                                <%else%>
+                                    <td>&nbsp;</td>
+                                <%end%>
+
+                                <!-- muestra el icono para generar el reporte de carta compromiso para invitaciones consecutivas -->
+                                <% if participante.perfil=="INVOLUCRADO" %>
+                                  <% if @sesion.tiposesion_id== 2 %>
+                                    <% if current_user.has_role?(:especialistajuzgado) && !current_user.has_role?(:admin) %>
+
+                                    <%else%>
+                                      <td> <%=link_to 'Compromiso', {:action => "compromiso", :controller => "invitaciones", :participante => participante, :comparecencia => @comparecencia, :id => @sesion.id}, :class => 'boton'%></td>
+                                    <%end%>
                                   <%end%>
                                 <%else%>
                                     <td>&nbsp;</td>

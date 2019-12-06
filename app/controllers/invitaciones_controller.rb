@@ -480,6 +480,65 @@ class InvitacionesController < ApplicationController
 
 
 
+  ### impresión de carta compromiso de participacion #######################################################
+  def compromiso
+    @subdireccion = current_user.subdireccion
+    @subdirector = @subdireccion.titular if @subdireccion
+    @participante = Participante.find(params[:participante])
+    @perfil = @participante.perfil
+    @comparecencia = Comparecencia.find(params[:comparecencia])
+    @tramite = Tramite.find(@comparecencia.tramite_id)
+    @sesion = Sesion.find(params[:id])
+    @datosinvitacion = Datosinvitacion.find(:first, :conditions => ["sesion_id = ?", @sesion]) if @sesion
+    @invitacion = Invitacion.find(:first, :conditions => ["participante_id = ? and sesion_id = ?", @participante, @sesion ]) if @participante
+    @invitacion ||= Invitacion.new
+    @invitacion.datosinvitacion = @datosinvitacion if @datosinvitacion
+    @invitacion.participante ||= @participante if @participante
+    @invitacion.sesion ||= @sesion if @sesion
+    @invitacion.user = current_user if current_user
+    @configuracion = Configuracion.find(:all).first
+
+
+    param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
+    param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+    param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION.mb_chars.downcase.titleize}
+    param["P_LUGAR"]={:tipo=>"String", :valor=>LUGAR.mb_chars.downcase.titleize}
+    param["P_FECHA_SOLICITUD"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora).mb_chars.downcase}"}    
+    param["P_EXPEDIENTE"]={:tipo=>"String", :valor=>(@tramite) ? @tramite.numero_expediente : nil}
+    param["P_SOLICITANTE"]={:tipo=>"String", :valor=>""}
+    param["P_INVITADO"]={:tipo=>"String", :valor=> @participante.tipopersona_id==1? "C. #{@participante.nombre_completo.mb_chars.downcase.titleize}" : @participante.nombre_completo.mb_chars.downcase.titleize}
+    param["P_INVOLUCRADOS_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.descripcion_involucrados_con_articulo} if @comparecencia && @comparecencia.descripcion_involucrados_con_articulo
+    param["P_SOLICITANTES_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.solicitantes_full} if @comparecencia && @comparecencia.solicitantes
+    param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>""}
+    param["P_FECHAHORA_SESION"]={:tipo=>"String", :valor=>@datosinvitacion.fechahora_sesion.downcase}    
+    param["P_TIPOCOMPARECENCIA"]={:tipo=>"String", :valor=>@tipo}
+    param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=>DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '').mb_chars.downcase}
+    param["P_PIE_PAGINA"]=(@configuracion.pie_pagina)? {:tipo=>"String", :valor=>@configuracion.pie_pagina} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+    param["P_TELEFONOS_OFICINAS"]=(@subdireccion.telefonos)? {:tipo=>"String", :valor=>@subdireccion.telefonos} : ""
+    param["P_ESPECIALISTA_SEXO"]={:tipo=>"String", :valor=>@sesion.mediador.articulo_segun_genero} if @datosinvitacion.especialista && @sesion.mediador
+    param["P_DIRECCION_OFICINAS"]=(@subdireccion.direccion)? {:tipo=>"String", :valor=>@subdireccion.direccion} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+    if @juzgado and @juzgado != "" and @datosinvitacion.materia.downcase == "penal" and current_user.has_role?("especialistajuzgado")
+      param["P_DIRECCION_OFICINAS"]=(@subdireccion.direccion)? {:tipo=>"String", :valor=>"el <b>#{@juzgado}</b>, con domicilio en <b>#{@subdireccion.direccion}</b>"} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+    else
+    param["P_DIRECCION_OFICINAS"]=(@subdireccion.direccion)? {:tipo=>"String", :valor=>@subdireccion.direccion} : {:tipo=>"String", :valor=>"Solicite al administrador actualice el domicilio de las oficinas"}
+    end
+
+    if current_user.has_role?("especialistajuzgado")
+      param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>current_user.nombre_completo.mb_chars.downcase.titleize}
+      param["P_CARGO"]={:tipo=>"String", :valor=>current_user.categoria.mb_chars.downcase.titleize}
+    else      
+      param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>@subdirector.mb_chars.downcase.titleize}
+      param["P_CARGO"]={:tipo=>"String", :valor=>@subdireccion.cargo.mb_chars.downcase.titleize} if @subdireccion
+    end
+
+    if File.exists?(REPORTS_DIR + "/compromiso_participacion.jasper")      
+      send_doc_jdbc("compromiso_participacion", "compromiso_participacion", param, output_type = 'pdf')
+    else
+      render :text => "Error"
+    end       
+
+  end
+
 
   def destroy
     if params[:id] && @invitacion = Invitacion.find(params[:id])
