@@ -468,13 +468,23 @@ class InvitacionesController < ApplicationController
       param["P_CARGO"]={:tipo=>"String", :valor=>@subdireccion.cargo.mb_chars.downcase.titleize} if @subdireccion
     end
 
-
-    if File.exists?(REPORTS_DIR + "/radicacion.jasper")
-      #(@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
-      send_doc_jdbc("radicacion", "radicacion", param, output_type = 'pdf')
+    if @comparecencia.involucrados == ""
+      if File.exists?(REPORTS_DIR + "/radicacion_solo_solicitantes.jasper")
+        #(@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
+        send_doc_jdbc("radicacion_solo_solicitantes", "radicacion_solo_solicitantes", param, output_type = 'pdf')
+      else
+        render :text => "Error"
+      end             
     else
-      render :text => "Error"
-    end       
+      if File.exists?(REPORTS_DIR + "/radicacion.jasper")
+        #(@solicitante.tipopersona.descripcion == "MORAL") ? send_doc_jdbc("comparecencia_persona_moral", "comparecencia_persona_moral", param, output_type = 'pdf') : send_doc_jdbc("comparecencia", "comparecencia", param, output_type = 'pdf')
+        send_doc_jdbc("radicacion", "radicacion", param, output_type = 'pdf')
+      else
+        render :text => "Error"
+      end 
+    end
+
+    
         
   end
 
