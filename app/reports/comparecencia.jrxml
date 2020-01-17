@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="invitacion" pageWidth="612" pageHeight="792" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="8" bottomMargin="20">
-	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.zoom" value="0.75"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="119"/>
+	<property name="ireport.y" value="258"/>
 	<style name="Title" isDefault="false" fontName="Arial" fontSize="26" isBold="true" pdfFontName="Helvetica-Bold"/>
 	<style name="SubTitle" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="18"/>
 	<style name="Column header" isDefault="false" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
@@ -48,7 +48,7 @@
 	<title>
 		<band height="764" splitType="Stretch">
 			<rectangle radius="10">
-				<reportElement key="INICIO" style="Detail" x="15" y="560" width="546" height="153"/>
+				<reportElement key="INICIO" style="Detail" x="15" y="557" width="546" height="153"/>
 			</rectangle>
 			<staticText>
 				<reportElement x="16" y="83" width="545" height="18"/>
@@ -65,7 +65,7 @@
 				<text><![CDATA[FECHA:]]></text>
 			</staticText>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="55" y="101" width="252" height="11"/>
+				<reportElement mode="Transparent" x="55" y="101" width="320" height="11"/>
 				<textElement textAlignment="Left" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false" isUnderline="true" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -149,7 +149,7 @@
 				<text><![CDATA[CARÁCTER CON EL QUE COMPARECE:]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="15" y="715" width="257" height="20"/>
+				<reportElement x="15" y="712" width="257" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -243,14 +243,14 @@
 				<text><![CDATA[ASUNTO:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="23" y="506" width="531" height="39"/>
+				<reportElement mode="Transparent" x="23" y="510" width="531" height="39"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_DATOS}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="291" y="715" width="270" height="20"/>
+				<reportElement x="291" y="712" width="270" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="9" isBold="true" pdfFontName="Helvetica-Bold"/>
 				</textElement>
@@ -260,21 +260,21 @@
 				<reportElement x="17" y="190" width="544" height="50"/>
 			</rectangle>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="15" y="749" width="257" height="14"/>
+				<reportElement mode="Transparent" x="15" y="742" width="267" height="22"/>
 				<textElement>
 					<font fontName="Arial" size="8" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA["LIC. " + $P{P_ESPECIALISTA}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="291" y="749" width="270" height="14"/>
+				<reportElement mode="Transparent" x="291" y="742" width="270" height="22"/>
 				<textElement>
 					<font fontName="Arial" size="8" isBold="true" isUnderline="true" isStrikeThrough="false" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{P_SOLICITANTE}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="28" y="195" width="527" height="41"/>
+				<reportElement mode="Transparent" x="25" y="196" width="530" height="41"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -308,7 +308,7 @@
 				<reportElement x="17" y="250" width="544" height="53"/>
 			</rectangle>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="24" y="253" width="531" height="41">
+				<reportElement mode="Transparent" x="24" y="257" width="531" height="41">
 					<printWhenExpression><![CDATA[!$P{P_REFERENCIA_DOMICILIARIA}.equals( "" ) || !$P{P_REFERENCIA_DOMICILIARIA}.equals( "" ) ? Boolean.TRUE : Boolean.FALSE]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Justified" verticalAlignment="Middle" markup="html">
@@ -331,7 +331,7 @@
 				<text><![CDATA[PERSONA:]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="23" y="567" width="532" height="141"/>
+				<reportElement mode="Transparent" x="23" y="565" width="532" height="141"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font fontName="Arial" size="9" isBold="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -422,7 +422,7 @@
 				<text><![CDATA[DOMICILIO LABORAL]]></text>
 			</staticText>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement mode="Transparent" x="26" y="317" width="528" height="51"/>
+				<reportElement mode="Transparent" x="26" y="318" width="528" height="51"/>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font fontName="Arial" size="8" isBold="false" isUnderline="false" isStrikeThrough="false" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
 				</textElement>
@@ -459,4 +459,14 @@
 	<pageHeader>
 		<band splitType="Stretch"/>
 	</pageHeader>
+	<lastPageFooter>
+		<band height="764">
+			<staticText>
+				<reportElement x="34" y="74" width="510" height="225"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[En este acto se le hace saber a la parte solicitante y sirva de notificación personal, que una vez que se ordene el archivo del presente expediente como totalmente concluido, contará con el término de 90 noventa días hábiles para solicitar copias, devolución de documentos o cualquier trámite administrativo ante el Centro Estatal de Justicia Alternativa correspondientes, transcurrido dicho término, se aplicará el contenido del artículo 23 del Acuerdo General 04/ 2019, para la regulación sobre la transferencia, conservación, digitalización, depuración y destrucción de los expedientes del Centro, correlativo con el artículo 120 del Reglamento Interior, ambos del Consejo de la Judicatura del Poder Judicial del Estado de Chiapas; y, supletoriamente el artículo 204 de la Ley de Transparencia y Acceso a la Información Pública del Estado de Chiapas.
+]]></text>
+			</staticText>
+		</band>
+	</lastPageFooter>
 </jasperReport>
