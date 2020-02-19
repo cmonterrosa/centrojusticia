@@ -573,3 +573,18 @@ color: red;
     background-color: #EBEAD8;
     color: #610B0B;
 }
+
+#extraordinaria_procedencia_id {
+    overflow: hidden;
+    width: 100%;
+    white-space : nowrap;    
+    text-overflow: ellipsis;
+}
+
+#extraordinaria_procedencia_id option {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 400px;
+    white-space : nowrap;
+    word-wrap: break-word;
+}
