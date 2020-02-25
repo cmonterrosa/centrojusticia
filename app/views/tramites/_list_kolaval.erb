@@ -128,7 +128,7 @@
          <%end%>
 
          <!-- Concluir perfil de jefe convenios o subdirector-->
-         <%if tramite.tiene_numero_expediente? && (current_user.has_role?(:subdireccion) || current_user.has_role?(:jefeconvenios))%>
+         <%if tramite.tiene_numero_expediente? && (current_user.has_role?(:subdireccion) || current_user.has_role?(:jefeconvenios)) || current_user.has_role?(:especialistajuzgado)%>
                   <%unless tramite.concluido?%>
                          <%if tramite.noprocedente%>
                                   <td style="vertical-align: middle;"><%=h (link_to "Concluir expediente improcedente", {:controller => "tramites", :action => "concluir_improcedente", :id => tramite.id}, :confirm => "¿Está seguro que desea concluir el expediente improcedente?" , :class => "boton")%></td>
@@ -218,7 +218,7 @@
         <%end%>
 
         <!-- Modificar asignacion de materia -->
-        <%if (tramite.estatu_id == materia_asignada.id || tramite.estatu_id = tramite_no_admitido.id) && (current_user.has_role?("convenios") || current_user.has_role?("asignamateria")) && (current_user.has_role?(:jefeconvenios) || Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id  in (?) and user_id = ?", tramite.id, [materia_asignada.id, tramite_no_admitido.id], current_user.id ]))%>
+        <%if (tramite.estatu_id == materia_asignada.id || tramite.estatu_id = tramite_no_admitido.id) && (current_user.has_role?("convenios") || current_user.has_role?("asignamateria")) && (current_user.has_role?(:jefeconvenios) || Historia.find(:first, :conditions => ["tramite_id = ? AND estatu_id  in (?) and user_id = ?", tramite.id, [materia_asignada.id, tramite_no_admitido.id], current_user.id ])  )%>
              <%unless tramite.solo_orientacion?%>
                   <td style="vertical-align: middle;"><%=h (link_to "Cambiar materia", {:controller => "tramites", :action => "change_materia", :id => tramite.id}, :class => 'boton') %></td>
              <%end%>

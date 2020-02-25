@@ -11,6 +11,7 @@ class Tramite < ActiveRecord::Base
   has_one :orientacion
   has_one :comparecencia
   has_one :archivojudicial
+  has_one :extraordinaria
   has_many :historias
   has_many :adjuntos
   has_many :sesions

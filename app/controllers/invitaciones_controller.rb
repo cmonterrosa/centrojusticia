@@ -57,7 +57,11 @@ class InvitacionesController < ApplicationController
     @datosinvitacion.especialista ||= (@sesion.mediador) ? @sesion.mediador.nombre_completo : nil
     @datosinvitacion.fecha_actual ||= DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '')
     @datosinvitacion.lugar ||= LUGAR
-    @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d de")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month].downcase}".gsub(/^0/, '') : nil
+    if @sesion.tramite.extraordinaria
+      @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.extraordinaria && @sesion.tramite.extraordinaria.fechahora)? "#{@sesion.tramite.extraordinaria.fechahora.strftime("%d de")} #{Date::MONTHNAMES[@sesion.tramite.extraordinaria.fechahora.month].downcase}".gsub(/^0/, '') : nil  
+    else
+      @datosinvitacion.fecha_solicitud ||= (@sesion.tramite.orientacion && @sesion.tramite.orientacion.fechahora)? "#{@sesion.tramite.orientacion.fechahora.strftime("%d de")} #{Date::MONTHNAMES[@sesion.tramite.orientacion.fechahora.month].downcase}".gsub(/^0/, '') : nil
+    end    
     @datosinvitacion.solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.full_name : nil
     @datosinvitacion.genero_solicitante ||= (@sesion.tramite.comparecencia && @sesion.tramite.comparecencia.solicitante) ? @sesion.tramite.comparecencia.solicitante.sexo : nil
     @datosinvitacion.genero_solicitante = (@datosinvitacion.genero_solicitante == 'F')? 'LA' : 'EL' if @datosinvitacion.genero_solicitante

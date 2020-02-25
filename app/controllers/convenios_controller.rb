@@ -135,7 +135,7 @@ class ConveniosController < ApplicationController
  
    def select_convenios
       @user = current_user
-      if @user.has_role?(:subdireccion)  || @user.has_role?(:jefeconvenios) || @user.has_role?(:direccion)
+      if @user.has_role?(:subdireccion)  || @user.has_role?(:jefeconvenios) || @user.has_role?(:direccion) || @user.has_role?(:especialistajuzgado)
         @title = "CONVENIOS"
         @tramites = Tramite.search(params[:search]) if params[:search] && params[:search].size > 0
         @convenios = Convenio.find(:all, :conditions => ["tramite_id in (?)", @tramites.map{|i| i.id}], :order => "fechahora DESC").paginate(:page => params[:page], :per_page => 35) if @tramites && !@tramites.empty?
