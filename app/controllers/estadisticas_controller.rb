@@ -42,6 +42,19 @@ class EstadisticasController < ApplicationController
       return render(:partial => 'select_date_range', :layout => 'kolaval')
     end
 
+    def select_estadisticas_concluidos
+      @title = "Seleccione el rango de fechas para generar estadística de trámites concluidos"
+      @action = "estadisticas_concluidos_pdf"
+      return render(:partial => 'select_date_range', :layout => 'kolaval')
+    end
+
+    def activos_por_especialista
+      @guardia = Situacion.find_by_descripcion("GUARDIA")
+      @guardias = Movimiento.find(:all, :conditions => ["user_id = ? AND situacion_id = ? AND fecha_inicio > ?", current_user.id, @guardia.id, Time.now], :order => "fecha_inicio")
+      @especialistas = Role.find_by_name("especialistas").todos_usuarios.sort { |a, b| a.expedientes_sin_concluir.size <=> b.expedientes_sin_concluir.size }
+      return render(:partial => 'expedientes_activos', :layout => 'kolaval')
+    end
+
     def estadisticas_generales
           if params[:fecha_inicio] && params[:fecha_fin]
             #@titulo ||= SUBDIRECCION
@@ -62,8 +75,29 @@ class EstadisticasController < ApplicationController
           end
     end
 
+    def estadisticas_concluidos_pdf
+      if params[:fecha_inicio] && params[:fecha_fin]      
 
-def get_ip_address(server, hostname=nil, user=nil, pass = nil)
+        params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+        @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+        param=Hash.new {|k, v| k[v] = {:tipo=>"",:valor=>""}}
+        param["APP_URL"]={:tipo=>"String", :valor=>RAILS_ROOT}
+        param["P_SUBDIRECCION"]={:tipo=>"String", :valor=>SUBDIRECCION.mb_chars.downcase.titleize}
+        param["P_LUGAR"]={:tipo=>"String", :valor=>LUGAR.mb_chars.downcase.titleize}        
+        param["P_FECHA_INICIO"]={:tipo=>"String", :valor=>@inicio}
+        param["P_FECHA_FIN"]={:tipo=>"String", :valor=>@fin}
+        param["P_TITULO"]={:tipo=>"String", :valor=>"Reporte de trámites concluidos entre el #{@inicio.strftime('%d/%m/%Y')} y #{@fin.strftime('%d/%m/%Y')}"}
+
+        if File.exists?(REPORTS_DIR + "/estadistica_concluidos2.jasper")      
+          send_doc_jdbc("estadistica_concluidos2", "estadistica_concluidos2", param, output_type = 'pdf')
+        else
+          render :text => "Error"
+        end
+      end
+    end 
+
+
+def get_ip_address(server, hostname="187.157.28.26", user="pjech", pass = "h9jqwo8h7s")
   base = "#{server}/hosts"
   http = HTTPClient.new
   http.set_auth(base,  user, pass)
@@ -144,6 +178,12 @@ end
       respond_to do |format|
         format.html { render(:partial => 'estadisticas_remotas', :layout => 'kolaval')}
       end
+    end
+
+    def calculo_estadisticas_concluidos
+      params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+      @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+      
     end
 
 

@@ -1,0 +1,24 @@
+<!-- LISTADO DE ESPECIALISTAS -->
+<% unless @especialistas.empty?%>
+  <h2 align="center">EXPEDIENTES ACTIVOS POR EXPECIALISTA</h2>
+
+  <table border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; width: 75%; margin: auto;">
+    <tr>
+      <td>Especialista</td>
+      <td> Expedientes activos</td>
+    </tr>
+    <%sumatoria=0%>
+    <%@especialistas.each do |e|%>
+      <tr>
+        <td><%=h e.nombre_completo%></td>
+        <td align="center"><%=h (e.expedientes_sin_concluir)? (link_to "#{e.expedientes_sin_concluir.size}", {:controller => "customs", :action => "detalle_expedientes", :id => e.id}, :class => "fancybox fancybox.iframe") : ''%></td>
+        <%sumatoria = (e.expedientes_sin_concluir) ? sumatoria+=e.expedientes_sin_concluir.size : nil%>
+      </tr>
+    <%end%>
+
+    <tr>
+      <td>TOTAL:</td>
+      <td><%=h sumatoria%></td>
+    </tr>
+  </table>
+<%end%>

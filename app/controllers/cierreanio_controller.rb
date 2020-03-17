@@ -13,7 +13,7 @@ class CierreanioController < ApplicationController
     @razon.user_id = current_user.id
     @razon.cargo = current_user.categoria
     @razon.fecha =  @razon.fecha 
-    @razon.director = Subdireccion.find(:first, :conditions =>["cargo='DIRECTOR GENERAL'"]).titular                  
+    @razon.director = Subdireccion.find(:first, :conditions =>["descripcion='Dirección General'"]).titular                  
     @razon.presidente = MAGISTRADO_PRESIDENTE
     @razon.lugar = LUGAR
     @razon.subdireccion_id = current_user.subdireccion_id    
