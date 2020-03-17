@@ -88,7 +88,7 @@ class EstadisticasController < ApplicationController
         param["P_FECHA_FIN"]={:tipo=>"String", :valor=>@fin}
         param["P_TITULO"]={:tipo=>"String", :valor=>"Reporte de trámites concluidos entre el #{@inicio.strftime('%d/%m/%Y')} y #{@fin.strftime('%d/%m/%Y')}"}
 
-        if File.exists?(REPORTS_DIR + "/estadistica_concluidos2.jasper")      
+        if File.exists?(REPORTS_DIR + "/estadistica_concluidos.jasper")      
           send_doc_jdbc("estadistica_concluidos", "estadistica_concluidos", param, output_type = 'pdf')
         else
           render :text => "Error"
