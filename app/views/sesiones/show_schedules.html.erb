@@ -1,26 +1,27 @@
 <%=render :partial => "encabezado_info_sesion"%>
 
-<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
+<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion, :num_invitacion => @sesion.num_invitacion}, :multipart => true, :remote => true ) do -%>
 
  <table class="tablakolaval" >
   <tr align="center">
-    <th align="center">Fecha/hora Sugerido</th>
+    <th align="center">Número de invitación</th>
     <th align="center">Fecha</th>
     <%#*<th align="center">¿Notificar por correo electrónico?</th>%>
     <th align="center">Tipo de sesión</th>
   </tr>
  <tr align="center">
-   <td><%=h @sesion_hora_sugerida = (@sesion.fecha_sugerida(@sesion.mediador,@sesion.comediador)) ? @sesion.start_at.strftime("%d de %B de %Y - %H:%M") : nil%><%@default_selected = (@sesion_hora_sugerida) ? true : false %>&nbsp;<%= check_box_tag 'sesion_hora_sugerida', @default_selected, @default_selected, :onchange => "enable_dates();"%></td>
-       <%(@fecha ||= (@sesion.start_at)? @sesion.start_at : nil)%>
-       <%(@fecha_format = (@sesion.start_at)? @sesion.start_at.strftime("%Y/%m/%d") : nil)%>
-    <td><%=text_field_tag "sesion_fecha", "#{@fecha_format}"%></td>
+   <td><%=select_tag 'sesion_num_invitacion', options_for_select(@invitaciones.collect {|p| [ p['descripcion'], p['num_invitacion'] ]}, @sesion.num_invitacion)%></td>
+      <!-- <%(@fecha ||= (@sesion.start_at)? @sesion.start_at : nil)%> -->
+       <!-- <%(@fecha_format = (@sesion.start_at)? @sesion.start_at.strftime("%Y/%m/%d") : nil)%> -->
+    <td><%=text_field_tag "sesion_fecha", "#{@fecha.strftime("%Y/%m/%d")}"%></td>
+    <!-- <td><%=text_field_tag "sesion_fecha", "#{@fecha_format}"%></td> -->
     <!--
     <td><= check_box_tag 'sesion_notificacion', @notificacion%></td>
     -->
     <td><%=h (@sesion.tiposesion) ? (@sesion.tiposesion.descripcion) : @tiposesion.descripcion%></td>
     <td>
       <%=hidden_field_tag 'sesion_mediador_id', @mediador.id%>
-      <%=hidden_field_tag 'sesion_comediador_id', @comediador.id%>
+      <%=hidden_field_tag 'sesion_comediador_id', @comediador.id%>      
     </td>
  </tr>
 
@@ -63,7 +64,7 @@
          </tr>
     </thead>
     <!-- Recorremos los horarios -->
-    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :notificacion => @notificacion, :token => @token}, :multipart => true, :remote => true ) do -%>
+    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :notificacion => @notificacion, :num_invitacion => @sesion.num_invitacion, :token => @token}, :multipart => true, :remote => true ) do -%>
           <tbody>
               <% @horarios_disponibles.each do |horario| %>
                             <tr>

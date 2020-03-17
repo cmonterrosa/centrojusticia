@@ -100,7 +100,7 @@
 
                             <!-- reprogramacion de sesion -->
                             <%if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
-                                  &nbsp;<%= link_to image_tag("kolaval/ico-calen-edicion.png", :border =>0, :size => "24x24") , {:controller => "sesiones", :action => "reprogramar", :id => sesion}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post -%>
+                                  &nbsp;<%= link_to image_tag("kolaval/ico-calen-edicion.png", :border =>0, :size => "24x24") , {:controller => "sesiones", :action => "asignar_horario", :id => sesion, :mediador_id => sesion.mediador_id, :comediador_id => sesion.comediador_id, :token => "show"}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post -%>
                             <%end%>
 
                             <!-- invitaciones -->

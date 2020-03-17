@@ -26,6 +26,7 @@ class SesionesController < ApplicationController
       @comediador = User.find(params[:comediador_id])
       @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
       @notificacion = (params[:sesion_notificacion]) ? true : false
+      @invitaciones = [{"num_invitacion" => 1, "descripcion" => "PRIMERA INVITACION"}, {"num_invitacion" => 2, "descripcion" => "SEGUNDA INVITACION"}]
     end
    end
 
@@ -321,7 +322,7 @@ class SesionesController < ApplicationController
   def show_schedules
     @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
     
-    @sesion= Sesion.find(params[:sesion]) if params[:sesion]
+    @sesion= Sesion.find(params[:sesion]) if params[:sesion]    
     @mediador = User.find(params[:sesion_mediador_id]) if params[:sesion_mediador_id]
     @comediador = User.find(params[:sesion_comediador_id]) if params[:sesion_comediador_id]
     @horario = Horario.find(params[:horario]) if params[:horario]
@@ -333,6 +334,8 @@ class SesionesController < ApplicationController
     @horarios = Horario.find_by_sql(["select * from horarios where id not in (select horario_id as id from sesions where fecha = ?)",  @fecha])
     @title = "Resultados encontrados"
     @horarios_disponibles = Horario.find_by_sql(["select * from horarios WHERE id not in (select horario_id  as id from sesions where fecha = ? AND (cancel is NULL OR cancel = 1)) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
+    @invitaciones = [{"num_invitacion" => 1, "descripcion" => "PRIMERA INVITACION"}, {"num_invitacion" => 2, "descripcion" => "SEGUNDA INVITACION"}]
+    @sesion.num_invitacion = params[:sesion_num_invitacion]
   end
 
 
@@ -344,7 +347,7 @@ class SesionesController < ApplicationController
 
 
 
-  def update_schedule
+  def update_schedule_old
    @sesion= Sesion.find(params[:sesion]) if params[:sesion]
    @mediador = User.find(params[:mediador]) if params[:mediador]
    @comediador = User.find(params[:comediador]) if params[:comediador]
@@ -371,6 +374,57 @@ class SesionesController < ApplicationController
               nuevo_estatus ||= (@sesion.tramite.has_estatus?("fech-asig"))? "camb-sesi" : nil
               @sesion.tramite.update_estatus!(nuevo_estatus, current_user) if nuevo_estatus
               @sesion_registro_anterior.cancel_registro_anterior!(current_user) if @sesion_registro_anterior
+           end
+           flash[:notice] = "Hora de sesión actualizada correctamente"
+        end
+    end
+     if current_user.has_role?("subdireccion")
+         estatus = Estatu.find_by_clave("invi-proc")
+         redirect_to :action => "update_estatus", :controller => "tramites", :new_st => estatus.id, :id => @sesion.tramite
+     else
+        if @token
+          redirect_to :action => "show", :controller => "tramites", :id => @sesion.tramite, :user => current_user.id
+        else
+          redirect_to :action => "show", :id => @sesion, :user => current_user.id
+        end
+     end
+    
+  end
+
+  #---------- nueva funcion para reprogramar sesiones, la funcion anterior se respaldo y se renombro como update_schedule_old
+  def update_schedule
+   @sesion= Sesion.find(params[:sesion]) if params[:sesion]
+   @num_invitacion = params[:num_invitacion] if params[:num_invitacion]
+   @mediador = User.find(params[:mediador]) if params[:mediador]
+   @comediador = User.find(params[:comediador]) if params[:comediador]
+   @horario = Horario.find(params[:horario]) if params[:horario]
+   @fecha = Date.parse(params[:fecha]) if params[:fecha]
+   @tiposesion = Tiposesion.find(params[:tiposesion]) if params[:tiposesion]
+   @sala = @horario.sala ? @horario.sala.id : nil
+   @user = current_user ? current_user.id : nil
+
+   @token = params[:token] if params[:token]
+   flash[:error] = "No se pudo actualizar correctamente, verifique"
+     if @sesion && @horario && @fecha && @mediador && @comediador
+        @sesion_registro_nuevo = @sesion.clone                
+        @sesion_registro_nuevo.generate_clave
+        if @sesion_registro_nuevo.update_attributes!(:horario_id => @horario.id, :hora => @horario.hora, :minutos => @horario.minutos, 
+          :fecha => @fecha, :mediador_id => @mediador.id, :comediador_id => @comediador.id, :sala_id => @sala, :user_id => @user, 
+          :resultado => nil, :concluida => 0, :estatus_sesion_id => nil, :num_invitacion => @num_invitacion )
+           #---- Notificamos a especialistas ---
+           @sesion_registro_nuevo.update_attributes!(:tiposesion_id => @tiposesion.id) if @tiposesion
+           @sesion_registro_nuevo.rehabilitar!
+           @sesion.update_attributes!(:estatus_sesion_id => 6)           
+           if params[:notificacion] == "true"
+             #NotificationsMailer.deliver_sesion_updated("mediador", @sesion)
+             #NotificationsMailer.deliver_sesion_updated("comediador", @sesion)
+           end
+           ############ Cambiamos status ##############
+           if @sesion.tramite
+              nuevo_estatus = (@sesion.tramite.has_estatus?("comp-conc") || @sesion.tramite.has_estatus?("mate-asig") ) ? "fech-asig" : nil
+              nuevo_estatus ||= (@sesion.tramite.has_estatus?("fech-asig"))? "camb-sesi" : nil
+              @sesion_registro_nuevo.tramite.update_estatus!(nuevo_estatus, current_user) if nuevo_estatus
+              @sesion.cancel_registro_anterior!(current_user) if @sesion
            end
            flash[:notice] = "Hora de sesión actualizada correctamente"
         end

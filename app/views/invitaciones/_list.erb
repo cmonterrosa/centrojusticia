@@ -9,7 +9,7 @@
             <td>Número de expediente</td>
             <td scope="col" abbr="Starter">Participante</td>
             <td scope="col" abbr="Starter">Fecha de sesión</td>
-            <td scope="col" abbr="Starter">Cuadrante</td>
+            <td scope="col" abbr="Starter">Perfil de participante</td>
             <td scope="col" abbr="Starter">Invitador</td>
             <td scope="col" abbr="Starter" colspan="5">Acciones</td>
          </tr>
@@ -24,7 +24,8 @@
             <td><%=h (invitacion.sesion.start_at)? invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---"%></td>
             <!-- cuadrante -->
             <%participante = invitacion.participante%>
-            <td><%=h (participante && participante.cuadrante) ? (Cuadrante.find(participante.cuadrante).descripcion) : "N/A"%></td>
+            <!-- <td><%=h (participante && participante.cuadrante) ? (Cuadrante.find(participante.cuadrante).descripcion) : "N/A"%></td> -->
+            <td><%=h (participante && participante.perfil) ? (participante.perfil) : "N/A"%></td>
             <td><%=h (invitacion.invitador_id)? invitacion.invitador.nombre_completo : "SIN ASIGNAR"%></td>
             <%sesion = invitacion.sesion%>
             <%if sesion%>

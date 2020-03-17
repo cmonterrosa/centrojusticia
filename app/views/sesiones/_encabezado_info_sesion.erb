@@ -22,10 +22,10 @@
                       <%=link_to "#{numero_expediente}", {:action => "show", :id => @tramite}, :target => "_blank"%>
                   </td>
                   <%if @tramite%>
-                      <td><%=h(@tramite.orientacion ? @tramite.orientacion.solicitante : "---")%></td>
+                      <td><%=h(@tramite.solicitante_orientacion ? @tramite.solicitante_orientacion : "---")%></td>
                   <%end%>
                   <%if @sesion.start_at%>
-                    <td><%=@sesion.fecha%> / <%=@sesion.hora_completa%></td>
+                    <td><%=@sesion.fechahora_completa%></td>
                   <%end%>
                   <td>
                     <div id="materia"><%=h(@comparecencia ? @comparecencia.dia_preferencia : "No existe información")%></div>

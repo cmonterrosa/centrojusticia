@@ -25,7 +25,7 @@
 
           <!-- reprogramacion de sesion -->
           <%if current_user.has_role?("asignahorario") || current_user.has_role?("subdireccion")%>
-            <td><%= link_to image_tag("kolaval/ico-calen-edicion.png", :border =>0, :size => "16x16") , {:controller => "sesiones", :action => "reprogramar", :id => row, :token => "show"}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post -%></td>
+            <td><%= link_to image_tag("kolaval/ico-calen-edicion.png", :border =>0, :size => "16x16") , {:controller => "sesiones", :action => "asignar_horario", :id => row, :mediador_id => row.mediador_id, :comediador_id => row.comediador_id, :token => "show"}, :title => "Reprogramar sesion", :confirm => '¿Esta seguro que quiere reprogramar la sesión?', :method => :post -%></td>          
           <%else%>
             <td> - </td>
           <%end%>

@@ -1,20 +1,21 @@
 <%=render :partial => "encabezado_info_sesion"%>
 
 
-<% form_tag({:action => 'show_schedules_with_especialistas', :fecha => @fecha, :sesion => @sesion}, :multipart => true, :remote => true ) do -%>
+<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :sesion_num_invitacion => @sesion_num_invitacion}, :multipart => true, :remote => true ) do -%>
  <table class="table1" >
   <tr align="center">
-    <th align="center">Fecha/hora Sugerido</th>
-    <th align="center">Fecha</th>
-    <th align="center">¿Notificar por correo electrónico?</th>
+    <th align="center">Num invitiación</th>
+    <th align="center">Fecha</th>    
     <th align="center">Tipo de sesión</th>
   </tr>
  <tr align="center">
-   <td><%=h @sesion_hora_sugerida = (@sesion.fecha_sugerida(@sesion.mediador,@sesion.comediador)) ? ("#{day_of_the_week(@sesion.start_at.strftime("%u").to_i)}, #{@sesion.start_at.strftime("%d de %B de %Y - %H:%M").upcase}") : nil%><%@default_selected = (@sesion_hora_sugerida) ? true : false %>&nbsp;<%= check_box_tag 'sesion_hora_sugerida', @default_selected, @default_selected, :onchange => "enable_dates();"%></td>
+   <!-- <td><%=h @sesion.num_invitacion %></td> -->
+
+   <td> <%= select_tag 'sesion_num_invitacion', options_for_select(@invitaciones.collect {|p| [ p['descripcion'], p['num_invitacion'] ]}, @sesion.num_invitacion)%> </td>
        <%(@fecha = (@sesion.start_at)? @sesion.start_at.strftime("%Y/%m/%d") : nil)%>
-    <td><%= text_field_tag "sesion_fecha", @fecha%></td>
-    <td><%= check_box_tag 'sesion_notificacion', @notificacion%></td>
-    <td><%= select_tag 'sesion_tiposesion_id', options_from_collection_for_select(Tiposesion.all, 'id', 'descripcion')%></td>
+    <td><%= text_field_tag "sesion_fecha", @fecha%></td>    
+    <!-- <td><%= select_tag 'sesion_tiposesion_id', options_from_collection_for_select(Tiposesion.all, 'id', 'descripcion')%></td> -->
+    <td><%=h (@sesion.tiposesion) ? (@sesion.tiposesion.descripcion) : @tiposesion.descripcion%></td>
  </tr>
 
  <tr align="center">
@@ -41,31 +42,30 @@
 
 <script type="text/javascript">
       window.onload=function(){
-        document.getElementById("sesion_mediador_id").disabled = true;
-        document.getElementById("sesion_comediador_id").disabled = true;
-        enable_dates ();
+        //document.getElementById("sesion_mediador_id").disabled = true;
+        //document.getElementById("sesion_comediador_id").disabled = true;
+        //enable_dates ();
       };
 
       function enable_especialistas ()
       {
-        document.getElementById("sesion_mediador_id").disabled = false;
-        document.getElementById("sesion_comediador_id").disabled = false;
+        //document.getElementById("sesion_mediador_id").disabled = false;
+        //document.getElementById("sesion_comediador_id").disabled = false;
       };
 
-      function enable_dates ()
-      {
-        if (document.getElementById("sesion_hora_sugerida").checked == false)
-          {
-           alert("Habilitamos fechas");
-           //document.getElementById("sesion_fecha").disabled = false;
-          }
-        else
-           {
-            //document.getElementById("sesion_fecha").disabled = true;
-           }
-      }
+      // function enable_dates ()
+      // {
+      //   if (document.getElementById("sesion_hora_sugerida").checked == false)
+      //     {
+      //      alert("Habilitamos fechas");
+      //      //document.getElementById("sesion_fecha").disabled = false;
+      //     }
+      //   else
+      //      {
+      //       //document.getElementById("sesion_fecha").disabled = true;
+      //      }
+      // }
 
 
 </script>
-
 
