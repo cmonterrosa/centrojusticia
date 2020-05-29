@@ -55,7 +55,7 @@
       </tr>
 
     <!-- barra media -->
-    <%if current_user.has_role?(:admindireccion) || current_user.has_role?(:oficinasubdireccion)%>
+    <%if current_user.has_role?(:admindireccion) || current_user.has_role?(:oficinasubdireccion) || current_user.has_role?(:especialistajuzgado)%>
     <tr class="Estilo3">
       <td align="center">
         <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">

@@ -1,6 +1,7 @@
 <%=render :partial => "encabezado_info_sesion"%>
 
-<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion, :num_invitacion => @sesion.num_invitacion}, :multipart => true, :remote => true ) do -%>
+<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion, :num_invitacion => @sesion.num_invitacion, 
+  :tiposesion => @sesion.tiposesion_id}, :multipart => true, :remote => true ) do -%>
 
  <table class="tablakolaval" >
   <tr align="center">
@@ -18,7 +19,7 @@
     <!--
     <td><= check_box_tag 'sesion_notificacion', @notificacion%></td>
     -->
-    <td><%=h (@sesion.tiposesion) ? (@sesion.tiposesion.descripcion) : @tiposesion.descripcion%></td>
+    <td><%= select_tag 'sesion_tiposesion_id', options_from_collection_for_select(Tiposesion.all, 'id', 'descripcion', @sesion.tiposesion_id)%></td>
     <td>
       <%=hidden_field_tag 'sesion_mediador_id', @mediador.id%>
       <%=hidden_field_tag 'sesion_comediador_id', @comediador.id%>      
@@ -64,7 +65,7 @@
          </tr>
     </thead>
     <!-- Recorremos los horarios -->
-    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :notificacion => @notificacion, :num_invitacion => @sesion.num_invitacion, :token => @token}, :multipart => true, :remote => true ) do -%>
+    <% form_tag({:action => 'update_schedule', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :notificacion => @notificacion, :num_invitacion => @sesion.num_invitacion, :tiposesion => @sesion.tiposesion_id , :token => @token}, :multipart => true, :remote => true ) do -%>
           <tbody>
               <% @horarios_disponibles.each do |horario| %>
                             <tr>

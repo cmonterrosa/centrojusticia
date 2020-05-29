@@ -27,6 +27,7 @@ class SesionesController < ApplicationController
       @especialistas =  Role.find(:first, :conditions => ["name = ?", 'especialistas']).users
       @notificacion = (params[:sesion_notificacion]) ? true : false
       @invitaciones = [{"num_invitacion" => 1, "descripcion" => "PRIMERA INVITACION"}, {"num_invitacion" => 2, "descripcion" => "SEGUNDA INVITACION"}]
+      @token = params[:token] if params[:token]
     end
    end
 
@@ -336,6 +337,7 @@ class SesionesController < ApplicationController
     @horarios_disponibles = Horario.find_by_sql(["select * from horarios WHERE id not in (select horario_id  as id from sesions where fecha = ? AND (cancel is NULL OR cancel = 1)) and activo=1 group by hora,minutos order by hora,minutos,sala_id", @fecha])
     @invitaciones = [{"num_invitacion" => 1, "descripcion" => "PRIMERA INVITACION"}, {"num_invitacion" => 2, "descripcion" => "SEGUNDA INVITACION"}]
     @sesion.num_invitacion = params[:sesion_num_invitacion]
+    @sesion.tiposesion_id = params[:sesion_tiposesion_id]
   end
 
 
@@ -426,7 +428,7 @@ class SesionesController < ApplicationController
               @sesion_registro_nuevo.tramite.update_estatus!(nuevo_estatus, current_user) if nuevo_estatus
               @sesion.cancel_registro_anterior!(current_user) if @sesion
            end
-           flash[:notice] = "Hora de sesión actualizada correctamente"
+           flash[:notice] = "Sesión reprogramada correctamente"
         end
     end
      if current_user.has_role?("subdireccion")
@@ -434,9 +436,9 @@ class SesionesController < ApplicationController
          redirect_to :action => "update_estatus", :controller => "tramites", :new_st => estatus.id, :id => @sesion.tramite
      else
         if @token
-          redirect_to :action => "show", :controller => "tramites", :id => @sesion.tramite, :user => current_user.id
+          redirect_to :action => "show", :controller => "tramites", :id => @sesion_registro_nuevo.tramite, :user => current_user.id
         else
-          redirect_to :action => "show", :id => @sesion, :user => current_user.id
+          redirect_to :action => "show", :id => @sesion_registro_nuevo, :user => current_user.id
         end
      end
     

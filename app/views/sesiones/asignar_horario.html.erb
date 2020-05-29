@@ -1,7 +1,7 @@
 <%=render :partial => "encabezado_info_sesion"%>
 
 
-<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :sesion_num_invitacion => @sesion_num_invitacion}, :multipart => true, :remote => true ) do -%>
+<% form_tag({:action => 'show_schedules', :fecha => @fecha, :sesion => @sesion, :mediador => @mediador, :comediador => @comediador, :sesion_num_invitacion => @sesion_num_invitacion, :sesion_tiposesion_id => @tiposesion_id}, :multipart => true, :remote => true ) do -%>
  <table class="table1" >
   <tr align="center">
     <th align="center">Num invitiación</th>
@@ -14,8 +14,8 @@
    <td> <%= select_tag 'sesion_num_invitacion', options_for_select(@invitaciones.collect {|p| [ p['descripcion'], p['num_invitacion'] ]}, @sesion.num_invitacion)%> </td>
        <%(@fecha = (@sesion.start_at)? @sesion.start_at.strftime("%Y/%m/%d") : nil)%>
     <td><%= text_field_tag "sesion_fecha", @fecha%></td>    
-    <!-- <td><%= select_tag 'sesion_tiposesion_id', options_from_collection_for_select(Tiposesion.all, 'id', 'descripcion')%></td> -->
-    <td><%=h (@sesion.tiposesion) ? (@sesion.tiposesion.descripcion) : @tiposesion.descripcion%></td>
+    <td><%= select_tag 'sesion_tiposesion_id', options_from_collection_for_select(Tiposesion.all, 'id', 'descripcion', @sesion.tiposesion_id)%></td>
+    <!-- <td><%=h (@sesion.tiposesion) ? (@sesion.tiposesion.descripcion) : @tiposesion.descripcion%></td> -->
  </tr>
 
  <tr align="center">
