@@ -50,7 +50,8 @@ class OrientacionsController < ApplicationController
        @orientaciones ||= Orientacion.find(:all,
                                        :select => "o.*",
                                        :joins => "o, tramites t, estatus e",
-                                       :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?) AND o.created_at > ? ", @user.id, ['tram-reas', 'tram-inic', 'orie-conf'], "#{(Time.now - (10080 * 60.0)).strftime('%Y-%m-%d %H:%M:%S')}" ],
+                                       #:conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?) AND o.created_at > ? ", @user.id, ['tram-reas', 'tram-inic', 'orie-conf'], "#{(Time.now - (10080 * 60.0)).strftime('%Y-%m-%d %H:%M:%S')}" ],
+                                       :conditions => ["o.tramite_id = t.id AND o.especialista_id = ? AND t.estatu_id=e.id AND e.clave IN (?) AND o.created_at > ? ", @user.id, ['tram-reas', 'tram-inic', 'orie-conf'], "#{4.month.ago.strftime('%Y-%m-%d %H:%M:%S')}" ],
                                        :order => "o.fechahora")
         @title = "ORIENTACIONES QUE ME HAN SIDO ASIGNADAS"
     end
