@@ -457,7 +457,9 @@ class InvitacionesController < ApplicationController
     param["P_SOLICITANTES_DESCRIPCION"]={:tipo=>"String", :valor=>@comparecencia.solicitantes_full} if @comparecencia && @comparecencia.solicitantes
     param["P_SUBDIRECTOR"]={:tipo=>"String", :valor=>""}
     param["P_TIPOCOMPARECENCIA"]={:tipo=>"String", :valor=>@tipo}
-    param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=>DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '').mb_chars.downcase}
+    #por motivo de la contingencia por covid se cambio la fecha acutal por la fecha de la comparecencia
+    #param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=>DateTime.now.strftime("%d de %B de %Y").gsub(/^0/, '').mb_chars.downcase}
+    param["P_FECHA_ACTUAL"]={:tipo=>"String", :valor=>"#{fecha_string(@comparecencia.fechahora).mb_chars.downcase}"}
 
     
     if current_user.has_role?("especialistajuzgado")
