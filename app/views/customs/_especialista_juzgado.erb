@@ -23,7 +23,12 @@
                   <li><%=link_to image_tag('kolaval/ico-tramites-part.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-tramites-part.jpg") , {:action => "por_escrito_index", :controller => "atencion"}, :title => "Atención por escrito de particulares"%></li>
                   <li><%=link_to image_tag('kolaval/ico-listadodetramites.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-listadodetramites.jpg") , {:action => "list", :controller => "tramites"}, :title => "Listado de trámites"%></li>                  
                 </ul>
-							</li>
+              </li>
+              
+              <!-- Orientaciones -->
+              <li>
+                <ul><%=link_to image_tag('kolaval/orientaciones.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/orientaciones.jpg") , {:action => "list_by_user", :controller => "orientacions"}, :title => "Orientaciones"%></ul>
+              </li>
               
               <!-- Comparecencias -->
               <li>
