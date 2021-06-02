@@ -88,6 +88,20 @@
                   <ul><%=link_to image_tag('kolaval/ico-agenda.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-agenda.jpg") , {:action => "calendario", :controller => "agenda"}, :title => "Control de Agenda"%></ul>
                 </li>
 
+                <!-- Libro de Control -->
+                <%if current_user.has_role?("librocontrol")%>
+                  <li>
+                    <ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "index", :controller => "invitaciones"}, :title => "Invitaciones"%></ul>
+                  </li>
+                <%end%>
+
+                <!-- Estadisticas -->
+                <%if current_user.has_role?("reportes")%>
+                  <li>
+                    <ul><%=link_to image_tag('kolaval/ico-invita.jpg', :size => "128x128", :size => "128x128", :mouseover => "kolaval/ico-invita.jpg") , {:action => "index", :controller => "invitaciones"}, :title => "Invitaciones"%></ul>
+                  </li>
+                <%end%>
+
               </ul>
 					</div>
 				</nav>
