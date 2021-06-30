@@ -132,7 +132,7 @@ $(function() {
     <!-- Actualizacion de listado -->
   <%=periodically_call_remote(:url => {:controller => "orientacions",
                               :action => "update_lista_especialistas",  :orientacion => @orientacion, :tramite_id => @tramite, :extra => @extra},
-                              :frequency => '60',
+                              :frequency => '300',
                               :before => "Element.show('spinner')",
                               :success => "Element.hide('spinner')",
                               :with => "'model[textfield]=' + $F('orientacion_user_id')",
