@@ -48,6 +48,42 @@ class EstadisticasController < ApplicationController
       return render(:partial => 'select_date_range', :layout => 'kolaval')
     end
 
+    def select_estadisticas_convenios
+      @title = "Seleccione el rango de fechas para generar estadística de convenios"
+      @action = "analitico_convenios"
+      return render(:partial => 'select_date_range', :layout => 'kolaval')
+    end
+
+    def select_estadisticas_invitaciones
+      @title = "Seleccione el rango de fechas para generar estadística de invitaciones"
+      @action = "analitico_invitaciones"
+      return render(:partial => 'select_date_range', :layout => 'kolaval')
+    end
+
+    def analitico_convenios
+        @inicio = @fin = Time.now
+    
+        params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+        @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+    
+        @convenios = Convenio.find(:all, :conditions => ["(fechahora between ? AND ? )", @inicio, @fin],
+          :order => "fechahora, folio")
+        @convenios = @convenios.paginate(:page => params[:page], :per_page => 25)
+    
+      return render(:partial => 'search_convenio', :layout => 'kolaval')
+    end
+
+    def analitico_invitaciones
+      @inicio = @fin = Time.now
+      params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+      @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+      @invitaciones = Invitacion.find(:all, :conditions => ["(created_at between ? AND ? )", @inicio, @fin],
+        :order => "created_at")
+      @invitaciones = @invitaciones.paginate(:page => params[:page], :per_page => 25)
+  
+    return render(:partial => 'search_invitacion', :layout => 'kolaval')
+  end
+
     def activos_por_especialista
       @guardia = Situacion.find_by_descripcion("GUARDIA")
       @guardias = Movimiento.find(:all, :conditions => ["user_id = ? AND situacion_id = ? AND fecha_inicio > ?", current_user.id, @guardia.id, Time.now], :order => "fecha_inicio")

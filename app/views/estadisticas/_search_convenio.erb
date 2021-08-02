@@ -1,0 +1,92 @@
+<div class="titulocalendario">
+  <p>
+    ANALITICO DE CONVENIOS
+  </p>
+</div>
+
+<%@action = "analitico_convenios"%>
+<%@title = "Seleccione el rango de fechas para generar estadística de convenios"%>
+<%=render :partial => "select_date_range", :action => "select_estadisticas_convenios"%>
+
+<div class="titulocalendario">
+  <%if @inicio.strftime("%d de %B de %Y") == @fin.strftime("%d de %B de %Y")%>
+      <p>
+       <%=@inicio.strftime("%d de %B de %Y")%>
+      </p>
+  <%else%>
+      <p>
+        PERIODO COMPRENDIDO ENTRE EL <%=@inicio.strftime("%d de %B de %Y").upcase%> Y EL DÍA <%=@fin.strftime("%d de %B de %Y").upcase%>
+      </p>
+      <p> Total de convenios: <%= @convenios.total_entries %> </p>
+  <%end%>
+</div>
+
+
+
+    <table class="tabla_dp" >
+      <tr align="center">        
+        <td align="center">
+          <%=h (link_to "IMPRIMIR LIBRO", {:controller => "libro", :action => "imprimir", :fecha_inicio => @inicio, :fecha_fin => @fin}, :target => "_blank", :class => "fancybox fancybox.iframe boton") %>
+        </td>        
+      </tr>  
+    </table>
+
+
+
+<div id="divlista">
+  <table width="99%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; font-size: 11px;">
+     <tr>
+       <td style="vertical-align: middle; width: 5%;" align="center">Número de expediente</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Fecha de convenio</td>
+       <td style="vertical-align: middle; width: 14%;" align="center">Descripción</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Plazo</td>
+       <td style="vertical-align: middle; width: 5%;" align="center">Cantidad Monetaria</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Tipo de acuerdo</td>
+       <td style="vertical-align: middle; width: 5%;" align="center">Materia</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Mecanismo alternativo</td>
+       <td style="vertical-align: middle; width: 14%;" align="center">Fecha y causa de conclusión</td>
+     </tr>
+     
+     <%for convenio in @convenios%>      
+      
+        <!-- listado de todos los tramites -->
+        <%tramite = Tramite.find(:first, :conditions => ["id = ?", convenio.tramite_id])%>
+        <%comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", tramite])%>
+        
+        <tr>
+          <!-- numero de expediente -->
+          <td style="vertical-align: middle;"><%=link_to "#{tramite.numero_expediente}", {:controller => "tramites", :action => "show", :id => tramite}, :target => "_blank"%></td>
+          <td style="vertical-align: middle;"><%=h convenio.fechahora.strftime("%A %d DE %B de %Y - %H:%M %p")%></td>
+          <td style="vertical-align: middle;"><%=h convenio.descripcion %></td>
+          <td style="vertical-align: middle;"><%=h convenio.plazo%></td>
+          <td style="vertical-align: middle;"><%=h convenio.cantidad_monetaria%></td>
+          <td style="vertical-align: middle;"><%=h convenio.tipo_acuerdo%></td>
+          <td style="vertical-align: middle;"><%=h (tramite.materia)? tramite.materia.descripcion : '-'%></td>
+          <td style="vertical-align: middle;"><%=h (tramite.mecanismo_alternativo)? tramite.mecanismo_alternativo.descripcion : '-'%></td>
+          <td style="vertical-align: middle;">
+            <span style="color: #550000;"><%=h (tramite.concluido?)? tramite.fecha_conclusion : '-'%></span><br />
+            <%=h (tramite.concluido?)? tramite.causa_conclusion : '-'%>
+          </td>      
+        </tr>    
+        
+     <%end%>
+  </table>
+</div>
+
+
+<br />
+<table>
+    <tr align="center" >
+      <td colspan="5" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @convenios %>
+          </div>
+          <%= will_paginate @convenios, :params => { :fecha_inicio => @inicio, :fecha_fin => @fin  } %>
+        </div>
+      </td>
+    </tr>
+</table>
+
+
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
