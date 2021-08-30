@@ -129,6 +129,8 @@ class UploadController < ApplicationController
     @uploaded_file  = Adjunto.find(params[:id])
      if File.exists?(@uploaded_file.full_path)
         send_file @uploaded_file.full_path, :type => @uploaded_file.file_type, :disposition => 'inline'
+        #redirect_to(@uploaded_file.full_path)
+        #send_file @uploaded_file.full_path  
      else
        flash[:error] = "No existe el archivo, contacte al administrador"
        redirect_to(:back)
