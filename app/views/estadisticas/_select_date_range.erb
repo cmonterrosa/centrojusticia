@@ -12,8 +12,8 @@
       <th align="center">&nbsp;</th>
   </tr>
   <tr align="center">
-      <td><%= text_field_tag "fecha_inicio", Time.now.strftime("%Y/%m/%d") %></td>
-      <td><%= text_field_tag 'fecha_fin',  Time.now.strftime("%Y/%m/%d")%></td>
+      <td><%= text_field_tag "fecha_inicio", @inicio.strftime("%Y/%m/%d") %></td>
+      <td><%= text_field_tag 'fecha_fin',  @fin.strftime("%Y/%m/%d")%></td>
       <td><%= submit_tag "Buscar"%></td>
   </tr>
     <tr>

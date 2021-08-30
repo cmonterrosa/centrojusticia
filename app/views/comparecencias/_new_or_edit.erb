@@ -78,23 +78,32 @@
         <td align="center">
           <table width="100%" border="0" cellpadding="2" cellspacing="1" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid;">
             <tr align=" justify" class="pregunta">
-              <td align="center" colspan="2"><b>¿Es del conocimiento de alguna autoridad? </b><em class="formee-req">*</em></td>
-              <td align="center" colspan="2"><label id="ldatos" style="display:none;"><b>Datos</b></label></td>
+              <td align="center" colspan="3"><b>¿Es del conocimiento de alguna autoridad? </b><em class="formee-req">*</em></td>
+              <td align="center" colspan="3"><label id="ldatos" style="display:none;"><b>Datos</b></label></td>
+              <td align="center" colspan="3"><label id="letapa" style="display:none;"><b>¿En qué etapa del proceso se realiza?</b></label></td>
             </tr>
             <tr>
-              <td align="center" colspan="2">
+              <td align="center" colspan="3">
                 <span id="comparecencia_conocimiento_agrupado" class="InputGroup">
                   <label class="uper">SI <%= f.radio_button :conocimiento, "SI", :checked => @comparecencia.conocimiento == true, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos'); " %></label>&nbsp;&nbsp;
                   <label class="uper">NO <%= f.radio_button :conocimiento, "NO", :checked => @comparecencia.conocimiento == false, :onclick => "habilitar_datos('comparecencia_datos', 'ldatos'); ValidarConocimientoAutoridad();" %></label>
                 </span>
-             </td>
+              </td>
               <%enable = (@comparecencia.conocimiento) ? false : true%>
             
-               <td align="center" colspan="2">
-                 <div id="comparecencia_datos_span">
-                  <%= f.text_area :datos,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "75x4", :disabled => enable, :style => "display:none;"%>
-                 </div>
-                 </td>
+              <td align="center" colspan="3">
+                <div id="comparecencia_datos_span">
+                  <%= f.text_area :datos,  :onBlur=>"javascript:{this.value = this.value.toUpperCase(); }", :size => "75x4", :disabled => enable, :style => "display:none;"%>                       
+                </div>
+              </td>
+
+              <td align="center" colspan="3">
+                <div id="comparecencia_etapa_span" style="display:none">
+                  <%= f.select :etapa_id, Etapa.find(:all, :order => "descripcion").collect{|a| [a.descripcion, a.id]}, :prompt => 'Seleccione una opción',:style => "display:none;"%>         
+                </div>
+              </td>
+
+              
             </tr>
           </table>
       </td>

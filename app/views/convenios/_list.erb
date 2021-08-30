@@ -99,10 +99,8 @@
         <%end%>
         
         <!-- bloquear el boton de archivos adjuntos para los especialistas -->
-        <% unless current_user.has_role?(:especialistas)  %>
-          <td style="vertical-align: middle;"><%=h (link_to "Archivos adjuntos", {:controller => "upload", :action => "list_convenios", :id => c.id}, :class => 'boton fancybox fancybox.iframe') %></td>
-        <%end%>
-        <%if current_user.has_role?(:especialistajuzgado) || current_user.has_role?(:admin) || current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion)%>
+        
+        <%if current_user.has_role?(:especialistajuzgado) || current_user.has_role?(:admin) || current_user.has_role?(:direccion) || current_user.has_role?(:subdireccion) || current_user.has_role?(:convenios)%>
           <td style="vertical-align: middle;"><%=h (link_to "Archivos adjuntos", {:controller => "upload", :action => "list_convenios", :id => c.id}, :class => 'boton fancybox fancybox.iframe') %></td>
         <%end%>
         <td style="vertical-align: middle;"><%=h (link_to "Detalle", {:controller => "convenios", :action => "show", :id => c.id}, :class => 'boton') %></td>

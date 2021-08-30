@@ -14,50 +14,93 @@ class EstadisticasController < ApplicationController
   require_role [:admin, :direccion, :subdireccion, :bitacora, :admindireccion], :except => [:estadisticas_generales,  :calculo_estadisticas_generales]
   
 
-     def index
-
-     end
+    def index
+      @inicio = @fin = Time.now
+    end
 
     def select_grafica_noatencion
+     @inicio = @fin = Time.now
      @title = "Seleccione el rango de fechas para estadística de no atención"
      @action = "grafica_noatencion"
      return render(:partial => 'select_date_range', :layout => 'only_jquery')
     end
 
     def select_grafica_materia
+     @inicio = @fin = Time.now
      @title = "Seleccione el rango de fechas para estadística por materia"
      @action = "grafica_materia"
      return render(:partial => 'select_date_range', :layout => 'only_jquery')
     end
 
     def select_grafica_orientaciones_especialistas
-     @title = "Seleccione el rango de fechas para estadística de atención de especialistas"
-     @action = "grafica_orientaciones_especialistas"
-     return render(:partial => 'select_date_range', :layout => 'only_jquery')
+      @inicio = @fin = Time.now
+      @title = "Seleccione el rango de fechas para estadística de atención de especialistas"
+      @action = "grafica_orientaciones_especialistas"
+      return render(:partial => 'select_date_range', :layout => 'only_jquery')
     end
 
     def select_estadisticas_generales
+      @inicio = @fin = Time.now
       @title = "Seleccione el rango de fechas para generar estadística general"
       @action = "estadisticas_generales"
       return render(:partial => 'select_date_range', :layout => 'kolaval')
     end
 
     def select_estadisticas_concluidos
+      @inicio = @fin = Time.now
       @title = "Seleccione el rango de fechas para generar estadística de trámites concluidos"
       @action = "estadisticas_concluidos_pdf"
       return render(:partial => 'select_date_range', :layout => 'kolaval')
     end
 
     def select_estadisticas_convenios
+      @inicio = @fin = Time.now
       @title = "Seleccione el rango de fechas para generar estadística de convenios"
       @action = "analitico_convenios"
       return render(:partial => 'select_date_range', :layout => 'kolaval')
     end
 
     def select_estadisticas_invitaciones
+      @inicio = @fin = Time.now
       @title = "Seleccione el rango de fechas para generar estadística de invitaciones"
       @action = "analitico_invitaciones"
       return render(:partial => 'select_date_range', :layout => 'kolaval')
+    end
+
+    def select_estadisticas_sesiones
+      @inicio = @fin = Time.now
+      @title = "Seleccione el rango de fechas para generar estadística de sesiones"
+      @action = "analitico_sesiones"
+      return render(:partial => 'select_date_range', :layout => 'kolaval')
+    end
+
+    def select_estadisticas_participantes
+      @inicio = @fin = Time.now
+      @title = "Seleccione el rango de fechas para generar estadística de personas atentidas"
+      @action = "analitico_participantes"
+      return render(:partial => 'select_date_range', :layout => 'kolaval')
+    end
+
+    def analitico_participantes
+      @inicio = @fin = Time.now
+      params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] : params[:fecha_fin]
+      @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin])
+      @sesiones = Sesion.find(:all, :conditions => ["(fecha between ? AND ? )", @inicio, @fin],
+        :order => "fecha, hora, minutos")
+      @sesiones = @sesiones.paginate(:page => params[:page], :per_page => 25)
+  
+      return render(:partial => 'search_sesion', :layout => 'kolaval')
+    end
+    
+    def analitico_sesiones
+      @inicio = @fin = Time.now
+      params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] : params[:fecha_fin]
+      @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin])
+      @sesiones = Sesion.find(:all, :conditions => ["(fecha between ? AND ? )", @inicio, @fin],
+        :order => "fecha, hora, minutos")
+      @sesiones = @sesiones.paginate(:page => params[:page], :per_page => 25)
+  
+      return render(:partial => 'search_sesion', :layout => 'kolaval')
     end
 
     def analitico_convenios
@@ -422,6 +465,7 @@ end
 
 
   def select_grafica_sesiones_especialistas
+    @inicio = @fin = Time.now
      @title = "Seleccione el rango de fechas"
      @action = "grafica_orientaciones_especialistas"
      return render(:partial => 'select_date_range', :layout => 'only_jquery')
@@ -606,6 +650,7 @@ end
 
   def select_bitacora_ausencias_personal
      @title = "Listado de trabajadores ausentes"
+     @inicio = @fin = Time.now
      @action = "show_ausencias"
      @situaciones = Situacion.find(:all, :conditions => ["descripcion not in (?)", "disponible"])
      @situaciones << Situacion.new(:descripcion => "TODOS LOS MOTIVOS")

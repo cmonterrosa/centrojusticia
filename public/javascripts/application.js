@@ -1,5 +1,7 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
+
+//= require select2
 function CharNum(e, modo)
 {
     var key = window.event ? e.keyCode : e.which;
@@ -446,17 +448,23 @@ $(function() {
   function habilitar_datos(datos, label_datos){
       objeto_datos = document.getElementById(datos);
       objeto_label_datos = document.getElementById(label_datos);
+      var objeto_label_etapas = document.getElementById("letapa");
+      var objeto_etapas = document.getElementById("comparecencia_etapa_span");
       if (document.getElementById("comparecencia_conocimiento_si").checked == true)
         {
           objeto_datos.style.display = 'inline';
           objeto_label_datos.style.display = 'inline';
           objeto_datos.disabled = false;
+          objeto_etapas.style.display = "inline";
+          objeto_label_etapas.style.display = "inline";
         }
       else
           if (document.getElementById("comparecencia_conocimiento_no").checked == true)
            {
                 objeto_datos.style.display = 'none';
+                objeto_etapas.style.display = 'none';
                 objeto_label_datos.style.display = 'none';
+                objeto_label_etapas.style.display = 'none';
                 objeto_datos.value = "";
                 objeto_datos.disabled = true;
             }
@@ -865,3 +873,4 @@ function LoadOrigenEtnico(radioButton, comboSelect){
   }
 
 
+ 

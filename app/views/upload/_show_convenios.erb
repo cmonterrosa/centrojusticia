@@ -25,7 +25,6 @@
       <div class="grid-12-12 clear">
         <table width="100%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
           <tr class="d0">
-            <td style="vertical-align: middle;">¿ACT?</td>
             <td style="vertical-align: middle;">NP</td>
             <td style="vertical-align: middle;">Descripción</td>
             <td style="vertical-align: middle;">Fecha/hora&nbsp;carga</td>
@@ -36,22 +35,18 @@
 
           <%contador=1%>
           <%@adjuntos.each do |a|%>
-            <tr>
-              <%if a.activo%>
-                  <td style="vertical-align: middle;">S</td>
-              <%else%>
-                  <td style="vertical-align: middle;">N</td>
-              <%end%>
-
-              <td style="vertical-align: middle;"><%=contador%></td>
-              <td style="vertical-align: middle;"><%=h (a.descripcion) ? a.descripcion : "---"%></td>
-              <td style="vertical-align: middle;"><%=h a.created_at.strftime("%d/%m/%Y - %H:%M:%S %p")%></td>
-              <td style="vertical-align: middle;"><%=h (a.user)? a.user.nombre_completo : ''%></td>
-              <td style="vertical-align: middle;"><%= button_to 'Visualizar', {:action => "download", :id => a}, :method => :post, :class => 'boton', :style => "background: green; font-size: 11px;", :html => { :target => "_blank"} %></td>
-              <%if a.user == current_user%>
-                  <td style="vertical-align: middle;"><%= button_to 'Eliminar', {:action => "destroy_convenio", :id => a}, :confirm => '¿Esta seguro que desea eliminar el convenio?', :method => :post, :class => 'boton', :style => "background: red; font-size: 11px;" %></td>
-              <%end%>
-            </tr>
+            <% if a.activo%>
+              <tr>
+                <td style="vertical-align: middle;"><%=contador%></td>
+                <td style="vertical-align: middle;"><%=h (a.descripcion) ? a.descripcion : "---"%></td>
+                <td style="vertical-align: middle;"><%=h a.created_at.strftime("%d/%m/%Y - %H:%M:%S %p")%></td>
+                <td style="vertical-align: middle;"><%=h (a.user)? a.user.nombre_completo : ''%></td>
+                <td style="vertical-align: middle;"><%= button_to 'Visualizar', {:action => "download", :id => a}, :method => :get, :class => 'boton', :style => "background: green; font-size: 11px;", :formtarget => "_blank" %></td>
+                <%if a.user == current_user%>
+                    <td style="vertical-align: middle;"><%= button_to 'Eliminar', {:action => "destroy_convenio", :id => a}, :confirm => '¿Esta seguro que desea eliminar el archivo?', :method => :post, :class => 'boton', :style => "background: red; font-size: 11px;" %></td>
+                <%end%>
+              </tr>
+            <%end%>
             <%contador+=1%>
           <%end%>
 

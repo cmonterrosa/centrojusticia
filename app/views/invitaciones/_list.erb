@@ -11,7 +11,7 @@
             <td scope="col" abbr="Starter">Fecha de sesión</td>
             <td scope="col" abbr="Starter">Perfil de participante</td>
             <td scope="col" abbr="Starter">Invitador</td>
-            <td scope="col" abbr="Starter" colspan="5">Acciones</td>
+            <td scope="col" abbr="Starter" colspan="6">Acciones</td>
          </tr>
     
 
@@ -19,13 +19,13 @@
         <%@invitaciones.each do |invitacion|%>
           <tr>
             <td><%=h (invitacion.entregada)? (image_tag "iconos/true.png", :border =>0): (image_tag "iconos/false.png", :border =>0)%></td>
-            <td><%=h (invitacion.sesion.tramite) ? (link_to "#{invitacion.sesion.tramite.numero_expediente}", :action => "show", :controller => "tramites", :id => invitacion.sesion.tramite.id, :target => "_blank") : ""%></td>
+            <td width=5%><%=h (invitacion.sesion.tramite) ? (link_to "#{invitacion.sesion.tramite.numero_expediente}", :action => "show", :controller => "tramites", :id => invitacion.sesion.tramite.id, :target => "_blank") : ""%></td>
             <td><%=h (invitacion.participante) ? invitacion.participante.nombre_completo : "----"%></td>
             <td><%=h (invitacion.sesion.start_at)? invitacion.sesion.start_at.strftime("%d de %B de %Y / %H:%M") : "---"%></td>
             <!-- cuadrante -->
             <%participante = invitacion.participante%>
             <!-- <td><%=h (participante && participante.cuadrante) ? (Cuadrante.find(participante.cuadrante).descripcion) : "N/A"%></td> -->
-            <td><%=h (participante && participante.perfil) ? (participante.perfil) : "N/A"%></td>
+            <td width=5%><%=h (participante && participante.perfil) ? (participante.perfil) : "N/A"%></td>
             <td><%=h (invitacion.invitador_id)? invitacion.invitador.nombre_completo : "SIN ASIGNAR"%></td>
             <%sesion = invitacion.sesion%>
             <%if sesion%>
@@ -47,6 +47,7 @@
             <%if current_user.has_role?("controlinvitaciones")%>
               <td><%=link_to "Eliminar", {:action => "destroy", :id => invitacion}, :confirm => "¿Esta seguro(a) que desea eliminar la invitación?", :title => "Eliminar invitación", :class => 'boton'%></td>
               <td><%=link_to "Asignar", {:action => "asignar_invitador", :id => invitacion}, :title => "Asignar la invitación", :class => 'boton'%></td>
+              <td><%=link_to 'Editar', {:action => "list_by_sesion", :id => invitacion.sesion}, :title => "Editar invitación", :class => 'boton'%></td>
             <%end%>
 
 

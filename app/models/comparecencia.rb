@@ -3,6 +3,7 @@
   belongs_to :user
   has_many :participantes
   has_one :expediente
+  has_one :etapa
 
   #validates_uniqueness_of :tramite_id
 

@@ -65,11 +65,12 @@
 
                                 <!-- muestra el icono para generar reporte de radicación que por el momento esta oculto a los adscritos a los juzgados -->
                                 <% if participante.perfil=="SOLICITANTE" %>
-                                  <% if current_user.has_role?(:especialistajuzgado) && !current_user.has_role?(:admin) %>
+                                  <td> <%=link_to 'Radicacion', {:action => "radicacion", :controller => "invitaciones", :participante => participante, :comparecencia => @comparecencia}, :class => 'boton'%></td>
+                                  <!-- <% if current_user.has_role?(:especialistajuzgado) && !current_user.has_role?(:admin) %>
 
                                   <%else%>
                                     <td> <%=link_to 'Radicacion', {:action => "radicacion", :controller => "invitaciones", :participante => participante, :comparecencia => @comparecencia}, :class => 'boton'%></td>
-                                  <%end%>
+                                  <%end%> -->
                                 <%else%>
                                     <td>&nbsp;</td>
                                 <%end%>
