@@ -1,0 +1,93 @@
+<div class="titulocalendario">
+  <p>
+    ANALITICO DE SESIONES
+  </p>
+</div>
+
+<%@action = "analitico_sesiones"%>
+<%@title = "Seleccione el rango de fechas para generar estadística de sesiones"%>
+<%=render :partial => "select_date_range", :action => "select_estadisticas_sesiones"%>
+
+
+
+<div class="titulocalendario">
+  <%if @inicio.strftime("%d de %B de %Y") == @fin.strftime("%d de %B de %Y")%>
+      <p>
+       <%=@inicio.strftime("%d de %B de %Y")%>
+      </p>
+  <%else%>
+      <p>
+        PERIODO COMPRENDIDO ENTRE EL <%=@inicio.strftime("%d de %B de %Y").upcase%> Y EL DÍA <%=@fin.strftime("%d de %B de %Y").upcase%>
+      </p>
+      <p> Total de sesiones: <%= @sesiones.total_entries %> </p>
+  <%end%>
+</div>
+
+
+
+    <table class="tabla_dp" >
+      <tr align="center">        
+        <td align="center">
+          <%=h (link_to "IMPRIMIR LIBRO", {:controller => "libro", :action => "imprimir", :fecha_inicio => @inicio, :fecha_fin => @fin}, :target => "_blank", :class => "fancybox fancybox.iframe boton") %>
+        </td>        
+      </tr>  
+    </table>
+
+
+
+<div id="divlista">
+  <table width="99%" border="0" cellspacing="0" cellpadding="0" class="tablakolaval" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid; font-size: 11px;">
+     <tr align="center">
+       <td style="vertical-align: middle; width: 5%;" align="center">Número de expediente</td>
+       <td style="vertical-align: middle; width: 5%;" align="center">Folio</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Fecha de sesion</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Tipo de sesión</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Especialista</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Comediador</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Estatus</td>
+       <td style="vertical-align: middle; width: 20%;" align="center">Resultado de sesión</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Mecanismo alternativo</td>
+       <td style="vertical-align: middle; width: 10%;" align="center">Invitación</td>
+     </tr>
+     
+     <%for sesion in @sesiones%>      
+      
+        <!-- listado de todos los tramites -->
+        <%tramite = Tramite.find(:first, :conditions => ["id = ?", sesion.tramite_id])%>
+        <%comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", tramite])%>
+        
+        <tr>
+          <!-- numero de expediente -->
+          <td style="vertical-align: middle;"><%=link_to "#{tramite.numero_expediente}", {:controller => "tramites", :action => "show", :id => tramite}, :target => "_blank"%></td>
+          <td style="vertical-align: middle;"><%=link_to "#{sesion.clave}", {:controller => "sesiones", :action => "show_window", :id => sesion}, :target => "_blank"%></td>
+          <td style="vertical-align: middle;"><%=h sesion.fecha.strftime("%A ") + sesion.fechahora_completa%></td>
+          <td style="vertical-align: middle;"><%=h sesion.tiposesion.descripcion%></td>
+          <td style="vertical-align: middle;"><%=h sesion.mediador.nombre_completo %></td>
+          <td style="vertical-align: middle;"><%=h sesion.comediador.nombre_completo%></td>
+          <td style="vertical-align: middle;"><%=h sesion.estatus%></td>
+          <td style="vertical-align: middle;"><%=h sesion.resultado%></td>
+          <td style="vertical-align: middle;"><%=h (tramite.mecanismo_alternativo)? tramite.mecanismo_alternativo.descripcion : '-'%></td>
+          <td style="vertical-align: middle;"><%=h (sesion.num_invitacion)? sesion.num_invitacion_descripcion : 'SIN ASIGNAR'  %></td>      
+        </tr>    
+        
+     <%end%>
+  </table>
+</div>
+
+
+<br />
+<table>
+    <tr align="center" >
+      <td colspan="10" style="padding: 0;">
+        <div class="digg_pagination">
+          <div class="page_info">
+            <%= page_entries_info @sesiones %>
+          </div>
+          <%= will_paginate @sesiones, :params => { :fecha_inicio => @inicio, :fecha_fin => @fin  } %>
+        </div>
+      </td>
+    </tr>
+</table>
+
+
+<%= link_to image_tag("botones/regresar_menu_ant.png", :border =>0) , :controller => "home"%><br />
