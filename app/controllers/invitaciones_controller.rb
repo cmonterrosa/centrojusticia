@@ -171,7 +171,7 @@ class InvitacionesController < ApplicationController
        return false unless @involucrado
 
        # Timestamp for printing for a invitador
-       if current_user.has_role?("invitadores")
+       if current_user.has_role?("invitadores") || current_user.has_role?("especialistaenjuzgado") || current_user.has_role?("controlinvitaciones") 
          #update_tramite_model(@invitacion.sesion.tramite) if @invitacion.printed_at.nil? && !@invitacion.sesion.tramite.estatus.clave == "invi-razo"
          @tramite.update_estatus!("invi-proc",current_user) if @invitacion.printed_at.nil?
          @invitacion.update_attributes!(:printed_at => Time.now) if @invitacion.printed_at.nil?

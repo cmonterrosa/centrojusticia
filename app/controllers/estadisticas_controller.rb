@@ -120,7 +120,7 @@ class EstadisticasController < ApplicationController
       @inicio = @fin = Time.now
       params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
       @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
-      @invitaciones = Invitacion.find(:all, :conditions => ["(created_at between ? AND ? and printed_at is not null)", @inicio, @fin],
+      @invitaciones = Invitacion.find(:all, :conditions => ["(created_at between ? AND ?)", @inicio, @fin],
         :order => "created_at")
       @invitaciones = @invitaciones.paginate(:page => params[:page], :per_page => 25)
   
