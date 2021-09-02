@@ -52,13 +52,11 @@
      
      <%for sesion in @sesiones%>      
       
-        <!-- listado de todos los tramites -->
-        <%tramite = Tramite.find(:first, :conditions => ["id = ?", sesion.tramite_id])%>
-        <%comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", tramite])%>
+        <!-- listado de todos las sesiones buscadas -->
         
         <tr>
           <!-- numero de expediente -->
-          <td style="vertical-align: middle;"><%=link_to "#{tramite.numero_expediente}", {:controller => "tramites", :action => "show", :id => tramite}, :target => "_blank"%></td>
+          <td style="vertical-align: middle;"><%=(sesion.tramite)? (link_to "#{sesion.tramite.numero_expediente}", {:controller => "tramites", :action => "show", :id => sesion.tramite}, :target => "_blank") : "--"%></td>
           <td style="vertical-align: middle;"><%=link_to "#{sesion.clave}", {:controller => "sesiones", :action => "show_window", :id => sesion}, :target => "_blank"%></td>
           <td style="vertical-align: middle;"><%=h sesion.fecha.strftime("%A ") + sesion.fechahora_completa%></td>
           <td style="vertical-align: middle;"><%=h sesion.tiposesion.descripcion%></td>
@@ -66,7 +64,7 @@
           <td style="vertical-align: middle;"><%=h sesion.comediador.nombre_completo%></td>
           <td style="vertical-align: middle;"><%=h sesion.estatus%></td>
           <td style="vertical-align: middle;"><%=h sesion.resultado%></td>
-          <td style="vertical-align: middle;"><%=h (tramite.mecanismo_alternativo)? tramite.mecanismo_alternativo.descripcion : '-'%></td>
+          <td style="vertical-align: middle;"><%=h (sesion.tramite && sesion.tramite.mecanismo_alternativo)? sesion.tramite.mecanismo_alternativo.descripcion : '-'%></td>
           <td style="vertical-align: middle;"><%=h (sesion.num_invitacion)? sesion.num_invitacion_descripcion : 'SIN ASIGNAR'  %></td>      
         </tr>    
         
