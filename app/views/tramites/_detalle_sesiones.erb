@@ -16,7 +16,7 @@
           <th style="vertical-align: middle;"><b>ESPECIALISTA</b></th>
           <th style="vertical-align: middle;"><b>COMEDIADOR</b></th>
           <th style="vertical-align: middle;"><b>RESULTADO</b></th>
-          <%if current_user.has_role?("invitador") || current_user.has_role?("jefeatencionpublico") || current_user.has_role?("admindireccion") || current_user.has_role?("subdireccion")%>
+          <%if current_user.has_role?("invitador") || current_user.has_role?("jefeatencionpublico") || current_user.has_role?("admindireccion") || current_user.has_role?("subdireccion") || current_user.has_role?("controlinvitaciones")%>
           <th style="vertical-align: middle;"><b>&nbsp;</b></th>
           <%end%>
       </tr>

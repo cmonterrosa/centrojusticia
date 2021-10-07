@@ -50,19 +50,15 @@
      
      <%for invitacion in @invitaciones%>      
       
-        <!-- listado de todos los tramites -->
-        <%sesion = Sesion.find(:first, :conditions => ["id = ?", invitacion.sesion_id])%>
-        <%tramite = Tramite.find(:first, :conditions => ["id = ?", sesion.tramite_id])%>
-        <%comparecencia = Comparecencia.find(:first, :conditions => ["tramite_id = ?", tramite])%>
-        <%participante = invitacion.participante%>
-
+        <!-- listado de las invitaciones -->
+      
         <tr>
           <!-- numero de expediente -->
-          <td style="vertical-align: middle;"><%=link_to "#{tramite.numero_expediente}", {:controller => "tramites", :action => "show", :id => tramite}, :target => "_blank"%></td>
+          <td style="vertical-align: middle;"><%=(invitacion.sesion && invitacion.sesion.tramite)? (link_to "#{invitacion.sesion.tramite.numero_expediente}", {:controller => "tramites", :action => "show", :id => invitacion.sesion.tramite}, :target => "_blank") : "--" %></td>
           <td style="vertical-align: middle;"><%=link_to "#{invitacion.id}", {:controller => "invitaciones", :action => "show", :id => invitacion}, :target => "_blank"%></td>
           <td style="vertical-align: middle;"><%=h invitacion.created_at.strftime("%A %d DE %B de %Y - %H:%M %p")%></td>
           <td style="vertical-align: middle;"><%=h (invitacion.participante) ? invitacion.participante.nombre_completo : "----" %></td>
-          <td style="vertical-align: middle;"><%=h (participante && participante.perfil) ? (participante.perfil) : "N/A"  %></td>
+          <td style="vertical-align: middle;"><%=h (invitacion.participante && invitacion.participante.perfil) ? (invitacion.participante.perfil) : "N/A"  %></td>
           <td style="vertical-align: middle;"><%=h (invitacion.invitador_id)? invitacion.invitador.nombre_completo : "SIN ASIGNAR"%></td>
           <td style="vertical-align: middle;"><%=h invitacion.estatus%></td>
           <td style="vertical-align: middle;"><%=h invitacion.justificacion%></td>

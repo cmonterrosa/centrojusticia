@@ -3,30 +3,31 @@
 <%unless@sesiones_noactivas.empty?%>
     <table width="90%" border="0" cellspacing="0" cellpadding="0" class="sample" style="BORDER-RIGHT: #cccccc 1px solid; BORDER-TOP: #cccccc 1px solid; BORDER-LEFT: #cccccc 1px solid; BORDER-BOTTOM: #cccccc 1px solid">
       <tr style="background-color:gray; color:white">
-        <th colspan="8">
+        <th colspan="9">
          DETALLE DE SESIONES CANCELADAS O NO LLEVADAS A CABO
         </th>
       </tr>
       <tr class="d0">
-          <td style="vertical-align: middle;"><b>Id</b></td>
+          <td style="vertical-align: middle;"><b>Folio</b></td>
           <td style="vertical-align: middle;"><b>Cancelada por:</b></td>
           <td style="vertical-align: middle;"><b>Descripción</b></td>
-          <td style="vertical-align: middle;"><b>Num Invitación</b></td>
-          <td style="vertical-align: middle;"><b>Sala</b></td>
+          <td style="vertical-align: middle;"><b>Num Invi</b></td>
           <td style="vertical-align: middle;"><b>Fecha/hora inicio</b></td>
           <td style="vertical-align: middle;"><b>Especialista</b></td>
           <td style="vertical-align: middle;"><b>Comediador</b></td>
+          <td style="vertical-align: middle;"><b>Resultado</b></td>
       </tr>
       <%@sesiones_noactivas.each do |row|%>
-        <tr class="d1" style="text-decoration: line-through;">
+        <tr bgcolor="#E8E8E8" > 
+          <%# class="d1" style="text-decoration: line-through; esto era para que el texto apareciera tachado, iba en el tr" %>
           <td style="vertical-align: middle;"><%=h (row.clave) ? (link_to "#{row.clave}", {:controller => "sesiones", :action => "show_window", :id => row}, :class => "fancybox fancybox.iframe") : "---"%></td>
           <td style="vertical-align: middle;"><%=h (row.cancel_user) ? User.find(row.cancel_user).nombre_completo : "---"%></td>
-          <td style="vertical-align: middle;"><%=h(row.tiposesion_id ? row.tiposesion.descripcion : "---")%></td>
-          <td style="vertical-align: middle;"><%=h(row.num_invitacion ? row.num_invitacion : "--")%></td>
-          <td style="vertical-align: middle;"><%=h(row.sala ? row.sala.descripcion : "--")%></td>
-          <td style="vertical-align: middle;"><%=h(row.start_at ? row.start_at.strftime("%d de %B de %Y - %H:%M %p") : "---")%></td>
-          <td style="vertical-align: middle;"><%=h(row.mediador ? row.mediador.nombre_completo : "---")%></td>
-          <td style="vertical-align: middle;"><%=h(row.comediador ? row.comediador.nombre_completo : "---")%></td>
+          <td style="vertical-align: middle;"><%=h (row.tiposesion_id ? row.tiposesion.descripcion : "---")%></td>
+          <td style="vertical-align: middle;"><%=h (row.num_invitacion ? row.num_invitacion : "--")%></td>
+          <td style="vertical-align: middle;"><%=h (row.start_at ? row.start_at.strftime("%d de %B de %Y - %H:%M %p") : "---")%></td>
+          <td style="vertical-align: middle;"><%=h (row.mediador ? row.mediador.nombre_completo : "---")%></td>
+          <td style="vertical-align: middle;"><%=h (row.comediador ? row.comediador.nombre_completo : "---")%></td>
+          <td style="vertical-align: middle;"><%=h (row.resultado ? row.resultado : "NO EXISTE INFORMACIÓN")%></td>
         </tr>
      <%end%>
   </table><br /><br />
