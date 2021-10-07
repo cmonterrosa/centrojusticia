@@ -210,6 +210,12 @@ class Tramite < ActiveRecord::Base
      return solicitante
    end
 
+   def solicitante_sexo
+    solicitante = (self.orientacion) ? self.orientacion.sexo_solicitante : nil
+    solicitante ||= (Extraordinaria.count(:id, :conditions => ["tramite_id = ?", self.id]) > 0) ? Extraordinaria.find_by_tramite_id(self.id, :select => "sexo").solicitante : "No existe informacion"
+    return solicitante
+  end
+
    def fecha_ultima_sesion
      if s= Sesion.find(:first, :conditions => ["tramite_id = ? AND (cancel is null or cancel =0)", self.id], :order => "fecha DESC,hora DESC")
         return s

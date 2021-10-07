@@ -273,15 +273,21 @@ def diez_dias_habiles(fecha=DateTime.now)
   end
 
   def estatus()
-    if self.cancel
-      return "CANCELADA"
+    if self.estatus_sesion_id
+      return self.estatus_sesion.descripcion
+    else
+      if self.cancel
+        return "CANCELADA"
+      end
+      if self.concluida && !self.cancel
+        return "SE LLEVÓ A CABO"
+      end
+      if !self.cancel && !self.concluida
+        return "SIN RESULTADO DE SESIÓN"
+      end
     end
-    if self.concluida && !self.cancel
-      return "SE LLEVÓ A CABO"
-    end
-    if !self.cancel && !self.concluida
-      return "SIN RESULTADO DE SESIÓN"
-    end
+
+    
   end
 
 end
