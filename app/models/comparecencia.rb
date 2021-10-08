@@ -30,6 +30,10 @@
     (@involucrados) ? @involucrados.map{|x|x.nombre_completo}.join(", ") : nil
   end
 
+  def participantes
+    return Participante.find(:all, :conditions => ["comparecencia_id = ?", self.id])
+  end
+
   def descripcion_involucrados_con_articulo
     @descripcion=""
     if @involucrados = Participante.find(:all, :conditions => ["comparecencia_id = ? AND perfil = 'INVOLUCRADO'", self.id], :order => "created_at")

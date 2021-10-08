@@ -81,15 +81,33 @@ class EstadisticasController < ApplicationController
       return render(:partial => 'select_date_range', :layout => 'kolaval')
     end
 
+    def select_estadisticas_analitico_concluidos
+      @inicio = @fin = Time.now
+      @title = "Seleccione el rango de fechas para generar el analitico de concluidos"
+      @action = "analitico_concluidos"
+      return render(:partial => 'select_date_range', :layout => 'kolaval')
+    end
+
+    def analitico_concluidos
+      @inicio = @fin = Time.now
+      params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] + " 23:59" : params[:fecha_fin]
+      @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin] + " 23:59")
+      @concluidos = Concluido.find(:all, :conditions => ["(created_at between ? AND ?)", @inicio, @fin],
+        :order => "created_at")
+      @concluidos = @concluidos.paginate(:page => params[:page], :per_page => 25)
+  
+      return render(:partial => 'search_concluido', :layout => 'kolaval')
+    end
+
     def analitico_participantes
       @inicio = @fin = Time.now
       params[:fecha_fin] = (params[:fecha_inicio]==params[:fecha_fin]) ? params[:fecha_fin] : params[:fecha_fin]
       @inicio, @fin = DateTime.parse(params[:fecha_inicio]), DateTime.parse(params[:fecha_fin])
-      @sesiones = Sesion.find(:all, :conditions => ["(fecha between ? AND ? )", @inicio, @fin],
-        :order => "fecha, hora, minutos")
-      @sesiones = @sesiones.paginate(:page => params[:page], :per_page => 25)
+      @comparecencias = Comparecencia.find(:all, :conditions => ["(fechahora between ? AND ?)", @inicio, @fin], :order => "fechahora")
+      @participantes = @comparecencias.participantes 
+      @participantes = @participantes.paginate(:page => params[:page], :per_page => 25)
   
-      return render(:partial => 'search_sesion', :layout => 'kolaval')
+      return render(:partial => 'search_participante', :layout => 'kolaval')
     end
     
     def analitico_sesiones
@@ -124,8 +142,8 @@ class EstadisticasController < ApplicationController
         :order => "created_at")
       @invitaciones = @invitaciones.paginate(:page => params[:page], :per_page => 25)
   
-    return render(:partial => 'search_invitacion', :layout => 'kolaval')
-  end
+      return render(:partial => 'search_invitacion', :layout => 'kolaval')
+    end
 
     def activos_por_especialista
       @guardia = Situacion.find_by_descripcion("GUARDIA")
