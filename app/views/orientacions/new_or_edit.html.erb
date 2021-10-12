@@ -141,7 +141,7 @@ $(function() {
 
       <!-- SI YA TIENE ASIGNADO ESPECIALISTA Y PERFIL ADMINISTRADOR --->
       <%else%>
-          <%if current_user.has_role?(:admin)%>
+          <%if current_user.has_role?(:admin) || current_user.has_role?(:especialistajuzgado) || current_user.has_role?(jefeatencionpublico)  %>
               <div class="grid-4-12">
                     <label style=" font-weight: bold;">Fecha/hora existente:</label>
                     <div class="grid-12-12">
