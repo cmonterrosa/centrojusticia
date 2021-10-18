@@ -129,11 +129,24 @@ class Sesion < ActiveRecord::Base
     if nueva_fecha
       @hora = Time.parse("#{self.hora.to_s.rjust(2, '0')}:00").strftime("%I")          
       case self.hora        
-        when (1..11)          
+      when (1)          
+        return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LA #{@hora}:#{self.minutos.to_s.rjust(2, '0')} AM"   
+      when (2..11)          
           return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{@hora}:#{self.minutos.to_s.rjust(2, '0')} AM" 
-        when (12..24)          
+        when (12)          
+          return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{@hora.to_s}:#{self.minutos.to_s.rjust(2, '0')} PM" 
+        when (13)          
+          return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LA #{@hora.to_s}:#{self.minutos.to_s.rjust(2, '0')} PM" 
+        when (14..24)          
           return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{@hora.to_s}:#{self.minutos.to_s.rjust(2, '0')} PM" 
       end
+
+    #   case self.hora        
+    #   when (1..11)          
+    #     return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{@hora}:#{self.minutos.to_s.rjust(2, '0')} AM" 
+    #   when (12..24)          
+    #     return "#{nueva_fecha.strftime('%d DE %B DE %Y')}, A LAS #{@hora.to_s}:#{self.minutos.to_s.rjust(2, '0')} PM" 
+    # end
     end
    end
 
